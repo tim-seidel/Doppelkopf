@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Doppelkopf</string>
+    <string name="navigation_title_session_history">Abende</string>
+    <string name="navigation_title_finances">Kasse</string>
+    <string name="session_players">Mitspieler</string>
+    <string name="player_1">Spieler 1</string>
+    <string name="player_2">Spieler 2</string>
+    <string name="player_3">Spieler 3</string>
+    <string name="player_4">Spieler 4</string>
+    <string name="player_5">Spieler 5</string>
+    <string name="desc_create_session_button">Button to create a new session</string>
+    <string name="doko_session">Doppelkopfabend</string>
+    <string name="date_hint">Datum</string>
+    <string name="session_general_data">Allgemein</string>
+    <string name="start_session">Starten</string>
+</resources>

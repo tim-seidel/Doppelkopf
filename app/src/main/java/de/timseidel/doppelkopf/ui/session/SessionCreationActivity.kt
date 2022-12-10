@@ -3,11 +3,11 @@ package de.timseidel.doppelkopf.ui.session
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import de.timseidel.doppelkopf.contracts.ISessionController
 import de.timseidel.doppelkopf.controller.SessionController
 import de.timseidel.doppelkopf.databinding.ActivitySessionCreationBinding
 import de.timseidel.doppelkopf.util.EditTextListener
+import de.timseidel.doppelkopf.util.Logging
 
 class SessionCreationActivity : AppCompatActivity() {
 
@@ -22,7 +22,6 @@ class SessionCreationActivity : AppCompatActivity() {
         binding = ActivitySessionCreationBinding.inflate(layoutInflater)
 
         setupEditTexts()
-
         binding.btnStartSession.setOnClickListener{ onCreateSessionClicked()}
 
         checkIfSessionIsValid()
@@ -30,14 +29,14 @@ class SessionCreationActivity : AppCompatActivity() {
     }
 
     private fun onCreateSessionClicked(){
-        val playerNames = mutableListOf<String>(viewModel.player1Name, viewModel.player2Name, viewModel.player3Name, viewModel.player4Name)
+        val playerNames = mutableListOf(viewModel.player1Name, viewModel.player2Name, viewModel.player3Name, viewModel.player4Name)
         if(viewModel.player5Name.isNotEmpty()) playerNames.add(viewModel.player5Name)
 
         try {
             sessionController.createSession(viewModel.sessionName, playerNames)
-            Log.d("DOKO", "Session wurde erstellt: ${playerNames.toString()}")
+            Logging.d("Session wurde erstellt: $playerNames")
         }catch (e: Exception){
-            Log.e("DOKO", "Session konnte nicht erstellt werden: ${playerNames.toString()}")
+           Logging.e("Session konnte nicht erstellt werden: $playerNames", e)
         }
     }
 

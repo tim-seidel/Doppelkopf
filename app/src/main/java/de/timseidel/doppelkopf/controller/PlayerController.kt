@@ -2,8 +2,9 @@ package de.timseidel.doppelkopf.controller
 
 import de.timseidel.doppelkopf.contracts.IPlayerController
 import de.timseidel.doppelkopf.model.Player
+import de.timseidel.doppelkopf.model.PlayerAndFaction
 
-class PlayerController: IPlayerController {
+class PlayerController : IPlayerController {
 
     private val players = mutableListOf<Player>()
 
@@ -14,7 +15,7 @@ class PlayerController: IPlayerController {
     }
 
     override fun createPlayers(names: List<String>): List<Player> {
-        if(!validateNames(names)) throw Exception("Invalid name list (check for duplicates or empty name)")
+        if (!validateNames(names)) throw Exception("Invalid name list (check for duplicates or empty name)")
 
         val plys = mutableListOf<Player>()
         for (name in names)
@@ -32,20 +33,30 @@ class PlayerController: IPlayerController {
     }
 
     override fun removePlayer(player: Player) {
-        players.removeIf{p -> p.name == player.name}
+        players.removeIf { p -> p.name == player.name }
     }
 
     override fun getPlayerByName(name: String): Player? {
-        return players.firstOrNull{p-> p.name == name}
+        return players.firstOrNull { p -> p.name == name }
     }
 
     override fun getPlayers(): List<Player> {
         return players
     }
 
+    override fun getPlayersAsFaction(): List<PlayerAndFaction> {
+        val asFaction: MutableList<PlayerAndFaction> = mutableListOf()
+
+        players.forEach { p ->
+            asFaction.add(PlayerAndFaction(p))
+        }
+
+        return asFaction
+    }
+
     override fun validateNames(names: List<String>): Boolean {
-        if(names.size != names.distinct().count()) return false
-        for(name in names)
+        if (names.size != names.distinct().count()) return false
+        for (name in names)
             if (name.trim().isEmpty()) return false
         return true
     }

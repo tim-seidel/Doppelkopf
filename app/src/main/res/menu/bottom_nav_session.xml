@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_game_creation"
+        android:icon="@drawable/ic_baseline_add_black_24"
+        android:title="@string/title_game_creation" />
+    <item
+        android:id="@+id/navigation_game_history"
+        android:icon="@drawable/ic_baseline_reorder_black_24"
+        android:title="@string/title_game_history" />
+    <item
+        android:id="@+id/navigation_session_statistic"
+        android:icon="@drawable/ic_baseline_trending_up_black_24"
+        android:title="@string/title_session_statistic" />
+
+</menu>

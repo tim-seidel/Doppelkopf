@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <ImageButton
+        android:id="@+id/ib_decrease_tacken"
+        style="@style/Widget.AppCompat.ImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_margin="0dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/teal"
+        android:contentDescription="@string/desc_button_decrease_tacken"
+        android:minHeight="48dp"
+        android:src="@drawable/ic_baseline_remove_black_24"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_tacken_count"
+        app:layout_constraintEnd_toStartOf="@+id/tv_tacken_count"
+        app:layout_constraintTop_toTopOf="@+id/tv_tacken_count" />
+
+    <TextView
+        android:id="@+id/tv_tacken_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:paddingHorizontal="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display4"
+        android:textColor="@color/black"
+        android:textSize="96sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="0" />
+
+    <ImageButton
+        android:id="@+id/ib_increase_tacken"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/teal"
+        android:contentDescription="@string/desc_button_increase_tacken"
+        android:minHeight="48dp"
+        android:src="@drawable/ic_baseline_add_black_24"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_tacken_count"
+        app:layout_constraintStart_toEndOf="@+id/tv_tacken_count"
+        app:layout_constraintTop_toTopOf="@+id/tv_tacken_count" />
+
+</merge>

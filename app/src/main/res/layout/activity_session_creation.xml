@@ -32,6 +32,7 @@
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:singleLine="true"
+        android:textColorHint="#757575"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_session_general" />
@@ -51,7 +52,8 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_session_name" />
+        app:layout_constraintTop_toBottomOf="@+id/et_session_name"
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/tv_session_players"
@@ -78,7 +80,8 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_session_players" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_session_players"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/et_player_name_2"
@@ -94,7 +97,8 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_player_name_1" />
+        app:layout_constraintTop_toBottomOf="@+id/et_player_name_1"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/et_player_name_3"
@@ -110,7 +114,8 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_player_name_2" />
+        app:layout_constraintTop_toBottomOf="@+id/et_player_name_2"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/et_player_name_4"
@@ -126,7 +131,8 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_player_name_3" />
+        app:layout_constraintTop_toBottomOf="@+id/et_player_name_3"
+        android:importantForAutofill="no" />
 
     <View
         android:id="@+id/divider_additional_players"
@@ -153,21 +159,10 @@
         android:hint="@string/player_5"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:textColorHint="#757575"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider_additional_players" />
-
-    <Button
-        android:id="@+id/btn_start_session"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:clickable="false"
-        android:drawableEnd="@drawable/ic_baseline_play_arrow_white_24"
-        android:text="@string/start_session"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/divider_additional_players"
+        android:importantForAutofill="no" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

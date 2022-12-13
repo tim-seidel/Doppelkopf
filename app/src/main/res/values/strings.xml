@@ -13,4 +13,22 @@
     <string name="date_hint">Datum</string>
     <string name="session_general_data">Allgemein</string>
     <string name="start_session">Starten</string>
+    <string name="title_activity_session">SessionActivity</string>
+    <string name="title_game_creation">Spiel erstellen</string>
+    <string name="title_game_history">Spielverlauf</string>
+    <string name="title_session_statistic">Statisik</string>
+    <string name="game_creation_player_assignment">Spielerzuordnung</string>
+    <string name="faction_contra">Contra</string>
+    <string name="faction_re">Re</string>
+    <string name="faction_select_re_desc">Select re faction</string>
+    <string name="faction_select_contra_desc">Select contra faction</string>
+    <string name="game_result">Spielergebnis</string>
+    <string name="points_winner">Siegerpunkte</string>
+    <string name="points_re">Punkte Re</string>
+    <string name="desc_button_decrease_tacken">Decrease tacken</string>
+    <string name="desc_button_increase_tacken">Increase tacken</string>
+    <string name="option_confirm_create_session">Erstellen</string>
+    <string name="option_confirm_create_game">Erstellen</string>
+    <string name="create_session_unable_to_create">Doppelkopfabend kann nicht erstellt werden. Stell sicher, dass es mindestens 4 Spieler und einen Namen gibt.</string>
+    <string name="tacken">Tacken</string>
 </resources>

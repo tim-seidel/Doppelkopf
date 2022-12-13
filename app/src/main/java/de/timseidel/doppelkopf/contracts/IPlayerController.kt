@@ -1,6 +1,7 @@
 package de.timseidel.doppelkopf.contracts
 
 import de.timseidel.doppelkopf.model.Player
+import de.timseidel.doppelkopf.model.PlayerAndFaction
 
 interface IPlayerController {
 
@@ -17,6 +18,8 @@ interface IPlayerController {
     fun getPlayerByName(name: String): Player?
 
     fun getPlayers(): List<Player>
+
+    fun getPlayersAsFaction(): List<PlayerAndFaction>
 
     fun validateNames(names: List<String>): Boolean
 }

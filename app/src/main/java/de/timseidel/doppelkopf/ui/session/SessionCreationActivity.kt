@@ -1,9 +1,14 @@
 package de.timseidel.doppelkopf.ui.session
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
-import de.timseidel.doppelkopf.contracts.ISessionController
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
+import de.timseidel.doppelkopf.R
+import de.timseidel.doppelkopf.controller.DoppelkopfManager
 import de.timseidel.doppelkopf.controller.SessionController
 import de.timseidel.doppelkopf.databinding.ActivitySessionCreationBinding
 import de.timseidel.doppelkopf.util.EditTextListener
@@ -14,74 +19,99 @@ class SessionCreationActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySessionCreationBinding
     private val viewModel = SessionCreationViewModel()
 
-    private val sessionController: ISessionController = SessionController()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivitySessionCreationBinding.inflate(layoutInflater)
 
         setupEditTexts()
-        binding.btnStartSession.setOnClickListener{ onCreateSessionClicked()}
 
-        checkIfSessionIsValid()
         setContentView(binding.root)
     }
 
-    private fun onCreateSessionClicked(){
-        val playerNames = mutableListOf(viewModel.player1Name, viewModel.player2Name, viewModel.player3Name, viewModel.player4Name)
-        if(viewModel.player5Name.isNotEmpty()) playerNames.add(viewModel.player5Name)
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_create_session, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.option_confirm_create_session -> {
+                createSessionClicked()
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun createSessionClicked() {
+        if(!viewModel.checkIsSetupValid()){
+            showSessionCreateError(getString(R.string.create_session_unable_to_create))
+            return
+        }
+
+        val playerNames = mutableListOf(
+            viewModel.player1Name,
+            viewModel.player2Name,
+            viewModel.player3Name,
+            viewModel.player4Name
+        )
+        if (viewModel.player5Name.isNotEmpty()) playerNames.add(viewModel.player5Name)
 
         try {
+            val sessionController = SessionController()
             sessionController.createSession(viewModel.sessionName, playerNames)
             Logging.d("Session wurde erstellt: $playerNames")
-        }catch (e: Exception){
-           Logging.e("Session konnte nicht erstellt werden: $playerNames", e)
+
+            DoppelkopfManager.setController(sessionController)
+
+            onSessionCreated()
+        } catch (e: Exception) {
+            Logging.e("Session konnte nicht erstellt werden: $playerNames", e)
+            showSessionCreateError("Der Doppelkopfabend kann nicht erstellt werden: $e")
         }
     }
 
-    private fun setupEditTexts(){
-        binding.etSessionName.addTextChangedListener(object: EditTextListener(){
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.sessionName = s.toString()
-                checkIfSessionIsValid()
-            }
-        })
-        binding.etPlayerName1.addTextChangedListener(object: EditTextListener(){
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.player1Name = s.toString()
-                checkIfSessionIsValid()
-            }
-        })
-        binding.etPlayerName2.addTextChangedListener(object: EditTextListener(){
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.player2Name = s.toString()
-                checkIfSessionIsValid()
-            }
-        })
-        binding.etPlayerName3.addTextChangedListener(object: EditTextListener(){
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.player3Name = s.toString()
-                checkIfSessionIsValid()
-            }
-        })
-        binding.etPlayerName4.addTextChangedListener(object: EditTextListener() {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.player4Name = s.toString()
-                checkIfSessionIsValid()
-            }
-        })
-        binding.etPlayerName5.addTextChangedListener(object: EditTextListener() {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.player5Name = s.toString()
-                checkIfSessionIsValid()
-            }
-        })
+    private fun showSessionCreateError(msg: String){
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
-    private fun checkIfSessionIsValid(){
-        val isValid = viewModel.checkIsSetupValid()
+    private fun onSessionCreated() {
+        val intent = Intent(this, SessionActivity::class.java)
+        startActivity(intent)
+    }
 
-        binding.btnStartSession.isEnabled = isValid
+    private fun setupEditTexts() {
+        binding.etSessionName.addTextChangedListener(object : EditTextListener() {
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.sessionName = s.toString()
+            }
+        })
+        binding.etPlayerName1.addTextChangedListener(object : EditTextListener() {
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.player1Name = s.toString()
+            }
+        })
+        binding.etPlayerName2.addTextChangedListener(object : EditTextListener() {
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.player2Name = s.toString()
+            }
+        })
+        binding.etPlayerName3.addTextChangedListener(object : EditTextListener() {
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.player3Name = s.toString()
+            }
+        })
+        binding.etPlayerName4.addTextChangedListener(object : EditTextListener() {
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.player4Name = s.toString()
+            }
+        })
+        binding.etPlayerName5.addTextChangedListener(object : EditTextListener() {
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.player5Name = s.toString()
+            }
+        })
     }
 }

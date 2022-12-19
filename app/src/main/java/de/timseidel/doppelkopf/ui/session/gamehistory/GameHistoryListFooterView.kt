@@ -15,10 +15,10 @@ class GameHistoryListFooterView constructor(context: Context, attrs: AttributeSe
     private lateinit var rvTotalTacken: RecyclerView
 
     init {
-        init(attrs)
+        init()
     }
 
-    private fun init(attrs: AttributeSet?) {
+    private fun init() {
         View.inflate(context, R.layout.view_game_history_list_footer, this)
 
         findViews()

@@ -39,7 +39,6 @@ class GameHistoryListPlayerHeaderAdapter(
         tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
         tv.textSize = 24f
         tv.setTypeface(tv.typeface, Typeface.BOLD);
-        tv.setTextColor(context.getColor(R.color.black))
 
         return tv
     }

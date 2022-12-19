@@ -35,10 +35,12 @@ class TackenCounterView constructor(context: Context, attrs: AttributeSet? = nul
     fun setCounter(value: Int) {
         tvTackenCount.text = if(value in 0..9) "0$value" else value.toString()
 
+        /*
         when {
             value < 0 -> tvTackenCount.setTextColor(ContextCompat.getColor(context, R.color.deep_purple))
             value ==  0 -> tvTackenCount.setTextColor(ContextCompat.getColor(context, R.color.black))
             else -> tvTackenCount.setTextColor(ContextCompat.getColor(context, R.color.teal_dark))
         }
+         */
     }
 }

@@ -15,10 +15,10 @@ class GameHistoryListHeaderView constructor(context: Context, attrs: AttributeSe
     private lateinit var rvPlayers: RecyclerView
 
     init {
-        init(attrs)
+        init()
     }
 
-    private fun init(attrs: AttributeSet?) {
+    private fun init() {
         View.inflate(context, R.layout.view_game_history_list_header, this)
 
         findViews()

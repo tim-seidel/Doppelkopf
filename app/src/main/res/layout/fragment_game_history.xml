@@ -15,17 +15,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <de.timseidel.doppelkopf.ui.session.gamehistory.GameHistoryListFooterView
-        android:id="@+id/footer_game_history_list"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_game_history_list" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_game_history_list"
         android:layout_width="0dp"
@@ -36,7 +25,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/footer_game_history_list" />
+        app:layout_constraintTop_toBottomOf="@+id/header_game_history_list" />
 
 
 

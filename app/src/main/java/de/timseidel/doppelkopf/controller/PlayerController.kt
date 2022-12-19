@@ -1,8 +1,10 @@
 package de.timseidel.doppelkopf.controller
 
 import de.timseidel.doppelkopf.contracts.IPlayerController
+import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.PlayerAndFaction
+import de.timseidel.doppelkopf.util.IdGenerator
 
 class PlayerController : IPlayerController {
 
@@ -11,7 +13,7 @@ class PlayerController : IPlayerController {
     override fun createPlayer(name: String): Player {
         val trimmedName = name.trim()
         val nonEmptyName = trimmedName.ifEmpty { "Player" }
-        return Player(nonEmptyName)
+        return Player(IdGenerator.generateIdWithTimestamp("player") + "_$nonEmptyName", nonEmptyName)
     }
 
     override fun createPlayers(names: List<String>): List<Player> {
@@ -41,14 +43,14 @@ class PlayerController : IPlayerController {
     }
 
     override fun getPlayers(): List<Player> {
-        return players
+        return players.toList()
     }
 
     override fun getPlayersAsFaction(): List<PlayerAndFaction> {
         val asFaction: MutableList<PlayerAndFaction> = mutableListOf()
 
         players.forEach { p ->
-            asFaction.add(PlayerAndFaction(p))
+            asFaction.add(PlayerAndFaction(p, Faction.NONE))
         }
 
         return asFaction

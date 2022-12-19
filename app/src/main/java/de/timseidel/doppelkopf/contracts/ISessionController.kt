@@ -4,11 +4,13 @@ import de.timseidel.doppelkopf.model.DokoSession
 
 interface ISessionController {
 
-    fun createSession(sessionName: String, playerNames: List<String>)
+    fun createSession(sessionName: String): DokoSession
 
     fun getSession(): DokoSession
 
-    fun getPlayerController() : IPlayerController
+    fun setSession(s: DokoSession)
+
+    fun getPlayerController(): IPlayerController
 
     fun getGameController(): IGameController
 }

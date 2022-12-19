@@ -19,8 +19,8 @@ class VersusBarView constructor(context: Context, attrs: AttributeSet? = null) :
         View.inflate(context, R.layout.view_versus_bar, this)
 
         pb_versus = findViewById(R.id.pb_game_points)
-        tv_left = findViewById(R.id.tv_game_score_pb_left)
-        tv_right = findViewById(R.id.tv_game_score_pb_right)
+        tv_left = findViewById(R.id.tv_game_points_pb_left)
+        tv_right = findViewById(R.id.tv_game_points_pb_right)
 
         val ta = context.obtainStyledAttributes(attrs, R.styleable.VersusBarView)
         try {

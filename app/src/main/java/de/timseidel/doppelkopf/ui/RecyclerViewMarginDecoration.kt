@@ -4,19 +4,16 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerViewMarginDecoration(_margin: Int, _columns: Int) : RecyclerView.ItemDecoration() {
-    private val margin: Int = _margin
-    private val columns : Int = _columns
-
+class RecyclerViewMarginDecoration(var _marginHorizontal: Int, var _marginVertical: Int) : RecyclerView.ItemDecoration() {
     override fun getItemOffsets(
         outRect: Rect,
         view: View,
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        outRect.left = margin
-        outRect.right = margin
-        outRect.top = margin
-        outRect.bottom = margin
+        outRect.left = _marginHorizontal
+        outRect.right = _marginHorizontal
+        outRect.top = _marginVertical
+        outRect.bottom = _marginVertical
     }
 }

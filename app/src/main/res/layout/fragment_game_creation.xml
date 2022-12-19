@@ -100,7 +100,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cl_winning_faction_select" />
 
     <EditText
-        android:id="@+id/et_game_score"
+        android:id="@+id/et_game_points"
         style="@style/Widget.AppCompat.EditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
         app:layout_constraintTop_toBottomOf="@+id/layout_tacken_counter" />
 
     <de.timseidel.doppelkopf.ui.VersusBarView
-        android:id="@+id/versus_bar_score"
+        android:id="@+id/versus_bar_points"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -132,7 +132,7 @@
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_game_score"
+        app:layout_constraintTop_toBottomOf="@+id/et_game_points"
         app:max="240"
         app:min="0" />
 

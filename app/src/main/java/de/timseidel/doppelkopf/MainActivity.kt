@@ -7,7 +7,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import de.timseidel.doppelkopf.databinding.ActivityMainBinding
+import de.timseidel.doppelkopf.util.Logging
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,5 +33,21 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        //testFireStore()
+    }
+
+    private fun testFireStore(){
+        val db = Firebase.firestore
+
+        val player = hashMapOf(
+            "name" to "Tims"
+        )
+
+        db.collection("users").add(player).addOnSuccessListener {
+            documentReference -> Logging.d("Firestore", "DocumentSnapshot added with ID: ${documentReference.id}")
+        }.addOnFailureListener {
+            e -> Logging.e("Firestore", "Error adding document", e)
+        }
     }
 }

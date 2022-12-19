@@ -1,3 +1,5 @@
 package de.timseidel.doppelkopf.model
 
-data class Player(var name: String)
+import de.timseidel.doppelkopf.util.IdGenerator
+
+class Player(val id: String, var name: String)

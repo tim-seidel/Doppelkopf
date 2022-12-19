@@ -3,7 +3,12 @@ package de.timseidel.doppelkopf.controller
 import de.timseidel.doppelkopf.contracts.IGameController
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
+import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.PlayerAndFaction
+import de.timseidel.doppelkopf.util.DokoUtil
+import de.timseidel.doppelkopf.util.IdGenerator
+import de.timseidel.doppelkopf.util.Logging
+import de.timseidel.doppelkopf.util.PlayerGameResult
 
 class GameController : IGameController {
 
@@ -12,14 +17,15 @@ class GameController : IGameController {
     override fun createGame(
         players: List<PlayerAndFaction>,
         winningFaction: Faction,
+        winningPoints: Int,
         tacken: Int,
-        score: Int
     ): Game {
         return Game(
-            players = players,
-            winningFaction = winningFaction,
-            winningPoints = score,
-            tacken = tacken
+            IdGenerator.generateIdWithTimestamp("game"),
+            players,
+            winningFaction,
+            winningPoints,
+            tacken
         )
     }
 
@@ -32,6 +38,39 @@ class GameController : IGameController {
     }
 
     override fun getGames(): List<Game> {
-        return games
+        return games.toList()
+    }
+
+    override fun getGameAsPlayerResults(game: Game): List<PlayerGameResult> {
+        val results = mutableListOf<PlayerGameResult>()
+
+        game.players.forEach { p ->
+            results.add(
+                PlayerGameResult(
+                    p,
+                    DokoUtil.getFactionTacken(p.faction, game.winningFaction, game.tacken),
+                    DokoUtil.getFactionPoints(p.faction, game.winningFaction, game.winningPoints)
+                )
+            )
+        }
+
+        return results
+    }
+
+    override fun getGamesAsPlayerResults(): List<List<PlayerGameResult>> {
+        val results = mutableListOf<List<PlayerGameResult>>()
+        games.forEach { g ->
+            results.add(getGameAsPlayerResults(g))
+        }
+        return results
+    }
+
+    override fun getGamesOfPlayer(pId: String): List<Game> {
+        val pGames = mutableListOf<Game>()
+        games.forEach { g ->
+            if (g.players.any { p -> p.player.id == pId && p.faction != Faction.NONE }) pGames.add(g)
+        }
+
+        return pGames
     }
 }

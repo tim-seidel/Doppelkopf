@@ -1,18 +1,27 @@
 package de.timseidel.doppelkopf.controller
 
+import de.timseidel.doppelkopf.contracts.IGroupController
 import de.timseidel.doppelkopf.contracts.ISessionController
 
+//TODO: Deep copy lists und so
 class DoppelkopfManager {
 
+    private val groupController: IGroupController = GroupController()
+    private val sessionController: ISessionController = SessionController()
+
     companion object {
-        private var controller: ISessionController = SessionController()
+        private var instance: DoppelkopfManager = DoppelkopfManager()
 
-        fun getInstance() : ISessionController {
-            return controller
+        fun getInstance(): DoppelkopfManager {
+            return instance
         }
+    }
 
-        fun setController(_controller: ISessionController){
-            controller = _controller
-        }
+    fun getGroupController(): IGroupController {
+        return groupController
+    }
+
+    fun getSessionController(): ISessionController {
+        return sessionController
     }
 }

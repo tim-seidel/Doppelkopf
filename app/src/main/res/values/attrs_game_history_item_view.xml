@@ -1,0 +1,7 @@
+<resources>
+    <declare-styleable name="GameHistoryListItemView">
+        <attr name="gameScore" format="integer" />
+        <attr name="gameTacken" format="integer" />
+        <attr name="winningFaction" format="string" />
+    </declare-styleable>
+</resources>

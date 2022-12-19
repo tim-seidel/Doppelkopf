@@ -9,7 +9,6 @@ import android.view.MenuItem
 import android.widget.Toast
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.controller.DoppelkopfManager
-import de.timseidel.doppelkopf.controller.SessionController
 import de.timseidel.doppelkopf.databinding.ActivitySessionCreationBinding
 import de.timseidel.doppelkopf.util.EditTextListener
 import de.timseidel.doppelkopf.util.Logging
@@ -46,25 +45,19 @@ class SessionCreationActivity : AppCompatActivity() {
     }
 
     private fun createSessionClicked() {
-        if(!viewModel.checkIsSetupValid()){
+        if (!viewModel.checkIsSetupValid()) {
             showSessionCreateError(getString(R.string.create_session_unable_to_create))
             return
         }
 
-        val playerNames = mutableListOf(
-            viewModel.player1Name,
-            viewModel.player2Name,
-            viewModel.player3Name,
-            viewModel.player4Name
-        )
-        if (viewModel.player5Name.isNotEmpty()) playerNames.add(viewModel.player5Name)
+        val playerNames = viewModel.playerNamesAsList()
 
         try {
-            val sessionController = SessionController()
-            sessionController.createSession(viewModel.sessionName, playerNames)
-            Logging.d("Session wurde erstellt: $playerNames")
-
-            DoppelkopfManager.setController(sessionController)
+            val sc = DoppelkopfManager.getInstance().getSessionController()
+            val session = sc.createSession(viewModel.sessionName)
+            sc.setSession(session)
+            val players = sc.getPlayerController().createPlayers(playerNames)
+            sc.getPlayerController().addPlayers(players)
 
             onSessionCreated()
         } catch (e: Exception) {
@@ -73,13 +66,13 @@ class SessionCreationActivity : AppCompatActivity() {
         }
     }
 
-    private fun showSessionCreateError(msg: String){
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
-    }
-
     private fun onSessionCreated() {
         val intent = Intent(this, SessionActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun showSessionCreateError(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
     private fun setupEditTexts() {

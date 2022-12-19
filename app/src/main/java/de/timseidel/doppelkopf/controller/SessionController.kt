@@ -4,19 +4,27 @@ import de.timseidel.doppelkopf.contracts.IGameController
 import de.timseidel.doppelkopf.contracts.IPlayerController
 import de.timseidel.doppelkopf.contracts.ISessionController
 import de.timseidel.doppelkopf.model.DokoSession
+import de.timseidel.doppelkopf.util.IdGenerator
+import java.time.LocalDateTime
 
 class SessionController : ISessionController {
 
-    private val playerController : IPlayerController = PlayerController()
-    private val gameController : IGameController = GameController()
+    private lateinit var session: DokoSession
 
-    private lateinit var session : DokoSession
+    private val playerController: IPlayerController = PlayerController()
+    private val gameController: IGameController = GameController()
 
-    override fun createSession(sessionName: String, playerNames: List<String>) {
-        session = DokoSession(sessionName)
+    override fun createSession(sessionName: String): DokoSession {
+        return DokoSession(
+            IdGenerator.generateIdWithTimestamp("session"),
+            sessionName,
+            LocalDateTime.now(),
+            0.0
+        )
+    }
 
-        val players = playerController.createPlayers(playerNames)
-        playerController.addPlayers(players)
+    override fun setSession(s: DokoSession) {
+        session = s
     }
 
     override fun getSession(): DokoSession {

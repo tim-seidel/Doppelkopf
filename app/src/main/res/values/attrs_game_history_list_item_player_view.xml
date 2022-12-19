@@ -1,0 +1,6 @@
+<resources>
+    <declare-styleable name="GameHistoryListItemPlayerView">
+        <attr name="playerTacken" format="integer" />
+        <attr name="playerFaction" format="string" />
+    </declare-styleable>
+</resources>

@@ -2,6 +2,9 @@ package de.timseidel.doppelkopf.model
 
 import java.time.LocalDateTime
 
-class DokoSession(var title: String = "Doppelkopfabend", var date: LocalDateTime = LocalDateTime.now()) {
-
-}
+data class DokoSession(
+    val id: String,
+    var name: String,
+    var date: LocalDateTime,
+    var tackenPrice: Double
+)

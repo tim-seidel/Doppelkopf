@@ -25,11 +25,23 @@ class SessionCreationViewModel {
         return c
     }
 
-    fun isKeyPlayerMissing() : Boolean {
+    fun isKeyPlayerMissing(): Boolean {
         if (player1Name.isEmpty()) return true
         if (player2Name.isEmpty()) return true
         if (player3Name.isEmpty()) return true
         if (player4Name.isEmpty()) return true
         return false
+    }
+
+    fun playerNamesAsList(): List<String> {
+        val names = mutableListOf(
+            player1Name,
+            player2Name,
+            player3Name,
+            player4Name
+        )
+        if (player5Name.isNotEmpty()) names.add(player5Name)
+
+        return names
     }
 }

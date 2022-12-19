@@ -1,7 +1,6 @@
 package de.timseidel.doppelkopf.ui.session.gamecreation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
@@ -11,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
@@ -48,7 +48,8 @@ class GameCreationFragment : Fragment() {
         _binding = FragmentGameCreationBinding.inflate(inflater, container, false)
 
         viewModel.playerFactionList =
-            DoppelkopfManager.getInstance().getPlayerController().getPlayersAsFaction()
+            DoppelkopfManager.getInstance().getSessionController().getPlayerController()
+                .getPlayersAsFaction()
 
         setupMenu()
 
@@ -75,11 +76,9 @@ class GameCreationFragment : Fragment() {
                         return true
                     }
                 }
-
                 return false
             }
-
-        })
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun findViews() {
@@ -89,8 +88,8 @@ class GameCreationFragment : Fragment() {
         ibIncreaseTacken = tcTackenCounter.findViewById(R.id.ib_increase_tacken)
         btnWinningFactionRe = binding.btnWinnerRe
         btnWinningFactionContra = binding.btnWinnerContra
-        etGameScore = binding.etGameScore
-        vbVersusBarScore = binding.versusBarScore
+        etGameScore = binding.etGamePoints
+        vbVersusBarScore = binding.versusBarPoints
     }
 
     private fun setupButtons() {
@@ -143,7 +142,6 @@ class GameCreationFragment : Fragment() {
                     viewModel.playerFactionList[position].faction = newFaction
                     return newFaction
                 }
-
             })
 
         rvPlayerFactionSelect.adapter = playerFactionSelectAdapter
@@ -195,7 +193,6 @@ class GameCreationFragment : Fragment() {
         vbVersusBarScore.setProgress(viewModel.gameScore)
         vbVersusBarScore.setLeftText(viewModel.gameScore.toString())
         vbVersusBarScore.setRightText((240 - viewModel.gameScore).toString())
-        etGameScore.setText("0")
     }
 
     private fun onCreateGameClicked() {
@@ -210,27 +207,23 @@ class GameCreationFragment : Fragment() {
         }
 
         try {
-            val game = DoppelkopfManager.getInstance().getGameController().createGame(
-                viewModel.playerFactionList,
-                viewModel.winningFaction,
-                viewModel.tackenCount,
-                viewModel.gameScore
-            )
-            DoppelkopfManager.getInstance().getGameController().addGame(game)
+            val game = DoppelkopfManager.getInstance().getSessionController().getGameController()
+                .createGame(
+                    viewModel.playerFactionList.map { it.copy() },
+                    viewModel.winningFaction,
+                    viewModel.gameScore,
+                    viewModel.tackenCount
+                )
+            DoppelkopfManager.getInstance().getSessionController().getGameController().addGame(game)
 
             resetViewModel()
-        } catch (e: Exception) {
+      } catch (e: Exception) {
             Logging.e("GameCreationFragment", "Error creating game", e)
         }
     }
 
     private fun resetViewModel() {
-        viewModel.tackenCount = 0
-        viewModel.gameScore = 0
-        viewModel.winningFaction = Faction.NONE
-        viewModel.playerFactionList =
-            DoppelkopfManager.getInstance().getPlayerController().getPlayersAsFaction()
-
+        viewModel.reset()
         applyViewModel()
         playerFactionSelectAdapter.resetPlayerFactions()
     }

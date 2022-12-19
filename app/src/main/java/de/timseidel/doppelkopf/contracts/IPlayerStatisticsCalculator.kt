@@ -3,7 +3,6 @@ package de.timseidel.doppelkopf.contracts
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.statistic.PlayerStatistic
-
 interface IPlayerStatisticsCalculator {
     fun calculatePlayerStatistic(
         player: Player,

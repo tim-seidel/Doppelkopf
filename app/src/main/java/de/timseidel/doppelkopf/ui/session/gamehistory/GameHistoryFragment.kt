@@ -32,7 +32,9 @@ class GameHistoryFragment : Fragment() {
     ): View {
         _binding = FragmentGameHistoryBinding.inflate(inflater, container, false)
 
-        //createSampleGames()
+        if (DokoShortAccess.getGameCtrl().getGames().isEmpty()) {
+            createSampleGames()
+        }
         setupPlayerHeader()
         setupTackenFooter()
         setupGameHistoryList()
@@ -52,7 +54,7 @@ class GameHistoryFragment : Fragment() {
             DokoShortAccess.getGameCtrl().getGames()
         )
 
-        binding.footerGameHistoryList.setPlayerStatistics(stats)
+        //binding.footerGameHistoryList.setPlayerStatistics(stats)
     }
 
     private fun setupGameHistoryList() {
@@ -84,7 +86,7 @@ class GameHistoryFragment : Fragment() {
     }
 
     private fun createSampleGames() {
-        for (i in (1..25)) {
+        for (i in (1..40)) {
             DoppelkopfManager.getInstance().getSessionController().getGameController()
                 .addGame(getSampleGame())
         }

@@ -9,6 +9,9 @@ data class PlayerStatistic(
     val contra: StatisticEntry = StatisticEntry(),
     val solo: StatisticEntry = StatisticEntry(),
 
+    val tackenHistory: MutableList<Int> = mutableListOf(0),
+    val tackenHistoryAccumulated: MutableList<Int> = mutableListOf(0),
+
     val partners: Map<String, PlayerToPlayerStatistic>,
     val opponents: Map<String, PlayerToPlayerStatistic>
 )

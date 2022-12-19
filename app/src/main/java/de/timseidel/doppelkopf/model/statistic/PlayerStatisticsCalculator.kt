@@ -71,6 +71,9 @@ class PlayerStatisticsCalculator : IPlayerStatisticsCalculator {
                 }
                 else -> {}
             }
+
+            stats.tackenHistory.add(result.tacken)
+            stats.tackenHistoryAccumulated.add(stats.tackenHistoryAccumulated[stats.tackenHistoryAccumulated.size - 1] + result.tacken)
         }
     }
 

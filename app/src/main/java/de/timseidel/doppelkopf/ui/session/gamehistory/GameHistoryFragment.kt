@@ -15,10 +15,9 @@ import de.timseidel.doppelkopf.model.statistic.PlayerStatisticsCalculator
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
-import de.timseidel.doppelkopf.util.Logging
 
 //TODO: Rang und Gesamtpunktzahl
-class GameHistoryFragment : Fragment() {
+class  GameHistoryFragment : Fragment() {
 
     private var _binding: FragmentGameHistoryBinding? = null
     private val binding get() = _binding!!
@@ -60,7 +59,6 @@ class GameHistoryFragment : Fragment() {
     private fun setupGameHistoryList() {
         val games =
             DoppelkopfManager.getInstance().getSessionController().getGameController().getGames()
-        Logging.d("GameHistoryFragment", "Games: $games")
         gameHistoryListAdapter = GameHistoryListAdapter(games)
 
         val listView = binding.rvGameHistoryList
@@ -102,8 +100,8 @@ class GameHistoryFragment : Fragment() {
             .createGame(
                 pafs,
                 if ((0..100).random() <= 60) Faction.RE else Faction.CONTRA,
-                (0..240).random(),
-                (-2..10).random()
+                (121..240).random(),
+                (-1..8).random()
             )
     }
 }

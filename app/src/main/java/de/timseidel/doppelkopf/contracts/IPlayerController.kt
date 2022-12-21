@@ -22,4 +22,6 @@ interface IPlayerController {
     fun getPlayersAsFaction(): List<PlayerAndFaction>
 
     fun validateNames(names: List<String>): Boolean
+
+    fun getPlayerNames(): List<String>
 }

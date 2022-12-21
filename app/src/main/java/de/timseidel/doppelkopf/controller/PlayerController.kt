@@ -62,4 +62,8 @@ class PlayerController : IPlayerController {
             if (name.trim().isEmpty()) return false
         return true
     }
+
+    override fun getPlayerNames(): List<String> {
+        return players.map { p -> p.name }
+    }
 }

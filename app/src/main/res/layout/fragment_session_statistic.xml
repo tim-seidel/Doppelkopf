@@ -3,15 +3,47 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.session.statistic.SessionStatisticFragment">
+    android:layout_height="match_parent">
 
-    <com.highsoft.highcharts.core.HIChartView
-        android:id="@+id/chart"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.highsoft.highcharts.core.HIChartView
+                android:id="@+id/chart_tacken"
+                android:layout_width="match_parent"
+                android:layout_height="500dp" />
+
+            <com.highsoft.highcharts.core.HIChartView
+                android:id="@+id/chart_win_loss"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
+
+            <com.highsoft.highcharts.core.HIChartView
+                android:id="@+id/chart_tacken_win_loss"
+                android:layout_width="match_parent"
+                android:layout_height="350dp" />
+
+            <com.highsoft.highcharts.core.HIChartView
+                android:id="@+id/chart_player_partner_win_loss"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
+
+            <com.highsoft.highcharts.core.HIChartView
+                android:id="@+id/chart_player_opponent_win_loss"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
+
+            <com.highsoft.highcharts.core.HIChartView
+                android:id="@+id/chart_player_partner_tacken"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
+        </LinearLayout>
+    </ScrollView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

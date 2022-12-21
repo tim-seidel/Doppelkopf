@@ -6,6 +6,7 @@ import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.PlayerAndFaction
 import de.timseidel.doppelkopf.util.DokoUtil
+import de.timseidel.doppelkopf.util.Logging
 import de.timseidel.doppelkopf.util.PlayerGameResult
 
 //TODO: Maybe save lists and be able to add new games instead of complete recalculations
@@ -16,8 +17,12 @@ class PlayerStatisticsCalculator : IPlayerStatisticsCalculator {
         otherPlayers: List<Player>,
         games: List<Game>
     ): PlayerStatistic {
-        val others = createOpponentStatisticObjects(player, otherPlayers)
-        val stats = PlayerStatistic(player = player, partners = others, opponents = others)
+
+        val stats = PlayerStatistic(
+            player = player,
+            partners = createOpponentStatisticObjects(player, otherPlayers),
+            opponents = createOpponentStatisticObjects(player, otherPlayers)
+        )
 
         calculateOwnPlayerStatistics(stats, games)
         calculatePlayerPartnerStatistics(stats, games)
@@ -96,29 +101,35 @@ class PlayerStatisticsCalculator : IPlayerStatisticsCalculator {
     ) {
         val isWinner = DokoUtil.isWinner(result)
 
-        participants.forEach { p ->
-            if (p.faction == result.playerAndFaction.faction) {
-                addGameResult(result, stats.partners[p.player.id]?.general, isWinner)
-                if (p.faction == Faction.RE) addGameResult(
-                    result,
-                    stats.partners[p.player.id]?.re,
-                    isWinner
-                )
-                else if (p.faction == Faction.CONTRA) addGameResult(
-                    result,
-                    stats.partners[p.player.id]?.contra,
-                    isWinner
-                )
+        participants.forEach { partner ->
+            if (partner.faction == result.playerAndFaction.faction) {
+                addGameResult(result, stats.partners[partner.player.id]?.general, isWinner)
+                if (partner.faction == Faction.RE) {
+                    addGameResult(
+                        result,
+                        stats.partners[partner.player.id]?.re,
+                        isWinner
+                    )
+                } else if (partner.faction == Faction.CONTRA) {
+                    addGameResult(
+                        result,
+                        stats.partners[partner.player.id]?.contra,
+                        isWinner
+                    )
+                }
+                if (stats.player.name == "Tim") {
+                    Logging.d("Played with ${partner.player.id} as ${partner.faction}, ${stats.partners[partner.player.id]?.general?.total?.games}")
+                }
             } else {
-                addGameResult(result, stats.opponents[p.player.id]?.general, isWinner)
-                if (p.faction == Faction.RE) addGameResult(
+                addGameResult(result, stats.opponents[partner.player.id]?.general, isWinner)
+                if (partner.faction == Faction.RE) addGameResult(
                     result,
-                    stats.opponents[p.player.id]?.contra,
+                    stats.opponents[partner.player.id]?.contra,
                     isWinner
                 )
-                else if (p.faction == Faction.CONTRA) addGameResult(
+                else if (partner.faction == Faction.CONTRA) addGameResult(
                     result,
-                    stats.opponents[p.player.id]?.re,
+                    stats.opponents[partner.player.id]?.re,
                     isWinner
                 )
             }

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Player
 
+//TODO. Mit ClickListener und dann fuer Statistikauswahl verwendbar machen
 class GameHistoryListHeaderView constructor(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
 

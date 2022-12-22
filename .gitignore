@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+#Firebase configuration
+app/google-services.json
+
+.idea/discord.xml

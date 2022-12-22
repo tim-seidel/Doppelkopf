@@ -13,7 +13,7 @@ class GameHistoryListItemPlayerListAdapter(
     class ViewHolder(val ghlipv: GameHistoryListItemPlayerView) : RecyclerView.ViewHolder(ghlipv) {
         fun bind(playerResult: PlayerGameResult) {
             ghlipv.setPlayerTacken(playerResult.tacken)
-            val faction = playerResult.playerAndFaction.faction
+            val faction = playerResult.faction
             ghlipv.setPlayerFaction(faction, DokoUtil.isWinner(faction, playerResult.points))
         }
     }

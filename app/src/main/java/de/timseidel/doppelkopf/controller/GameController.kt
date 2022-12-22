@@ -45,7 +45,7 @@ class GameController : IGameController {
         game.players.forEach { p ->
             results.add(
                 PlayerGameResult(
-                    p,
+                    p.faction,
                     DokoUtil.getFactionTacken(p.faction, game.winningFaction, game.tacken),
                     DokoUtil.getFactionPoints(p.faction, game.winningFaction, game.winningPoints)
                 )

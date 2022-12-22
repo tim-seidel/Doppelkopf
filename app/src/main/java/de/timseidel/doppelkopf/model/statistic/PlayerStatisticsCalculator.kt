@@ -61,7 +61,7 @@ class PlayerStatisticsCalculator : IPlayerStatisticsCalculator {
             val result = DokoUtil.getPlayerResult(stats.player, g)
             val isWinner = DokoUtil.isWinner(result)
 
-            when (result.playerAndFaction.faction) {
+            when (result.faction) {
                 Faction.RE -> {
                     addGameResult(result, stats.general, isWinner)
                     addGameResult(result, stats.re, isWinner)
@@ -86,7 +86,7 @@ class PlayerStatisticsCalculator : IPlayerStatisticsCalculator {
         games.forEach { g ->
             val result = DokoUtil.getPlayerResult(stats.player, g)
 
-            if (result.playerAndFaction.faction != Faction.NONE) {
+            if (result.faction != Faction.NONE) {
                 val participants =
                     g.players.filter { paf -> paf.faction != Faction.NONE && paf.player.id != stats.player.id }
                 addPlayerPartnerStatisticForGame(stats, result, participants)
@@ -102,7 +102,7 @@ class PlayerStatisticsCalculator : IPlayerStatisticsCalculator {
         val isWinner = DokoUtil.isWinner(result)
 
         participants.forEach { partner ->
-            if (partner.faction == result.playerAndFaction.faction) {
+            if (partner.faction == result.faction) {
                 addGameResult(result, stats.partners[partner.player.id]?.general, isWinner)
                 if (partner.faction == Faction.RE) {
                     addGameResult(
@@ -116,9 +116,6 @@ class PlayerStatisticsCalculator : IPlayerStatisticsCalculator {
                         stats.partners[partner.player.id]?.contra,
                         isWinner
                     )
-                }
-                if (stats.player.name == "Tim") {
-                    Logging.d("Played with ${partner.player.id} as ${partner.faction}, ${stats.partners[partner.player.id]?.general?.total?.games}")
                 }
             } else {
                 addGameResult(result, stats.opponents[partner.player.id]?.general, isWinner)
@@ -141,7 +138,7 @@ class PlayerStatisticsCalculator : IPlayerStatisticsCalculator {
         stats: StatisticEntry?,
         isWinner: Boolean
     ) {
-        if (stats != null && playerGameResult.playerAndFaction.faction != Faction.NONE) {
+        if (stats != null && playerGameResult.faction != Faction.NONE) {
             stats.total.games += 1
             stats.total.tacken += playerGameResult.tacken
             stats.total.points += playerGameResult.points

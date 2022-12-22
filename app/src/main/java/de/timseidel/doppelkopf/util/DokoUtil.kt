@@ -6,7 +6,7 @@ class DokoUtil {
     companion object {
 
         fun isWinner(pgr: PlayerGameResult): Boolean {
-            return isWinner(pgr.playerAndFaction.faction, pgr.points)
+            return isWinner(pgr.faction, pgr.points)
         }
 
         fun isWinner(faction: Faction, points: Int): Boolean {
@@ -30,10 +30,10 @@ class DokoUtil {
         fun getPlayerResult(player: Player, game: Game): PlayerGameResult {
             val paf = game.players.firstOrNull { paf -> paf.player.id == player.id }
             return if (paf == null) {
-                PlayerGameResult(PlayerAndFaction(player, Faction.NONE), 0, 0)
+                PlayerGameResult(Faction.NONE, 0, 0)
             } else {
                 PlayerGameResult(
-                    paf,
+                    paf.faction,
                     getFactionTacken(paf.faction, game.winningFaction, game.tacken),
                     getFactionPoints(paf.faction, game.winningFaction, game.winningPoints)
                 )
@@ -44,7 +44,7 @@ class DokoUtil {
         fun isPlayerPlayingSolo(player: Player, game: Game): Boolean {
             val result = getPlayerResult(player, game)
             val reCount = game.players.count { p -> p.faction == Faction.RE }
-            return result.playerAndFaction.faction != Faction.RE || reCount != 1
+            return result.faction != Faction.RE || reCount != 1
         }
     }
 }

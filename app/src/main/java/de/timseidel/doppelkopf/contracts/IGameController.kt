@@ -2,9 +2,8 @@ package de.timseidel.doppelkopf.contracts
 
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
-import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.PlayerAndFaction
-import de.timseidel.doppelkopf.util.PlayerGameResult
+import de.timseidel.doppelkopf.model.PlayerGameResult
 
 interface IGameController {
 

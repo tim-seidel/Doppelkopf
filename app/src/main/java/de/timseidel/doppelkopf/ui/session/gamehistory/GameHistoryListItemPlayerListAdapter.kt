@@ -3,7 +3,7 @@ package de.timseidel.doppelkopf.ui.session.gamehistory
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.util.DokoUtil
-import de.timseidel.doppelkopf.util.PlayerGameResult
+import de.timseidel.doppelkopf.model.PlayerGameResult
 
 class GameHistoryListItemPlayerListAdapter(
     private val playerResults: MutableList<PlayerGameResult> = mutableListOf(),

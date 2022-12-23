@@ -59,26 +59,24 @@ class PlayerStatisticsCalculator : IPlayerStatisticsCalculator {
     private fun calculateOwnPlayerStatistics(stats: PlayerStatistic, games: List<Game>) {
         games.forEach { g ->
             val result = DokoUtil.getPlayerResult(stats.player, g)
-            val isWinner = DokoUtil.isWinner(result)
 
             when (result.faction) {
                 Faction.RE -> {
-                    addGameResult(result, stats.general, isWinner)
-                    addGameResult(result, stats.re, isWinner)
+                    addGameResult(result, stats.general)
+                    addGameResult(result, stats.re)
 
                     if (DokoUtil.isPlayerPlayingSolo(stats.player, g)) {
-                        addGameResult(result, stats.solo, isWinner)
+                        addGameResult(result, stats.solo)
                     }
                 }
                 Faction.CONTRA -> {
-                    addGameResult(result, stats.general, isWinner)
-                    addGameResult(result, stats.contra, isWinner)
+                    addGameResult(result, stats.general)
+                    addGameResult(result, stats.contra)
                 }
                 else -> {}
             }
 
-            stats.tackenHistory.add(result.tacken)
-            stats.tackenHistoryAccumulated.add(stats.tackenHistoryAccumulated[stats.tackenHistoryAccumulated.size - 1] + result.tacken)
+            stats.gameResultHistory.add(result)
         }
     }
 
@@ -99,35 +97,23 @@ class PlayerStatisticsCalculator : IPlayerStatisticsCalculator {
         result: PlayerGameResult,
         participants: List<PlayerAndFaction>
     ) {
-        val isWinner = DokoUtil.isWinner(result)
-
         participants.forEach { partner ->
             if (partner.faction == result.faction) {
-                addGameResult(result, stats.partners[partner.player.id]?.general, isWinner)
+                addGameResult(result, stats.partners[partner.player.id]?.general)
                 if (partner.faction == Faction.RE) {
-                    addGameResult(
-                        result,
-                        stats.partners[partner.player.id]?.re,
-                        isWinner
-                    )
+                    addGameResult(result, stats.partners[partner.player.id]?.re)
                 } else if (partner.faction == Faction.CONTRA) {
-                    addGameResult(
-                        result,
-                        stats.partners[partner.player.id]?.contra,
-                        isWinner
-                    )
+                    addGameResult(result, stats.partners[partner.player.id]?.contra)
                 }
             } else {
-                addGameResult(result, stats.opponents[partner.player.id]?.general, isWinner)
+                addGameResult(result, stats.opponents[partner.player.id]?.general)
                 if (partner.faction == Faction.RE) addGameResult(
                     result,
-                    stats.opponents[partner.player.id]?.contra,
-                    isWinner
+                    stats.opponents[partner.player.id]?.contra
                 )
                 else if (partner.faction == Faction.CONTRA) addGameResult(
                     result,
-                    stats.opponents[partner.player.id]?.re,
-                    isWinner
+                    stats.opponents[partner.player.id]?.re
                 )
             }
         }
@@ -135,14 +121,13 @@ class PlayerStatisticsCalculator : IPlayerStatisticsCalculator {
 
     private fun addGameResult(
         playerGameResult: PlayerGameResult,
-        stats: StatisticEntry?,
-        isWinner: Boolean
+        stats: StatisticEntry?
     ) {
         if (stats != null && playerGameResult.faction != Faction.NONE) {
             stats.total.games += 1
             stats.total.tacken += playerGameResult.tacken
             stats.total.points += playerGameResult.points
-            if (isWinner) {
+            if (playerGameResult.isWinner) {
                 stats.wins.games += 1
                 stats.wins.tacken += playerGameResult.tacken
                 stats.wins.points += playerGameResult.points

@@ -5,10 +5,6 @@ import de.timseidel.doppelkopf.model.*
 class DokoUtil {
     companion object {
 
-        fun isWinner(pgr: PlayerGameResult): Boolean {
-            return isWinner(pgr.faction, pgr.points)
-        }
-
         fun isWinner(faction: Faction, points: Int): Boolean {
             return faction == Faction.RE && points > 120 || faction == Faction.CONTRA && points >= 120
         }
@@ -30,10 +26,11 @@ class DokoUtil {
         fun getPlayerResult(player: Player, game: Game): PlayerGameResult {
             val paf = game.players.firstOrNull { paf -> paf.player.id == player.id }
             return if (paf == null) {
-                PlayerGameResult(Faction.NONE, 0, 0)
+                PlayerGameResult(Faction.NONE, false, 0, 0)
             } else {
                 PlayerGameResult(
                     paf.faction,
+                    isWinner(paf.faction, getFactionPoints(paf.faction, game.winningFaction, game.winningPoints)),
                     getFactionTacken(paf.faction, game.winningFaction, game.tacken),
                     getFactionPoints(paf.faction, game.winningFaction, game.winningPoints)
                 )

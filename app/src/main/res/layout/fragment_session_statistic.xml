@@ -2,26 +2,66 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_statistic"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ListView
+        android:id="@+id/lv_statistic"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/view_simple_text_statistic"
+        />
+
+    <!--
     <ScrollView
+        android:id="@+id/sv_statistic"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
+            android:id="@+id/content_holder_sv_statistic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <de.timseidel.doppelkopf.ui.session.statistic.views.SimpleTextStatisticView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:description="Das ist die Statistik des Abends. Insgesamt wurden so viele Spiele gespielt:"
+                app:title="Gruppenstatistik" />
 
             <com.highsoft.highcharts.core.HIChartView
                 android:id="@+id/chart_tacken"
                 android:layout_width="match_parent"
                 android:layout_height="500dp" />
 
+            <de.timseidel.doppelkopf.ui.session.statistic.views.SimpleTextStatisticView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:description="Durchschnittlich wurden bei einem Spiel so viele Tacken verteilt:"
+                app:title="Tacken" />
+
+            <de.timseidel.doppelkopf.ui.session.statistic.views.SimpleTextStatisticView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:description="Die maximale Anzahl an Tacken, die in einer Runde erreicht wurde war:"
+                app:title="Eindeutigste Runde" />
+
             <com.highsoft.highcharts.core.HIChartView
                 android:id="@+id/chart_win_loss"
                 android:layout_width="match_parent"
                 android:layout_height="300dp" />
+
+            <de.timseidel.doppelkopf.ui.session.statistic.views.SimpleTextStatisticView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:description="An diesem Abend wurden so viele Soli gespielt:"
+                app:title="Wir sind solo" />
 
             <com.highsoft.highcharts.core.HIChartView
                 android:id="@+id/chart_tacken_win_loss"
@@ -44,6 +84,7 @@
                 android:layout_height="300dp" />
         </LinearLayout>
     </ScrollView>
+    -->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

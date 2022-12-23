@@ -1,16 +1,18 @@
 package de.timseidel.doppelkopf.model.statistic
 
+import kotlin.math.round
+
 data class SimpleStatisticEntry(
     var games: Int = 0,
     var tacken: Int = 0,
     var points: Int = 0
-){
+) {
     fun getTackenPerGame(): Float {
-        return tacken.toFloat() / games
+        return round(tacken.toFloat() / games * 100) /100
     }
 
     fun getPointsPerGame(): Float {
-        return points.toFloat() / games
+        return round(points.toFloat() / games * 100) /100
     }
 }
 

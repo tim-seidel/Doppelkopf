@@ -5,20 +5,25 @@ import android.graphics.Typeface
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Player
-import de.timseidel.doppelkopf.util.Logging
 
 class GameHistoryListPlayerHeaderAdapter(
     private val players: List<Player> = listOf(),
+    var playerClickListener: OnPlayerClickListener? = null
 ) :
     RecyclerView.Adapter<GameHistoryListPlayerHeaderAdapter.ViewHolder>() {
 
-    class ViewHolder(val playerView: TextView) : RecyclerView.ViewHolder(playerView) {
-        fun bind(player: Player) {
+    interface OnPlayerClickListener {
+        fun onPlayerClicked(player: Player)
+    }
+
+    class ViewHolder(private val playerView: TextView) : RecyclerView.ViewHolder(playerView) {
+        fun bind(player: Player, listener: OnPlayerClickListener?) {
             playerView.text = player.name
+            playerView.setOnClickListener {
+                listener?.onPlayerClicked(player)
+            }
         }
     }
 
@@ -35,17 +40,17 @@ class GameHistoryListPlayerHeaderAdapter(
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         tv.layoutParams = layoutParams
-        tv.setPadding(0,8, 0, 8)
+        tv.setPadding(0, 8, 0, 8)
         tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
         tv.textSize = 22f
-        tv.setTypeface(tv.typeface, Typeface.BOLD);
+        tv.setTypeface(tv.typeface, Typeface.BOLD)
 
         return tv
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val player = players[position]
-        holder.bind(player)
+        holder.bind(player, playerClickListener)
     }
 
     override fun getItemCount(): Int {

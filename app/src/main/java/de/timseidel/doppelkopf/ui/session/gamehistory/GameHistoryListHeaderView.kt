@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Player
 
-//TODO. Mit ClickListener und dann fuer Statistikauswahl verwendbar machen
 class GameHistoryListHeaderView constructor(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
 
+    private lateinit var adapter: GameHistoryListPlayerHeaderAdapter
     private lateinit var rvPlayers: RecyclerView
+
+    private var playerClickListener: GameHistoryListPlayerHeaderAdapter.OnPlayerClickListener? = null
 
     init {
         init()
@@ -29,8 +31,13 @@ class GameHistoryListHeaderView constructor(context: Context, attrs: AttributeSe
         rvPlayers = findViewById(R.id.rv_ghl_player_header)
     }
 
+    fun setListener(listener: GameHistoryListPlayerHeaderAdapter.OnPlayerClickListener) {
+        playerClickListener = listener
+    }
+
     fun setPlayers(players: List<Player>) {
-        val adapter = GameHistoryListPlayerHeaderAdapter(players)
+        adapter = GameHistoryListPlayerHeaderAdapter(players)
+        adapter.playerClickListener = playerClickListener
         rvPlayers.adapter = adapter
         rvPlayers.layoutManager = GridLayoutManager(rvPlayers.context, players.size)
     }

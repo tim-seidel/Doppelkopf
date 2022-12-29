@@ -1,25 +1,24 @@
 package de.timseidel.doppelkopf.ui.session.statistic.provider
 
 import de.timseidel.doppelkopf.model.statistic.PlayerStatisticsCalculator
+import de.timseidel.doppelkopf.model.statistic.SessionStatisticsCalculator
 import de.timseidel.doppelkopf.ui.session.statistic.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.session.statistic.views.ColumnChartViewWrapper
 import de.timseidel.doppelkopf.ui.session.statistic.views.LineChartViewWrapper
-import de.timseidel.doppelkopf.ui.session.statistic.views.PieChartViewWrapper
 import de.timseidel.doppelkopf.ui.session.statistic.views.SimpleTextStatisticViewWrapper
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.StatisticUtil
-import kotlin.math.abs
 
 class SessionStatisticViewsProvider : IStatisticViewsProvider {
 
     override fun getStatisticItems(): List<IStatisticViewWrapper> {
-        val stats = PlayerStatisticsCalculator().calculatePlayerStatistic(
+        val playerStats = PlayerStatisticsCalculator().calculatePlayerStatistic(
             DokoShortAccess.getPlayerCtrl().getPlayers(),
             DokoShortAccess.getGameCtrl().getGames()
         )
 
         val playerTackenHistories = mutableListOf<LineChartViewWrapper.ChartLineData>()
-        stats.forEach { p ->
+        playerStats.forEach { p ->
             playerTackenHistories.add(
                 LineChartViewWrapper.ChartLineData(
                     p.player.name,
@@ -28,7 +27,7 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
             )
         }
 
-        val playerNames = stats.map { p -> p.player.name }
+        val playerNames = playerStats.map { p -> p.player.name }
 
         val playerWinsRe = mutableListOf<Int>()
         val playerWinsContra = mutableListOf<Int>()
@@ -40,7 +39,7 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
         val playerTackenLossRe = mutableListOf<Int>()
         val playerTackenLossContra = mutableListOf<Int>()
 
-        stats.forEach { p ->
+        playerStats.forEach { p ->
             playerWinsRe.add(p.re.wins.games)
             playerWinsContra.add(p.contra.wins.games)
             playerLossRe.add(p.re.loss.games)
@@ -51,6 +50,13 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
             playerTackenLossRe.add(p.re.loss.tacken)
             playerTackenLossContra.add(p.contra.loss.tacken)
         }
+
+        val sessionStats = SessionStatisticsCalculator().calculateStatistics(
+            DokoShortAccess.getGameCtrl().getGames()
+        )
+
+        val tackenDistribution =
+            StatisticUtil.getTackenDistribution(sessionStats.gameResultHistoryWinner)
 
         return listOf(
             SimpleTextStatisticViewWrapper(
@@ -66,17 +72,7 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
             SimpleTextStatisticViewWrapper(
                 "Tacken",
                 "Durchschnittlich wurden bei einem Spiel so viele Tacken verteilt:",
-                "0"
-            ),
-            SimpleTextStatisticViewWrapper(
-                "Easy, peasy",
-                "Die maximale Anzahl an Tacken, die in einer Runde erreicht wurde war:",
-                "0"
-            ),
-            SimpleTextStatisticViewWrapper(
-                "Wir sind solo",
-                "An diesem Abend wurden so viele Soli gespielt:",
-                "0"
+                sessionStats.general.total.getTackenPerGame().toString()
             ),
             ColumnChartViewWrapper(
                 ColumnChartViewWrapper.ColumnChartData(
@@ -86,10 +82,14 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
                             "Siege",
                             listOf(
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
-                                    "Siege Re", IStatisticViewWrapper.COLOR_POSITIVE_DARK, playerWinsRe
+                                    "Siege Re",
+                                    IStatisticViewWrapper.COLOR_POSITIVE_DARK,
+                                    playerWinsRe
                                 ),
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
-                                    "Siege Contra", IStatisticViewWrapper.COLOR_POSITIVE_LIGHT, playerWinsContra
+                                    "Siege Contra",
+                                    IStatisticViewWrapper.COLOR_POSITIVE_LIGHT,
+                                    playerWinsContra
                                 )
                             )
                         ),
@@ -97,10 +97,14 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
                             "Niederlagen",
                             listOf(
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
-                                    "Ndl Re", IStatisticViewWrapper.COLOR_NEGATIVE_DARK, playerLossRe
+                                    "Ndl Re",
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_DARK,
+                                    playerLossRe
                                 ),
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
-                                    "Ndl Contra", IStatisticViewWrapper.COLOR_NEGITIVE_LIGHT, playerLossContra
+                                    "Ndl Contra",
+                                    IStatisticViewWrapper.COLOR_NEGITIVE_LIGHT,
+                                    playerLossContra
                                 )
                             )
                         )
@@ -116,10 +120,14 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
                             "Siege",
                             listOf(
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
-                                    "bei Sieg Re", IStatisticViewWrapper.COLOR_POSITIVE_DARK, playerTackenWinsRe
+                                    "bei Sieg Re",
+                                    IStatisticViewWrapper.COLOR_POSITIVE_DARK,
+                                    playerTackenWinsRe
                                 ),
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
-                                    "bei Sieg Contra", IStatisticViewWrapper.COLOR_POSITIVE_LIGHT, playerTackenWinsContra
+                                    "bei Sieg Contra",
+                                    IStatisticViewWrapper.COLOR_POSITIVE_LIGHT,
+                                    playerTackenWinsContra
                                 )
                             )
                         ),
@@ -127,15 +135,36 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
                             "Niederlagen",
                             listOf(
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
-                                    "bei Ndl Re", IStatisticViewWrapper.COLOR_NEGATIVE_DARK, playerTackenLossRe
+                                    "bei Ndl Re",
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_DARK,
+                                    playerTackenLossRe
                                 ),
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
-                                    "bei Ndl Contra", IStatisticViewWrapper.COLOR_NEGITIVE_LIGHT, playerTackenLossContra
+                                    "bei Ndl Contra",
+                                    IStatisticViewWrapper.COLOR_NEGITIVE_LIGHT,
+                                    playerTackenLossContra
                                 )
                             )
                         )
                     ),
                     playerNames
+                )
+            ),
+            ColumnChartViewWrapper(
+                ColumnChartViewWrapper.ColumnChartData(
+                    "Tackenverteilung", "Tacken", "Spiele",
+                    listOf(
+                        ColumnChartViewWrapper.ColumnSeriesData(
+                            "Tacken",
+                            listOf(
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "Tackenanzahl", "009688",
+                                    tackenDistribution.values(),
+                                )
+                            )
+                        )
+                    ),
+                    tackenDistribution.indices().map { i -> i.toString() }
                 )
             )
         )

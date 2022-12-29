@@ -15,6 +15,8 @@ interface IPlayerController {
 
     fun removePlayer(player: Player)
 
+    fun getPlayerById(id: String): Player?
+
     fun getPlayerByName(name: String): Player?
 
     fun getPlayers(): List<Player>

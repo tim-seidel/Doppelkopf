@@ -38,6 +38,10 @@ class PlayerController : IPlayerController {
         players.removeIf { p -> p.name == player.name }
     }
 
+    override fun getPlayerById(id: String): Player? {
+        return players.firstOrNull { p -> p.id == id }
+    }
+
     override fun getPlayerByName(name: String): Player? {
         return players.firstOrNull { p -> p.name == name }
     }

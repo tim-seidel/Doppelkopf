@@ -32,12 +32,14 @@ data class PlayerAndFactionDto(
 
 data class GameDto(
     var id: String,
+    var timestamp: Long,
     var faction: Faction,
     var tacken: Int,
     var points: Int,
+    var isBockrunde: Boolean,
     var factions: List<PlayerAndFactionDto>
 ) {
-    constructor() : this("", Faction.NONE, 0, 0, emptyList())
+    constructor() : this("", 0, Faction.NONE, 0, 0, false, emptyList())
 }
 
 class FirebaseDTO() {
@@ -79,9 +81,11 @@ class FirebaseDTO() {
 
             return GameDto(
                 game.id,
+                game.timestamp,
                 game.winningFaction,
                 game.tacken,
                 game.winningPoints,
+                game.isBockrunde,
                 resultDTOs
             )
         }
@@ -100,10 +104,12 @@ class FirebaseDTO() {
 
             return Game(
                 dto.id,
+                dto.timestamp,
                 factions,
                 dto.faction,
                 dto.points,
-                dto.tacken
+                dto.tacken,
+                dto.isBockrunde
             )
         }
     }

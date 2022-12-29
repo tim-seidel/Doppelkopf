@@ -17,13 +17,16 @@ class GameController : IGameController {
         winningFaction: Faction,
         winningPoints: Int,
         tacken: Int,
+        isBockrunde: Boolean
     ): Game {
         return Game(
             IdGenerator.generateIdWithTimestamp("game"),
+            System.currentTimeMillis(),
             players,
             winningFaction,
             winningPoints,
-            tacken
+            tacken,
+            isBockrunde
         )
     }
 

@@ -7,7 +7,7 @@ import de.timseidel.doppelkopf.model.PlayerGameResult
 
 interface IGameController {
 
-     fun createGame(players: List<PlayerAndFaction>, winningFaction: Faction, winningPoints: Int, tacken: Int): Game
+     fun createGame(players: List<PlayerAndFaction>, winningFaction: Faction, winningPoints: Int, tacken: Int, isBockrunde: Boolean): Game
 
      fun addGame(game: Game)
 

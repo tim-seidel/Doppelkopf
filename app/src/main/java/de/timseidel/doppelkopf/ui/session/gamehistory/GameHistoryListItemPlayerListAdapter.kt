@@ -29,7 +29,7 @@ class GameHistoryListItemPlayerListAdapter(
         holder.bind(result)
     }
 
-    fun updatePlayerResults(pr: List<PlayerGameResult>){
+    fun updatePlayerResults(pr: List<PlayerGameResult>) {
         this.playerResults.clear()
         this.playerResults.addAll(pr)
         this.notifyDataSetChanged()

@@ -27,7 +27,6 @@ class SessionCreationActivity : AppCompatActivity() {
         binding = ActivitySessionCreationBinding.inflate(layoutInflater)
 
         setupEditTexts()
-
         setContentView(binding.root)
     }
 
@@ -39,7 +38,7 @@ class SessionCreationActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.option_confirm_create_session -> {
-                createSessionClicked()
+                onCreateSessionClicked()
                 return true
             }
         }
@@ -71,14 +70,14 @@ class SessionCreationActivity : AppCompatActivity() {
             firebase.storeSession(session)
             firebase.storePlayersInSession(players, session)
 
-            onSessionCreated()
+            sessionCreated()
         } catch (e: Exception) {
             Logging.e("Session konnte nicht erstellt werden: $playerNames", e)
             showSessionCreateError("Der Doppelkopfabend kann nicht erstellt werden: $e")
         }
     }
 
-    private fun onSessionCreated() {
+    private fun sessionCreated() {
         val intent = Intent(this, SessionActivity::class.java)
         startActivity(intent)
     }

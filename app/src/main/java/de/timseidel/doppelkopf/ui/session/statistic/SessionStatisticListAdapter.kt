@@ -7,7 +7,7 @@ import android.widget.ArrayAdapter
 
 class SessionStatisticListAdapter(
     context: Context,
-    objects: MutableList<IStatisticViewWrapper>
+    objects: List<IStatisticViewWrapper>
 ) : ArrayAdapter<IStatisticViewWrapper>(context, 0, objects) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

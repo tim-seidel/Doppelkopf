@@ -13,7 +13,10 @@ class PlayerController : IPlayerController {
     override fun createPlayer(name: String): Player {
         val trimmedName = name.trim()
         val nonEmptyName = trimmedName.ifEmpty { "Player" }
-        return Player(IdGenerator.generateIdWithTimestamp("player") + "_$nonEmptyName", nonEmptyName)
+        return Player(
+            IdGenerator.generateIdWithTimestamp("player") + "_$nonEmptyName",
+            nonEmptyName
+        )
     }
 
     override fun createPlayers(names: List<String>): List<Player> {

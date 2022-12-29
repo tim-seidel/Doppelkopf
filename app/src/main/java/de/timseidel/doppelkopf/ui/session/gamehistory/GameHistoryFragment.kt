@@ -17,7 +17,7 @@ import de.timseidel.doppelkopf.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
 
 //TODO: Rang und Gesamtpunktzahl
-class  GameHistoryFragment : Fragment() {
+class GameHistoryFragment : Fragment() {
 
     private var _binding: FragmentGameHistoryBinding? = null
     private val binding get() = _binding!!

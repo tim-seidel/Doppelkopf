@@ -14,7 +14,7 @@ class StatisticUtil {
             return tackenHistory
         }
 
-        fun getTackenDistribution(gameResults: List<PlayerGameResult>, faction: Faction?): RangeDistribution {
+        fun getTackenDistribution(gameResults: List<PlayerGameResult>, faction: Faction? = null): RangeDistribution {
             val max = gameResults.maxWith(Comparator.comparingInt { it.tacken }).tacken
             val min = gameResults.minWith(Comparator.comparingInt { it.tacken }).tacken
 

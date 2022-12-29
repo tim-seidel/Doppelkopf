@@ -8,9 +8,9 @@ interface ISessionController {
 
     fun getSession(): DokoSession
 
-    fun setSession(s: DokoSession)
-
     fun getPlayerController(): IPlayerController
 
     fun getGameController(): IGameController
+
+    fun set(session: DokoSession)
 }

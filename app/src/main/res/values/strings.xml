@@ -33,8 +33,11 @@
     <string name="tacken">Tacken</string>
     <string name="desc_history_item_player_faction_icon">Faction of the player in this game</string>
     <string name="loading_finished">Fertig</string>
-    <string name="loading_games">Lade Spiele...</string>
-    <string name="loading_players">Lade Mitspieler...</string>
-    <string name="loading_session">Lade Doppelkopfabend...</string>
+    <string name="loading_games">Lade Spiele…</string>
+    <string name="loading_players">Lade Mitspieler…</string>
+    <string name="loading_session">Lade Doppelkopfabend…</string>
     <string name="save">Speichern</string>
+    <string name="game_saved">Spiel gespeichert!</string>
+    <string name="game_creation_error">Das Spiel wird nicht erstellt, da die Einstellungen nicht gültig sind</string>
+    <string name="spieler_6">Spieler 6</string>
 </resources>

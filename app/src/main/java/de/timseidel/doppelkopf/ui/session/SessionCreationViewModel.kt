@@ -9,6 +9,7 @@ class SessionCreationViewModel {
     var player3Name = ""
     var player4Name = ""
     var player5Name = ""
+    var player6Name = ""
 
     fun checkIsSetupValid(): Boolean {
         return sessionName.isNotEmpty() and (getPlayerCount() >= 4) && !isKeyPlayerMissing()
@@ -21,6 +22,7 @@ class SessionCreationViewModel {
         if (player3Name.isNotEmpty()) c++
         if (player4Name.isNotEmpty()) c++
         if (player5Name.isNotEmpty()) c++
+        if (player6Name.isNotEmpty()) c++
 
         return c
     }
@@ -41,6 +43,7 @@ class SessionCreationViewModel {
             player4Name
         )
         if (player5Name.isNotEmpty()) names.add(player5Name)
+        if (player6Name.isNotEmpty()) names.add(player6Name)
 
         return names
     }

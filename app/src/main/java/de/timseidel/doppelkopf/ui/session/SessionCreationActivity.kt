@@ -86,6 +86,7 @@ class SessionCreationActivity : AppCompatActivity() {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
+    //TODO: Not very clever to do it 6 times, rework as list (at least from 5+)
     private fun setupEditTexts() {
         binding.etSessionName.addTextChangedListener(object : EditTextListener() {
             override fun afterTextChanged(s: Editable?) {
@@ -115,6 +116,11 @@ class SessionCreationActivity : AppCompatActivity() {
         binding.etPlayerName5.addTextChangedListener(object : EditTextListener() {
             override fun afterTextChanged(s: Editable?) {
                 viewModel.player5Name = s.toString()
+            }
+        })
+        binding.etPlayerName6.addTextChangedListener(object : EditTextListener() {
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.player6Name = s.toString()
             }
         })
     }

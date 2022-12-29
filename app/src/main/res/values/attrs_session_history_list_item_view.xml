@@ -1,0 +1,6 @@
+<resources>
+    <declare-styleable name="SessionHistoryListItemView">
+        <attr name="sessionTitle" format="string" />
+        <attr name="sessionDescription" format="string" />
+    </declare-styleable>
+</resources>

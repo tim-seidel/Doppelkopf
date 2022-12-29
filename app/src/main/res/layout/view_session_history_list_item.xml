@@ -1,0 +1,58 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/border_background"
+    android:padding="4dp">
+
+    <TextView
+        android:id="@+id/tv_session_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:textColor="@color/teal_dark"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/ib_open_session"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Doppelkopfabend" />
+
+    <TextView
+        android:id="@+id/tv_session_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/ib_open_session"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_session_title"
+        tools:text="Gespielt am 11.11.2022" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_session_list_players"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_session_description"
+        tools:listitem="@layout/view_session_history_list_item_player" />
+
+    <ImageButton
+        android:id="@+id/ib_open_session"
+        style="@android:style/Widget.Material.ImageButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:backgroundTint="@color/white"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        app:tint="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_play_circle_outline_24" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

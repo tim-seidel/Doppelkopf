@@ -13,13 +13,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.controller.DoppelkopfManager
 import de.timseidel.doppelkopf.databinding.FragmentGameCreationBinding
+import de.timseidel.doppelkopf.db.DoppelkopfDatabase
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.VersusBarView
 import de.timseidel.doppelkopf.util.Converter
+import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.EditTextListener
 import de.timseidel.doppelkopf.util.Logging
 
@@ -214,7 +218,14 @@ class GameCreationFragment : Fragment() {
                     viewModel.gameScore,
                     viewModel.tackenCount
                 )
-            DoppelkopfManager.getInstance().getSessionController().getGameController().addGame(game)
+            DokoShortAccess.getGameCtrl().addGame(game)
+
+            val db = Firebase.firestore
+
+            val firebase = DoppelkopfDatabase()
+            firebase.setFirestore(db)
+
+            firebase.storeGameInSession(game, DokoShortAccess.getSessionCtrl().getSession())
 
             resetViewModel()
       } catch (e: Exception) {

@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="SessionHistoryListItemPlayerView">
+        <attr name="name" format="string" />
+    </declare-styleable>
+</resources>

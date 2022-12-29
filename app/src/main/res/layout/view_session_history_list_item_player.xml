@@ -2,21 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/iv_player_icon"
+        android:id="@+id/iv_session_history_item_player_icon"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        app:tint="@color/teal_dark"
         android:contentDescription="Player icon"
         app:srcCompat="@drawable/ic_baseline_person_outline_24" />
 
     <TextView
-        android:id="@+id/tv_playername"
+        android:id="@+id/tv_session_history_item_player_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/teal_dark"
+        android:textSize="16sp"
         tools:text="Spieler" />
 </LinearLayout>

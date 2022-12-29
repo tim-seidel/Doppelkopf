@@ -7,9 +7,12 @@ import android.text.Editable
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.controller.DoppelkopfManager
 import de.timseidel.doppelkopf.databinding.ActivitySessionCreationBinding
+import de.timseidel.doppelkopf.db.DoppelkopfDatabase
 import de.timseidel.doppelkopf.util.EditTextListener
 import de.timseidel.doppelkopf.util.Logging
 
@@ -44,7 +47,7 @@ class SessionCreationActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun createSessionClicked() {
+    private fun onCreateSessionClicked() {
         if (!viewModel.checkIsSetupValid()) {
             showSessionCreateError(getString(R.string.create_session_unable_to_create))
             return
@@ -53,11 +56,20 @@ class SessionCreationActivity : AppCompatActivity() {
         val playerNames = viewModel.playerNamesAsList()
 
         try {
-            val sc = DoppelkopfManager.getInstance().getSessionController()
-            val session = sc.createSession(viewModel.sessionName)
-            sc.setSession(session)
-            val players = sc.getPlayerController().createPlayers(playerNames)
-            sc.getPlayerController().addPlayers(players)
+            val sessionCtrl = DoppelkopfManager.getInstance().getSessionController()
+
+            val session = sessionCtrl.createSession(viewModel.sessionName)
+            sessionCtrl.set(session)
+
+            val players = sessionCtrl.getPlayerController().createPlayers(playerNames)
+            sessionCtrl.getPlayerController().addPlayers(players)
+
+            val db = Firebase.firestore
+            val firebase = DoppelkopfDatabase()
+            firebase.setFirestore(db)
+
+            firebase.storeSession(session)
+            firebase.storePlayersInSession(players, session)
 
             onSessionCreated()
         } catch (e: Exception) {

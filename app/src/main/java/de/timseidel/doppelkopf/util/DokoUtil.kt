@@ -30,7 +30,8 @@ class DokoUtil {
             } else {
                 PlayerGameResult(
                     paf.faction,
-                    isWinner(paf.faction, getFactionPoints(paf.faction, game.winningFaction, game.winningPoints)),
+                    //isWinner(paf.faction, getFactionPoints(paf.faction, game.winningFaction, game.winningPoints)),
+                    paf.faction == game.winningFaction,
                     getFactionTacken(paf.faction, game.winningFaction, game.tacken),
                     getFactionPoints(paf.faction, game.winningFaction, game.winningPoints)
                 )

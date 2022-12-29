@@ -14,7 +14,7 @@ class GameHistoryListItemPlayerListAdapter(
         fun bind(playerResult: PlayerGameResult) {
             ghlipv.setPlayerTacken(playerResult.tacken)
             val faction = playerResult.faction
-            ghlipv.setPlayerFaction(faction, DokoUtil.isWinner(faction, playerResult.points))
+            ghlipv.setPlayerFaction(faction, playerResult.isWinner)
         }
     }
 

@@ -5,8 +5,7 @@
     android:id="@+id/root_player_faction_select"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/border_background"
-    android:paddingVertical="4dp">
+    android:background="@drawable/border_background">
 
     <TextView
         android:id="@+id/tv_player_faction_select_name"
@@ -14,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textColor="?android:attr/textColorPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/btn_faction_re"
         app:layout_constraintEnd_toStartOf="@+id/btn_faction_contra"
@@ -24,11 +23,11 @@
 
     <ImageButton
         android:id="@+id/btn_faction_re"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/faction_select_re_desc"
-        android:minHeight="48dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/ic_card_clubs_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,11 +35,11 @@
 
     <ImageButton
         android:id="@+id/btn_faction_contra"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/faction_select_contra_desc"
-        android:minHeight="48dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/ic_cards_diamond_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -148,18 +148,12 @@ class GameCreationFragment : Fragment() {
                 }
             })
 
+        val dp4 = Converter.convertDpToPixels(4f, rvPlayerFactionSelect.context)
         rvPlayerFactionSelect.adapter = playerFactionSelectAdapter
         rvPlayerFactionSelect.apply {
             layoutManager = GridLayoutManager(binding.rootGameCreation.context, 2)
         }
-        rvPlayerFactionSelect.addItemDecoration(
-            RecyclerViewMarginDecoration(
-                Converter.convertDpToPixels(
-                    4f,
-                    rvPlayerFactionSelect.context
-                ), 2
-            )
-        )
+        rvPlayerFactionSelect.addItemDecoration(RecyclerViewMarginDecoration(dp4, dp4))
     }
 
     private fun applyViewModel() {
@@ -228,7 +222,7 @@ class GameCreationFragment : Fragment() {
             firebase.storeGameInSession(game, DokoShortAccess.getSessionCtrl().getSession())
 
             resetViewModel()
-      } catch (e: Exception) {
+        } catch (e: Exception) {
             Logging.e("GameCreationFragment", "Error creating game", e)
         }
     }

@@ -37,7 +37,7 @@ class GameHistoryListPlayerHeaderAdapter(
         tv.layoutParams = layoutParams
         tv.setPadding(0,8, 0, 8)
         tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
-        tv.textSize = 24f
+        tv.textSize = 22f
         tv.setTypeface(tv.typeface, Typeface.BOLD);
 
         return tv

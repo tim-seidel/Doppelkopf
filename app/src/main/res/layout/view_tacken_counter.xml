@@ -15,6 +15,7 @@
         android:contentDescription="@string/desc_button_decrease_tacken"
         android:minHeight="48dp"
         android:src="@drawable/ic_baseline_remove_black_24"
+        app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/tv_tacken_count"
         app:layout_constraintEnd_toStartOf="@+id/tv_tacken_count"
         app:layout_constraintTop_toTopOf="@+id/tv_tacken_count" />
@@ -43,6 +44,7 @@
         android:contentDescription="@string/desc_button_increase_tacken"
         android:minHeight="48dp"
         android:src="@drawable/ic_baseline_add_black_24"
+        app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/tv_tacken_count"
         app:layout_constraintStart_toEndOf="@+id/tv_tacken_count"
         app:layout_constraintTop_toTopOf="@+id/tv_tacken_count" />

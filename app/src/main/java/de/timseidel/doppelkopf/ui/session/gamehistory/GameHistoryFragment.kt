@@ -35,7 +35,6 @@ class  GameHistoryFragment : Fragment() {
             createSampleGames()
         }
         setupPlayerHeader()
-        setupTackenFooter()
         setupGameHistoryList()
 
         return binding.root
@@ -45,15 +44,6 @@ class  GameHistoryFragment : Fragment() {
         binding.headerGameHistoryList.setPlayers(
             DokoShortAccess.getPlayerCtrl().getPlayers()
         )
-    }
-
-    private fun setupTackenFooter() {
-        val stats = PlayerStatisticsCalculator().calculatePlayerStatistic(
-            DokoShortAccess.getPlayerCtrl().getPlayers(),
-            DokoShortAccess.getGameCtrl().getGames()
-        )
-
-        //binding.footerGameHistoryList.setPlayerStatistics(stats)
     }
 
     private fun setupGameHistoryList() {

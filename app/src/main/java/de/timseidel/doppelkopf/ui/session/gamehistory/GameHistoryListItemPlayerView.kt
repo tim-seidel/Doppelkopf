@@ -49,7 +49,7 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
                 ivPlayerFaction.setColorFilter(
                     ContextCompat.getColor(
                         context,
-                        if (isWinner) R.color.teal else R.color.black
+                        if (isWinner) R.color.teal else R.color.gray_400
                     )
                 )
             }
@@ -58,7 +58,7 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
                 ivPlayerFaction.setColorFilter(
                     ContextCompat.getColor(
                         context,
-                        if (isWinner) R.color.deep_purple else R.color.black
+                        if (isWinner) R.color.deep_purple else R.color.gray_400
                     )
                 )
             }
@@ -68,7 +68,7 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
             }
         }
 
-        background = if(isWinner) ContextCompat.getDrawable(context, R.drawable.border_background) else null
+        //background = if(isWinner) ContextCompat.getDrawable(context, R.drawable.border_background) else null
     }
 
 }

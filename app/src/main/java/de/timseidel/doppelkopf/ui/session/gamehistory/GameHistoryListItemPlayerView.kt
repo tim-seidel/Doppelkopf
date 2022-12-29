@@ -52,6 +52,7 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
                         if (isWinner) R.color.teal else R.color.gray_400
                     )
                 )
+                tvPlayerTacken.visibility = VISIBLE
             }
             Faction.CONTRA -> {
                 ivPlayerFaction.setImageResource(R.drawable.ic_cards_diamond_24)
@@ -61,10 +62,13 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
                         if (isWinner) R.color.deep_purple else R.color.gray_400
                     )
                 )
+                tvPlayerTacken.visibility = VISIBLE
             }
             Faction.NONE -> {
-                ivPlayerFaction.setImageResource(R.drawable.ic_baseline_remove_black_24)
-                ivPlayerFaction.setColorFilter(ContextCompat.getColor(context, R.color.gray_600))
+                ivPlayerFaction.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24)
+                ivPlayerFaction.setColorFilter(ContextCompat.getColor(context, R.color.gray_400))
+                tvPlayerTacken.visibility = INVISIBLE
+                tvPlayerTacken.text = "0"
             }
         }
 

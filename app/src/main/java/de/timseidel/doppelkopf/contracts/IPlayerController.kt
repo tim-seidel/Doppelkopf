@@ -24,4 +24,6 @@ interface IPlayerController {
     fun validateNames(names: List<String>): Boolean
 
     fun getPlayerNames(): List<String>
+
+    fun reset()
 }

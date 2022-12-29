@@ -79,4 +79,8 @@ class GameController : IGameController {
 
         return pGames
     }
+
+    override fun reset() {
+        games.clear()
+    }
 }

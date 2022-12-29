@@ -66,4 +66,8 @@ class PlayerController : IPlayerController {
     override fun getPlayerNames(): List<String> {
         return players.map { p -> p.name }
     }
+
+    override fun reset() {
+        players.clear()
+    }
 }

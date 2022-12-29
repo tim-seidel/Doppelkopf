@@ -31,9 +31,6 @@ class GameHistoryFragment : Fragment() {
     ): View {
         _binding = FragmentGameHistoryBinding.inflate(inflater, container, false)
 
-        if (DokoShortAccess.getGameCtrl().getGames().isEmpty()) {
-            createSampleGames()
-        }
         setupPlayerHeader()
         setupGameHistoryList()
 
@@ -47,8 +44,7 @@ class GameHistoryFragment : Fragment() {
     }
 
     private fun setupGameHistoryList() {
-        val games =
-            DoppelkopfManager.getInstance().getSessionController().getGameController().getGames()
+        val games = DokoShortAccess.getGameCtrl().getGames().asReversed()
         gameHistoryListAdapter = GameHistoryListAdapter(games)
 
         val listView = binding.rvGameHistoryList
@@ -71,27 +67,5 @@ class GameHistoryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun createSampleGames() {
-        for (i in (1..40)) {
-            DoppelkopfManager.getInstance().getSessionController().getGameController()
-                .addGame(getSampleGame())
-        }
-    }
-
-    private fun getSampleGame(): Game {
-        val pafs = DoppelkopfManager.getInstance().getSessionController().getPlayerController()
-            .getPlayersAsFaction()
-        val reContra = listOf(Faction.RE, Faction.RE, Faction.CONTRA, Faction.CONTRA).shuffled()
-        for (i in 0..3) pafs[i].faction = reContra[i]
-
-        return DoppelkopfManager.getInstance().getSessionController().getGameController()
-            .createGame(
-                pafs,
-                if ((0..100).random() <= 60) Faction.RE else Faction.CONTRA,
-                (121..240).random(),
-                (-1..8).random()
-            )
     }
 }

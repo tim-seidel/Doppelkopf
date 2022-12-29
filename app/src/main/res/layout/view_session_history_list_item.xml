@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:textColor="@color/teal_dark"
+        android:textColor="@color/primary_dark"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/ib_open_session"
         app:layout_constraintStart_toStartOf="parent"

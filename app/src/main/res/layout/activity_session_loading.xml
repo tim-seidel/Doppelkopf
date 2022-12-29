@@ -14,7 +14,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:textColor="@color/teal_dark"
+        android:textColor="@color/primary_dark"
         android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_loading_title"
         app:srcCompat="@drawable/ic_baseline_hourglass_empty_24"
-        app:tint="@color/teal" />
+        app:tint="@color/primary" />
 
     <TextView
         android:id="@+id/tv_loading_message"

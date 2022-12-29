@@ -49,7 +49,7 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
                 ivPlayerFaction.setColorFilter(
                     ContextCompat.getColor(
                         context,
-                        if (isWinner) R.color.teal else R.color.gray_400
+                        if (isWinner) R.color.primary else R.color.gray_400
                     )
                 )
                 tvPlayerTacken.visibility = VISIBLE
@@ -59,7 +59,7 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
                 ivPlayerFaction.setColorFilter(
                     ContextCompat.getColor(
                         context,
-                        if (isWinner) R.color.deep_purple else R.color.gray_400
+                        if (isWinner) R.color.secondary else R.color.gray_400
                     )
                 )
                 tvPlayerTacken.visibility = VISIBLE

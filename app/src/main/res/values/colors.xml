@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="teal">#009688</color>
-    <color name="teal_dark">#00796B</color>
-    <color name="teal_accent">#B2DFDB</color>
-    <color name="deep_purple">#7C4DFF</color>
-    <color name="deep_purple_dark">#512DA8</color>
-    <color name="deep_purple_accent">#D1C4E9</color>
-
+    <color name="primary">#26a69a</color>
+    <color name="primary_dark">#00766c</color>
+    <color name="primary_light">#82e9de</color>
+    <color name="secondary">#f44336</color>
+    <color name="secondary_dark">#ba000d</color>
+    <color name="secondary_light">#ffa4a2</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>

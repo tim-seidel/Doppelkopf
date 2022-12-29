@@ -54,13 +54,13 @@ class PlayerFactionSelectView constructor(context: Context, attrs: AttributeSet?
     }
 
     private fun setRe() {
-        btnSelectRe.setColorFilter(ContextCompat.getColor(btnSelectRe.context, R.color.teal))
+        btnSelectRe.setColorFilter(ContextCompat.getColor(btnSelectRe.context, R.color.primary))
         setFactionPassive(btnSelectContra)
     }
 
     private fun setContra() {
         setFactionPassive(btnSelectRe)
-        btnSelectContra.setColorFilter(ContextCompat.getColor(btnSelectContra.context, R.color.deep_purple))
+        btnSelectContra.setColorFilter(ContextCompat.getColor(btnSelectContra.context, R.color.secondary))
     }
 
     private fun resetFaction() {

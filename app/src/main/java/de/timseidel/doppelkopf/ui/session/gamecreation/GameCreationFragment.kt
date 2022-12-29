@@ -3,7 +3,6 @@ package de.timseidel.doppelkopf.ui.session.gamecreation
 import android.os.Bundle
 import android.view.*
 import android.widget.*
-import android.widget.CompoundButton.OnCheckedChangeListener
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -158,16 +157,16 @@ class GameCreationFragment : Fragment() {
     private fun applyWinningFaction() {
         when (viewModel.winningFaction) {
             Faction.RE -> {
-                setButtonColor(btnWinningFactionRe, R.color.teal)
-                setButtonColor(btnWinningFactionContra, R.color.deep_purple_accent)
+                setButtonColor(btnWinningFactionRe, R.color.primary)
+                setButtonColor(btnWinningFactionContra, R.color.secondary_light)
             }
             Faction.CONTRA -> {
-                setButtonColor(btnWinningFactionRe, R.color.teal_accent)
-                setButtonColor(btnWinningFactionContra, R.color.deep_purple)
+                setButtonColor(btnWinningFactionRe, R.color.primary_light)
+                setButtonColor(btnWinningFactionContra, R.color.secondary)
             }
             Faction.NONE -> {
-                setButtonColor(btnWinningFactionRe, R.color.teal_accent)
-                setButtonColor(btnWinningFactionContra, R.color.deep_purple_accent)
+                setButtonColor(btnWinningFactionRe, R.color.primary_light)
+                setButtonColor(btnWinningFactionContra, R.color.secondary_light)
             }
         }
         checkSaveGameButtonEnabled()
@@ -193,7 +192,7 @@ class GameCreationFragment : Fragment() {
         val isValid = viewModel.checkIsValid()
 
         btnSaveGame.isEnabled = isValid
-        setButtonColor(btnSaveGame, if (isValid) R.color.teal else R.color.teal_accent)
+        setButtonColor(btnSaveGame, if (isValid) R.color.primary else R.color.primary_light)
     }
 
     private fun onCreateGameClicked() {

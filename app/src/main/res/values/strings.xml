@@ -32,4 +32,9 @@
     <string name="create_session_unable_to_create">Doppelkopfabend kann nicht erstellt werden. Stell sicher, dass es mindestens 4 Spieler und einen Namen gibt.</string>
     <string name="tacken">Tacken</string>
     <string name="desc_history_item_player_faction_icon">Faction of the player in this game</string>
+    <string name="loading_finished">Fertig</string>
+    <string name="loading_games">Lade Spiele...</string>
+    <string name="loading_players">Lade Mitspieler...</string>
+    <string name="loading_session">Lade Doppelkopfabend...</string>
+    <string name="save">Speichern</string>
 </resources>

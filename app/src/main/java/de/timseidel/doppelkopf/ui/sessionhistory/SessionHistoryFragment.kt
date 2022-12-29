@@ -16,10 +16,12 @@ import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.session.SessionActivity
 import de.timseidel.doppelkopf.ui.session.SessionCreationActivity
+import de.timseidel.doppelkopf.ui.session.SessionLoadingActivity
 import de.timseidel.doppelkopf.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.Logging
 
+//TODO: Vllt. doch mit Viewmodel, da Player nachgeladen werden muessen
 class SessionHistoryFragment : Fragment() {
 
     private var _binding: FragmentSessionHistoryBinding? = null
@@ -48,7 +50,6 @@ class SessionHistoryFragment : Fragment() {
                 Logging.d("setupSessionHistoryList: $result")
                 setSessionHistoryList(result)
             }
-
             override fun onReadFailed() {}
         })
     }
@@ -57,7 +58,7 @@ class SessionHistoryFragment : Fragment() {
         sessionHistoryListAdapter = SessionHistoryListAdapter(sessions, object :
             SessionHistoryListAdapter.OnSessionClickListener {
             override fun onOpenSessionClicked(session: DokoSession) {
-                loadSession(session.id)
+                redirectToSessionLoadingActivity(session.id)
             }
         })
 
@@ -72,46 +73,9 @@ class SessionHistoryFragment : Fragment() {
         )
     }
 
-    private fun loadSession(sessionId: String) {
-        SessionInfoRequest(sessionId).execute(object : ReadRequestListener<DokoSession> {
-            override fun onReadComplete(result: DokoSession) {
-                Logging.d("Session data: $result")
-                DokoShortAccess.getSessionCtrl().set(result)
-
-                SessionPlayersRequest(sessionId).execute(object :
-                    ReadRequestListener<List<Player>> {
-
-                    override fun onReadComplete(result: List<Player>) {
-                        val pctrl = DokoShortAccess.getPlayerCtrl()
-                        pctrl.addPlayers(result)
-
-                        SessionGamesRequest(sessionId, pctrl).execute(
-                            object : ReadRequestListener<List<Game>> {
-
-                                override fun onReadComplete(result: List<Game>) {
-                                    result.forEach { g ->
-                                        DokoShortAccess.getGameCtrl().addGame(g)
-                                    }
-                                    Logging.d("Game data: $result")
-
-                                    openSessionActivity()
-                                }
-
-                                override fun onReadFailed() {}
-                            })
-                        Logging.d("Players data: $result")
-                    }
-
-                    override fun onReadFailed() {}
-                })
-            }
-
-            override fun onReadFailed() {}
-        })
-    }
-
-    private fun openSessionActivity() {
-        val intent = Intent(context, SessionActivity::class.java)
+    private fun redirectToSessionLoadingActivity(sessionId: String) {
+        val intent = Intent(context, SessionLoadingActivity::class.java)
+        intent.putExtra(SessionLoadingActivity.KEY_SESSION_ID, sessionId)
         startActivity(intent)
     }
 

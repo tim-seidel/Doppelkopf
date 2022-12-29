@@ -9,6 +9,7 @@ class GameCreationViewModel {
     var winningFaction: Faction = Faction.NONE
     var tackenCount: Int = 0
     var gameScore: Int = 0
+    var isBockrunde: Boolean = false
 
     fun checkIsFactionAssignmentValid(): Boolean {
         if (playerFactionList.count() < 4) return false
@@ -46,7 +47,7 @@ class GameCreationViewModel {
     }
 
     override fun toString(): String {
-        return "${winningFaction.name} | $tackenCount | $gameScore | $playerFactionList"
+        return "${winningFaction.name} | $tackenCount | $gameScore | $playerFactionList | $isBockrunde"
     }
 
 }

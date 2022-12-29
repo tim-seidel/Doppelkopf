@@ -4,139 +4,174 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_game_creation"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.session.gamecreation.GameCreationFragment">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_game_creation_title_player"
+    <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/game_creation_player_assignment"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_save_game"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_game_creation_player_list"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_game_creation_title_player" />
-
-    <TextView
-        android:id="@+id/tv_game_creation_title_result"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/game_result"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_game_creation_player_list" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_winning_faction_select"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_game_creation_title_result">
-
-        <Button
-            android:id="@+id/btn_winner_re"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:backgroundTint="@color/teal_accent"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="@string/faction_re"
-            app:icon="@drawable/ic_card_clubs_24"
-            app:layout_constraintEnd_toStartOf="@id/btn_winner_contra"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginHorizontal="8dp"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_winner_contra"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:backgroundTint="@color/deep_purple_accent"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="@string/faction_contra"
-            app:icon="@drawable/ic_cards_diamond_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btn_winner_re"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_game_creation_title_player"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/game_creation_player_assignment"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <de.timseidel.doppelkopf.ui.session.gamecreation.TackenCounterView
-        android:id="@+id/layout_tacken_counter"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_game_creation_player_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_game_creation_title_player" />
+
+            <TextView
+                android:id="@+id/tv_game_creation_title_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/game_result"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rv_game_creation_player_list" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_winning_faction_select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_game_creation_title_result">
+
+                <Button
+                    android:id="@+id/btn_winner_re"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:backgroundTint="@color/teal_accent"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="@string/faction_re"
+                    app:icon="@drawable/ic_card_clubs_24"
+                    app:layout_constraintEnd_toStartOf="@id/btn_winner_contra"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/btn_winner_contra"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:backgroundTint="@color/deep_purple_accent"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="@string/faction_contra"
+                    app:icon="@drawable/ic_cards_diamond_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/btn_winner_re"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <de.timseidel.doppelkopf.ui.session.gamecreation.TackenCounterView
+                android:id="@+id/layout_tacken_counter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/border_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cl_winning_faction_select">
+
+            </de.timseidel.doppelkopf.ui.session.gamecreation.TackenCounterView>
+
+            <EditText
+                android:id="@+id/et_game_points"
+                style="@style/Widget.AppCompat.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/border_background"
+                android:ems="10"
+                android:gravity="center_horizontal|center_vertical"
+                android:hint="@string/points_winner"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="3"
+                android:minHeight="48dp"
+                android:paddingVertical="8dp"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:textSize="22sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_tacken_counter" />
+
+            <de.timseidel.doppelkopf.ui.VersusBarView
+                android:id="@+id/versus_bar_points"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_game_points"
+                app:max="240"
+                app:min="0" />
+
+            <CheckBox
+                android:id="@+id/cb_is_bockrunde"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/border_background"
+                android:buttonTint="@color/teal"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="Ist Bockrunde"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_save_game"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/border_background"
+        android:layout_marginBottom="8dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/save"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_baseline_check_24"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_winning_faction_select" />
-
-    <EditText
-        android:id="@+id/et_game_points"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/border_background"
-        android:ems="10"
-        android:gravity="center_horizontal|center_vertical"
-        android:hint="@string/points_winner"
-        android:importantForAutofill="no"
-        android:inputType="numberDecimal"
-        android:maxLength="3"
-        android:minHeight="48dp"
-        android:paddingVertical="8dp"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:textSize="22sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_tacken_counter" />
-
-    <de.timseidel.doppelkopf.ui.VersusBarView
-        android:id="@+id/versus_bar_points"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_game_points"
-        app:max="240"
-        app:min="0" />
-
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

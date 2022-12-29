@@ -3,7 +3,9 @@ package de.timseidel.doppelkopf.ui.session.gamehistory
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
@@ -16,33 +18,24 @@ import de.timseidel.doppelkopf.model.PlayerGameResult
 class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
 
+    private lateinit var tvGameNumber: TextView
     private lateinit var rvPlayerTacken: RecyclerView
     private lateinit var playerTackenAdapter: GameHistoryListItemPlayerListAdapter
 
     init {
-        init(attrs)
+        init()
     }
 
-    private fun init(attrs: AttributeSet?) {
+    private fun init() {
         View.inflate(context, R.layout.view_game_history_list_item, this)
 
         findViews()
-        parseAttributes(attrs)
         setupRecyclerView()
     }
 
     private fun findViews() {
+        tvGameNumber = findViewById(R.id.tv_game_history_number)
         rvPlayerTacken = findViewById(R.id.rv_game_history_item_player_tacken_list)
-    }
-
-    private fun parseAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.GameHistoryListItemView)
-        try {
-            val gameScore = ta.getInteger(R.styleable.GameHistoryListItemView_gameScore, 0)
-            val gameTacken = ta.getInteger(R.styleable.GameHistoryListItemView_gameTacken, 0)
-        } finally {
-            ta.recycle()
-        }
     }
 
     private fun setupRecyclerView() {
@@ -53,11 +46,21 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
         rvPlayerTacken.adapter = playerTackenAdapter
     }
 
+    fun setGameNumber(number: Int) {
+        tvGameNumber.text = if(number in 0..9) "0$number" else number.toString()
+    }
+
     fun setGame(game: Game) {
         val playerResults =
             DoppelkopfManager.getInstance().getSessionController().getGameController()
                 .getGameAsPlayerResults(game)
         setResultsPlayers(playerResults)
+
+        if(game.isBockrunde){
+            tvGameNumber.setTextColor(ContextCompat.getColor(context, R.color.error))
+        }else{
+            tvGameNumber.setTextColor(ContextCompat.getColor(context, R.color.gray_600))
+        }
     }
 
     fun setResultsPlayers(playerResults: List<PlayerGameResult>) {

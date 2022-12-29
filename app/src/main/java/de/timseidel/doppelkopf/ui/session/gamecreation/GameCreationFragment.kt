@@ -2,15 +2,10 @@ package de.timseidel.doppelkopf.ui.session.gamecreation
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.Toast
+import android.widget.*
+import android.widget.CompoundButton.OnCheckedChangeListener
 import androidx.core.content.ContextCompat
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
@@ -40,6 +35,8 @@ class GameCreationFragment : Fragment() {
     private lateinit var btnWinningFactionContra: Button
     private lateinit var etGameScore: EditText
     private lateinit var vbVersusBarScore: VersusBarView
+    private lateinit var cbIsBockrunde: CheckBox
+    private lateinit var btnSaveGame: Button
 
     private lateinit var playerFactionSelectAdapter: PlayerFactionSelectAdapter
     private val viewModel: GameCreationViewModel = GameCreationViewModel()
@@ -55,34 +52,15 @@ class GameCreationFragment : Fragment() {
             DoppelkopfManager.getInstance().getSessionController().getPlayerController()
                 .getPlayersAsFaction()
 
-        setupMenu()
-
         findViews()
         setUpPlayerFactionSelectList()
         setupButtons()
         setupPointsInput()
+        setupBockrundeInput()
+
+        checkSaveGameButtonEnabled()
 
         return binding.rootGameCreation
-    }
-
-    private fun setupMenu() {
-        val menuHost: MenuHost = requireActivity()
-
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_create_game, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.option_confirm_create_game -> {
-                        onCreateGameClicked()
-                        return true
-                    }
-                }
-                return false
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun findViews() {
@@ -94,6 +72,8 @@ class GameCreationFragment : Fragment() {
         btnWinningFactionContra = binding.btnWinnerContra
         etGameScore = binding.etGamePoints
         vbVersusBarScore = binding.versusBarPoints
+        cbIsBockrunde = binding.cbIsBockrunde
+        btnSaveGame = binding.btnSaveGame
     }
 
     private fun setupButtons() {
@@ -114,6 +94,10 @@ class GameCreationFragment : Fragment() {
             viewModel.winningFaction = Faction.CONTRA
             applyWinningFaction()
         }
+
+        btnSaveGame.setOnClickListener {
+            onCreateGameClicked()
+        }
     }
 
     private fun setupPointsInput() {
@@ -131,6 +115,12 @@ class GameCreationFragment : Fragment() {
         })
     }
 
+    private fun setupBockrundeInput() {
+        cbIsBockrunde.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.isBockrunde = isChecked
+        }
+    }
+
     private fun setUpPlayerFactionSelectList() {
         playerFactionSelectAdapter = PlayerFactionSelectAdapter(
             viewModel.playerFactionList,
@@ -144,6 +134,9 @@ class GameCreationFragment : Fragment() {
                     }
 
                     viewModel.playerFactionList[position].faction = newFaction
+
+                    checkSaveGameButtonEnabled()
+
                     return newFaction
                 }
             })
@@ -177,10 +170,12 @@ class GameCreationFragment : Fragment() {
                 setButtonColor(btnWinningFactionContra, R.color.deep_purple_accent)
             }
         }
+        checkSaveGameButtonEnabled()
     }
 
     private fun applyTacken() {
         tcTackenCounter.setCounter(viewModel.tackenCount)
+        checkSaveGameButtonEnabled()
     }
 
     private fun setButtonColor(btn: Button, colorResId: Int) {
@@ -191,6 +186,14 @@ class GameCreationFragment : Fragment() {
         vbVersusBarScore.setProgress(viewModel.gameScore)
         vbVersusBarScore.setLeftText(viewModel.gameScore.toString())
         vbVersusBarScore.setRightText((240 - viewModel.gameScore).toString())
+        checkSaveGameButtonEnabled()
+    }
+
+    private fun checkSaveGameButtonEnabled() {
+        val isValid = viewModel.checkIsValid()
+
+        btnSaveGame.isEnabled = isValid
+        setButtonColor(btnSaveGame, if (isValid) R.color.teal else R.color.teal_accent)
     }
 
     private fun onCreateGameClicked() {
@@ -198,7 +201,7 @@ class GameCreationFragment : Fragment() {
         if (!viewModel.checkIsValid()) {
             Toast.makeText(
                 context,
-                "Das Spiel wird nicht erstellt, da die Einstellungen nicht gültig sind",
+                getString(R.string.game_creation_error),
                 Toast.LENGTH_LONG
             ).show()
             return
@@ -210,7 +213,8 @@ class GameCreationFragment : Fragment() {
                     viewModel.playerFactionList.map { it.copy() },
                     viewModel.winningFaction,
                     viewModel.gameScore,
-                    viewModel.tackenCount
+                    viewModel.tackenCount,
+                    viewModel.isBockrunde
                 )
             DokoShortAccess.getGameCtrl().addGame(game)
 
@@ -220,6 +224,12 @@ class GameCreationFragment : Fragment() {
             firebase.setFirestore(db)
 
             firebase.storeGameInSession(game, DokoShortAccess.getSessionCtrl().getSession())
+
+            Toast.makeText(
+                context,
+                getString(R.string.game_saved),
+                Toast.LENGTH_LONG
+            ).show()
 
             resetViewModel()
         } catch (e: Exception) {

@@ -66,7 +66,8 @@ class DokoUtil {
                 pafs,
                 if ((0..100).random() <= 60) Faction.RE else Faction.CONTRA,
                 (121..240).random(),
-                (-1..8).random()
+                (-1..8).random(),
+                (0..9).random() == 0
             )
     }
 }

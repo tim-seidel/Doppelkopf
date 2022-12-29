@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:paddingStart="8dp"
         android:textAlignment="viewStart"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="@color/neural_dark"
         android:textSize="24sp"
         tools:text="-4" />
 

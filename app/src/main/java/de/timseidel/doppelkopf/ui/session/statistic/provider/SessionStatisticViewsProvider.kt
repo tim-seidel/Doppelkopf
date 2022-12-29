@@ -103,7 +103,7 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
                                 ),
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
                                     "Ndl Contra",
-                                    IStatisticViewWrapper.COLOR_NEGITIVE_LIGHT,
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT,
                                     playerLossContra
                                 )
                             )
@@ -141,7 +141,7 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
                                 ),
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
                                     "bei Ndl Contra",
-                                    IStatisticViewWrapper.COLOR_NEGITIVE_LIGHT,
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT,
                                     playerTackenLossContra
                                 )
                             )
@@ -158,7 +158,8 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
                             "Tacken",
                             listOf(
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
-                                    "Tackenanzahl", "009688",
+                                    "Tackenanzahl",
+                                    IStatisticViewWrapper.COLOR_NEURAL.replace("#", ""),
                                     tackenDistribution.values(),
                                 )
                             )

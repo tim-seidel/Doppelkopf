@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.statistic.PlayerStatistic
@@ -36,6 +37,7 @@ class GameHistoryListPlayerFooterAdapter(
         tv.setPadding(0, 8, 0, 8)
         tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
         tv.textSize = 24f
+        tv.setTextColor(ContextCompat.getColor(context, R.color.neural_dark))
         tv.setTypeface(tv.typeface, Typeface.BOLD);
 
         return tv

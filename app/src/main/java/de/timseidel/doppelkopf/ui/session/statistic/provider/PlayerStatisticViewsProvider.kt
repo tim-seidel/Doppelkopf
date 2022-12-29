@@ -71,7 +71,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                         PieChartViewWrapper.PieSliceData(
                             "N Con",
                             abs(stats.contra.loss.games),
-                            "#${IStatisticViewWrapper.COLOR_NEGITIVE_LIGHT}"
+                            "#${IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT}"
                         )
                     )
                 )
@@ -115,7 +115,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                         PieChartViewWrapper.PieSliceData(
                             "Ndl Con",
                             abs(stats.contra.loss.tacken),
-                            "#${IStatisticViewWrapper.COLOR_NEGITIVE_LIGHT}"
+                            "#${IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT}"
                         )
                     )
                 )
@@ -133,7 +133,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                             "Tacken",
                             listOf(
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
-                                    "Tackenanzahl", "009688",
+                                    "Tackenanzahl", IStatisticViewWrapper.COLOR_NEURAL.replace("#", ""),
                                     tackenDistribution.values(),
                                 )
                             )
@@ -161,7 +161,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                             listOf(
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
                                     "Tacken",
-                                    "009688",
+                                    IStatisticViewWrapper.COLOR_NEURAL.replace("#", ""),
                                     listOf(
                                         stats.re.wins.getTackenPerGame(),
                                         stats.contra.wins.getTackenPerGame(),
@@ -205,7 +205,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                                 ),
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
                                     "Ndl Contra",
-                                    IStatisticViewWrapper.COLOR_NEGITIVE_LIGHT,
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT,
                                     partnerLossContra
                                 )
                             )
@@ -243,7 +243,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                                 ),
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
                                     "bei Ndl Contra",
-                                    IStatisticViewWrapper.COLOR_NEGITIVE_LIGHT,
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT,
                                     partnerTackenLossContra
                                 )
                             )

@@ -40,4 +40,5 @@
     <string name="game_saved">Spiel gespeichert!</string>
     <string name="game_creation_error">Das Spiel wird nicht erstellt, da die Einstellungen nicht gültig sind</string>
     <string name="spieler_6">Spieler 6</string>
+    <string name="check_is_bockrunde">Ist Bockrunde</string>
 </resources>

@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary">#26a69a</color>
+    <color name="primary_accent">#4db6ac</color>
     <color name="primary_dark">#00766c</color>
     <color name="primary_light">#82e9de</color>
     <color name="secondary">#f44336</color>
+    <color name="secondary_accent">#e57373</color>
     <color name="secondary_dark">#ba000d</color>
     <color name="secondary_light">#ffa4a2</color>
+
+    <color name="neural">#607d8b</color>
+    <color name="neural_dark">#34515e</color>
+    <color name="neural_light">#c1d5e0</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>

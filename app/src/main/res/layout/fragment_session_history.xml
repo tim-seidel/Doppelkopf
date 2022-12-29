@@ -26,6 +26,7 @@
         android:contentDescription="@string/desc_create_session_button"
         android:foregroundTint="@color/white"
         android:src="@drawable/ic_baseline_add_white_24"
+        app:backgroundTint="@color/neural"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

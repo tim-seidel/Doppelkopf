@@ -13,10 +13,12 @@ interface IStatisticViewWrapper {
         const val ITEM_TYPE_CHART_PIE = 2
         const val ITEM_TYPE_CHART_COLUMN = 2
 
-        const val COLOR_POSITIVE_DARK = "22CC22"
-        const val COLOR_POSITIVE_LIGHT = "AAFF64"
-        const val COLOR_NEGATIVE_DARK = "FF8C9D"
-        const val COLOR_NEGITIVE_LIGHT = "FFA0AA"
+        const val COLOR_POSITIVE_DARK = "26a69a"    //Primary
+        const val COLOR_POSITIVE_LIGHT = "4db6ac"   //Accent
+        const val COLOR_NEGATIVE_DARK = "f44336"    //Primary
+        const val COLOR_NEGATIVE_LIGHT = "e57373"   //Accent
+
+        const val COLOR_NEURAL = "607d8b"
     }
 
     fun getItemType(): Int

@@ -192,7 +192,7 @@ class GameCreationFragment : Fragment() {
         val isValid = viewModel.checkIsValid()
 
         btnSaveGame.isEnabled = isValid
-        setButtonColor(btnSaveGame, if (isValid) R.color.primary else R.color.primary_light)
+        setButtonColor(btnSaveGame, if (isValid) R.color.neural else R.color.neural_light)
     }
 
     private fun onCreateGameClicked() {

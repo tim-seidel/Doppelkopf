@@ -31,6 +31,8 @@ class SessionLoadingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_session_loading)
 
+        supportActionBar?.hide()
+
         findViews()
         initAnimation()
 

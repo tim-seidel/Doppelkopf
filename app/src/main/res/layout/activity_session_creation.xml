@@ -137,7 +137,7 @@
                 android:alpha="0.5"
                 android:drawableStart="@drawable/ic_baseline_person_outline_24"
                 android:ems="10"
-                android:hint="@string/spieler_6"
+                android:hint="@string/player_6"
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"
                 android:minHeight="48dp"

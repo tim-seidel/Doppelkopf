@@ -2,12 +2,13 @@
     <string name="app_name">Doppelkopf</string>
     <string name="navigation_title_session_history">Abende</string>
     <string name="navigation_title_finances">Kasse</string>
-    <string name="session_players">Mitspieler</string>
-    <string name="player_1">Spieler 1</string>
-    <string name="player_2">Spieler 2</string>
-    <string name="player_3">Spieler 3</string>
-    <string name="player_4">Spieler 4</string>
-    <string name="player_5">Spieler 5</string>
+    <string name="session_players">Mitspielende</string>
+    <string name="player_1">Spieler*in 1</string>
+    <string name="player_2">Spieler*in 2</string>
+    <string name="player_3">Spieler*in 3</string>
+    <string name="player_4">Spieler*in 4</string>
+    <string name="player_5">Spieler*in 5</string>
+    <string name="player_6">Spieler*in 6</string>
     <string name="desc_create_session_button">Button to create a new session</string>
     <string name="doko_session">Doppelkopfabend</string>
     <string name="date_hint">Datum</string>
@@ -17,7 +18,7 @@
     <string name="title_game_creation">Spiel erstellen</string>
     <string name="title_game_history">Spielverlauf</string>
     <string name="title_session_statistic">Statisik</string>
-    <string name="game_creation_player_assignment">Spielerzuordnung</string>
+    <string name="game_creation_player_assignment">Parteizuordnung</string>
     <string name="faction_contra">Contra</string>
     <string name="faction_re">Re</string>
     <string name="faction_select_re_desc">Select re faction</string>
@@ -29,7 +30,7 @@
     <string name="desc_button_increase_tacken">Increase tacken</string>
     <string name="option_confirm_create_session">Erstellen</string>
     <string name="option_confirm_create_game">Erstellen</string>
-    <string name="create_session_unable_to_create">Doppelkopfabend kann nicht erstellt werden. Stell sicher, dass es mindestens 4 Spieler und einen Namen gibt.</string>
+    <string name="create_session_unable_to_create">Doppelkopfabend kann nicht erstellt werden. Stell sicher, dass es mindestens 4 Spieler*innen und einen Namen gibt.</string>
     <string name="tacken">Tacken</string>
     <string name="desc_history_item_player_faction_icon">Faction of the player in this game</string>
     <string name="loading_finished">Fertig</string>
@@ -39,6 +40,5 @@
     <string name="save">Speichern</string>
     <string name="game_saved">Spiel gespeichert!</string>
     <string name="game_creation_error">Das Spiel wird nicht erstellt, da die Einstellungen nicht gültig sind</string>
-    <string name="spieler_6">Spieler 6</string>
     <string name="check_is_bockrunde">Ist Bockrunde</string>
 </resources>

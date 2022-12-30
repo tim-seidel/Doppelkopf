@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import de.timseidel.doppelkopf.databinding.FragmentSessionStatisticBinding
 import de.timseidel.doppelkopf.model.Player
@@ -31,6 +32,8 @@ class SessionStatisticFragment : Fragment() {
 
         _binding = FragmentSessionStatisticBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        (activity as AppCompatActivity).supportActionBar?.title = DokoShortAccess.getSessionCtrl().getSession().name
 
         setupPlayerSelect()
         setupStatistics()

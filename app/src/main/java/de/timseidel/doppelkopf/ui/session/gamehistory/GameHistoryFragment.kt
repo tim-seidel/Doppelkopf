@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +31,8 @@ class GameHistoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentGameHistoryBinding.inflate(inflater, container, false)
+
+        (activity as AppCompatActivity).supportActionBar?.title = DokoShortAccess.getSessionCtrl().getSession().name
 
         setupPlayerHeader()
         setupGameHistoryList()

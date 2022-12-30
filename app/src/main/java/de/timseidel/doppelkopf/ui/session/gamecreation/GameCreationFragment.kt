@@ -3,6 +3,7 @@ package de.timseidel.doppelkopf.ui.session.gamecreation
 import android.os.Bundle
 import android.view.*
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -50,6 +51,8 @@ class GameCreationFragment : Fragment() {
         viewModel.playerFactionList =
             DoppelkopfManager.getInstance().getSessionController().getPlayerController()
                 .getPlayersAsFaction()
+
+        (activity as AppCompatActivity).supportActionBar?.title = DokoShortAccess.getSessionCtrl().getSession().name
 
         findViews()
         setUpPlayerFactionSelectList()

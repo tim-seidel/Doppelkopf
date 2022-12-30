@@ -59,7 +59,7 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
         if(game.isBockrunde){
             tvGameNumber.setTextColor(ContextCompat.getColor(context, R.color.error))
         }else{
-            tvGameNumber.setTextColor(ContextCompat.getColor(context, R.color.gray_600))
+            tvGameNumber.setTextColor(ContextCompat.getColor(context, R.color.neural))
         }
     }
 

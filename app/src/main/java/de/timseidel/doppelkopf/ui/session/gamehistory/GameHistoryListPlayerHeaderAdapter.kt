@@ -42,11 +42,10 @@ class GameHistoryListPlayerHeaderAdapter(
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         tv.layoutParams = layoutParams
-        tv.setPadding(0, 8, 0, 8)
         tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
         tv.textSize = 22f
         tv.setTextColor(ContextCompat.getColor(context, R.color.neural_dark))
-        tv.setTypeface(tv.typeface, Typeface.BOLD)
+//        tv.setTypeface(tv.typeface, Typeface.BOLD)
 
         return tv
     }

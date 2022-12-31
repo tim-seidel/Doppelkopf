@@ -8,6 +8,6 @@ data class Game(
     var winningPoints: Int,
     var tacken: Int,
     val isBockrunde: Boolean,
-    var gameType: GameType? = GameType.NORMAL,
-    var soloType: SoloType? = SoloType.NONE,
+    var gameType: GameType = GameType.NORMAL,
+    var soloType: SoloType = SoloType.NONE,
 )

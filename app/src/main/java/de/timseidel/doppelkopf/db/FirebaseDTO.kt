@@ -37,9 +37,10 @@ data class GameDto(
     var tacken: Int,
     var points: Int,
     var isBockrunde: Boolean,
+    var gameType: GameType,
     var factions: List<PlayerAndFactionDto>
 ) {
-    constructor() : this("", 0, Faction.NONE, 0, 0, false, emptyList())
+    constructor() : this("", 0, Faction.NONE, 0, 0, false, GameType.NORMAL, emptyList())
 }
 
 class FirebaseDTO() {
@@ -86,6 +87,7 @@ class FirebaseDTO() {
                 game.tacken,
                 game.winningPoints,
                 game.isBockrunde,
+                game.gameType,
                 resultDTOs
             )
         }
@@ -109,7 +111,8 @@ class FirebaseDTO() {
                 dto.faction,
                 dto.points,
                 dto.tacken,
-                dto.isBockrunde
+                dto.isBockrunde,
+                dto.gameType
             )
         }
     }

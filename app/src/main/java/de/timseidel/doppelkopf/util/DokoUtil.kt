@@ -6,14 +6,31 @@ import de.timseidel.doppelkopf.model.*
 class DokoUtil {
     companion object {
 
-        //TODO: Points sind im Moment nicht benutzt
         fun isWinner(faction: Faction, points: Int): Boolean {
             return faction == Faction.RE && points > 120 || faction == Faction.CONTRA && points >= 120
         }
 
-        fun getFactionTacken(faction: Faction, winningFaction: Faction, tacken: Int): Int {
-            if (faction == Faction.NONE || winningFaction == Faction.NONE) return 0
-            return if (faction == winningFaction) tacken else (-1) * tacken
+        fun isSolo(game: Game): Boolean {
+            return game.gameType == GameType.SOLO
+        }
+
+        fun isSoloPlayer(player: Player, game: Game): Boolean {
+            if (!isSolo(game)) return false
+            return (game.players.firstOrNull { p -> p.player.id == player.id }?.faction
+                ?: Faction.NONE) == Faction.RE
+        }
+
+        fun getFactionTacken(faction: Faction, game: Game): Int {
+            if (faction == Faction.NONE || game.winningFaction == Faction.NONE) return 0
+
+            val isWinner = faction == game.winningFaction
+            val isSoloFaction = isSolo(game) && faction == Faction.RE
+
+            var tacken = game.tacken
+            if (!isWinner) tacken *= -1
+            if (isSoloFaction) tacken *= 3
+
+            return tacken
         }
 
         fun getFactionPoints(faction: Faction, winningFaction: Faction, winningPoints: Int): Int {
@@ -32,9 +49,8 @@ class DokoUtil {
             } else {
                 PlayerGameResult(
                     paf.faction,
-                    //isWinner(paf.faction, getFactionPoints(paf.faction, game.winningFaction, game.winningPoints)),
                     paf.faction == game.winningFaction,
-                    getFactionTacken(paf.faction, game.winningFaction, game.tacken),
+                    getFactionTacken(paf.faction, game),
                     getFactionPoints(paf.faction, game.winningFaction, game.winningPoints)
                 )
             }

@@ -50,7 +50,7 @@ class GameController : IGameController {
                 PlayerGameResult(
                     p.faction,
                     p.faction == game.winningFaction,
-                    DokoUtil.getFactionTacken(p.faction, game.winningFaction, game.tacken),
+                    DokoUtil.getFactionTacken(p.faction, game),
                     DokoUtil.getFactionPoints(p.faction, game.winningFaction, game.winningPoints)
                 )
             )

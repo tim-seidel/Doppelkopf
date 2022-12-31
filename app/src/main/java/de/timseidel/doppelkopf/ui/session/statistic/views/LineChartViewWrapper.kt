@@ -16,7 +16,8 @@ class LineChartViewWrapper(private val chartData: LineChartData) : IStatisticVie
     data class LineChartData(
         val title: String,
         val yAxisName: String,
-        val lineData: List<ChartLineData>
+        val lineData: List<ChartLineData>,
+        val height : Float = 500f
     )
 
     data class ChartLineData(val name: String, val values: List<Number>)
@@ -27,7 +28,7 @@ class LineChartViewWrapper(private val chartData: LineChartData) : IStatisticVie
 
     override fun getView(context: Context): View {
         val lineChart = HIChartView(context)
-        lineChart.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Converter.convertDpToPixels(500f, context))
+        lineChart.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Converter.convertDpToPixels(chartData.height, context))
         lineChart.setBackgroundColor(Color.WHITE)
 
         val options = HIOptions()

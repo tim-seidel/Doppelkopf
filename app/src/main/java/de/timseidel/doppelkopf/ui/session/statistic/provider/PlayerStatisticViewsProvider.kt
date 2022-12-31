@@ -94,7 +94,8 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                             stats.player.name,
                             StatisticUtil.getAccumulatedTackenHistory(stats.gameResultHistory)
                         )
-                    )
+                    ),
+                    350f
                 )
             ),
             PieChartViewWrapper(

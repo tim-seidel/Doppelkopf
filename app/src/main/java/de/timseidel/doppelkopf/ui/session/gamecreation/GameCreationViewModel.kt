@@ -40,6 +40,7 @@ class GameCreationViewModel {
         winningFaction = Faction.NONE
         tackenCount = 0
         gameScore = 0
+        isBockrunde = false
 
         playerFactionList.forEach { paf ->
             paf.faction = Faction.NONE

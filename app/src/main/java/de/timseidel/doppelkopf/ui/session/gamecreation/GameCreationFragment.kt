@@ -155,6 +155,7 @@ class GameCreationFragment : Fragment() {
         applyWinningFaction()
         applyTacken()
         applyGameScore()
+        applyIsBockrunde()
     }
 
     private fun applyWinningFaction() {
@@ -178,6 +179,10 @@ class GameCreationFragment : Fragment() {
     private fun applyTacken() {
         tcTackenCounter.setCounter(viewModel.tackenCount)
         checkSaveGameButtonEnabled()
+    }
+
+    private fun applyIsBockrunde(){
+        cbIsBockrunde.isChecked = viewModel.isBockrunde
     }
 
     private fun setButtonColor(btn: Button, colorResId: Int) {

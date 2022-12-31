@@ -71,7 +71,7 @@ class SessionStatisticFragment : Fragment() {
         })
 
         val playerDefaultGroupStatisticPlaceholder =
-            Player(defaultSessionStatsPlayerPlaceholderId, "Gruppe")
+            Player(defaultSessionStatsPlayerPlaceholderId, "Alle")
         val players = DokoShortAccess.getPlayerCtrl().getPlayers().toMutableList()
         players.add(0, playerDefaultGroupStatisticPlaceholder)
         binding.headerStatisticPlayerSelect.setPlayers(players)

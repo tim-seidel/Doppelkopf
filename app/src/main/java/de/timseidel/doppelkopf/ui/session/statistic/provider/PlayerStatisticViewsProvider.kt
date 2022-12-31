@@ -43,13 +43,13 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
 
             partnerTackenWinsRe.add(p.re.wins.tacken)
             partnerTackenWinsContra.add(p.contra.wins.tacken)
-            partnerTackenLossRe.add(-1*p.re.loss.tacken)
-            partnerTackenLossContra.add(-1*p.contra.loss.tacken)
+            partnerTackenLossRe.add(-1 * p.re.loss.tacken)
+            partnerTackenLossContra.add(-1 * p.contra.loss.tacken)
         }
 
         return listOf(
             SimpleTextStatisticViewWrapper(
-                "Allgemeine Statistik",
+                "Statistik von ${stats.player.name}",
                 "Hier siehst du die Statistiken von ${stats.player.name}. Er/Sie hab so viele Spiele gespielt:",
                 stats.general.total.games.toString()
             ),
@@ -140,7 +140,8 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                             "Tacken",
                             listOf(
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
-                                    "Tackenanzahl", IStatisticViewWrapper.COLOR_NEURAL.replace("#", ""),
+                                    "Tackenanzahl",
+                                    IStatisticViewWrapper.COLOR_NEURAL.replace("#", ""),
                                     tackenDistribution.values(),
                                 )
                             )
@@ -150,12 +151,12 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                 )
             ),
             SimpleTextStatisticViewWrapper(
-                "Siegerausbeute",
-                "Wenn ${stats.player.name} gewinnt, bekommt er im Schnitt diese Tacken:",
+                "Siegesausbeute",
+                "Wenn ${stats.player.name} gewinnt, bekommt er/sie im Schnitt diese Tacken:",
                 "%.2f".format(stats.general.wins.getTackenPerGame())
             ),
             SimpleTextStatisticViewWrapper(
-                "Abgabe",
+                "Schmerzliche Verluste",
                 "Wenn ${stats.player.name} verliert, kostet das im Schnitt etwa diese Tacken:",
                 "%.2f".format(stats.general.loss.getTackenPerGame())
             ),
@@ -185,7 +186,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             //TODO: Evtl. wie bei der Kickerapp Horizonzal?
             ColumnChartViewWrapper(
                 ColumnChartViewWrapper.ColumnChartData(
-                    "Spiele mit Partnern", "", "Spiele",
+                    "Spiele mit ...", "", "Spiele",
                     listOf(
                         ColumnChartViewWrapper.ColumnSeriesData(
                             "Siege",
@@ -223,7 +224,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             ),
             ColumnChartViewWrapper(
                 ColumnChartViewWrapper.ColumnChartData(
-                    "Tacken mit Partnern", "", "Tacken",
+                    "Tacken mit ...", "", "Tacken",
                     listOf(
                         ColumnChartViewWrapper.ColumnSeriesData(
                             "Siege",

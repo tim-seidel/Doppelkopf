@@ -14,7 +14,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
         android:textSize="20sp"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="@color/neural_dark"
         app:layout_constraintBottom_toBottomOf="@+id/btn_faction_re"
         app:layout_constraintEnd_toStartOf="@+id/btn_faction_contra"
         app:layout_constraintStart_toEndOf="@+id/btn_faction_re"

@@ -166,6 +166,7 @@
                 android:buttonTint="@color/neural"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/check_is_bockrunde"
+                android:textColor="@color/neural_dark"
                 android:textSize="20sp" />
 
         </LinearLayout>

@@ -1,5 +1,6 @@
 package de.timseidel.doppelkopf.ui.session.statistic.provider
 
+import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.statistic.PlayerStatistic
 import de.timseidel.doppelkopf.ui.session.statistic.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.session.statistic.views.ColumnChartViewWrapper
@@ -11,7 +12,10 @@ import kotlin.math.abs
 
 class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatisticViewsProvider {
     override fun getStatisticItems(): List<IStatisticViewWrapper> {
-        val tackenDistribution = StatisticUtil.getTackenDistribution(stats.gameResultHistory, null)
+        val tackenDistribution = StatisticUtil.getTackenDistribution(
+            stats.gameResultHistory.filter { r -> r.faction != Faction.NONE },
+            null
+        )
 
         val partnerNames = mutableListOf<String>()
         val partnerNamesWithTacken = mutableListOf<String>()

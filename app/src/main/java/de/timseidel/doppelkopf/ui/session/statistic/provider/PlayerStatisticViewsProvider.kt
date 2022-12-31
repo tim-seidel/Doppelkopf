@@ -15,6 +15,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
 
         val partnerNames = mutableListOf<String>()
         val partnerNamesWithTacken = mutableListOf<String>()
+        val partnerNamesWithGames = mutableListOf<String>()
 
         val partnerWinsRe = mutableListOf<Int>()
         val partnerWinsContra = mutableListOf<Int>()
@@ -29,6 +30,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
         stats.partners.values.forEach { p ->
             partnerNames.add(p.player.name)
             partnerNamesWithTacken.add("${p.player.name} (${p.general.total.tacken})")
+            partnerNamesWithGames.add("${p.player.name} (${p.general.total.games})")
 
             partnerWinsRe.add(p.re.wins.games)
             partnerWinsContra.add(p.contra.wins.games)
@@ -211,7 +213,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                             )
                         )
                     ),
-                    partnerNames
+                    partnerNamesWithGames
                 )
             ),
             ColumnChartViewWrapper(

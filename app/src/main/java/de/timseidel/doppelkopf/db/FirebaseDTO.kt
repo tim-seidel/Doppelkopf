@@ -104,6 +104,8 @@ class FirebaseDTO() {
                 )
             }
 
+            factions.sortBy { f -> f.player.id }
+
             return Game(
                 dto.id,
                 dto.timestamp,

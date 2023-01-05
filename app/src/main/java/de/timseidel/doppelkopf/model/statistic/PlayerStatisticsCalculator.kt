@@ -76,6 +76,10 @@ class PlayerStatisticsCalculator : IPlayerStatisticsCalculator {
                 else -> {}
             }
 
+            if(DokoUtil.isPlayerPlayingSolo(stats.player, g)){
+                addGameResult(result, stats.solo)
+            }
+
             stats.gameResultHistory.add(result)
         }
     }

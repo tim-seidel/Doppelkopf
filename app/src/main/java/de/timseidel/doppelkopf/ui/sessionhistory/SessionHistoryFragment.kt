@@ -47,7 +47,6 @@ class SessionHistoryFragment : Fragment() {
     private fun loadSessionHistoryList() {
         SessionListRequest().execute(object : ReadRequestListener<List<DokoSession>> {
             override fun onReadComplete(result: List<DokoSession>) {
-                Logging.d("setupSessionHistoryList: $result")
                 setSessionHistoryList(result)
             }
             override fun onReadFailed() {}

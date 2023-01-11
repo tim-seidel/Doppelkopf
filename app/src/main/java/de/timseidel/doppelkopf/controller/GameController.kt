@@ -1,12 +1,9 @@
 package de.timseidel.doppelkopf.controller
 
 import de.timseidel.doppelkopf.contracts.IGameController
-import de.timseidel.doppelkopf.model.Faction
-import de.timseidel.doppelkopf.model.Game
-import de.timseidel.doppelkopf.model.PlayerAndFaction
+import de.timseidel.doppelkopf.model.*
 import de.timseidel.doppelkopf.util.DokoUtil
 import de.timseidel.doppelkopf.util.IdGenerator
-import de.timseidel.doppelkopf.model.PlayerGameResult
 
 class GameController : IGameController {
 
@@ -17,7 +14,8 @@ class GameController : IGameController {
         winningFaction: Faction,
         winningPoints: Int,
         tacken: Int,
-        isBockrunde: Boolean
+        isBockrunde: Boolean,
+        gameType: GameType
     ): Game {
         return Game(
             IdGenerator.generateIdWithTimestamp("game"),
@@ -26,7 +24,8 @@ class GameController : IGameController {
             winningFaction,
             winningPoints,
             tacken,
-            isBockrunde
+            isBockrunde,
+            gameType
         )
     }
 

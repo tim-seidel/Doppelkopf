@@ -15,12 +15,10 @@ import de.timseidel.doppelkopf.controller.DoppelkopfManager
 import de.timseidel.doppelkopf.databinding.FragmentGameCreationBinding
 import de.timseidel.doppelkopf.db.DoppelkopfDatabase
 import de.timseidel.doppelkopf.model.Faction
+import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.VersusBarView
-import de.timseidel.doppelkopf.util.Converter
-import de.timseidel.doppelkopf.util.DokoShortAccess
-import de.timseidel.doppelkopf.util.EditTextListener
-import de.timseidel.doppelkopf.util.Logging
+import de.timseidel.doppelkopf.util.*
 
 class GameCreationFragment : Fragment() {
 
@@ -221,7 +219,8 @@ class GameCreationFragment : Fragment() {
                     viewModel.winningFaction,
                     viewModel.gameScore,
                     viewModel.tackenCount,
-                    viewModel.isBockrunde
+                    viewModel.isBockrunde,
+                    if(DokoUtil.isFactionCompositionSolo(viewModel.playerFactionList)) GameType.SOLO else GameType.NORMAL
                 )
             DokoShortAccess.getGameCtrl().addGame(game)
 

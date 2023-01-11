@@ -10,12 +10,15 @@ class DokoUtil {
             return faction == Faction.RE && points > 120 || faction == Faction.CONTRA && points >= 120
         }
 
-        fun isSolo(game: Game): Boolean {
-            return game.gameType == GameType.SOLO
+        fun isFactionCompositionSolo(players: List<PlayerAndFaction>) : Boolean{
+            val reCount = players.count { paf -> paf.faction == Faction.RE }
+            val contraCount = players.count { paf -> paf.faction == Faction.CONTRA }
+
+            return reCount == 1 && contraCount == 3
         }
 
         fun isSoloPlayer(player: Player, game: Game): Boolean {
-            if (!isSolo(game)) return false
+            if (game.gameType != GameType.SOLO) return false
             return (game.players.firstOrNull { p -> p.player.id == player.id }?.faction
                 ?: Faction.NONE) == Faction.RE
         }
@@ -24,7 +27,7 @@ class DokoUtil {
             if (faction == Faction.NONE || game.winningFaction == Faction.NONE) return 0
 
             val isWinner = faction == game.winningFaction
-            val isSoloFaction = isSolo(game) && faction == Faction.RE
+            val isSoloFaction = game.gameType == GameType.SOLO && faction == Faction.RE
 
             var tacken = game.tacken
             if (!isWinner) tacken *= -1
@@ -56,11 +59,9 @@ class DokoUtil {
             }
         }
 
-        //TODO Later calculate with SoloType
         fun isPlayerPlayingSolo(player: Player, game: Game): Boolean {
             val result = getPlayerResult(player, game)
-            val reCount = game.players.count { p -> p.faction == Faction.RE }
-            return result.faction != Faction.RE || reCount != 1
+            return game.gameType == GameType.SOLO && result.faction == Faction.RE
         }
     }
 
@@ -83,7 +84,8 @@ class DokoUtil {
                 if ((0..100).random() <= 60) Faction.RE else Faction.CONTRA,
                 (121..240).random(),
                 (-1..8).random(),
-                (0..9).random() == 0
+                (0..9).random() == 0,
+                GameType.NORMAL
             )
     }
 }

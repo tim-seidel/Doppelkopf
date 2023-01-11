@@ -84,6 +84,8 @@ class SessionGamesRequest(
                     games.add(game)
                 }
 
+                games.sortBy { g -> g.timestamp }
+
                 onReadResult(games)
             }
             .addOnFailureListener { e ->

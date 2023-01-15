@@ -16,7 +16,6 @@ class RangeDistribution(val min: Int = 0, val max: Int = 0) {
     }
 
     fun indices(): List<Int>{
-        Logging.d("$min to $max: ${(min..max).toList()}")
         return (min..max).toList()
     }
 }

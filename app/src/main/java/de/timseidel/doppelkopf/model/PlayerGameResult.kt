@@ -5,5 +5,6 @@ data class PlayerGameResult(
     val isWinner: Boolean,
     val tacken: Int,
     val points: Int,
-    val isBockrunde: Boolean
+    val isBockrunde: Boolean,
+    val gameType: GameType
 )

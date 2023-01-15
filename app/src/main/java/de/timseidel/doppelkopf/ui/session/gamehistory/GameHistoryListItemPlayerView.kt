@@ -71,8 +71,9 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
                 tvPlayerTacken.text = "0"
             }
         }
-
-        //background = if(isWinner) ContextCompat.getDrawable(context, R.drawable.border_background) else null
     }
 
+    fun setSolo(isSolist: Boolean){
+        background = if(isSolist) ContextCompat.getDrawable(context, R.drawable.border_background) else null
+    }
 }

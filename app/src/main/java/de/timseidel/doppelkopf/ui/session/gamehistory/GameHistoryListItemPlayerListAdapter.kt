@@ -2,7 +2,8 @@ package de.timseidel.doppelkopf.ui.session.gamehistory
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import de.timseidel.doppelkopf.util.DokoUtil
+import de.timseidel.doppelkopf.model.Faction
+import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.PlayerGameResult
 
 class GameHistoryListItemPlayerListAdapter(
@@ -12,9 +13,11 @@ class GameHistoryListItemPlayerListAdapter(
 
     class ViewHolder(val ghlipv: GameHistoryListItemPlayerView) : RecyclerView.ViewHolder(ghlipv) {
         fun bind(playerResult: PlayerGameResult) {
-            ghlipv.setPlayerTacken(playerResult.tacken)
             val faction = playerResult.faction
+
+            ghlipv.setPlayerTacken(playerResult.tacken)
             ghlipv.setPlayerFaction(faction, playerResult.isWinner)
+            ghlipv.setSolo(playerResult.gameType == GameType.SOLO && faction == Faction.RE)
         }
     }
 

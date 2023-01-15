@@ -18,14 +18,16 @@ class SessionStatisticsCalculator {
                         g.winningFaction,
                         true,
                         g.tacken,
-                        g.winningPoints
+                        g.winningPoints,
+                        g.isBockrunde
                     )
                 val loserResult =
                     PlayerGameResult(
                         if (g.winningFaction == Faction.RE) Faction.CONTRA else Faction.CONTRA,
                         false,
                         -1 * g.tacken,
-                        240 - g.winningPoints
+                        240 - g.winningPoints,
+                        g.isBockrunde
                     )
 
                 addGameResult(winnerResult, stats.general.total) //TODO abs(tacken)

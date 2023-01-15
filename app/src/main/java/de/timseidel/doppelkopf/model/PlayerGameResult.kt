@@ -4,5 +4,6 @@ data class PlayerGameResult(
     val faction: Faction,
     val isWinner: Boolean,
     val tacken: Int,
-    val points: Int
+    val points: Int,
+    val isBockrunde: Boolean
 )

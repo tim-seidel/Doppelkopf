@@ -48,13 +48,14 @@ class DokoUtil {
         fun getPlayerResult(player: Player, game: Game): PlayerGameResult {
             val paf = game.players.firstOrNull { paf -> paf.player.id == player.id }
             return if (paf == null) {
-                PlayerGameResult(Faction.NONE, false, 0, 0)
+                PlayerGameResult(Faction.NONE, false, 0, 0, false)
             } else {
                 PlayerGameResult(
                     paf.faction,
                     paf.faction == game.winningFaction,
                     getFactionTacken(paf.faction, game),
-                    getFactionPoints(paf.faction, game.winningFaction, game.winningPoints)
+                    getFactionPoints(paf.faction, game.winningFaction, game.winningPoints),
+                    game.isBockrunde
                 )
             }
         }

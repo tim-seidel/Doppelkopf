@@ -8,6 +8,7 @@ import de.timseidel.doppelkopf.model.DokoSession
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.util.Logging
+import java.time.ZoneOffset
 
 class SessionInfoRequest(private val sessionId: String) : BaseReadRequest<DokoSession>() {
 
@@ -109,6 +110,8 @@ class SessionListRequest : BaseReadRequest<List<DokoSession>>() {
                     val session = FirebaseDTO.fromSessionDTOtoSession(sessionDto)
                     sessions.add(session)
                 }
+
+                sessions.sortBy { s -> s.date.toInstant(ZoneOffset.UTC).toEpochMilli() }
 
                 onReadResult(sessions)
             }

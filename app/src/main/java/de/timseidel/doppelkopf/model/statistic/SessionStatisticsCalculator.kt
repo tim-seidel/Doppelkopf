@@ -6,8 +6,6 @@ import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.PlayerGameResult
 
 class SessionStatisticsCalculator {
-
-    //TODO: Sollte bei Soli Contra -3* gerechnet bekommen?
     fun calculateStatistics(games: List<Game>): SessionStatistics {
         val stats = SessionStatistics()
 
@@ -59,11 +57,11 @@ class SessionStatisticsCalculator {
                     stats.gameResultHistoryContra.add(winnerResult)
                 }
 
-                if(g.gameType == GameType.SOLO){
-                    if(g.winningFaction == Faction.RE){
+                if (g.gameType == GameType.SOLO) {
+                    if (g.winningFaction == Faction.RE) {
                         addGameResult(winnerResult, stats.solo.wins)
                         addGameResult(winnerResult, stats.solo.total)
-                    }else{
+                    } else {
                         addGameResult(loserResult, stats.solo.total)
                         addGameResult(loserResult, stats.solo.loss)
                     }
@@ -78,6 +76,5 @@ class SessionStatisticsCalculator {
         stats.games += 1
         stats.tacken += result.tacken
         stats.points += result.points
-
     }
 }

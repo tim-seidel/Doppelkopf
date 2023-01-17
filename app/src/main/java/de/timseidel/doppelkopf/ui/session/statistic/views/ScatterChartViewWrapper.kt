@@ -59,8 +59,10 @@ class LineChartViewWrapper(private val chartData: LineChartData) : IStatisticVie
         val lines = arrayListOf<HILine>()
         chartData.lineData.forEach { ld ->
             val line = HILine()
+            line.type = "scatter"
             line.name = ld.name
             line.data = ArrayList(ld.values)
+
             lines.add(line)
         }
 

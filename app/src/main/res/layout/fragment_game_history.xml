@@ -22,6 +22,7 @@
         android:id="@+id/header_game_history_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_game_history_player_list_offset"
         app:layout_constraintTop_toTopOf="parent" />

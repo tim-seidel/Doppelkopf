@@ -3,10 +3,7 @@ package de.timseidel.doppelkopf.ui.session.statistic.provider
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.statistic.PlayerStatistic
 import de.timseidel.doppelkopf.ui.session.statistic.IStatisticViewWrapper
-import de.timseidel.doppelkopf.ui.session.statistic.views.ColumnChartViewWrapper
-import de.timseidel.doppelkopf.ui.session.statistic.views.LineChartViewWrapper
-import de.timseidel.doppelkopf.ui.session.statistic.views.PieChartViewWrapper
-import de.timseidel.doppelkopf.ui.session.statistic.views.SimpleTextStatisticViewWrapper
+import de.timseidel.doppelkopf.ui.session.statistic.views.*
 import de.timseidel.doppelkopf.util.StatisticUtil
 import kotlin.math.abs
 
@@ -31,6 +28,34 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
         val partnerTackenLossRe = mutableListOf<Int>()
         val partnerTackenLossContra = mutableListOf<Int>()
 
+        val winLossHistory = mutableListOf<Int>()
+        val winLossBockmarker = mutableListOf<String>()
+        var longestWinStreak = 0
+        var longestLossStreak = 0
+        var currentWinStreak = 0
+        var currentLossStreak = 0
+        stats.gameResultHistory.forEach { gr ->
+            if (gr.isWinner) {
+                if (currentLossStreak > longestLossStreak) longestLossStreak = currentLossStreak
+                currentLossStreak = 0
+                currentWinStreak += 1
+            } else {
+                if (currentWinStreak > longestWinStreak) longestWinStreak = currentWinStreak
+                currentWinStreak = 0
+                currentLossStreak += 1
+            }
+
+            winLossHistory.add(if (gr.faction != Faction.NONE) (if (gr.isWinner) 1 else -1) else 0)
+            winLossBockmarker.add(
+                if (gr.faction != Faction.NONE) {
+                    if (gr.isBockrunde) "#".plus(IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT)
+                    else "#".plus(
+                        IStatisticViewWrapper.COLOR_NEURAL
+                    )
+                } else "#AFAFAF"
+            )
+        }
+
         stats.partners.values.forEach { p ->
             partnerNames.add(p.player.name)
             partnerNamesWithTacken.add("${p.player.name} (${p.general.total.tacken})")
@@ -50,7 +75,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
         return listOf(
             SimpleTextStatisticViewWrapper(
                 "Statistik von ${stats.player.name}",
-                "Hier siehst du die Statistiken von ${stats.player.name}. Er/Sie hab so viele Spiele gespielt:",
+                "Hier siehst du die Statistiken von ${stats.player.name}. Er/Sie hat so viele Spiele gespielt:",
                 stats.general.total.games.toString()
             ),
             PieChartViewWrapper(
@@ -91,12 +116,27 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                 LineChartViewWrapper.LineChartData(
                     "Tackenverlauf", "Tacken", listOf(
                         LineChartViewWrapper.ChartLineData(
-                            stats.player.name,
+                            "Mit Bockrunden",
                             StatisticUtil.getAccumulatedTackenHistory(stats.gameResultHistory)
+                        ),
+                        LineChartViewWrapper.ChartLineData(
+                            "Ohne Bockrunden",
+                            StatisticUtil.getAccumulatedTackenHistoryWithoutBock(stats.gameResultHistory)
                         )
                     ),
                     350f
                 )
+            ),
+            //TODO: Ausrechnen
+            SimpleTextStatisticViewWrapper(
+                "Siegesrate ohne Bockrunden",
+                "Hier siehst du die Statistiken von ${stats.player.name}. Er/Sie hat so viele Spiele gespielt:",
+                "0%"
+            ),
+            SimpleTextStatisticViewWrapper(
+                "Siegesrate in Bockrunden",
+                "Hier siehst du die Statistiken von ${stats.player.name}. Er/Sie hat so viele Spiele gespielt:",
+                "0%"
             ),
             PieChartViewWrapper(
                 PieChartViewWrapper.PieChartData(
@@ -132,6 +172,16 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                 "${stats.player.name} muss so viele verlorene Tacken bezahlen:",
                 abs(stats.general.loss.tacken).toString()
             ),
+            SimpleTextStatisticViewWrapper(
+                "Siegesausbeute",
+                "Wenn ${stats.player.name} gewinnt, bekommt er/sie im Schnitt diese Tacken:",
+                "%.2f".format(stats.general.wins.getTackenPerGame())
+            ),
+            SimpleTextStatisticViewWrapper(
+                "Schmerzliche Verluste",
+                "Wenn ${stats.player.name} verliert, kostet das im Schnitt etwa diese Tacken:",
+                "%.2f".format(stats.general.loss.getTackenPerGame())
+            ),
             ColumnChartViewWrapper(
                 ColumnChartViewWrapper.ColumnChartData(
                     "Tackenverteilung", "Tacken", "Spiele",
@@ -147,19 +197,11 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                             )
                         )
                     ),
-                    tackenDistribution.indices().map { i -> i.toString() }
+                    tackenDistribution.indices().map { i -> i.toString() },
+                    height = 250f
                 )
             ),
-            SimpleTextStatisticViewWrapper(
-                "Siegesausbeute",
-                "Wenn ${stats.player.name} gewinnt, bekommt er/sie im Schnitt diese Tacken:",
-                "%.2f".format(stats.general.wins.getTackenPerGame())
-            ),
-            SimpleTextStatisticViewWrapper(
-                "Schmerzliche Verluste",
-                "Wenn ${stats.player.name} verliert, kostet das im Schnitt etwa diese Tacken:",
-                "%.2f".format(stats.general.loss.getTackenPerGame())
-            ),
+            /*
             ColumnChartViewWrapper(
                 ColumnChartViewWrapper.ColumnChartData(
                     "Durchschnittliche Tacken", "", "Tacken pro Spiel",
@@ -182,6 +224,12 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                     ),
                     listOf("Sieg Re", "Sieg Con", "Ndl Re", "Ndl Con")
                 )
+            ),
+            */
+            SimpleTextStatisticViewWrapper(
+                "Begnadeter Solist?",
+                if (stats.solo.total.games > 0) "${stats.player.name} hat ${stats.solo.total.games} Soli gespielt und dabei folgende Tacken gemacht:" else "${stats.player.name} hat keine Soli gespielt.",
+                stats.solo.total.tacken.toString()
             ),
             //TODO: Evtl. wie bei der Kickerapp Horizonzal?
             ColumnChartViewWrapper(
@@ -259,6 +307,32 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                     ),
                     partnerNamesWithTacken
                 )
+            ),
+            ScatterChartViewWrapper(
+                ScatterChartViewWrapper.ScatterChartData(
+                    "Ergebnisverlauf (Bockrunden hervorgehoben",
+                    "Ndl. | Sieg",
+                    listOf(
+                        ScatterChartViewWrapper.ScatterLineData(
+                            "Ergebnis (Bockrunden hervorgehoben)",
+                            winLossHistory,
+                            winLossBockmarker
+                        )
+                    ),
+                    showYAxisValues = false,
+                    showLegend = false,
+                    height = 300f
+                )
+            ),
+            SimpleTextStatisticViewWrapper(
+                "Längste Siegesserie",
+                "Die längste Siegesserie hielt folgende Anzahl von Spielen:",
+                longestWinStreak.toString()
+            ),
+            SimpleTextStatisticViewWrapper(
+                "Längste Niederlagenserie",
+                "Die längste Niederlagenserie hielt folgende Anzahl von Spielen:",
+                longestLossStreak.toString()
             )
         )
     }

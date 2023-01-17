@@ -19,10 +19,36 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
 
         val playerTackenHistories = mutableListOf<LineChartViewWrapper.ChartLineData>()
         playerStats.forEach { p ->
+            val history = StatisticUtil.getAccumulatedTackenHistory(p.gameResultHistory)
+            val last = if (history.isNotEmpty()) history.last() else 0
             playerTackenHistories.add(
                 LineChartViewWrapper.ChartLineData(
-                    p.player.name,
-                    StatisticUtil.getAccumulatedTackenHistory(p.gameResultHistory)
+                    "${p.player.name} ($last)",
+                    history
+                )
+            )
+        }
+
+        val playerTackenHistoriesWithoutBock = mutableListOf<LineChartViewWrapper.ChartLineData>()
+        playerStats.forEach { p ->
+            val history = StatisticUtil.getAccumulatedTackenHistoryWithoutBock(p.gameResultHistory)
+            val last = if (history.isNotEmpty()) history.last() else 0
+            playerTackenHistoriesWithoutBock.add(
+                LineChartViewWrapper.ChartLineData(
+                    "${p.player.name} ($last)",
+                    history
+                )
+            )
+        }
+
+        val playerTackenLosses = mutableListOf<LineChartViewWrapper.ChartLineData>()
+        playerStats.forEach { p ->
+            val history = StatisticUtil.getAccumulatedTackenLosses(p.gameResultHistory)
+            val last = if (history.isNotEmpty()) history.last() else 0
+            playerTackenLosses.add(
+                LineChartViewWrapper.ChartLineData(
+                    "${p.player.name} ($last)",
+                    history
                 )
             )
         }
@@ -33,17 +59,22 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
         val playerWinsContra = mutableListOf<Int>()
         val playerLossRe = mutableListOf<Int>()
         val playerLossContra = mutableListOf<Int>()
+        val playerWinsSolo = mutableListOf<Int>()
+        val playerLossSolo = mutableListOf<Int>()
 
         val playerTackenWinsRe = mutableListOf<Int>()
         val playerTackenWinsContra = mutableListOf<Int>()
         val playerTackenLossRe = mutableListOf<Int>()
         val playerTackenLossContra = mutableListOf<Int>()
 
+
         playerStats.forEach { p ->
             playerWinsRe.add(p.re.wins.games)
             playerWinsContra.add(p.contra.wins.games)
             playerLossRe.add(p.re.loss.games)
             playerLossContra.add(p.contra.loss.games)
+            playerWinsSolo.add(p.solo.wins.games)
+            playerLossSolo.add(p.solo.loss.games)
 
             playerTackenWinsRe.add(p.re.wins.tacken)
             playerTackenWinsContra.add(p.contra.wins.tacken)
@@ -69,10 +100,20 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
                     "Tackenverlauf", "Tacken", playerTackenHistories
                 )
             ),
+            LineChartViewWrapper(
+                LineChartViewWrapper.LineChartData(
+                    "Tackenverlauf ohne Bockrunden", "Tacken", playerTackenHistoriesWithoutBock
+                )
+            ),
             SimpleTextStatisticViewWrapper(
                 "Tacken",
                 "Durchschnittlich wurden bei einem Spiel so viele Tacken verteilt:",
                 sessionStats.general.total.getTackenPerGame().toString()
+            ),
+            LineChartViewWrapper(
+                LineChartViewWrapper.LineChartData(
+                    "Straftacken", "Tacken", playerTackenLosses, 400f
+                )
             ),
             ColumnChartViewWrapper(
                 ColumnChartViewWrapper.ColumnChartData(
@@ -166,6 +207,42 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
                         )
                     ),
                     tackenDistribution.indices().map { i -> i.toString() }
+                )
+            ),
+            SimpleTextStatisticViewWrapper(
+                "Soli",
+                "So viele Soli wurden gespielt:",
+                sessionStats.solo.total.games.toString()
+            ),
+            ColumnChartViewWrapper(
+                ColumnChartViewWrapper.ColumnChartData(
+                    "Wer war heute solo?",
+                    "Spiele",
+                    "",
+                    listOf(
+                        ColumnChartViewWrapper.ColumnSeriesData(
+                            "Siege",
+                            listOf(
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "Siege",
+                                    IStatisticViewWrapper.COLOR_POSITIVE_DARK.replace("#", ""),
+                                    playerWinsSolo
+                                )
+                            )
+                        ),
+                        ColumnChartViewWrapper.ColumnSeriesData(
+                            "Niederlagen",
+                            listOf(
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "Niederlagen",
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_DARK.replace("#", ""),
+                                    playerLossSolo
+                                )
+                            )
+                        )
+                    ),
+                    playerNames,
+                    250f
                 )
             )
         )

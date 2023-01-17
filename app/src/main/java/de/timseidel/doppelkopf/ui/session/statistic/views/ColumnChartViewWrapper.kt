@@ -19,7 +19,8 @@ class ColumnChartViewWrapper(val data: ColumnChartData) : IStatisticViewWrapper 
         val xAxisTitle: String,
         val yAxisTitle: String,
         val series: List<ColumnSeriesData>,
-        val categories: List<String> = listOf()
+        val categories: List<String> = listOf(),
+        val height: Float = 300f
     )
 
     data class ColumnSeriesData(val name: String, val stacks: List<ColumnSeriesStackData>)
@@ -34,7 +35,7 @@ class ColumnChartViewWrapper(val data: ColumnChartData) : IStatisticViewWrapper 
         val columnChart = HIChartView(context)
         columnChart.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
-            Converter.convertDpToPixels(300f, context)
+            Converter.convertDpToPixels(data.height, context)
         )
         columnChart.setBackgroundColor(Color.WHITE)
 

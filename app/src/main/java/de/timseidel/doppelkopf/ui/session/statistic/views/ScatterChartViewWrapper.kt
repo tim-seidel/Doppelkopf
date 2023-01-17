@@ -11,16 +11,22 @@ import de.timseidel.doppelkopf.ui.session.statistic.IStatisticViewWrapper
 import de.timseidel.doppelkopf.util.Converter
 import de.timseidel.doppelkopf.util.Logging
 
-class LineChartViewWrapper(private val chartData: LineChartData) : IStatisticViewWrapper {
+class ScatterChartViewWrapper(private val chartData: ScatterChartData) : IStatisticViewWrapper {
 
-    data class LineChartData(
+    data class ScatterChartData(
         val title: String,
         val yAxisName: String,
-        val lineData: List<ChartLineData>,
-        val height : Float = 500f
+        val lineData: List<ScatterLineData>,
+        val showYAxisValues: Boolean = true,
+        val showLegend: Boolean = true,
+        val height: Float = 500f
     )
 
-    data class ChartLineData(val name: String, val values: List<Number>)
+    data class ScatterLineData(
+        val name: String,
+        val values: List<Number>,
+        val colors: List<String> = listOf()
+    )
 
     override fun getItemType(): Int {
         return IStatisticViewWrapper.ITEM_TYPE_CHART_LINE
@@ -28,7 +34,10 @@ class LineChartViewWrapper(private val chartData: LineChartData) : IStatisticVie
 
     override fun getView(context: Context): View {
         val lineChart = HIChartView(context)
-        lineChart.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Converter.convertDpToPixels(chartData.height, context))
+        lineChart.layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            Converter.convertDpToPixels(chartData.height, context)
+        )
         lineChart.setBackgroundColor(Color.WHITE)
 
         val options = HIOptions()
@@ -40,6 +49,8 @@ class LineChartViewWrapper(private val chartData: LineChartData) : IStatisticVie
         val yAxis = HIYAxis()
         yAxis.title = HITitle()
         yAxis.title.text = chartData.yAxisName
+        yAxis.labels = HILabels()
+        yAxis.labels.enabled = false
         options.yAxis = arrayListOf(yAxis)
 
         val credits = HICredits()
@@ -54,6 +65,7 @@ class LineChartViewWrapper(private val chartData: LineChartData) : IStatisticVie
         legend.layout = "horizontal"
         legend.align = "center"
         legend.verticalAlign = "top"
+        legend.enabled = chartData.showLegend
         options.legend = legend
 
         val lines = arrayListOf<HILine>()
@@ -61,7 +73,20 @@ class LineChartViewWrapper(private val chartData: LineChartData) : IStatisticVie
             val line = HILine()
             line.type = "scatter"
             line.name = ld.name
-            line.data = ArrayList(ld.values)
+            line.data = ArrayList<Any>()
+
+            ld.values.forEachIndexed { i, value ->
+                if (ld.values.size == ld.colors.size) {
+                    line.data.add(
+                        mapOf(
+                            "y" to value,
+                            "marker" to mapOf("fillColor" to ld.colors[i])
+                        )
+                    )
+                } else {
+                    line.data.add(value)
+                }
+            }
 
             lines.add(line)
         }

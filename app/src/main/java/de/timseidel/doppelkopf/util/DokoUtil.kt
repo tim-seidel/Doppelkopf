@@ -41,8 +41,8 @@ class DokoUtil {
             return if (faction == winningFaction) winningPoints else 240 - winningPoints
         }
 
-        fun isPlayerInGame(player: Player, game: Game): Boolean {
-            return game.players.any { paf -> paf.player.id == player.id }
+        fun getStrafTacken(result: PlayerGameResult): Int{
+           return if(result.tacken < 0) -1*result.tacken else 0
         }
 
         fun getPlayerResult(player: Player, game: Game): PlayerGameResult {

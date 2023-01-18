@@ -23,10 +23,10 @@ class StatisticUtil {
             return tackenHistory
         }
 
-        fun getAccumulatedTackenLosses(gameResults: List<PlayerGameResult>): List<Int> {
+        fun getAccumulatedStraftackenHistory(gameResults: List<PlayerGameResult>): List<Int> {
             val tackenHistory = mutableListOf(0)
             gameResults.forEach { gr ->
-                tackenHistory.add(tackenHistory[tackenHistory.size - 1] + (if (gr.faction != Faction.NONE && gr.tacken < 0) -1 * gr.tacken else 0))
+                tackenHistory.add(tackenHistory[tackenHistory.size - 1] + DokoUtil.getStrafTacken(gr))
             }
 
             return tackenHistory

@@ -4,6 +4,7 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.statistic.PlayerStatistic
 import de.timseidel.doppelkopf.ui.session.statistic.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.session.statistic.views.*
+import de.timseidel.doppelkopf.util.Logging
 import de.timseidel.doppelkopf.util.StatisticUtil
 import kotlin.math.abs
 
@@ -170,7 +171,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             SimpleTextStatisticViewWrapper(
                 "Schuldschein",
                 "${stats.player.name} muss so viele verlorene Tacken bezahlen:",
-                abs(stats.general.loss.tacken).toString()
+                StatisticUtil.getAccumulatedStraftackenHistory(stats.gameResultHistory).last().toString()
             ),
             SimpleTextStatisticViewWrapper(
                 "Siegesausbeute",

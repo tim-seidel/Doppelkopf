@@ -43,11 +43,11 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
 
         val playerTackenLosses = mutableListOf<LineChartViewWrapper.ChartLineData>()
         playerStats.forEach { p ->
-            val history = StatisticUtil.getAccumulatedTackenLosses(p.gameResultHistory)
+            val history = StatisticUtil.getAccumulatedStraftackenHistory(p.gameResultHistory)
             val last = if (history.isNotEmpty()) history.last() else 0
             playerTackenLosses.add(
                 LineChartViewWrapper.ChartLineData(
-                    "${p.player.name} ($last)",
+                    "${p.player.name} ($last | ${last*5/100f}€)",
                     history
                 )
             )

@@ -57,6 +57,31 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             )
         }
 
+        var gamesBockrunde = 0
+        var winsBockrunde = 0
+        var gamesNoBockrunde = 0
+        var winsNoBockrunde = 0
+        stats.gameResultHistory.forEach { gr ->
+            if (gr.faction != Faction.NONE) {
+                if (gr.isBockrunde) {
+                    gamesBockrunde += 1
+                    if (gr.isWinner) {
+                        winsBockrunde += 1
+                    }
+                } else {
+                    gamesNoBockrunde += 1
+                    if (gr.isWinner) {
+                        winsNoBockrunde += 1
+                    }
+                }
+            }
+        }
+
+        val winrateBockrunde =
+            if (gamesBockrunde > 0) ((winsBockrunde / (gamesBockrunde * 1f)) * 100).toInt() else 0
+        val winrateNoBockrunde =
+            if (gamesNoBockrunde > 0) ((winsNoBockrunde / (gamesNoBockrunde * 1f)) * 100).toInt() else 0
+
         stats.partners.values.forEach { p ->
             partnerNames.add(p.player.name)
             partnerNamesWithTacken.add("${p.player.name} (${p.general.total.tacken})")
@@ -128,16 +153,15 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                     350f
                 )
             ),
-            //TODO: Ausrechnen
             SimpleTextStatisticViewWrapper(
                 "Siegesrate ohne Bockrunden",
-                "Hier siehst du die Statistiken von ${stats.player.name}. Er/Sie hat so viele Spiele gespielt:",
-                "0%"
+                "In Spielen, die keine Bockrunde waren, hat ${stats.player.name} eine Siegesrate von:",
+                "$winrateNoBockrunde%"
             ),
             SimpleTextStatisticViewWrapper(
                 "Siegesrate in Bockrunden",
-                "Hier siehst du die Statistiken von ${stats.player.name}. Er/Sie hat so viele Spiele gespielt:",
-                "0%"
+                "In Spielen, die Bockrunden waren, hat ${stats.player.name} eine Siegesrate von:",
+                "$winrateBockrunde%"
             ),
             PieChartViewWrapper(
                 PieChartViewWrapper.PieChartData(
@@ -171,7 +195,8 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             SimpleTextStatisticViewWrapper(
                 "Schuldschein",
                 "${stats.player.name} muss so viele verlorene Tacken bezahlen:",
-                StatisticUtil.getAccumulatedStraftackenHistory(stats.gameResultHistory).last().toString()
+                StatisticUtil.getAccumulatedStraftackenHistory(stats.gameResultHistory).last()
+                    .toString()
             ),
             SimpleTextStatisticViewWrapper(
                 "Siegesausbeute",
@@ -202,31 +227,6 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                     height = 250f
                 )
             ),
-            /*
-            ColumnChartViewWrapper(
-                ColumnChartViewWrapper.ColumnChartData(
-                    "Durchschnittliche Tacken", "", "Tacken pro Spiel",
-                    listOf(
-                        ColumnChartViewWrapper.ColumnSeriesData(
-                            "Siege",
-                            listOf(
-                                ColumnChartViewWrapper.ColumnSeriesStackData(
-                                    "Tacken",
-                                    IStatisticViewWrapper.COLOR_NEURAL.replace("#", ""),
-                                    listOf(
-                                        stats.re.wins.getTackenPerGame(),
-                                        stats.contra.wins.getTackenPerGame(),
-                                        stats.re.loss.getTackenPerGame(),
-                                        stats.contra.loss.getTackenPerGame()
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    listOf("Sieg Re", "Sieg Con", "Ndl Re", "Ndl Con")
-                )
-            ),
-            */
             SimpleTextStatisticViewWrapper(
                 "Begnadeter Solist?",
                 if (stats.solo.total.games > 0) "${stats.player.name} hat ${stats.solo.total.games} Soli gespielt und dabei folgende Tacken gemacht:" else "${stats.player.name} hat keine Soli gespielt.",

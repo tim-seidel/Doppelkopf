@@ -97,12 +97,14 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
             ),
             LineChartViewWrapper(
                 LineChartViewWrapper.LineChartData(
-                    "Tackenverlauf", "Tacken", playerTackenHistories
+                    "Tackenverlauf", "Tacken", playerTackenHistories,
+                    height = 400f
                 )
             ),
             LineChartViewWrapper(
                 LineChartViewWrapper.LineChartData(
-                    "Tackenverlauf ohne Bockrunden", "Tacken", playerTackenHistoriesWithoutBock
+                    "Tackenverlauf ohne Bockrunden", "Tacken", playerTackenHistoriesWithoutBock,
+                    height = 400f
                 )
             ),
             SimpleTextStatisticViewWrapper(
@@ -112,7 +114,7 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
             ),
             LineChartViewWrapper(
                 LineChartViewWrapper.LineChartData(
-                    "Straftacken", "Tacken", playerTackenLosses, 400f
+                    "Straftacken", "Straftacken", playerTackenLosses, 400f
                 )
             ),
             ColumnChartViewWrapper(

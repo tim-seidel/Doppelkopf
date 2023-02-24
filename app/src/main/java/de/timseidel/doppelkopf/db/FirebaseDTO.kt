@@ -7,6 +7,23 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 
+data class GroupDto(
+    var id: String,
+    var code: String,
+    var name: String,
+    var timeCreated: Long
+) {
+    constructor() : this("", "", "", 0)
+}
+
+data class MemberDto(
+    var id: String,
+    var name: String,
+    var timeCreated: Long
+) {
+    constructor() : this("", "", 0)
+}
+
 data class SessionDto(
     var id: String,
     var name: String,
@@ -45,6 +62,46 @@ data class GameDto(
 
 class FirebaseDTO() {
     companion object {
+        fun fromGroupToGroupDTO(group: Group): GroupDto {
+            return GroupDto(
+                group.id,
+                group.code,
+                group.name,
+                group.date.toInstant(ZoneOffset.UTC).toEpochMilli()
+            )
+        }
+
+        fun fromGroupDTOtoGroup(dto: GroupDto): Group {
+            return Group(
+                dto.id,
+                dto.code,
+                LocalDateTime.ofInstant(
+                    Instant.ofEpochMilli(dto.timeCreated),
+                    ZoneId.systemDefault()
+                ),
+                dto.name
+            )
+        }
+
+        fun fromMemberToMemberDTO(member: Member): MemberDto {
+            return MemberDto(
+                member.id,
+                member.name,
+                member.creationTime.toInstant(ZoneOffset.UTC).toEpochMilli()
+            )
+        }
+
+        fun fromMemberDTOtoMember(dto: MemberDto): Member {
+            return Member(
+                dto.id,
+                dto.name,
+                LocalDateTime.ofInstant(
+                    Instant.ofEpochMilli(dto.timeCreated),
+                    ZoneId.systemDefault()
+                )
+            )
+        }
+
         fun fromSessionToSessionDTO(session: DokoSession): SessionDto {
             return SessionDto(
                 session.id,

@@ -2,9 +2,8 @@ package de.timseidel.doppelkopf.model
 
 import java.time.LocalDateTime
 
-data class Group(
+data class Member(
     val id: String,
-    val code: String,
-    val date: LocalDateTime,
-    var name: String
+    val name: String,
+    val creationTime: LocalDateTime
 )

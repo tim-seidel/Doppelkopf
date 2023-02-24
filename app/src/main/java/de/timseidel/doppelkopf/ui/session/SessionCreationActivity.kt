@@ -4,21 +4,37 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
-import android.view.Menu
-import android.view.MenuItem
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.controller.DoppelkopfManager
 import de.timseidel.doppelkopf.databinding.ActivitySessionCreationBinding
 import de.timseidel.doppelkopf.db.DoppelkopfDatabase
+import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
+import de.timseidel.doppelkopf.util.Converter
+import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.EditTextListener
 import de.timseidel.doppelkopf.util.Logging
 
-class SessionCreationActivity : AppCompatActivity() {
+class SessionCreationActivity() : AppCompatActivity() {
 
     private lateinit var binding: ActivitySessionCreationBinding
+
+    private lateinit var etSessionName: EditText
+    private lateinit var btnCreateSession: Button
+    private lateinit var btnCreateMember: ImageButton
+    private lateinit var rvMemberSelectList: RecyclerView
+
+    private lateinit var memberSelectAdapter: MemberSelectAdapter
+
     private val viewModel = SessionCreationViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,39 +42,118 @@ class SessionCreationActivity : AppCompatActivity() {
 
         binding = ActivitySessionCreationBinding.inflate(layoutInflater)
 
+        findViews()
         setupEditTexts()
+        setupButtons()
+        setupMemberSelectList()
+
         setContentView(binding.root)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_create_session, menu)
-        return super.onCreateOptionsMenu(menu)
+    private fun findViews() {
+        etSessionName = binding.etSessionName
+        rvMemberSelectList = binding.rvSessionCreationMemberList
+        btnCreateSession = binding.btnSaveSession
+        btnCreateMember = binding.ibSessionAddMember
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.option_confirm_create_session -> {
-                onCreateSessionClicked()
-                return true
+    private fun setupEditTexts() {
+        etSessionName.addTextChangedListener(object : EditTextListener() {
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.sessionName = s.toString()
             }
+        })
+    }
+
+    private fun setupButtons() {
+        btnCreateMember.setOnClickListener {
+            onAddMemberClicked()
         }
 
-        return super.onOptionsItemSelected(item)
+        btnCreateSession.setOnClickListener {
+            onCreateSessionClicked()
+        }
+    }
+
+    private fun setupMemberSelectList() {
+        val members = DokoShortAccess.getMemberCtrl().getMembers()
+        members.forEach { m ->
+            viewModel.memberSelections.add(
+                MemberSelectAdapter.MemberSelection(
+                    m, false
+                )
+            )
+        }
+
+        memberSelectAdapter = MemberSelectAdapter(viewModel.memberSelections,
+            object : MemberSelectAdapter.MemberSelectListener {
+                override fun onMemberSelected(member: MemberSelectAdapter.MemberSelection) {
+                    member.isSelected = !member.isSelected
+                }
+            })
+
+        val dp4 = Converter.convertDpToPixels(4f, rvMemberSelectList.context)
+        rvMemberSelectList.adapter = memberSelectAdapter
+        rvMemberSelectList.layoutManager = GridLayoutManager(rvMemberSelectList.context, 2)
+        rvMemberSelectList.addItemDecoration(RecyclerViewMarginDecoration(dp4, dp4))
+    }
+
+    private fun onAddMemberClicked() {
+        val inputLayout = layoutInflater.inflate(R.layout.dialog_member_creation, null)
+        val etMemberName = inputLayout.findViewById<EditText>(R.id.et_member_creation_name)
+        val tvMemberMessage =
+            inputLayout.findViewById<TextView>(R.id.tv_member_creation_info_message)
+
+        etMemberName.addTextChangedListener(object : EditTextListener() {
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.memberInputName = s.toString()
+                if (DokoShortAccess.getMemberCtrl().validateName(s.toString())) {
+                    tvMemberMessage.text = ""
+                } else {
+                    tvMemberMessage.text = "Bitte einen eindeutigen Namen anlegen"
+                }
+            }
+        })
+
+        AlertDialog.Builder(this).setTitle("Neuen Mitspieler hinzufügen")
+            .setPositiveButton("Ok") { _, _ -> createMember(etMemberName.text.toString()) }
+            .setNegativeButton("Abbrechen") { _, _ -> Logging.d("Cancel Member") }
+            .setView(inputLayout).show()
+    }
+
+    private fun createMember(name: String) {
+        Logging.d("Create Member $name")
+
+        val memberCtrl = DokoShortAccess.getMemberCtrl()
+        if (!memberCtrl.validateName(name)) return
+
+        val member = memberCtrl.createMember(name)
+        memberCtrl.addMember(member)
+
+        val db = Firebase.firestore
+        val firebase = DoppelkopfDatabase()
+        firebase.setFirestore(db)
+        firebase.storeMember(member, DokoShortAccess.getGroupCtrl().getGroup())
+
+        viewModel.memberSelections.add(MemberSelectAdapter.MemberSelection(member, true))
+        viewModel.memberInputName = ""
+        memberSelectAdapter.notifyItemInserted(viewModel.memberSelections.size - 1)
     }
 
     private fun onCreateSessionClicked() {
         if (!viewModel.checkIsSetupValid()) {
             showSessionCreateError(getString(R.string.create_session_unable_to_create))
+            Logging.d(viewModel.memberSelections.toString())
             return
         }
-
-        val playerNames = viewModel.playerNamesAsList()
 
         try {
             val sessionCtrl = DoppelkopfManager.getInstance().getSessionController()
 
             val session = sessionCtrl.createSession(viewModel.sessionName)
             sessionCtrl.set(session)
+
+            val playerNames = viewModel.memberSelections.map { ms -> ms.member.name }
 
             val players = sessionCtrl.getPlayerController().createPlayers(playerNames)
             sessionCtrl.getPlayerController().addPlayers(players)
@@ -67,61 +162,27 @@ class SessionCreationActivity : AppCompatActivity() {
             val firebase = DoppelkopfDatabase()
             firebase.setFirestore(db)
 
-            firebase.storeSession(session)
-            firebase.storePlayersInSession(players, session)
+            val group = DokoShortAccess.getGroupCtrl().getGroup()
+            firebase.storeSession(session, group)
+            firebase.storePlayersInSession(players, session, group)
+
+            viewModel.reset()
+            memberSelectAdapter.notifyDataSetChanged()
 
             sessionCreated()
         } catch (e: Exception) {
-            Logging.e("Session konnte nicht erstellt werden: $playerNames", e)
+            Logging.e("Session konnte nicht erstellt werden: $viewModel", e)
             showSessionCreateError("Der Doppelkopfabend kann nicht erstellt werden: $e")
         }
     }
 
     private fun sessionCreated() {
         val intent = Intent(this, SessionActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
     }
 
     private fun showSessionCreateError(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
-    }
-
-    //TODO: Not very clever to do it 6 times, rework as list (at least from 5+)
-    private fun setupEditTexts() {
-        binding.etSessionName.addTextChangedListener(object : EditTextListener() {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.sessionName = s.toString()
-            }
-        })
-        binding.etPlayerName1.addTextChangedListener(object : EditTextListener() {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.player1Name = s.toString()
-            }
-        })
-        binding.etPlayerName2.addTextChangedListener(object : EditTextListener() {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.player2Name = s.toString()
-            }
-        })
-        binding.etPlayerName3.addTextChangedListener(object : EditTextListener() {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.player3Name = s.toString()
-            }
-        })
-        binding.etPlayerName4.addTextChangedListener(object : EditTextListener() {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.player4Name = s.toString()
-            }
-        })
-        binding.etPlayerName5.addTextChangedListener(object : EditTextListener() {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.player5Name = s.toString()
-            }
-        })
-        binding.etPlayerName6.addTextChangedListener(object : EditTextListener() {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.player6Name = s.toString()
-            }
-        })
     }
 }

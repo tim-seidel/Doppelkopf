@@ -11,17 +11,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import de.timseidel.doppelkopf.databinding.FragmentSessionHistoryBinding
 import de.timseidel.doppelkopf.db.request.*
 import de.timseidel.doppelkopf.model.DokoSession
-import de.timseidel.doppelkopf.model.Game
-import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
-import de.timseidel.doppelkopf.ui.session.SessionActivity
 import de.timseidel.doppelkopf.ui.session.SessionCreationActivity
 import de.timseidel.doppelkopf.ui.session.SessionLoadingActivity
 import de.timseidel.doppelkopf.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.Logging
 
-//TODO: Vllt. doch mit Viewmodel, da Player nachgeladen werden muessen
 class SessionHistoryFragment : Fragment() {
 
     private var _binding: FragmentSessionHistoryBinding? = null
@@ -45,10 +41,13 @@ class SessionHistoryFragment : Fragment() {
     }
 
     private fun loadSessionHistoryList() {
-        SessionListRequest().execute(object : ReadRequestListener<List<DokoSession>> {
+        SessionListRequest(DokoShortAccess.getGroupCtrl().getGroup().id).execute(object :
+            ReadRequestListener<List<DokoSession>> {
             override fun onReadComplete(result: List<DokoSession>) {
+                Logging.d("SessionHistory: $result")
                 setSessionHistoryList(result)
             }
+
             override fun onReadFailed() {}
         })
     }

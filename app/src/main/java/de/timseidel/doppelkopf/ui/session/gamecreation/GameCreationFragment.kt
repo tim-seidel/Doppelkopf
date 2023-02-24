@@ -229,7 +229,11 @@ class GameCreationFragment : Fragment() {
             val firebase = DoppelkopfDatabase()
             firebase.setFirestore(db)
 
-            firebase.storeGameInSession(game, DokoShortAccess.getSessionCtrl().getSession())
+            firebase.storeGameInSession(
+                game,
+                DokoShortAccess.getSessionCtrl().getSession(),
+                DokoShortAccess.getGroupCtrl().getGroup()
+            )
 
             Toast.makeText(
                 context,

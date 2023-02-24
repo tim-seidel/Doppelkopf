@@ -9,7 +9,7 @@
         android:id="@+id/sv_session_creation"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_save_session"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -44,105 +44,60 @@
                 android:singleLine="true"
                 android:textColorHint="#757575" />
 
-            <TextView
-                android:id="@+id/tv_session_players"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/session_players"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_session_name" />
-
-            <EditText
-                android:id="@+id/et_player_name_1"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:drawableStart="@drawable/ic_baseline_person_outline_24"
-                android:ems="10"
-                android:hint="@string/player_1"
-                android:importantForAutofill="no"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
+                android:layout_marginTop="8dp">
 
-            <EditText
-                android:id="@+id/et_player_name_2"
+                <TextView
+                    android:id="@+id/tv_session_players"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/session_players"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toStartOf="@+id/ib_session_add_member"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/ib_session_add_member"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:backgroundTint="@color/primary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="4dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/baseline_person_add_alt_24"
+                    app:tint="@color/white" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_session_creation_member_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:drawableStart="@drawable/ic_baseline_person_outline_24"
-                android:ems="10"
-                android:hint="@string/player_2"
-                android:importantForAutofill="no"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
-
-            <EditText
-                android:id="@+id/et_player_name_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:drawableStart="@drawable/ic_baseline_person_outline_24"
-                android:ems="10"
-                android:hint="@string/player_3"
-                android:importantForAutofill="no"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
-
-            <EditText
-                android:id="@+id/et_player_name_4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:drawableStart="@drawable/ic_baseline_person_outline_24"
-                android:ems="10"
-                android:hint="@string/player_4"
-                android:importantForAutofill="no"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
-
-            <EditText
-                android:id="@+id/et_player_name_5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:alpha="0.5"
-                android:drawableStart="@drawable/ic_baseline_person_outline_24"
-                android:ems="10"
-                android:hint="@string/player_5"
-                android:importantForAutofill="no"
-                android:inputType="textPersonName"
-                android:minHeight="48dp"
-                android:textColorHint="#757575" />
-
-            <EditText
-                android:id="@+id/et_player_name_6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:alpha="0.5"
-                android:drawableStart="@drawable/ic_baseline_person_outline_24"
-                android:ems="10"
-                android:hint="@string/player_6"
-                android:importantForAutofill="no"
-                android:inputType="textPersonName"
-                android:minHeight="48dp"
-                android:textColorHint="#757575" />
-
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="4dp" />
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/btn_save_session"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/neural"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/save"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_baseline_check_24"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

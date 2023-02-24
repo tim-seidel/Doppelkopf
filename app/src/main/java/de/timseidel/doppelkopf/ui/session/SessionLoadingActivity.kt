@@ -41,7 +41,7 @@ class SessionLoadingActivity : AppCompatActivity() {
         val sessionId = intent.getStringExtra(KEY_SESSION_ID)
 
         if (sessionId != null) {
-            loadSession(sessionId)
+            loadSession(DokoShortAccess.getGroupCtrl().getGroup().id, sessionId)
         }
     }
 
@@ -64,16 +64,16 @@ class SessionLoadingActivity : AppCompatActivity() {
         ivLoadingIcon.startAnimation(anim)
     }
 
-    private fun loadSession(sessionId: String) {
+    private fun loadSession(groupId: String, sessionId: String) {
         setMessage(getString(R.string.loading_session))
-        SessionInfoRequest(sessionId).execute(object : ReadRequestListener<DokoSession> {
+        SessionInfoRequest(groupId, sessionId).execute(object : ReadRequestListener<DokoSession> {
             override fun onReadComplete(result: DokoSession) {
                 DokoShortAccess.getSessionCtrl().set(result)
 
                 setTitle(result.name)
                 setMessage(getString(R.string.loading_players))
 
-                SessionPlayersRequest(sessionId).execute(object :
+                SessionPlayersRequest(groupId, sessionId).execute(object :
                     ReadRequestListener<List<Player>> {
 
                     override fun onReadComplete(result: List<Player>) {
@@ -82,7 +82,7 @@ class SessionLoadingActivity : AppCompatActivity() {
 
                         setMessage(getString(R.string.loading_games))
 
-                        SessionGamesRequest(sessionId, pctrl).execute(
+                        SessionGamesRequest(groupId, sessionId, pctrl).execute(
                             object : ReadRequestListener<List<Game>> {
 
                                 override fun onReadComplete(result: List<Game>) {

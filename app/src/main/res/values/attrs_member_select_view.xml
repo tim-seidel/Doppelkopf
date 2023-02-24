@@ -1,0 +1,6 @@
+<resources>
+    <declare-styleable name="MemberSelectView">
+        <attr name="memberName" format="string" />
+        <attr name="isMemberChecked" format="boolean" />
+    </declare-styleable>
+</resources>

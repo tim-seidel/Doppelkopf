@@ -1,8 +1,11 @@
 <resources>
+    <string name="shared_preferences_file_key">de.timseidel.doppelkopf.shared_preferences</string>
+    <string name="shared_preferences_group_id_key">current_group_id</string>
     <string name="app_name">Doppelkopf</string>
     <string name="navigation_title_session_history">Abende</string>
     <string name="navigation_title_finances">Kasse</string>
     <string name="session_players">Mitspielende</string>
+    <string name="player">Spieler*in</string>
     <string name="player_1">Spieler*in 1</string>
     <string name="player_2">Spieler*in 2</string>
     <string name="player_3">Spieler*in 3</string>
@@ -11,8 +14,10 @@
     <string name="player_6">Spieler*in 6</string>
     <string name="desc_create_session_button">Button to create a new session</string>
     <string name="doko_session">Doppelkopfabend</string>
+    <string name="group_name">Gruppenname</string>
     <string name="date_hint">Datum</string>
     <string name="session_general_data">Allgemein</string>
+    <string name="group_general_data_heading">Allgemein</string>
     <string name="start_session">Starten</string>
     <string name="title_activity_session">SessionActivity</string>
     <string name="title_game_creation">Spiel erstellen</string>
@@ -31,14 +36,25 @@
     <string name="option_confirm_create_session">Erstellen</string>
     <string name="option_confirm_create_game">Erstellen</string>
     <string name="create_session_unable_to_create">Doppelkopfabend kann nicht erstellt werden. Stell sicher, dass es mindestens 4 Spieler*innen und einen Namen gibt.</string>
+    <string name="create_group_unable_to_create">Die Doppelkopfgruppe kann nicht erstellt werden. Stell sicher, dass du einen Namen eingegeben hast.</string>
     <string name="tacken">Tacken</string>
     <string name="desc_history_item_player_faction_icon">Faction of the player in this game</string>
     <string name="loading_finished">Fertig</string>
     <string name="loading_games">Lade Spiele…</string>
     <string name="loading_players">Lade Mitspieler…</string>
     <string name="loading_session">Lade Doppelkopfabend…</string>
+    <string name="loading_group">Lade Doppelkopfgruppe…</string>
+    <string name="loading_group_no_success">Die Gruppe konnte nicht geladen werden.</string>
+    <string name="loading_sessions">Lade Doppelkopfabende…</string>
     <string name="save">Speichern</string>
     <string name="game_saved">Spiel gespeichert!</string>
     <string name="game_creation_error">Das Spiel wird nicht erstellt, da die Einstellungen nicht gültig sind</string>
     <string name="check_is_bockrunde">Ist Bockrunde</string>
+    <string name="enter_group_code">Gruppencode eingeben</string>
+    <string name="hint_group_code">000000</string>
+    <string name="join_group">Gruppe beitreten</string>
+    <string name="or">oder</string>
+    <string name="create_group">Gruppe erstellen</string>
+    <string name="back">Zurück</string>
+    <string name="nav_clear_default_group">Zur Gruppenauswahl</string>
 </resources>

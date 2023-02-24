@@ -6,6 +6,7 @@ import de.timseidel.doppelkopf.db.request.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionPlayersRequest
 import de.timseidel.doppelkopf.model.DokoSession
 import de.timseidel.doppelkopf.model.Player
+import de.timseidel.doppelkopf.util.DokoShortAccess
 import java.time.format.DateTimeFormatter
 
 class SessionHistoryListAdapter(
@@ -35,13 +36,14 @@ class SessionHistoryListAdapter(
                 listener?.onOpenSessionClicked(session)
             }
 
-            SessionPlayersRequest(session.id).execute(object : ReadRequestListener<List<Player>> {
-                override fun onReadComplete(result: List<Player>) {
-                    sessionView.setPlayers(result)
-                }
+            SessionPlayersRequest(DokoShortAccess.getGroupCtrl().getGroup().id, session.id).execute(
+                object : ReadRequestListener<List<Player>> {
+                    override fun onReadComplete(result: List<Player>) {
+                        sessionView.setPlayers(result)
+                    }
 
-                override fun onReadFailed() {}
-            })
+                    override fun onReadFailed() {}
+                })
         }
     }
 

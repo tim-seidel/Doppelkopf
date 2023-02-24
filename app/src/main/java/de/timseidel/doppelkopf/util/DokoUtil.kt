@@ -1,6 +1,5 @@
 package de.timseidel.doppelkopf.util
 
-import de.timseidel.doppelkopf.controller.DoppelkopfManager
 import de.timseidel.doppelkopf.model.*
 
 class DokoUtil {
@@ -65,29 +64,5 @@ class DokoUtil {
             val result = getPlayerResult(player, game)
             return game.gameType == GameType.SOLO && result.faction == Faction.RE
         }
-    }
-
-    private fun createSampleGames() {
-        for (i in (1..40)) {
-            DoppelkopfManager.getInstance().getSessionController().getGameController()
-                .addGame(getSampleGame())
-        }
-    }
-
-    private fun getSampleGame(): Game {
-        val pafs = DoppelkopfManager.getInstance().getSessionController().getPlayerController()
-            .getPlayersAsFaction()
-        val reContra = listOf(Faction.RE, Faction.RE, Faction.CONTRA, Faction.CONTRA).shuffled()
-        for (i in 0..3) pafs[i].faction = reContra[i]
-
-        return DoppelkopfManager.getInstance().getSessionController().getGameController()
-            .createGame(
-                pafs,
-                if ((0..100).random() <= 60) Faction.RE else Faction.CONTRA,
-                (121..240).random(),
-                (-1..8).random(),
-                (0..9).random() == 0,
-                GameType.NORMAL
-            )
     }
 }

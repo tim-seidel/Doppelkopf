@@ -1,7 +1,6 @@
 package de.timseidel.doppelkopf.ui.sessionhistory
 
 import android.content.Context
-import android.content.Intent
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageButton
@@ -10,20 +9,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
-import de.timseidel.doppelkopf.db.request.ReadRequestListener
-import de.timseidel.doppelkopf.db.request.SessionGamesRequest
-import de.timseidel.doppelkopf.db.request.SessionInfoRequest
-import de.timseidel.doppelkopf.db.request.SessionPlayersRequest
-import de.timseidel.doppelkopf.model.DokoSession
-import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
-import de.timseidel.doppelkopf.ui.session.SessionActivity
-import de.timseidel.doppelkopf.ui.session.gamehistory.GameHistoryListItemPlayerListAdapter
-import de.timseidel.doppelkopf.ui.session.gamehistory.GameHistoryListPlayerHeaderAdapter
 import de.timseidel.doppelkopf.util.Converter
-import de.timseidel.doppelkopf.util.DokoShortAccess
-import de.timseidel.doppelkopf.util.Logging
 
 class SessionHistoryListItemView constructor(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {

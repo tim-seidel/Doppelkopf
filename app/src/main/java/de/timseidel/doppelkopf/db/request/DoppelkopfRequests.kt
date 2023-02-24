@@ -1,11 +1,20 @@
 package de.timseidel.doppelkopf.db.request
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.toObject
 import de.timseidel.doppelkopf.contracts.IPlayerController
-import de.timseidel.doppelkopf.db.*
-import de.timseidel.doppelkopf.model.*
+import de.timseidel.doppelkopf.db.FirebaseDTO
+import de.timseidel.doppelkopf.db.FirebaseStrings
+import de.timseidel.doppelkopf.db.GameDto
+import de.timseidel.doppelkopf.db.GroupDto
+import de.timseidel.doppelkopf.db.MemberDto
+import de.timseidel.doppelkopf.db.PlayerDto
+import de.timseidel.doppelkopf.db.SessionDto
+import de.timseidel.doppelkopf.model.DokoSession
+import de.timseidel.doppelkopf.model.Game
+import de.timseidel.doppelkopf.model.Group
+import de.timseidel.doppelkopf.model.Member
+import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.util.Logging
 import java.time.ZoneOffset
 

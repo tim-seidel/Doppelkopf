@@ -8,11 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import de.timseidel.doppelkopf.controller.DoppelkopfManager
 import de.timseidel.doppelkopf.databinding.FragmentGameHistoryBinding
-import de.timseidel.doppelkopf.model.Faction
-import de.timseidel.doppelkopf.model.Game
-import de.timseidel.doppelkopf.model.statistic.PlayerStatisticsCalculator
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess

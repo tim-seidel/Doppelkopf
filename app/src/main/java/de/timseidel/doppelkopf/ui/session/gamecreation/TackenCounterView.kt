@@ -3,10 +3,8 @@ package de.timseidel.doppelkopf.ui.session.gamecreation
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import de.timseidel.doppelkopf.R
 
 class TackenCounterView constructor(context: Context, attrs: AttributeSet? = null) :

@@ -4,12 +4,17 @@ import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
-import com.highsoft.highcharts.common.hichartsclasses.*
+import com.highsoft.highcharts.common.hichartsclasses.HICredits
+import com.highsoft.highcharts.common.hichartsclasses.HIExporting
+import com.highsoft.highcharts.common.hichartsclasses.HILabels
+import com.highsoft.highcharts.common.hichartsclasses.HILegend
+import com.highsoft.highcharts.common.hichartsclasses.HILine
+import com.highsoft.highcharts.common.hichartsclasses.HIOptions
+import com.highsoft.highcharts.common.hichartsclasses.HITitle
+import com.highsoft.highcharts.common.hichartsclasses.HIYAxis
 import com.highsoft.highcharts.core.HIChartView
-import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.ui.session.statistic.IStatisticViewWrapper
 import de.timseidel.doppelkopf.util.Converter
-import de.timseidel.doppelkopf.util.Logging
 
 class ScatterChartViewWrapper(private val chartData: ScatterChartData) : IStatisticViewWrapper {
 

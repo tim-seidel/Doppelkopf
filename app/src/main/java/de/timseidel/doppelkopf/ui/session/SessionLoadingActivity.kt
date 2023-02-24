@@ -1,11 +1,11 @@
 package de.timseidel.doppelkopf.ui.session
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.db.request.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionGamesRequest
@@ -15,7 +15,6 @@ import de.timseidel.doppelkopf.model.DokoSession
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.util.DokoShortAccess
-import de.timseidel.doppelkopf.util.Logging
 
 class SessionLoadingActivity : AppCompatActivity() {
 

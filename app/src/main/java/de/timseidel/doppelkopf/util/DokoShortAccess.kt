@@ -1,6 +1,10 @@
 package de.timseidel.doppelkopf.util
 
-import de.timseidel.doppelkopf.contracts.*
+import de.timseidel.doppelkopf.contracts.IGameController
+import de.timseidel.doppelkopf.contracts.IGroupController
+import de.timseidel.doppelkopf.contracts.IMemberController
+import de.timseidel.doppelkopf.contracts.IPlayerController
+import de.timseidel.doppelkopf.contracts.ISessionController
 import de.timseidel.doppelkopf.controller.DoppelkopfManager
 
 class DokoShortAccess {

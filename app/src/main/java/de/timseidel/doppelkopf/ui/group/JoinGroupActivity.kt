@@ -2,13 +2,11 @@ package de.timseidel.doppelkopf.ui.group
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
-import de.timseidel.doppelkopf.MainActivity
+import androidx.appcompat.app.AppCompatActivity
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.databinding.ActivityJoinGroupBinding
-import de.timseidel.doppelkopf.ui.session.SessionLoadingActivity
 import de.timseidel.doppelkopf.util.EditTextListener
 
 class JoinGroupActivity : AppCompatActivity() {

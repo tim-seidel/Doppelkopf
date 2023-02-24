@@ -1,7 +1,14 @@
 package de.timseidel.doppelkopf.db
 
 import de.timseidel.doppelkopf.contracts.IPlayerController
-import de.timseidel.doppelkopf.model.*
+import de.timseidel.doppelkopf.model.DokoSession
+import de.timseidel.doppelkopf.model.Faction
+import de.timseidel.doppelkopf.model.Game
+import de.timseidel.doppelkopf.model.GameType
+import de.timseidel.doppelkopf.model.Group
+import de.timseidel.doppelkopf.model.Member
+import de.timseidel.doppelkopf.model.Player
+import de.timseidel.doppelkopf.model.PlayerAndFaction
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId

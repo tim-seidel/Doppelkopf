@@ -9,7 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import de.timseidel.doppelkopf.databinding.FragmentSessionHistoryBinding
-import de.timseidel.doppelkopf.db.request.*
+import de.timseidel.doppelkopf.db.request.ReadRequestListener
+import de.timseidel.doppelkopf.db.request.SessionListRequest
 import de.timseidel.doppelkopf.model.DokoSession
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.session.SessionCreationActivity

@@ -3,7 +3,11 @@ package de.timseidel.doppelkopf.ui.session.statistic.provider
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.statistic.PlayerStatistic
 import de.timseidel.doppelkopf.ui.session.statistic.IStatisticViewWrapper
-import de.timseidel.doppelkopf.ui.session.statistic.views.*
+import de.timseidel.doppelkopf.ui.session.statistic.views.ColumnChartViewWrapper
+import de.timseidel.doppelkopf.ui.session.statistic.views.LineChartViewWrapper
+import de.timseidel.doppelkopf.ui.session.statistic.views.PieChartViewWrapper
+import de.timseidel.doppelkopf.ui.session.statistic.views.ScatterChartViewWrapper
+import de.timseidel.doppelkopf.ui.session.statistic.views.SimpleTextStatisticViewWrapper
 import de.timseidel.doppelkopf.util.StatisticUtil
 import kotlin.math.abs
 

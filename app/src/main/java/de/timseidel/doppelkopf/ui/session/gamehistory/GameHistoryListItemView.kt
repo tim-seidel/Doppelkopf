@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.controller.DoppelkopfManager
 import de.timseidel.doppelkopf.model.Game
+import de.timseidel.doppelkopf.model.PlayerGameResult
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.util.Converter
-import de.timseidel.doppelkopf.model.PlayerGameResult
 
 class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {

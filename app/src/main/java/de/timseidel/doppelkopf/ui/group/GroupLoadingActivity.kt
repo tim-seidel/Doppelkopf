@@ -2,18 +2,22 @@ package de.timseidel.doppelkopf.ui.group
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import de.timseidel.doppelkopf.MainActivity
 import de.timseidel.doppelkopf.R
-import de.timseidel.doppelkopf.db.request.*
-import de.timseidel.doppelkopf.model.*
+import de.timseidel.doppelkopf.db.request.GroupInfoRequestByCode
+import de.timseidel.doppelkopf.db.request.GroupInfoRequestById
+import de.timseidel.doppelkopf.db.request.GroupMembersRequest
+import de.timseidel.doppelkopf.db.request.ReadRequestListener
+import de.timseidel.doppelkopf.model.Group
+import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.Logging
 

@@ -1,8 +1,14 @@
 package de.timseidel.doppelkopf.ui.session.gamecreation
 
 import android.os.Bundle
-import android.view.*
-import android.widget.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -18,7 +24,11 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.VersusBarView
-import de.timseidel.doppelkopf.util.*
+import de.timseidel.doppelkopf.util.Converter
+import de.timseidel.doppelkopf.util.DokoShortAccess
+import de.timseidel.doppelkopf.util.DokoUtil
+import de.timseidel.doppelkopf.util.EditTextListener
+import de.timseidel.doppelkopf.util.Logging
 
 class GameCreationFragment : Fragment() {
 

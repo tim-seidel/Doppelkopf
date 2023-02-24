@@ -1,12 +1,12 @@
 package de.timseidel.doppelkopf.ui.session
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.databinding.ActivitySessionBinding
 

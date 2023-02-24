@@ -4,7 +4,6 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.statistic.PlayerStatistic
 import de.timseidel.doppelkopf.ui.session.statistic.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.session.statistic.views.*
-import de.timseidel.doppelkopf.util.Logging
 import de.timseidel.doppelkopf.util.StatisticUtil
 import kotlin.math.abs
 
@@ -36,12 +35,17 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
         var currentWinStreak = 0
         var currentLossStreak = 0
         stats.gameResultHistory.forEach { gr ->
-            if (gr.isWinner) {
-                if (currentLossStreak > longestLossStreak) longestLossStreak = currentLossStreak
+            if (gr.isWinner && gr.faction != Faction.NONE) {
+                if (currentLossStreak > longestLossStreak) {
+                    longestLossStreak = currentLossStreak
+                }
                 currentLossStreak = 0
                 currentWinStreak += 1
-            } else {
-                if (currentWinStreak > longestWinStreak) longestWinStreak = currentWinStreak
+            }
+            if (!gr.isWinner && gr.faction != Faction.NONE) {
+                if (currentWinStreak > longestWinStreak) {
+                    longestWinStreak = currentWinStreak
+                }
                 currentWinStreak = 0
                 currentLossStreak += 1
             }
@@ -56,6 +60,8 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                 } else "#AFAFAF"
             )
         }
+        if (currentWinStreak > longestWinStreak) longestWinStreak = currentWinStreak
+        if (currentLossStreak > longestLossStreak) longestLossStreak = currentLossStreak
 
         var gamesBockrunde = 0
         var winsBockrunde = 0

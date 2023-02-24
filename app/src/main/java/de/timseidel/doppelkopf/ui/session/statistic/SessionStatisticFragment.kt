@@ -49,7 +49,6 @@ class SessionStatisticFragment : Fragment() {
         )
     }
 
-
     private fun setupPlayerSelect() {
         binding.headerStatisticPlayerSelect.setListener(object : OnPlayerClickListener {
             //TODO: Fail save

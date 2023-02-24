@@ -50,7 +50,8 @@ class GameCreationFragment : Fragment() {
             DoppelkopfManager.getInstance().getSessionController().getPlayerController()
                 .getPlayersAsFaction()
 
-        (activity as AppCompatActivity).supportActionBar?.title = DokoShortAccess.getSessionCtrl().getSession().name
+        (activity as AppCompatActivity).supportActionBar?.title =
+            DokoShortAccess.getSessionCtrl().getSession().name
 
         findViews()
         setUpPlayerFactionSelectList()
@@ -143,9 +144,7 @@ class GameCreationFragment : Fragment() {
 
         val dp4 = Converter.convertDpToPixels(4f, rvPlayerFactionSelect.context)
         rvPlayerFactionSelect.adapter = playerFactionSelectAdapter
-        rvPlayerFactionSelect.apply {
-            layoutManager = GridLayoutManager(binding.rootGameCreation.context, 2)
-        }
+        rvPlayerFactionSelect.layoutManager = GridLayoutManager(binding.rootGameCreation.context, 2)
         rvPlayerFactionSelect.addItemDecoration(RecyclerViewMarginDecoration(dp4, dp4))
     }
 
@@ -179,7 +178,7 @@ class GameCreationFragment : Fragment() {
         checkSaveGameButtonEnabled()
     }
 
-    private fun applyIsBockrunde(){
+    private fun applyIsBockrunde() {
         cbIsBockrunde.isChecked = viewModel.isBockrunde
     }
 
@@ -220,7 +219,7 @@ class GameCreationFragment : Fragment() {
                     viewModel.gameScore,
                     viewModel.tackenCount,
                     viewModel.isBockrunde,
-                    if(DokoUtil.isFactionCompositionSolo(viewModel.playerFactionList)) GameType.SOLO else GameType.NORMAL
+                    if (DokoUtil.isFactionCompositionSolo(viewModel.playerFactionList)) GameType.SOLO else GameType.NORMAL
                 )
             DokoShortAccess.getGameCtrl().addGame(game)
 

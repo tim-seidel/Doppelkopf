@@ -1,6 +1,6 @@
 package de.timseidel.doppelkopf.ui.group
 
-import android.content.Intent
+import  android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -16,7 +16,6 @@ import de.timseidel.doppelkopf.db.DoppelkopfDatabase
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.util.Converter
 import de.timseidel.doppelkopf.util.EditTextListener
-import de.timseidel.doppelkopf.util.Logging
 
 class GroupCreationActivity : AppCompatActivity() {
 
@@ -56,9 +55,7 @@ class GroupCreationActivity : AppCompatActivity() {
         val db = Firebase.firestore
         val firebase = DoppelkopfDatabase()
         firebase.setFirestore(db)
-
         firebase.storeGroup(group)
-        Logging.d(groupCreationViewModel.memberNames.toString())
 
         val memberNames = groupCreationViewModel.getFilteredMemberNames()
         if (memberNames.isNotEmpty()) {

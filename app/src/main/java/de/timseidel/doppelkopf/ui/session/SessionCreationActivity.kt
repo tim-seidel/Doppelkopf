@@ -110,20 +110,18 @@ class SessionCreationActivity() : AppCompatActivity() {
                 if (DokoShortAccess.getMemberCtrl().validateName(s.toString())) {
                     tvMemberMessage.text = ""
                 } else {
-                    tvMemberMessage.text = "Bitte einen eindeutigen Namen anlegen"
+                    tvMemberMessage.text = getString(R.string.session_member_creation_unique_name)
                 }
             }
         })
 
-        AlertDialog.Builder(this).setTitle("Neuen Mitspieler hinzufügen")
-            .setPositiveButton("Ok") { _, _ -> createMember(etMemberName.text.toString()) }
-            .setNegativeButton("Abbrechen") { _, _ -> Logging.d("Cancel Member") }
+        AlertDialog.Builder(this).setTitle(getString(R.string.session_creation_create_new_member))
+            .setPositiveButton(getString(R.string.okay)) { _, _ -> createMember(etMemberName.text.toString()) }
+            .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
             .setView(inputLayout).show()
     }
 
     private fun createMember(name: String) {
-        Logging.d("Create Member $name")
-
         val memberCtrl = DokoShortAccess.getMemberCtrl()
         if (!memberCtrl.validateName(name)) return
 

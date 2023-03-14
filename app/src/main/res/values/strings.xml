@@ -1,4 +1,8 @@
 <resources>
+    <string name="or">oder</string>
+    <string name="back">Zurück</string>
+    <string name="okay">Okay</string>
+    <string name="cancel">Abbrechen</string>
     <string name="shared_preferences_file_key">de.timseidel.doppelkopf.shared_preferences</string>
     <string name="shared_preferences_group_id_key">current_group_id</string>
     <string name="app_name">Doppelkopf</string>
@@ -53,9 +57,9 @@
     <string name="enter_group_code">Gruppencode eingeben</string>
     <string name="hint_group_code">000000</string>
     <string name="join_group">Gruppe beitreten</string>
-    <string name="or">oder</string>
     <string name="create_group">Gruppe erstellen</string>
-    <string name="back">Zurück</string>
     <string name="nav_clear_default_group">Zur Gruppenauswahl</string>
     <string name="menu_show_group_code">Gruppencode anzeigen</string>
+    <string name="session_creation_create_new_member">Neuen Mitspieler hinzufügen</string>
+    <string name="session_member_creation_unique_name">Bitte einen eindeutigen Namen anlegen</string>
 </resources>

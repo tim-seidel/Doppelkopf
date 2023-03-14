@@ -153,7 +153,8 @@ class SessionCreationActivity() : AppCompatActivity() {
             val session = sessionCtrl.createSession(viewModel.sessionName)
             sessionCtrl.set(session)
 
-            val playerNames = viewModel.memberSelections.map { ms -> ms.member.name }
+            val playerNames = viewModel.memberSelections.filter { ms -> ms.isSelected }
+                .map { ms -> ms.member.name }
 
             val players = sessionCtrl.getPlayerController().createPlayers(playerNames)
             sessionCtrl.getPlayerController().addPlayers(players)

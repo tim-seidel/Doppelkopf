@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import de.timseidel.doppelkopf.MainActivity
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.db.request.GroupInfoRequestByCode
@@ -135,7 +134,7 @@ class GroupLoadingActivity : AppCompatActivity() {
     }
 
     private fun initButtons() {
-        btnBack.isVisible = false
+        btnBack.visibility = Button.GONE
         btnBack.isEnabled = false
     }
 
@@ -159,7 +158,7 @@ class GroupLoadingActivity : AppCompatActivity() {
     }
 
     private fun enableBackButton() {
-        btnBack.isVisible = true
+        btnBack.visibility = Button.VISIBLE
         btnBack.isEnabled = true
 
         btnBack.setOnClickListener {

@@ -57,4 +57,5 @@
     <string name="create_group">Gruppe erstellen</string>
     <string name="back">Zurück</string>
     <string name="nav_clear_default_group">Zur Gruppenauswahl</string>
+    <string name="menu_show_group_code">Gruppencode anzeigen</string>
 </resources>

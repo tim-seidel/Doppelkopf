@@ -9,15 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import de.timseidel.doppelkopf.databinding.FragmentSessionHistoryBinding
-import de.timseidel.doppelkopf.db.request.ReadRequestListener
-import de.timseidel.doppelkopf.db.request.SessionListRequest
 import de.timseidel.doppelkopf.model.DokoSession
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.session.SessionCreationActivity
 import de.timseidel.doppelkopf.ui.session.SessionLoadingActivity
 import de.timseidel.doppelkopf.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
-import de.timseidel.doppelkopf.util.Logging
 
 class SessionHistoryFragment : Fragment() {
 
@@ -36,21 +33,10 @@ class SessionHistoryFragment : Fragment() {
         val root: View = binding.root
 
         setupCreateSessionButton()
-        loadSessionHistoryList()
+
+        setSessionHistoryList(DokoShortAccess.getSessionInfoCtrl().getSessionInfos())
 
         return root
-    }
-
-    private fun loadSessionHistoryList() {
-        SessionListRequest(DokoShortAccess.getGroupCtrl().getGroup().id).execute(object :
-            ReadRequestListener<List<DokoSession>> {
-            override fun onReadComplete(result: List<DokoSession>) {
-                Logging.d("SessionHistory: $result")
-                setSessionHistoryList(result)
-            }
-
-            override fun onReadFailed() {}
-        })
     }
 
     private fun setSessionHistoryList(sessions: List<DokoSession>) {

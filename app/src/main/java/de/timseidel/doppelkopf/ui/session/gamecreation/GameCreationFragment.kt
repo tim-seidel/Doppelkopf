@@ -211,7 +211,6 @@ class GameCreationFragment : Fragment() {
     }
 
     private fun onCreateGameClicked() {
-        Logging.d("$viewModel")
         if (!viewModel.checkIsValid()) {
             Toast.makeText(
                 context,

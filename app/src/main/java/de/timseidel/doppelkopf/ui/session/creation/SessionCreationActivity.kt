@@ -143,7 +143,6 @@ class SessionCreationActivity() : AppCompatActivity() {
     private fun onCreateSessionClicked() {
         if (!viewModel.checkIsSetupValid()) {
             showSessionCreateError(getString(R.string.create_session_unable_to_create))
-            Logging.d(viewModel.memberSelections.toString())
             return
         }
 

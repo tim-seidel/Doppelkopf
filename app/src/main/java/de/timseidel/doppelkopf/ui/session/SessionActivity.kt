@@ -53,8 +53,6 @@ class SessionActivity : AppCompatActivity() {
                     val sessionDto = sessionDoc.toObject<SessionDto>()
                     if (sessionDto != null) {
                         val session = FirebaseDTO.fromSessionDTOtoSession(sessionDto)
-                        Logging.d("PORTING", session.toString())
-
                         ctrl.set(session)
 
                         db.collection(FirebaseStrings.collectionSessions)
@@ -69,7 +67,6 @@ class SessionActivity : AppCompatActivity() {
                                     players.add(player)
                                 }
 
-                                Logging.d("PORTING", players.toString())
                                 ctrl.getPlayerController().addPlayers(players)
 
                                 db.collection(FirebaseStrings.collectionSessions)
@@ -87,8 +84,6 @@ class SessionActivity : AppCompatActivity() {
                                         }
 
                                         games.sortBy { g -> g.timestamp }
-                                        Logging.d("PORTING", games.toString())
-
                                         games.forEach { g ->
                                             ctrl.getGameController().addGame(g)
                                         }

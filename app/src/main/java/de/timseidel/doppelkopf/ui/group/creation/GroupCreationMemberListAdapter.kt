@@ -105,7 +105,6 @@ class GroupCreationMemberListAdapter(
 
     inner class PositionalTextWatcher(var position: Int = -1) : EditTextListener() {
         override fun afterTextChanged(s: Editable?) {
-            Logging.d("TextWatcher[$position]: ${s.toString()}")
             if (position != -1) {
                 names[position] = s.toString()
             }

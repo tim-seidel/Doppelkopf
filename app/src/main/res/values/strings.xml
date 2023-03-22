@@ -8,6 +8,7 @@
     <string name="app_name">Doppelkopf</string>
     <string name="navigation_title_session_history">Abende</string>
     <string name="navigation_title_finances">Kasse</string>
+    <string name="navigation_title_group_statistic">Statistik</string>
     <string name="session_players">Mitspielende</string>
     <string name="player">Spieler*in</string>
     <string name="player_1">Spieler*in 1</string>
@@ -46,6 +47,7 @@
     <string name="loading_finished">Fertig</string>
     <string name="loading_games">Lade Spiele…</string>
     <string name="loading_players">Lade Mitspieler…</string>
+    <string name="loading_sessionInfos">Lade Abendübersichten…</string>
     <string name="loading_session">Lade Doppelkopfabend…</string>
     <string name="loading_group">Lade Doppelkopfgruppe…</string>
     <string name="loading_group_no_success">Die Gruppe konnte nicht geladen werden.</string>

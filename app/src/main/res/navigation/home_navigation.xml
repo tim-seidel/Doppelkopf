@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_session_history" />
 
     <fragment
+        android:id="@+id/navigation_group_statistic"
+        android:name="de.timseidel.doppelkopf.ui.group.statistic.GroupStatisticFragment"
+        android:label="@string/navigation_title_group_statistic"
+        tools:layout="@layout/fragment_group_statistic" />
+
+    <fragment
         android:id="@+id/navigation_finances"
         android:name="de.timseidel.doppelkopf.ui.finances.FinancesFragment"
         android:label="@string/navigation_title_finances"

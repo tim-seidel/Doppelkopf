@@ -25,13 +25,19 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupBottomNavigation()
+    }
+
+    private fun setupBottomNavigation() {
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_session_history, R.id.navigation_finances
+                R.id.navigation_session_history,
+                R.id.navigation_finances,
+                R.id.navigation_group_statistic
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

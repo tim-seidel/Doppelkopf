@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import de.timseidel.doppelkopf.databinding.FragmentSessionStatisticBinding
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
+import de.timseidel.doppelkopf.model.statistic.session.SessionStatisticsCalculator
 import de.timseidel.doppelkopf.ui.session.gamehistory.GameHistoryListPlayerHeaderAdapter.OnPlayerClickListener
 import de.timseidel.doppelkopf.ui.statistic.StatisticListAdapter
 import de.timseidel.doppelkopf.ui.statistic.provider.EmptyStatisticViewProvider
@@ -48,11 +49,9 @@ class SessionStatisticFragment : Fragment() {
         val games = DokoShortAccess.getGameCtrl().getGames()
         val players = DokoShortAccess.getPlayerCtrl().getPlayers()
 
-        val sessionStats =
-            DokoShortAccess.getSessionStatsCtrl().getSessionStatisticsCalculator()
-                .calculateSessionStatistics(games)
-        val playerStatistics = DokoShortAccess.getSessionStatsCtrl().getPlayerStatisticsCalculator()
-            .calculatePlayerStatistics(players, games)
+        val calculator = SessionStatisticsCalculator()
+        val sessionStats = calculator.calculateSessionStatistics(games)
+        val playerStatistics = calculator.calculatePlayerStatistics(players, games)
 
         playerStatistics.sortedBy { playerStatistic -> playerStatistic.player.name }
             .forEach { playerStatistic ->

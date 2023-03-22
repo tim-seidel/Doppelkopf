@@ -18,6 +18,7 @@ import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
 import de.timseidel.doppelkopf.model.statistic.group.GroupStatisticsCalculator
 import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
+import de.timseidel.doppelkopf.model.statistic.session.SessionStatisticsCalculator
 import de.timseidel.doppelkopf.ui.statistic.provider.EmptyStatisticViewProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.GroupStatisticViewProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.IStatisticViewsProvider
@@ -158,16 +159,15 @@ class GroupStatisticFragment : Fragment() {
     private fun calculateGroupStatistics(sessions: List<ISessionController>): GroupStatistics {
         val sessionStatistics = mutableListOf<SessionStatistics>()
         sessions.forEach { session ->
-            val singleSessionStatistics =
-                session.getSessionStatisticsController().getSessionStatisticsCalculator()
-                    .calculateSessionStatistics(session.getGameController().getGames())
+            val calculator = SessionStatisticsCalculator()
 
+            val singleSessionStatistics =
+                calculator.calculateSessionStatistics(session.getGameController().getGames())
             val singleSessionPlayerStatistics =
-                session.getSessionStatisticsController().getPlayerStatisticsCalculator()
-                    .calculatePlayerStatistics(
-                        session.getPlayerController().getPlayers(),
-                        session.getGameController().getGames()
-                    )
+                calculator.calculatePlayerStatistics(
+                    session.getPlayerController().getPlayers(),
+                    session.getGameController().getGames()
+                )
             singleSessionPlayerStatistics.sortedBy { playerStatistic ->
                 playerStatistic.player.name
             }

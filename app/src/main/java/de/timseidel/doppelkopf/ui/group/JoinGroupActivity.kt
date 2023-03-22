@@ -7,7 +7,8 @@ import android.text.Editable
 import androidx.appcompat.app.AppCompatActivity
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.databinding.ActivityJoinGroupBinding
-import de.timseidel.doppelkopf.util.EditTextListener
+import de.timseidel.doppelkopf.ui.group.creation.GroupCreationActivity
+import de.timseidel.doppelkopf.ui.EditTextListener
 
 class JoinGroupActivity : AppCompatActivity() {
     private lateinit var binding: ActivityJoinGroupBinding

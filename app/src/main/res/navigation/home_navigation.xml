@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_finances"
-        android:name="de.timseidel.doppelkopf.ui.finances.FinancesFragment"
+        android:name="de.timseidel.doppelkopf.ui.group.finances.FinancesFragment"
         android:label="@string/navigation_title_finances"
         tools:layout="@layout/fragment_finances" />
 

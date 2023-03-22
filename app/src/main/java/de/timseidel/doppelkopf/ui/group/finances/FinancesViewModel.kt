@@ -1,4 +1,4 @@
-package de.timseidel.doppelkopf.ui.finances
+package de.timseidel.doppelkopf.ui.group.finances
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

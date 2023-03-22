@@ -1,4 +1,4 @@
-package de.timseidel.doppelkopf.ui.group
+package de.timseidel.doppelkopf.ui.group.creation
 
 class GroupCreationViewModel {
 

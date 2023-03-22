@@ -1,4 +1,4 @@
-package de.timseidel.doppelkopf.ui.session
+package de.timseidel.doppelkopf.ui.session.creation
 
 import android.content.Intent
 import android.os.Bundle
@@ -19,9 +19,10 @@ import de.timseidel.doppelkopf.controller.DoppelkopfManager
 import de.timseidel.doppelkopf.databinding.ActivitySessionCreationBinding
 import de.timseidel.doppelkopf.db.DoppelkopfDatabase
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
-import de.timseidel.doppelkopf.util.Converter
+import de.timseidel.doppelkopf.ui.session.SessionActivity
+import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
-import de.timseidel.doppelkopf.util.EditTextListener
+import de.timseidel.doppelkopf.ui.EditTextListener
 import de.timseidel.doppelkopf.util.Logging
 
 class SessionCreationActivity() : AppCompatActivity() {

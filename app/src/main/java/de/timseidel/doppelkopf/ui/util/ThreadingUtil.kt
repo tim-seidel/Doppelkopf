@@ -1,4 +1,4 @@
-package de.timseidel.doppelkopf.util
+package de.timseidel.doppelkopf.ui.util
 
 import android.os.Handler
 import android.os.Looper

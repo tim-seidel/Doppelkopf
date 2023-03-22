@@ -6,7 +6,7 @@ import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.PlayerAndFaction
 import de.timseidel.doppelkopf.model.PlayerGameResult
-import de.timseidel.doppelkopf.util.DokoUtil
+import de.timseidel.doppelkopf.util.GameUtil
 import de.timseidel.doppelkopf.util.IdGenerator
 
 class GameController : IGameController {
@@ -53,8 +53,8 @@ class GameController : IGameController {
                 PlayerGameResult(
                     p.faction,
                     p.faction == game.winningFaction,
-                    DokoUtil.getFactionTacken(p.faction, game),
-                    DokoUtil.getFactionPoints(p.faction, game.winningFaction, game.winningPoints),
+                    GameUtil.getFactionTacken(p.faction, game),
+                    GameUtil.getFactionPoints(p.faction, game.winningFaction, game.winningPoints),
                     game.isBockrunde,
                     game.gameType
                 )

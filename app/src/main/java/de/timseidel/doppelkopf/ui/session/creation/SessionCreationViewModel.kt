@@ -1,4 +1,4 @@
-package de.timseidel.doppelkopf.ui.session
+package de.timseidel.doppelkopf.ui.session.creation
 
 class SessionCreationViewModel {
 

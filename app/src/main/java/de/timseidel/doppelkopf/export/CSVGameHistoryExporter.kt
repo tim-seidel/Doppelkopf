@@ -2,7 +2,7 @@ package de.timseidel.doppelkopf.export
 
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
-import de.timseidel.doppelkopf.util.DokoUtil
+import de.timseidel.doppelkopf.util.GameUtil
 
 class CSVGameHistoryExporter {
 
@@ -22,7 +22,7 @@ class CSVGameHistoryExporter {
 
         games.forEach { g ->
             g.players.forEach { p ->
-                val result = DokoUtil.getPlayerResult(p.player, g)
+                val result = GameUtil.getPlayerResult(p.player, g)
                 if (result.faction != Faction.NONE) {
                     csv.append(result.tacken.toString())
                 }
@@ -54,7 +54,7 @@ class CSVGameHistoryExporter {
 
         games.forEach { g ->
             g.players.forEachIndexed { i, p ->
-                val result = DokoUtil.getPlayerResult(p.player, g)
+                val result = GameUtil.getPlayerResult(p.player, g)
                 tacken[i] += result.tacken
                 if (result.faction != Faction.NONE) {
                     csv.append(tacken[i].toString())

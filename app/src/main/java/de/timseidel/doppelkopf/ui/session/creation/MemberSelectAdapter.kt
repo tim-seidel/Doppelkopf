@@ -1,8 +1,8 @@
-package de.timseidel.doppelkopf.ui.session
+package de.timseidel.doppelkopf.ui.session.creation
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import de.timseidel.doppelkopf.model.Member
+import de.timseidel.doppelkopf.model.MemberSelection
 import de.timseidel.doppelkopf.ui.group.MemberSelectView
 
 class MemberSelectAdapter(
@@ -13,8 +13,6 @@ class MemberSelectAdapter(
     interface MemberSelectListener {
         fun onMemberSelected(member: MemberSelection)
     }
-
-    data class MemberSelection(val member: Member, var isSelected: Boolean)
 
     class ViewHolder(val view: MemberSelectView, var listener: MemberSelectListener?) :
         RecyclerView.ViewHolder(view) {

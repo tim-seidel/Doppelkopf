@@ -1,4 +1,4 @@
-package de.timseidel.doppelkopf.ui.group
+package de.timseidel.doppelkopf.ui.group.creation
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,8 +14,8 @@ import de.timseidel.doppelkopf.controller.DoppelkopfManager
 import de.timseidel.doppelkopf.databinding.ActivityGroupCreationBinding
 import de.timseidel.doppelkopf.db.DoppelkopfDatabase
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
-import de.timseidel.doppelkopf.util.Converter
-import de.timseidel.doppelkopf.util.EditTextListener
+import de.timseidel.doppelkopf.ui.util.Converter
+import de.timseidel.doppelkopf.ui.EditTextListener
 
 class GroupCreationActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package de.timseidel.doppelkopf.util
+package de.timseidel.doppelkopf.ui
 
 import android.text.Editable
 import android.text.TextWatcher

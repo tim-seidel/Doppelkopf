@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import de.timseidel.doppelkopf.databinding.FragmentGameHistoryBinding
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
-import de.timseidel.doppelkopf.util.Converter
+import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
 
 //TODO: Rang und Gesamtpunktzahl

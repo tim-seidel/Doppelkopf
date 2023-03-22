@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import de.timseidel.doppelkopf.MainActivity
+import de.timseidel.doppelkopf.ui.group.GroupActivity
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.controller.DoppelkopfManager
 import de.timseidel.doppelkopf.databinding.ActivityGroupCreationBinding
@@ -68,7 +68,7 @@ class GroupCreationActivity : AppCompatActivity() {
     }
 
     private fun groupCreated() {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, GroupActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
         finish()

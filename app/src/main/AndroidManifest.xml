@@ -48,7 +48,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.group.GroupActivity"
             android:exported="false"
             android:label="@string/app_name">
             <meta-data

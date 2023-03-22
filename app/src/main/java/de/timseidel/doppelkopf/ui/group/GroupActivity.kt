@@ -1,4 +1,4 @@
-package de.timseidel.doppelkopf
+package de.timseidel.doppelkopf.ui.group
 
 import android.content.Context
 import android.content.Intent
@@ -11,11 +11,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.databinding.ActivityMainBinding
-import de.timseidel.doppelkopf.ui.group.JoinGroupActivity
 
-// Das wird GroupOverviewActivity und da kommt noch ein Tab Mitspieler hin. MainActivity wird JoinGroupActivity
-class MainActivity : AppCompatActivity() {
+class GroupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -36,8 +35,8 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_session_history,
-                R.id.navigation_finances,
-                R.id.navigation_group_statistic
+                R.id.navigation_group_statistic,
+                R.id.navigation_finances
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

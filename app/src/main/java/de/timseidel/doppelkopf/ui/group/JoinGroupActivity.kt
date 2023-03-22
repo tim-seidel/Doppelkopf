@@ -10,6 +10,7 @@ import de.timseidel.doppelkopf.databinding.ActivityJoinGroupBinding
 import de.timseidel.doppelkopf.ui.group.creation.GroupCreationActivity
 import de.timseidel.doppelkopf.ui.EditTextListener
 
+//Is MainActivity
 class JoinGroupActivity : AppCompatActivity() {
     private lateinit var binding: ActivityJoinGroupBinding
 

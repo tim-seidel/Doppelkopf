@@ -1,4 +1,4 @@
-package de.timseidel.doppelkopf.ui.session.gamehistory
+package de.timseidel.doppelkopf.ui.session
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,14 +8,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Player
+import de.timseidel.doppelkopf.ui.session.PlayerListHeaderAdapter
 
-class GameHistoryListHeaderView constructor(context: Context, attrs: AttributeSet? = null) :
+class PlayerListHeaderView constructor(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
 
-    private lateinit var adapter: GameHistoryListPlayerHeaderAdapter
+    private lateinit var adapter: PlayerListHeaderAdapter
     private lateinit var rvPlayers: RecyclerView
 
-    private var playerClickListener: GameHistoryListPlayerHeaderAdapter.OnPlayerClickListener? = null
+    private var playerClickListener: PlayerListHeaderAdapter.OnPlayerClickListener? = null
 
     init {
         init()
@@ -31,12 +32,12 @@ class GameHistoryListHeaderView constructor(context: Context, attrs: AttributeSe
         rvPlayers = findViewById(R.id.rv_ghl_player_header)
     }
 
-    fun setListener(listener: GameHistoryListPlayerHeaderAdapter.OnPlayerClickListener) {
+    fun setListener(listener: PlayerListHeaderAdapter.OnPlayerClickListener) {
         playerClickListener = listener
     }
 
     fun setPlayers(players: List<Player>) {
-        adapter = GameHistoryListPlayerHeaderAdapter(players)
+        adapter = PlayerListHeaderAdapter(players)
         adapter.playerClickListener = playerClickListener
         rvPlayers.adapter = adapter
         rvPlayers.layoutManager = GridLayoutManager(rvPlayers.context, players.size)

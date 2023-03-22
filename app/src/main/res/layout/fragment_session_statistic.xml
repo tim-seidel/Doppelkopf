@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <de.timseidel.doppelkopf.ui.session.gamehistory.GameHistoryListHeaderView
+    <de.timseidel.doppelkopf.ui.session.PlayerListHeaderView
         android:id="@+id/header_statistic_player_select"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -14,10 +14,7 @@
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-    </de.timseidel.doppelkopf.ui.session.gamehistory.GameHistoryListHeaderView>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/lv_statistic"

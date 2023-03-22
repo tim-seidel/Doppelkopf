@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/header_game_history_list" />
 
-    <de.timseidel.doppelkopf.ui.session.gamehistory.GameHistoryListHeaderView
+    <de.timseidel.doppelkopf.ui.session.PlayerListHeaderView
         android:id="@+id/header_game_history_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

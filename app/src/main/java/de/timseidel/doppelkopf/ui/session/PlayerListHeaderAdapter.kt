@@ -1,4 +1,4 @@
-package de.timseidel.doppelkopf.ui.session.gamehistory
+package de.timseidel.doppelkopf.ui.session
 
 import android.content.Context
 import android.view.View
@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Player
 
-class GameHistoryListPlayerHeaderAdapter(
+class PlayerListHeaderAdapter(
     private val players: List<Player> = listOf(),
     var playerClickListener: OnPlayerClickListener? = null
 ) :
-    RecyclerView.Adapter<GameHistoryListPlayerHeaderAdapter.ViewHolder>() {
+    RecyclerView.Adapter<PlayerListHeaderAdapter.ViewHolder>() {
 
     interface OnPlayerClickListener {
         fun onPlayerClicked(player: Player)

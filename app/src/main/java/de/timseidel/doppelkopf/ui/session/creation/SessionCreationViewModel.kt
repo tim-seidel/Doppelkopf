@@ -1,10 +1,12 @@
 package de.timseidel.doppelkopf.ui.session.creation
 
+import de.timseidel.doppelkopf.model.MemberSelection
+
 class SessionCreationViewModel {
 
     var sessionName = "Doppelkopfabend"
     var memberInputName = ""
-    var memberSelections = mutableListOf<MemberSelectAdapter.MemberSelection>()
+    var memberSelections = mutableListOf<MemberSelection>()
 
     fun checkIsSetupValid(): Boolean {
         if (sessionName.length < 3) return false

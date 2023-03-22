@@ -18,6 +18,7 @@ import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.controller.DoppelkopfManager
 import de.timseidel.doppelkopf.databinding.ActivitySessionCreationBinding
 import de.timseidel.doppelkopf.db.DoppelkopfDatabase
+import de.timseidel.doppelkopf.model.MemberSelection
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.session.SessionActivity
 import de.timseidel.doppelkopf.ui.util.Converter
@@ -80,7 +81,7 @@ class SessionCreationActivity() : AppCompatActivity() {
         val members = DokoShortAccess.getMemberCtrl().getMembers()
         members.forEach { m ->
             viewModel.memberSelections.add(
-                MemberSelectAdapter.MemberSelection(
+                MemberSelection(
                     m, false
                 )
             )
@@ -88,7 +89,7 @@ class SessionCreationActivity() : AppCompatActivity() {
 
         memberSelectAdapter = MemberSelectAdapter(viewModel.memberSelections,
             object : MemberSelectAdapter.MemberSelectListener {
-                override fun onMemberSelected(member: MemberSelectAdapter.MemberSelection) {
+                override fun onMemberSelected(member: MemberSelection) {
                     member.isSelected = !member.isSelected
                 }
             })
@@ -134,7 +135,7 @@ class SessionCreationActivity() : AppCompatActivity() {
         firebase.setFirestore(db)
         firebase.storeMember(member, DokoShortAccess.getGroupCtrl().getGroup())
 
-        viewModel.memberSelections.add(MemberSelectAdapter.MemberSelection(member, true))
+        viewModel.memberSelections.add(MemberSelection(member, true))
         viewModel.memberInputName = ""
         memberSelectAdapter.notifyItemInserted(viewModel.memberSelections.size - 1)
     }

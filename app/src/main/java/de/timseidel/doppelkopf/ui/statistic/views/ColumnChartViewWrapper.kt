@@ -18,7 +18,6 @@ import com.highsoft.highcharts.common.hichartsclasses.HIYAxis
 import com.highsoft.highcharts.core.HIChartView
 import de.timseidel.doppelkopf.ui.util.Converter
 
-//TODO: Legende an/aus
 //TODO: Wieder eigenen Titel zwecks Farbanpassung?
 class ColumnChartViewWrapper(val data: ColumnChartData) : IStatisticViewWrapper {
 

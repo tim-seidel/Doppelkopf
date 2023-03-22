@@ -13,7 +13,7 @@ import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
 
-//TODO: Rang und Gesamtpunktzahl
+//TODO: Gesamtpunktzahl
 class GameHistoryFragment : Fragment() {
 
     private var _binding: FragmentGameHistoryBinding? = null

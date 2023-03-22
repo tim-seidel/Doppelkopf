@@ -4,7 +4,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.model.Game
 
-//TODO: Vllt. Gamenummer ausblenden lassen koennen
 class GameHistoryListAdapter(
     private val games: List<Game>
 ) : RecyclerView.Adapter<GameHistoryListAdapter.ViewHolder>() {

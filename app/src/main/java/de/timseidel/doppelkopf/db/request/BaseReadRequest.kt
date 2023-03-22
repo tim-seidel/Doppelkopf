@@ -2,7 +2,6 @@ package de.timseidel.doppelkopf.db.request
 
 import de.timseidel.doppelkopf.ui.util.ThreadingUtil
 
-//TODO: Run on UI thread
 abstract class BaseReadRequest<R> {
     protected var readRequestListener: ReadRequestListener<R>? = null
 

@@ -73,14 +73,19 @@ class SessionStatisticsCalculator {
 
     fun calculatePlayerStatistic(
         player: Player,
-        otherPlayers: List<Player>,
+        players: List<Player>,
         games: List<Game>
     ): PlayerStatistic {
 
         val stats = PlayerStatistic(
             player = player,
-            partners = createOpponentStatisticObjects(player, otherPlayers),
-            opponents = createOpponentStatisticObjects(player, otherPlayers)
+            partners = getOtherPlayers(player, players).associateBy(
+                { it.id },
+                { PlayerToPlayerStatistic(it) }),
+            opponents = getOtherPlayers(player, players).associateBy(
+                { it.id },
+                { PlayerToPlayerStatistic(it) }
+            )
         )
 
         calculateOwnPlayerStatistics(stats, games)
@@ -95,24 +100,13 @@ class SessionStatisticsCalculator {
     ): List<PlayerStatistic> {
         val stats = mutableListOf<PlayerStatistic>()
         players.forEach { player ->
-            val otherPlayers = players.filter { p -> p.id != player.id }
-            stats.add(calculatePlayerStatistic(player, otherPlayers, games))
+            stats.add(calculatePlayerStatistic(player, players, games))
         }
         return stats
     }
 
-    private fun createOpponentStatisticObjects(
-        current: Player,
-        players: List<Player>
-    ): Map<String, PlayerToPlayerStatistic> {
-        val otherStats = mutableMapOf<String, PlayerToPlayerStatistic>()
-        players.forEach { p ->
-            if (p.id != current.id) {
-                otherStats[p.id] = PlayerToPlayerStatistic(player = p)
-            }
-        }
-
-        return otherStats
+    private fun getOtherPlayers(player: Player, allPlayers: List<Player>): List<Player> {
+        return allPlayers.filter { p -> p.id != player.id }
     }
 
     private fun calculateOwnPlayerStatistics(stats: PlayerStatistic, games: List<Game>) {

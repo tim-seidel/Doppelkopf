@@ -124,12 +124,6 @@ class GroupStatisticsCalculator {
     }
 
     private fun getOtherMembers(member: Member, allMembers: List<Member>): List<Member> {
-        val otherMembers = mutableListOf<Member>()
-        allMembers.forEach { m ->
-            if (m.id != member.id) {
-                otherMembers.add(m)
-            }
-        }
-        return otherMembers
+        return allMembers.filter { m -> m.id != member.id }
     }
 }

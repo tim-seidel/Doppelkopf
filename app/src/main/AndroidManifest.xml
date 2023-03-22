@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.group.GroupCreationActivity"
+            android:name=".ui.group.creation.GroupCreationActivity"
             android:exported="false" />
         <activity
             android:name=".ui.session.SessionLoadingActivity"
@@ -41,7 +41,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.session.SessionCreationActivity"
+            android:name=".ui.session.creation.SessionCreationActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

@@ -3,8 +3,7 @@ package de.timseidel.doppelkopf.controller
 import de.timseidel.doppelkopf.contracts.IGameController
 import de.timseidel.doppelkopf.contracts.IPlayerController
 import de.timseidel.doppelkopf.contracts.ISessionController
-import de.timseidel.doppelkopf.contracts.statistic.ISessionStatisticsController
-import de.timseidel.doppelkopf.controller.statistic.SessionStatisticsController
+import de.timseidel.doppelkopf.contracts.ISessionStatisticsController
 import de.timseidel.doppelkopf.model.DokoSession
 import de.timseidel.doppelkopf.util.IdGenerator
 import java.time.LocalDateTime

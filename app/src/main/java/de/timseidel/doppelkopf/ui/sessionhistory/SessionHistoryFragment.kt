@@ -11,9 +11,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import de.timseidel.doppelkopf.databinding.FragmentSessionHistoryBinding
 import de.timseidel.doppelkopf.model.DokoSession
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
-import de.timseidel.doppelkopf.ui.session.SessionCreationActivity
+import de.timseidel.doppelkopf.ui.session.creation.SessionCreationActivity
 import de.timseidel.doppelkopf.ui.session.SessionLoadingActivity
-import de.timseidel.doppelkopf.util.Converter
+import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
 
 class SessionHistoryFragment : Fragment() {

@@ -8,12 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import de.timseidel.doppelkopf.databinding.FragmentSessionStatisticBinding
 import de.timseidel.doppelkopf.model.Player
-import de.timseidel.doppelkopf.model.statistic.SessionStatistics
+import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
 import de.timseidel.doppelkopf.ui.session.gamehistory.GameHistoryListPlayerHeaderAdapter.OnPlayerClickListener
-import de.timseidel.doppelkopf.ui.session.statistic.provider.EmptyStatisticViewProvider
-import de.timseidel.doppelkopf.ui.session.statistic.provider.IStatisticViewsProvider
-import de.timseidel.doppelkopf.ui.session.statistic.provider.PlayerStatisticViewsProvider
-import de.timseidel.doppelkopf.ui.session.statistic.provider.SessionStatisticViewsProvider
+import de.timseidel.doppelkopf.ui.statistic.StatisticListAdapter
+import de.timseidel.doppelkopf.ui.statistic.provider.EmptyStatisticViewProvider
+import de.timseidel.doppelkopf.ui.statistic.provider.IStatisticViewsProvider
+import de.timseidel.doppelkopf.ui.statistic.provider.PlayerStatisticViewsProvider
+import de.timseidel.doppelkopf.ui.statistic.provider.SessionStatisticViewsProvider
 import de.timseidel.doppelkopf.util.DokoShortAccess
 
 class SessionStatisticFragment : Fragment() {
@@ -101,7 +102,7 @@ class SessionStatisticFragment : Fragment() {
         val lvStatistic = binding.lvStatistic
 
         val statisticItems = provider.getStatisticItems()
-        val adapter = SessionStatisticListAdapter(
+        val adapter = StatisticListAdapter(
             requireContext(),
             statisticItems
         )

@@ -3,6 +3,7 @@ package de.timseidel.doppelkopf.controller
 import de.timseidel.doppelkopf.contracts.IGameController
 import de.timseidel.doppelkopf.contracts.IPlayerController
 import de.timseidel.doppelkopf.contracts.ISessionController
+import de.timseidel.doppelkopf.contracts.ISessionStatisticsController
 import de.timseidel.doppelkopf.model.DokoSession
 import de.timseidel.doppelkopf.util.IdGenerator
 import java.time.LocalDateTime
@@ -13,6 +14,8 @@ class SessionController : ISessionController {
 
     private val playerController: IPlayerController = PlayerController()
     private val gameController: IGameController = GameController()
+
+    private val sessionStatisticsController = SessionStatisticsController()
 
     override fun createSession(sessionName: String): DokoSession {
         return DokoSession(
@@ -33,6 +36,10 @@ class SessionController : ISessionController {
 
     override fun getGameController(): IGameController {
         return gameController
+    }
+
+    override fun getSessionStatisticsController(): ISessionStatisticsController {
+        return sessionStatisticsController
     }
 
     override fun set(session: DokoSession) {

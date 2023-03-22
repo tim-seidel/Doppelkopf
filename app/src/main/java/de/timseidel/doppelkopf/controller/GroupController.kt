@@ -2,6 +2,7 @@ package de.timseidel.doppelkopf.controller
 
 import de.timseidel.doppelkopf.contracts.IGroupController
 import de.timseidel.doppelkopf.contracts.IMemberController
+import de.timseidel.doppelkopf.contracts.ISessionInfoController
 import de.timseidel.doppelkopf.model.Group
 import de.timseidel.doppelkopf.util.IdGenerator
 import java.time.LocalDateTime
@@ -9,6 +10,8 @@ import java.time.LocalDateTime
 class GroupController : IGroupController {
 
     private lateinit var _group: Group
+
+    private val sessionInfoController: ISessionInfoController = SessionInfoController()
 
     private val memberController: IMemberController = MemberController()
 
@@ -27,6 +30,10 @@ class GroupController : IGroupController {
 
     override fun getMemberController(): IMemberController {
         return memberController
+    }
+
+    override fun getSessionInfoController(): ISessionInfoController {
+        return sessionInfoController
     }
 
     override fun set(group: Group) {

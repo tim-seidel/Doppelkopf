@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
-import de.timseidel.doppelkopf.util.Converter
+import de.timseidel.doppelkopf.ui.util.Converter
 
 class SessionHistoryListItemView constructor(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {

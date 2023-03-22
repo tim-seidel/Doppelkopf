@@ -12,5 +12,7 @@ interface ISessionController {
 
     fun getGameController(): IGameController
 
+    fun getSessionStatisticsController(): ISessionStatisticsController
+
     fun set(session: DokoSession)
 }

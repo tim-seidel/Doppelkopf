@@ -10,7 +10,7 @@ interface IGroupController {
 
     fun getMemberController(): IMemberController
 
-    //TODO fun getSessionInfoController: ISessionInfoController
+    fun getSessionInfoController(): ISessionInfoController
 
     fun set(group: Group)
 }

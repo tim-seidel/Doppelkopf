@@ -6,7 +6,7 @@ import de.timseidel.doppelkopf.contracts.IMemberController
 import de.timseidel.doppelkopf.contracts.IPlayerController
 import de.timseidel.doppelkopf.contracts.ISessionController
 import de.timseidel.doppelkopf.contracts.ISessionInfoController
-import de.timseidel.doppelkopf.contracts.statistic.ISessionStatisticsController
+import de.timseidel.doppelkopf.contracts.ISessionStatisticsController
 import de.timseidel.doppelkopf.controller.DoppelkopfManager
 
 class DokoShortAccess {

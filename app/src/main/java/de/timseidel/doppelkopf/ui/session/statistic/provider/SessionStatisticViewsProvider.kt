@@ -1,21 +1,17 @@
 package de.timseidel.doppelkopf.ui.session.statistic.provider
 
-import de.timseidel.doppelkopf.model.statistic.PlayerStatisticsCalculator
-import de.timseidel.doppelkopf.model.statistic.SessionStatisticsCalculator
+import de.timseidel.doppelkopf.model.statistic.SessionStatistics
 import de.timseidel.doppelkopf.ui.session.statistic.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.session.statistic.views.ColumnChartViewWrapper
 import de.timseidel.doppelkopf.ui.session.statistic.views.LineChartViewWrapper
 import de.timseidel.doppelkopf.ui.session.statistic.views.SimpleTextStatisticViewWrapper
-import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.StatisticUtil
 
-class SessionStatisticViewsProvider : IStatisticViewsProvider {
+class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatistics) :
+    IStatisticViewsProvider {
 
     override fun getStatisticItems(): List<IStatisticViewWrapper> {
-        val playerStats = PlayerStatisticsCalculator().calculatePlayerStatistic(
-            DokoShortAccess.getPlayerCtrl().getPlayers(),
-            DokoShortAccess.getGameCtrl().getGames()
-        )
+        val playerStats = sessionStatistics.playerStatistics
 
         val playerTackenHistories = mutableListOf<LineChartViewWrapper.ChartLineData>()
         playerStats.forEach { p ->
@@ -47,7 +43,7 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
             val last = if (history.isNotEmpty()) history.last() else 0
             playerTackenLosses.add(
                 LineChartViewWrapper.ChartLineData(
-                    "${p.player.name} ($last | ${last*5/100f}€)",
+                    "${p.player.name} ($last | ${last * 5 / 100f}€)",
                     history
                 )
             )
@@ -82,18 +78,14 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
             playerTackenLossContra.add(p.contra.loss.tacken)
         }
 
-        val sessionStats = SessionStatisticsCalculator().calculateStatistics(
-            DokoShortAccess.getGameCtrl().getGames()
-        )
-
         val tackenDistribution =
-            StatisticUtil.getTackenDistribution(sessionStats.gameResultHistoryWinner)
+            StatisticUtil.getTackenDistribution(sessionStatistics.gameResultHistoryWinner)
 
         return listOf(
             SimpleTextStatisticViewWrapper(
                 "Allgemeine Statistik",
                 "Hier siehst du die Statistiken eures Doppelkopfabends. Ihr habt so viele Spiele gespielt:",
-                DokoShortAccess.getGameCtrl().getGames().size.toString()
+                sessionStatistics.general.total.games.toString()
             ),
             LineChartViewWrapper(
                 LineChartViewWrapper.LineChartData(
@@ -110,7 +102,7 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
             SimpleTextStatisticViewWrapper(
                 "Tacken",
                 "Durchschnittlich wurden bei einem Spiel so viele Tacken verteilt:",
-                sessionStats.general.total.getTackenPerGame().toString()
+                sessionStatistics.general.total.getTackenPerGame().toString()
             ),
             LineChartViewWrapper(
                 LineChartViewWrapper.LineChartData(
@@ -214,11 +206,11 @@ class SessionStatisticViewsProvider : IStatisticViewsProvider {
             SimpleTextStatisticViewWrapper(
                 "Soli",
                 "So viele Soli wurden gespielt:",
-                sessionStats.solo.total.games.toString()
+                sessionStatistics.solo.total.games.toString()
             ),
             ColumnChartViewWrapper(
                 ColumnChartViewWrapper.ColumnChartData(
-                    "Wer war heute solo?",
+                    "Wer war solo?",
                     "Spiele",
                     "",
                     listOf(

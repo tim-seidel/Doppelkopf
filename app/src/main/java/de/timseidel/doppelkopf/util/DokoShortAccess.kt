@@ -6,15 +6,16 @@ import de.timseidel.doppelkopf.contracts.IMemberController
 import de.timseidel.doppelkopf.contracts.IPlayerController
 import de.timseidel.doppelkopf.contracts.ISessionController
 import de.timseidel.doppelkopf.contracts.ISessionInfoController
+import de.timseidel.doppelkopf.contracts.statistic.ISessionStatisticsController
 import de.timseidel.doppelkopf.controller.DoppelkopfManager
 
 class DokoShortAccess {
-    companion object{
-        fun getGroupCtrl(): IGroupController{
+    companion object {
+        fun getGroupCtrl(): IGroupController {
             return DoppelkopfManager.getInstance().getGroupController()
         }
 
-        fun getMemberCtrl(): IMemberController{
+        fun getMemberCtrl(): IMemberController {
             return DoppelkopfManager.getInstance().getGroupController().getMemberController()
         }
 
@@ -29,8 +30,13 @@ class DokoShortAccess {
         fun getPlayerCtrl(): IPlayerController {
             return DoppelkopfManager.getInstance().getSessionController().getPlayerController()
         }
+
         fun getGameCtrl(): IGameController {
             return DoppelkopfManager.getInstance().getSessionController().getGameController()
+        }
+
+        fun getSessionStatsCtrl(): ISessionStatisticsController {
+            return DoppelkopfManager.getInstance().getSessionController().getSessionStatisticsController()
         }
     }
 }

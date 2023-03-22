@@ -1,4 +1,4 @@
-package de.timseidel.doppelkopf.contracts
+package de.timseidel.doppelkopf.contracts.statistic
 
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Player
@@ -11,7 +11,7 @@ interface IPlayerStatisticsCalculator {
         games: List<Game>
     ): PlayerStatistic
 
-    fun calculatePlayerStatistic(
+    fun calculatePlayerStatistics(
         players: List<Player>,
         games: List<Game>
     ): List<PlayerStatistic>

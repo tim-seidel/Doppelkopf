@@ -3,9 +3,9 @@ package de.timseidel.doppelkopf.controller
 import de.timseidel.doppelkopf.contracts.IGameController
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
+import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.PlayerAndFaction
-import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.util.GameUtil
 import de.timseidel.doppelkopf.util.IdGenerator
 

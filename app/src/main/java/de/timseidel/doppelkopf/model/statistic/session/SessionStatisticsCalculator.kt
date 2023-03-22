@@ -2,10 +2,10 @@ package de.timseidel.doppelkopf.model.statistic.session
 
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
+import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.PlayerAndFaction
-import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.statistic.SimpleStatisticEntry
 import de.timseidel.doppelkopf.model.statistic.StatisticEntry
 import de.timseidel.doppelkopf.util.GameUtil

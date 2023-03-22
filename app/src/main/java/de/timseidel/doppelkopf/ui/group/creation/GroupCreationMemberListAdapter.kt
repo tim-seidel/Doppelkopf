@@ -11,8 +11,8 @@ import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
-import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.ui.EditTextListener
+import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.Logging
 
 class GroupCreationMemberListAdapter(

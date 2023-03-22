@@ -22,12 +22,12 @@ import de.timseidel.doppelkopf.databinding.FragmentGameCreationBinding
 import de.timseidel.doppelkopf.db.DoppelkopfDatabase
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameType
+import de.timseidel.doppelkopf.ui.EditTextListener
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.VersusBarView
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.GameUtil
-import de.timseidel.doppelkopf.ui.EditTextListener
 import de.timseidel.doppelkopf.util.Logging
 
 class GameCreationFragment : Fragment() {

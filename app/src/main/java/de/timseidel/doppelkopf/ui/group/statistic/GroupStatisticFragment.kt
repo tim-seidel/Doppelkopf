@@ -1,10 +1,10 @@
 package de.timseidel.doppelkopf.ui.group.statistic
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import de.timseidel.doppelkopf.contracts.ISessionController
 import de.timseidel.doppelkopf.controller.SessionController
 import de.timseidel.doppelkopf.databinding.FragmentGroupStatisticBinding

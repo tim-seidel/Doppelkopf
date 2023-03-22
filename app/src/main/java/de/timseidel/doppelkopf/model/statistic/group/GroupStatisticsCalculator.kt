@@ -1,13 +1,13 @@
 package de.timseidel.doppelkopf.model.statistic.group
 
 import de.timseidel.doppelkopf.model.Faction
+import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.Member
-import de.timseidel.doppelkopf.model.GameResult
-import de.timseidel.doppelkopf.model.statistic.session.PlayerStatistic
-import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
 import de.timseidel.doppelkopf.model.statistic.SimpleStatisticEntry
 import de.timseidel.doppelkopf.model.statistic.StatisticEntry
+import de.timseidel.doppelkopf.model.statistic.session.PlayerStatistic
+import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
 
 class GroupStatisticsCalculator {
 

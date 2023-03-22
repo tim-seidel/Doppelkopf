@@ -1,14 +1,14 @@
 package de.timseidel.doppelkopf.ui.statistic.provider
 
 import de.timseidel.doppelkopf.model.Faction
+import de.timseidel.doppelkopf.model.statistic.StatisticUtil
 import de.timseidel.doppelkopf.model.statistic.group.MemberStatistic
-import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.ColumnChartViewWrapper
+import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.LineChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.PieChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.ScatterChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.SimpleTextStatisticViewWrapper
-import de.timseidel.doppelkopf.model.statistic.StatisticUtil
 import kotlin.math.abs
 
 class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatisticViewsProvider {

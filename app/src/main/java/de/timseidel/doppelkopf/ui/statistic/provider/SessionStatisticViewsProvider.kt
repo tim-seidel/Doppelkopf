@@ -1,11 +1,11 @@
 package de.timseidel.doppelkopf.ui.statistic.provider
 
+import de.timseidel.doppelkopf.model.statistic.StatisticUtil
 import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
-import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.ColumnChartViewWrapper
+import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.LineChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.SimpleTextStatisticViewWrapper
-import de.timseidel.doppelkopf.model.statistic.StatisticUtil
 
 class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatistics) :
     IStatisticViewsProvider {

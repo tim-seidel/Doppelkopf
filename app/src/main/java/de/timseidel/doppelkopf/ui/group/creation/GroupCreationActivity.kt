@@ -8,14 +8,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import de.timseidel.doppelkopf.ui.group.GroupActivity
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.controller.DoppelkopfManager
 import de.timseidel.doppelkopf.databinding.ActivityGroupCreationBinding
 import de.timseidel.doppelkopf.db.DoppelkopfDatabase
-import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
-import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.ui.EditTextListener
+import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
+import de.timseidel.doppelkopf.ui.group.GroupActivity
+import de.timseidel.doppelkopf.ui.util.Converter
 
 class GroupCreationActivity : AppCompatActivity() {
 

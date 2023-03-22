@@ -1,7 +1,7 @@
 package de.timseidel.doppelkopf.model.statistic.group
 
-import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
 import de.timseidel.doppelkopf.model.statistic.StatisticEntry
+import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
 
 data class GroupStatistics(
     val general: StatisticEntry = StatisticEntry(),

@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Player
-import de.timseidel.doppelkopf.ui.session.PlayerListHeaderAdapter
 
 class PlayerListHeaderView constructor(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {

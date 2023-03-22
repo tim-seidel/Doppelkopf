@@ -47,7 +47,7 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
     }
 
     fun setGameNumber(number: Int) {
-        tvGameNumber.text = if(number in 0..9) "0$number" else number.toString()
+        tvGameNumber.text = if (number in 0..9) "0$number" else number.toString()
     }
 
     fun setGame(game: Game) {
@@ -56,9 +56,9 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
                 .getGameAsPlayerResults(game)
         setResultsPlayers(playerResults)
 
-        if(game.isBockrunde){
+        if (game.isBockrunde) {
             tvGameNumber.setTextColor(ContextCompat.getColor(context, R.color.error))
-        }else{
+        } else {
             tvGameNumber.setTextColor(ContextCompat.getColor(context, R.color.neural))
         }
     }

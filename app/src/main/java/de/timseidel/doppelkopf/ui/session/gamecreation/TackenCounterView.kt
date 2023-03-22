@@ -31,7 +31,7 @@ class TackenCounterView constructor(context: Context, attrs: AttributeSet? = nul
     private lateinit var tvTackenCount: TextView
 
     fun setCounter(value: Int) {
-        tvTackenCount.text = if(value in 0..9) "0$value" else value.toString()
+        tvTackenCount.text = if (value in 0..9) "0$value" else value.toString()
 
         /*
         when {

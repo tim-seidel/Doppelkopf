@@ -33,7 +33,11 @@ class ColumnChartViewWrapper(val data: ColumnChartData) : IStatisticViewWrapper 
 
     data class ColumnSeriesData(val name: String, val stacks: List<ColumnSeriesStackData>)
 
-    data class ColumnSeriesStackData(val name: String, val colorHex: String, val values: List<Number>)
+    data class ColumnSeriesStackData(
+        val name: String,
+        val colorHex: String,
+        val values: List<Number>
+    )
 
     override fun getItemType(): Int {
         return IStatisticViewWrapper.ITEM_TYPE_CHART_COLUMN

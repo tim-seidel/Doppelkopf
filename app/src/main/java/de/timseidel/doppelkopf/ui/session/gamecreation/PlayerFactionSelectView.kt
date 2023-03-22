@@ -35,13 +35,13 @@ class PlayerFactionSelectView constructor(context: Context, attrs: AttributeSet?
     private lateinit var btnSelectRe: ImageButton
     private lateinit var btnSelectContra: ImageButton
 
-    private fun findViews(){
+    private fun findViews() {
         tvPlayerName = findViewById(R.id.tv_player_faction_select_name)
         btnSelectRe = findViewById(R.id.btn_faction_re)
         btnSelectContra = findViewById(R.id.btn_faction_contra)
     }
 
-    fun setPlayerName(name: String){
+    fun setPlayerName(name: String) {
         tvPlayerName.text = name
     }
 
@@ -60,7 +60,12 @@ class PlayerFactionSelectView constructor(context: Context, attrs: AttributeSet?
 
     private fun setContra() {
         setFactionPassive(btnSelectRe)
-        btnSelectContra.setColorFilter(ContextCompat.getColor(btnSelectContra.context, R.color.secondary))
+        btnSelectContra.setColorFilter(
+            ContextCompat.getColor(
+                btnSelectContra.context,
+                R.color.secondary
+            )
+        )
     }
 
     private fun resetFaction() {

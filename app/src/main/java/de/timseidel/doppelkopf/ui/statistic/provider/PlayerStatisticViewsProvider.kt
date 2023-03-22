@@ -45,7 +45,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
         val opponentTackenWinsContra = mutableListOf<Int>()
         val opponentTackenLossRe = mutableListOf<Int>()
         val opponentTackenLossContra = mutableListOf<Int>()
-        
+
         val winLossHistory = mutableListOf<Int>()
         val winLossBockMarker = mutableListOf<String>()
         var longestWinStreak = 0

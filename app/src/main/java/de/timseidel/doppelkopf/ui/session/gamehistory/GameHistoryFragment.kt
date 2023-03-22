@@ -28,7 +28,8 @@ class GameHistoryFragment : Fragment() {
     ): View {
         _binding = FragmentGameHistoryBinding.inflate(inflater, container, false)
 
-        (activity as AppCompatActivity).supportActionBar?.title = DokoShortAccess.getSessionCtrl().getSession().name
+        (activity as AppCompatActivity).supportActionBar?.title =
+            DokoShortAccess.getSessionCtrl().getSession().name
 
         setupPlayerHeader()
         setupGameHistoryList()

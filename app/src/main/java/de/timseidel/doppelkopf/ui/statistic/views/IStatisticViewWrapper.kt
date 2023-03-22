@@ -5,7 +5,7 @@ import android.view.View
 
 interface IStatisticViewWrapper {
 
-    companion object{
+    companion object {
         const val ITEM_TYPE_COUNT = 4
 
         const val ITEM_TYPE_STAT_TEXT = 0

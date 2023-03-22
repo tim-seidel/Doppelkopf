@@ -17,7 +17,12 @@ import de.timseidel.doppelkopf.ui.util.Converter
 
 class PieChartViewWrapper(val pieData: PieChartData) : IStatisticViewWrapper {
 
-    class PieChartData(val title: String, val subTitle: String, val unit: String, val slices: List<PieSliceData>)
+    class PieChartData(
+        val title: String,
+        val subTitle: String,
+        val unit: String,
+        val slices: List<PieSliceData>
+    )
 
     class PieSliceData(val name: String, val value: Number, val colorHex: String)
 

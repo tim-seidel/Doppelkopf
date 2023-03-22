@@ -10,5 +10,5 @@ data class GroupStatistics(
     val solo: StatisticEntry = StatisticEntry(),
 
     val sessionStatistics: MutableList<SessionStatistics> = mutableListOf(),
-    val memberStatistics : MutableList<MemberStatistic> = mutableListOf()
+    val memberStatistics: MutableList<MemberStatistic> = mutableListOf()
 )

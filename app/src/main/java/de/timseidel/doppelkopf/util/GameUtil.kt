@@ -14,7 +14,7 @@ class GameUtil {
             return faction == Faction.RE && points > 120 || faction == Faction.CONTRA && points >= 120
         }
 
-        fun isFactionCompositionSolo(players: List<PlayerAndFaction>) : Boolean{
+        fun isFactionCompositionSolo(players: List<PlayerAndFaction>): Boolean {
             val reCount = players.count { paf -> paf.faction == Faction.RE }
             val contraCount = players.count { paf -> paf.faction == Faction.CONTRA }
 
@@ -45,8 +45,8 @@ class GameUtil {
             return if (faction == winningFaction) winningPoints else 240 - winningPoints
         }
 
-        fun getStrafTacken(result: GameResult): Int{
-           return if(result.tacken < 0) -1*result.tacken else 0
+        fun getStrafTacken(result: GameResult): Int {
+            return if (result.tacken < 0) -1 * result.tacken else 0
         }
 
         fun getPlayerResult(player: Player, game: Game): GameResult {

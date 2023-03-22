@@ -15,20 +15,20 @@ class Logging {
             Log.d(logTag, msg)
         }
 
-        fun d(className: String, msg: String){
+        fun d(className: String, msg: String) {
             Log.d(logTag, "[$className]: $msg")
         }
 
-        fun e(className: String, msg: String){
+        fun e(className: String, msg: String) {
             Log.e(logTag, "[$className]: $msg")
         }
 
-        fun e(msg: String, ex: Exception){
-            Log.e(logTag, "$msg || ${ex.toString()}" )
+        fun e(msg: String, ex: Exception) {
+            Log.e(logTag, "$msg || ${ex.toString()}")
         }
 
-        fun e(className: String, msg: String, ex: Exception){
-            Log.e(logTag, "[$className]: $msg || ${ex.toString()}" )
+        fun e(className: String, msg: String, ex: Exception) {
+            Log.e(logTag, "[$className]: $msg || ${ex.toString()}")
         }
     }
 }

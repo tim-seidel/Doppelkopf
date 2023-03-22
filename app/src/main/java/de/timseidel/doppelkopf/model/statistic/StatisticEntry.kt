@@ -8,11 +8,11 @@ data class SimpleStatisticEntry(
     var points: Int = 0
 ) {
     fun getTackenPerGame(): Float {
-        return if(games > 0) round(tacken.toFloat() / games * 100) /100 else 0f
+        return if (games > 0) round(tacken.toFloat() / games * 100) / 100 else 0f
     }
 
     fun getPointsPerGame(): Float {
-        return if(games > 0) round(points.toFloat() / games * 100) /100 else 0f
+        return if (games > 0) round(points.toFloat() / games * 100) / 100 else 0f
     }
 }
 

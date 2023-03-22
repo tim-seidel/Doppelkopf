@@ -139,8 +139,10 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
         val currentTackenWithoutBock =
             if (gameResultsWithoutBock.isNotEmpty()) gameResultsWithoutBock.last() else 0
 
-        val strafTackenHistory = StatisticUtil.getAccumulatedStraftackenHistory(stats.gameResultHistory)
-        val currentStrafTacken = if (strafTackenHistory.isNotEmpty()) strafTackenHistory.last() else 0
+        val strafTackenHistory =
+            StatisticUtil.getAccumulatedStraftackenHistory(stats.gameResultHistory)
+        val currentStrafTacken =
+            if (strafTackenHistory.isNotEmpty()) strafTackenHistory.last() else 0
 
         return listOf(
             SimpleTextStatisticViewWrapper(

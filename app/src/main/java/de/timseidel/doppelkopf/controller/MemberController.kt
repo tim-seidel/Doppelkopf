@@ -54,8 +54,8 @@ class MemberController : IMemberController {
         return members.toList()
     }
 
-    override fun validateName(name: String): Boolean{
-        if(name.isEmpty()) return false
+    override fun validateName(name: String): Boolean {
+        if (name.isEmpty()) return false
         return getMemberByName(name) == null
     }
 
@@ -63,7 +63,7 @@ class MemberController : IMemberController {
         if (names.size != names.distinct().count()) return false
         for (name in names) {
             if (name.trim().isEmpty()) return false
-            if(getMemberByName(name) != null) return false
+            if (getMemberByName(name) != null) return false
         }
         return true
     }

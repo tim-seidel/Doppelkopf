@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 
-class StatisticListAdapter (
+class StatisticListAdapter(
     context: Context,
     objects: List<IStatisticViewWrapper>
 ) : ArrayAdapter<IStatisticViewWrapper>(context, 0, objects) {

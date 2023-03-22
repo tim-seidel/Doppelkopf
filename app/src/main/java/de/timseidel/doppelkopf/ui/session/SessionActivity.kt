@@ -104,7 +104,11 @@ class SessionActivity : AppCompatActivity() {
                                             group
                                         )
                                         ctrl.getGameController().getGames().forEach { game ->
-                                            firebase.storeGameInSession(game, ctrl.getSession(), group)
+                                            firebase.storeGameInSession(
+                                                game,
+                                                ctrl.getSession(),
+                                                group
+                                            )
                                         }
 
                                     }

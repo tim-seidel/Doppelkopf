@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Member
 
-class MemberListHeaderAdapter (
+class MemberListHeaderAdapter(
     private val members: List<Member> = listOf(),
     var memberClickListener: OnMemberClickListener? = null
 ) :

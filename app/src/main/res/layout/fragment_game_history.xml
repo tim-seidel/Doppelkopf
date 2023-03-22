@@ -38,5 +38,4 @@
         app:layout_constraintTop_toBottomOf="@+id/header_game_history_list" />
 
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>

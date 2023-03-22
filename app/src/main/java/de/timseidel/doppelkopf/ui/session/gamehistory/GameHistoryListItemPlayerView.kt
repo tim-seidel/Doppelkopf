@@ -73,7 +73,8 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
         }
     }
 
-    fun setSolo(isSolist: Boolean){
-        background = if(isSolist) ContextCompat.getDrawable(context, R.drawable.border_background) else null
+    fun setSolo(isSolist: Boolean) {
+        background =
+            if (isSolist) ContextCompat.getDrawable(context, R.drawable.border_background) else null
     }
 }

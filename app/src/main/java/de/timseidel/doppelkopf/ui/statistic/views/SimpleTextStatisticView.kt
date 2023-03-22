@@ -39,19 +39,19 @@ class SimpleTextStatisticView constructor(context: Context, attrs: AttributeSet?
     private lateinit var tvValue: TextView
     private lateinit var ivIcon: ImageView
 
-    fun setTitle(title: String){
+    fun setTitle(title: String) {
         tvTitle.text = title
     }
 
-    fun setDescription(description: String){
+    fun setDescription(description: String) {
         tvDescription.text = description
     }
 
-    fun setValue(value: String){
+    fun setValue(value: String) {
         tvValue.text = value
     }
 
-    fun setIcon(icon: Drawable){
+    fun setIcon(icon: Drawable) {
         ivIcon.setImageDrawable(icon)
     }
 }

@@ -9,8 +9,8 @@ class Converter {
             return (dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
         }
 
-        fun convertPixelsToDp(px: Int, context: Context) : Float{
-            return px/context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT
+        fun convertPixelsToDp(px: Int, context: Context): Float {
+            return px / context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT
         }
     }
 }

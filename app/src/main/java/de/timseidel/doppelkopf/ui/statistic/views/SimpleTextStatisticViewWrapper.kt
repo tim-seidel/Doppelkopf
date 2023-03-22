@@ -3,7 +3,11 @@ package de.timseidel.doppelkopf.ui.statistic.views
 import android.content.Context
 import android.view.View
 
-class SimpleTextStatisticViewWrapper(private val title: String, private val description: String, private val value: String):
+class SimpleTextStatisticViewWrapper(
+    private val title: String,
+    private val description: String,
+    private val value: String
+) :
     IStatisticViewWrapper {
 
     override fun getItemType(): Int {

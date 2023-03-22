@@ -1,7 +1,7 @@
 package de.timseidel.doppelkopf.model.statistic.group
 
 import de.timseidel.doppelkopf.model.Member
-import de.timseidel.doppelkopf.model.PlayerGameResult
+import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.statistic.session.PlayerStatistic
 import de.timseidel.doppelkopf.model.statistic.StatisticEntry
 
@@ -15,7 +15,7 @@ data class MemberStatistic(
     val partners: Map<String, MemberToMemberStatistic>,
     val opponents: Map<String, MemberToMemberStatistic>,
 
-    val gameResultHistory: MutableList<PlayerGameResult> = mutableListOf(),
+    val gameResultHistory: MutableList<GameResult> = mutableListOf(),
 
     val sessionStatistics: MutableList<PlayerStatistic> = mutableListOf()
 )

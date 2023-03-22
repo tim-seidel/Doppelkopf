@@ -1,6 +1,6 @@
 package de.timseidel.doppelkopf.ui.statistic.provider
 
-import de.timseidel.doppelkopf.model.PlayerGameResult
+import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
 import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.ColumnChartViewWrapper
@@ -55,7 +55,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
             memberLossSolo.add(ms.solo.loss.games)
         }
 
-        val historyWinner = mutableListOf<PlayerGameResult>()
+        val historyWinner = mutableListOf<GameResult>()
         groupStatistics.sessionStatistics.forEach { ss ->
             historyWinner.addAll(ss.gameResultHistoryWinner)
         }

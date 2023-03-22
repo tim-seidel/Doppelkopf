@@ -5,7 +5,7 @@ import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.PlayerAndFaction
-import de.timseidel.doppelkopf.model.PlayerGameResult
+import de.timseidel.doppelkopf.model.GameResult
 
 class GameUtil {
     companion object {
@@ -45,16 +45,16 @@ class GameUtil {
             return if (faction == winningFaction) winningPoints else 240 - winningPoints
         }
 
-        fun getStrafTacken(result: PlayerGameResult): Int{
+        fun getStrafTacken(result: GameResult): Int{
            return if(result.tacken < 0) -1*result.tacken else 0
         }
 
-        fun getPlayerResult(player: Player, game: Game): PlayerGameResult {
+        fun getPlayerResult(player: Player, game: Game): GameResult {
             val paf = game.players.firstOrNull { paf -> paf.player.id == player.id }
             return if (paf == null) {
-                PlayerGameResult(Faction.NONE, false, 0, 0, false, GameType.NORMAL)
+                GameResult(Faction.NONE, false, 0, 0, false, GameType.NORMAL)
             } else {
-                PlayerGameResult(
+                GameResult(
                     paf.faction,
                     paf.faction == game.winningFaction,
                     getFactionTacken(paf.faction, game),

@@ -4,7 +4,7 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.PlayerAndFaction
-import de.timseidel.doppelkopf.model.PlayerGameResult
+import de.timseidel.doppelkopf.model.GameResult
 
 interface IGameController {
 
@@ -16,9 +16,9 @@ interface IGameController {
 
      fun getGames(): List<Game>
 
-     fun getGameAsPlayerResults(game: Game) : List<PlayerGameResult>
+     fun getGameAsPlayerResults(game: Game) : List<GameResult>
 
-     fun getGamesAsPlayerResults() : List<List<PlayerGameResult>>
+     fun getGamesAsPlayerResults() : List<List<GameResult>>
 
      fun getGamesOfPlayer(pId: String): List<Game>
 

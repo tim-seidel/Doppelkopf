@@ -5,7 +5,7 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.PlayerAndFaction
-import de.timseidel.doppelkopf.model.PlayerGameResult
+import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.util.GameUtil
 import de.timseidel.doppelkopf.util.IdGenerator
 
@@ -45,12 +45,12 @@ class GameController : IGameController {
         return games.toList()
     }
 
-    override fun getGameAsPlayerResults(game: Game): List<PlayerGameResult> {
-        val results = mutableListOf<PlayerGameResult>()
+    override fun getGameAsPlayerResults(game: Game): List<GameResult> {
+        val results = mutableListOf<GameResult>()
 
         game.players.forEach { p ->
             results.add(
-                PlayerGameResult(
+                GameResult(
                     p.faction,
                     p.faction == game.winningFaction,
                     GameUtil.getFactionTacken(p.faction, game),
@@ -64,8 +64,8 @@ class GameController : IGameController {
         return results
     }
 
-    override fun getGamesAsPlayerResults(): List<List<PlayerGameResult>> {
-        val results = mutableListOf<List<PlayerGameResult>>()
+    override fun getGamesAsPlayerResults(): List<List<GameResult>> {
+        val results = mutableListOf<List<GameResult>>()
         games.forEach { g ->
             results.add(getGameAsPlayerResults(g))
         }

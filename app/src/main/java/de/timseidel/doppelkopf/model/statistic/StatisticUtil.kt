@@ -1,13 +1,13 @@
 package de.timseidel.doppelkopf.model.statistic
 
 import de.timseidel.doppelkopf.model.Faction
-import de.timseidel.doppelkopf.model.PlayerGameResult
+import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.util.GameUtil
 import de.timseidel.doppelkopf.util.RangeDistribution
 
 class StatisticUtil {
     companion object {
-        fun getAccumulatedTackenHistory(gameResults: List<PlayerGameResult>): List<Int> {
+        fun getAccumulatedTackenHistory(gameResults: List<GameResult>): List<Int> {
             val tackenHistory = mutableListOf(0)
             gameResults.forEach { gr ->
                 tackenHistory.add(tackenHistory[tackenHistory.size - 1] + gr.tacken)
@@ -16,7 +16,7 @@ class StatisticUtil {
             return tackenHistory
         }
 
-        fun getAccumulatedTackenHistoryWithoutBock(gameResults: List<PlayerGameResult>): List<Int> {
+        fun getAccumulatedTackenHistoryWithoutBock(gameResults: List<GameResult>): List<Int> {
             val tackenHistory = mutableListOf(0)
             gameResults.forEach { gr ->
                 tackenHistory.add(tackenHistory[tackenHistory.size - 1] + (if (gr.isBockrunde) gr.tacken / 2 else gr.tacken))
@@ -25,7 +25,7 @@ class StatisticUtil {
             return tackenHistory
         }
 
-        fun getAccumulatedStraftackenHistory(gameResults: List<PlayerGameResult>): List<Int> {
+        fun getAccumulatedStraftackenHistory(gameResults: List<GameResult>): List<Int> {
             val tackenHistory = mutableListOf(0)
             gameResults.forEach { gr ->
                 tackenHistory.add(tackenHistory[tackenHistory.size - 1] + GameUtil.getStrafTacken(gr))
@@ -35,7 +35,7 @@ class StatisticUtil {
         }
 
         fun getTackenDistribution(
-            gameResults: List<PlayerGameResult>,
+            gameResults: List<GameResult>,
             faction: Faction? = null
         ): RangeDistribution {
             val max =

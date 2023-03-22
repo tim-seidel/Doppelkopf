@@ -5,7 +5,7 @@ import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.PlayerAndFaction
-import de.timseidel.doppelkopf.model.PlayerGameResult
+import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.statistic.SimpleStatisticEntry
 import de.timseidel.doppelkopf.model.statistic.StatisticEntry
 import de.timseidel.doppelkopf.util.GameUtil
@@ -17,7 +17,7 @@ class SessionStatisticsCalculator {
         games.forEach { g ->
             if (g.winningFaction != Faction.NONE) {
                 val winnerResult =
-                    PlayerGameResult(
+                    GameResult(
                         g.winningFaction,
                         true,
                         g.tacken,
@@ -26,7 +26,7 @@ class SessionStatisticsCalculator {
                         g.gameType
                     )
                 val loserResult =
-                    PlayerGameResult(
+                    GameResult(
                         if (g.winningFaction == Faction.RE) Faction.CONTRA else Faction.RE,
                         false,
                         -1 * g.tacken,
@@ -153,7 +153,7 @@ class SessionStatisticsCalculator {
 
     private fun addPlayerPartnerStatisticForGame(
         stats: PlayerStatistic,
-        result: PlayerGameResult,
+        result: GameResult,
         participants: List<PlayerAndFaction>
     ) {
         participants.forEach { partner ->
@@ -178,20 +178,20 @@ class SessionStatisticsCalculator {
 
     private fun addGameResult(
         stats: StatisticEntry?,
-        playerGameResult: PlayerGameResult
+        gameResult: GameResult
     ) {
-        if (stats != null && playerGameResult.faction != Faction.NONE) {
-            addGame(stats.total, playerGameResult)
-            if (playerGameResult.isWinner) {
-                addGame(stats.wins, playerGameResult)
+        if (stats != null && gameResult.faction != Faction.NONE) {
+            addGame(stats.total, gameResult)
+            if (gameResult.isWinner) {
+                addGame(stats.wins, gameResult)
 
             } else {
-                addGame(stats.loss, playerGameResult)
+                addGame(stats.loss, gameResult)
             }
         }
     }
 
-    private fun addGame(stats: SimpleStatisticEntry, game: PlayerGameResult) {
+    private fun addGame(stats: SimpleStatisticEntry, game: GameResult) {
         stats.games += 1
         stats.tacken += game.tacken
         stats.points += game.points

@@ -1,6 +1,6 @@
 package de.timseidel.doppelkopf.model.statistic.session
 
-import de.timseidel.doppelkopf.model.PlayerGameResult
+import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.statistic.StatisticEntry
 
 data class SessionStatistics(
@@ -9,8 +9,8 @@ data class SessionStatistics(
     val contra: StatisticEntry = StatisticEntry(),
     val solo: StatisticEntry = StatisticEntry(),
 
-    val gameResultHistoryWinner: MutableList<PlayerGameResult> = mutableListOf(),
-    val gameResultHistoryLoser: MutableList<PlayerGameResult> = mutableListOf(),
+    val gameResultHistoryWinner: MutableList<GameResult> = mutableListOf(),
+    val gameResultHistoryLoser: MutableList<GameResult> = mutableListOf(),
 
     val playerStatistics: MutableList<PlayerStatistic> = mutableListOf()
 )

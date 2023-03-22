@@ -3,7 +3,7 @@ package de.timseidel.doppelkopf.model.statistic.group
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.Member
-import de.timseidel.doppelkopf.model.PlayerGameResult
+import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.statistic.session.PlayerStatistic
 import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
 import de.timseidel.doppelkopf.model.statistic.SimpleStatisticEntry
@@ -78,7 +78,7 @@ class GroupStatisticsCalculator {
                     // Add filler games to history
                     for (i in 1..sessionStat.general.total.games) {
                         memberStat.gameResultHistory.add(
-                            PlayerGameResult(Faction.NONE, false, 0, 0, false, GameType.NORMAL)
+                            GameResult(Faction.NONE, false, 0, 0, false, GameType.NORMAL)
                         )
                     }
                 }

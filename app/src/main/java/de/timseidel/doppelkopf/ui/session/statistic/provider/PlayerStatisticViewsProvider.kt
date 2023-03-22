@@ -32,8 +32,22 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
         val partnerTackenLossRe = mutableListOf<Int>()
         val partnerTackenLossContra = mutableListOf<Int>()
 
+        val opponentNames = mutableListOf<String>()
+        val opponentNamesWithTacken = mutableListOf<String>()
+        val opponentNamesWithGames = mutableListOf<String>()
+
+        val opponentWinsRe = mutableListOf<Int>()
+        val opponentWinsContra = mutableListOf<Int>()
+        val opponentLossRe = mutableListOf<Int>()
+        val opponentLossContra = mutableListOf<Int>()
+
+        val opponentTackenWinsRe = mutableListOf<Int>()
+        val opponentTackenWinsContra = mutableListOf<Int>()
+        val opponentTackenLossRe = mutableListOf<Int>()
+        val opponentTackenLossContra = mutableListOf<Int>()
+        
         val winLossHistory = mutableListOf<Int>()
-        val winLossBockmarker = mutableListOf<String>()
+        val winLossBockMarker = mutableListOf<String>()
         var longestWinStreak = 0
         var longestLossStreak = 0
         var currentWinStreak = 0
@@ -55,7 +69,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             }
 
             winLossHistory.add(if (gr.faction != Faction.NONE) (if (gr.isWinner) 1 else -1) else 0)
-            winLossBockmarker.add(
+            winLossBockMarker.add(
                 if (gr.faction != Faction.NONE) {
                     if (gr.isBockrunde) "#".plus(IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT)
                     else "#".plus(
@@ -86,7 +100,6 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                 }
             }
         }
-
         val winrateBockrunde =
             if (gamesBockrunde > 0) ((winsBockrunde / (gamesBockrunde * 1f)) * 100).toInt() else 0
         val winrateNoBockrunde =
@@ -106,6 +119,22 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             partnerTackenWinsContra.add(p.contra.wins.tacken)
             partnerTackenLossRe.add(-1 * p.re.loss.tacken)
             partnerTackenLossContra.add(-1 * p.contra.loss.tacken)
+        }
+
+        stats.opponents.values.forEach { o ->
+            opponentNames.add(o.player.name)
+            opponentNamesWithTacken.add("${o.player.name} (${o.general.total.tacken})")
+            opponentNamesWithGames.add("${o.player.name} (${o.general.total.games})")
+
+            opponentWinsRe.add(o.re.wins.games)
+            opponentWinsContra.add(o.contra.wins.games)
+            opponentLossRe.add(o.re.loss.games)
+            opponentLossContra.add(o.contra.loss.games)
+
+            opponentTackenWinsRe.add(o.re.wins.tacken)
+            opponentTackenWinsContra.add(o.contra.wins.tacken)
+            opponentTackenLossRe.add(-1 * o.re.loss.tacken)
+            opponentTackenLossContra.add(-1 * o.contra.loss.tacken)
         }
 
         return listOf(
@@ -319,6 +348,82 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                     partnerNamesWithTacken
                 )
             ),
+            ColumnChartViewWrapper(
+                ColumnChartViewWrapper.ColumnChartData(
+                    "Spiele gegen ...", "", "Spiele",
+                    listOf(
+                        ColumnChartViewWrapper.ColumnSeriesData(
+                            "Siege",
+                            listOf(
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "Siege Re",
+                                    IStatisticViewWrapper.COLOR_POSITIVE_DARK,
+                                    opponentWinsRe
+                                ),
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "Siege Contra",
+                                    IStatisticViewWrapper.COLOR_POSITIVE_LIGHT,
+                                    opponentWinsContra
+                                )
+                            )
+                        ),
+                        ColumnChartViewWrapper.ColumnSeriesData(
+                            "Niederlagen",
+                            listOf(
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "Ndl Re",
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_DARK,
+                                    opponentLossRe
+                                ),
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "Ndl Contra",
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT,
+                                    opponentLossContra
+                                )
+                            )
+                        )
+                    ),
+                    opponentNamesWithGames
+                )
+            ),
+            ColumnChartViewWrapper(
+                ColumnChartViewWrapper.ColumnChartData(
+                    "Tacken gegen ...", "", "Tacken",
+                    listOf(
+                        ColumnChartViewWrapper.ColumnSeriesData(
+                            "Siege",
+                            listOf(
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "bei Siegen Re",
+                                    IStatisticViewWrapper.COLOR_POSITIVE_DARK,
+                                    opponentTackenWinsRe
+                                ),
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "bei Siegen Contra",
+                                    IStatisticViewWrapper.COLOR_POSITIVE_LIGHT,
+                                    opponentTackenWinsContra
+                                )
+                            )
+                        ),
+                        ColumnChartViewWrapper.ColumnSeriesData(
+                            "Niederlagen",
+                            listOf(
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "bei Ndl Re",
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_DARK,
+                                    opponentTackenLossRe
+                                ),
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "bei Ndl Contra",
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT,
+                                    opponentTackenLossContra
+                                )
+                            )
+                        )
+                    ),
+                    opponentNamesWithTacken
+                )
+            ),
             ScatterChartViewWrapper(
                 ScatterChartViewWrapper.ScatterChartData(
                     "Ergebnisverlauf (Bockrunden hervorgehoben",
@@ -327,7 +432,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                         ScatterChartViewWrapper.ScatterLineData(
                             "Ergebnis (Bockrunden hervorgehoben)",
                             winLossHistory,
-                            winLossBockmarker
+                            winLossBockMarker
                         )
                     ),
                     showYAxisValues = false,

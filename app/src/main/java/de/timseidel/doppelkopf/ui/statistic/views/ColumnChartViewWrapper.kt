@@ -18,7 +18,6 @@ import com.highsoft.highcharts.common.hichartsclasses.HIYAxis
 import com.highsoft.highcharts.core.HIChartView
 import de.timseidel.doppelkopf.ui.util.Converter
 
-//TODO: Wieder eigenen Titel zwecks Farbanpassung?
 class ColumnChartViewWrapper(val data: ColumnChartData) : IStatisticViewWrapper {
 
     data class ColumnChartData(
@@ -27,6 +26,7 @@ class ColumnChartViewWrapper(val data: ColumnChartData) : IStatisticViewWrapper 
         val yAxisTitle: String,
         val series: List<ColumnSeriesData>,
         val categories: List<String> = listOf(),
+        val legendEnabled: Boolean = false,
         val height: Float = 300f
     )
 
@@ -57,7 +57,8 @@ class ColumnChartViewWrapper(val data: ColumnChartData) : IStatisticViewWrapper 
         options.title = title
 
         val legend = HILegend()
-        legend.enabled = false
+        legend.enabled = data.legendEnabled
+        legend.align = "center"
         options.legend = legend
 
         val yAxis = HIYAxis()

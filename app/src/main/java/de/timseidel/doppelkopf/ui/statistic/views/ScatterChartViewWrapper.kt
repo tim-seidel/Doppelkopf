@@ -54,7 +54,7 @@ class ScatterChartViewWrapper(private val chartData: ScatterChartData) : IStatis
         yAxis.title = HITitle()
         yAxis.title.text = chartData.yAxisName
         yAxis.labels = HILabels()
-        yAxis.labels.enabled = false
+        yAxis.labels.enabled = chartData.showYAxisValues
         options.yAxis = arrayListOf(yAxis)
 
         val credits = HICredits()

@@ -1,5 +1,6 @@
 package de.timseidel.doppelkopf.ui.statistic.provider
 
+import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.statistic.StatisticUtil
 import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
@@ -46,6 +47,11 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
         val memberWinsSolo = mutableListOf<Int>()
         val memberLossSolo = mutableListOf<Int>()
 
+        val memberTackenWinsWe = mutableListOf<Int>()
+        val memberTackenWinsContra = mutableListOf<Int>()
+        val memberTackenLossRe = mutableListOf<Int>()
+        val memberTackenLossContra = mutableListOf<Int>()
+
         groupStatistics.memberStatistics.forEach { ms ->
             memberWinsRe.add(ms.re.wins.games)
             memberWinsContra.add(ms.contra.wins.games)
@@ -53,14 +59,65 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
             memberLossContra.add(ms.contra.loss.games)
             memberWinsSolo.add(ms.solo.wins.games)
             memberLossSolo.add(ms.solo.loss.games)
+
+            memberTackenWinsWe.add(ms.re.wins.tacken)
+            memberTackenWinsContra.add(ms.contra.wins.tacken)
+            memberTackenLossRe.add(-1 * ms.re.loss.tacken)
+            memberTackenLossContra.add(-1 * ms.contra.loss.tacken)
         }
 
         val historyWinner = mutableListOf<GameResult>()
         groupStatistics.sessionStatistics.forEach { ss ->
             historyWinner.addAll(ss.gameResultHistoryWinner)
         }
-        val tackenDistribution =
-            StatisticUtil.getTackenDistribution(historyWinner)
+
+        val tackenDistributionNoBockRe =
+            StatisticUtil.getTackenDistribution(historyWinner.filter { gr -> !gr.isBockrunde && gr.faction == Faction.RE })
+        val tackenDistributionBockRe =
+            StatisticUtil.getTackenDistribution(historyWinner.filter { gr -> gr.isBockrunde && gr.faction == Faction.RE })
+        val tackenDistributionNoBockContra =
+            StatisticUtil.getTackenDistribution(historyWinner.filter { gr -> !gr.isBockrunde && gr.faction == Faction.CONTRA })
+        val tackenDistributionBockContra =
+            StatisticUtil.getTackenDistribution(historyWinner.filter { gr -> gr.isBockrunde && gr.faction == Faction.CONTRA })
+
+        val tMin = listOf(
+            tackenDistributionNoBockRe.min,
+            tackenDistributionBockRe.min,
+            tackenDistributionNoBockContra.min,
+            tackenDistributionBockContra.min
+        ).min()
+        val tMax = listOf(
+            tackenDistributionNoBockRe.min,
+            tackenDistributionBockRe.min,
+            tackenDistributionNoBockContra.min,
+            tackenDistributionBockContra.min
+        ).max()
+        val tackenDistributionIndices = (tMin..tMax).toList()
+
+        val tackenDistributionNoBockReValuesOffsetCorrected =
+            if (tackenDistributionNoBockRe.min > tMin) {
+                (List(tackenDistributionNoBockRe.min - tMin) { 0 } + tackenDistributionNoBockRe.values())
+            } else {
+                tackenDistributionNoBockRe.values()
+            }
+        val tackenDistributionBockReValuesOffsetCorrected =
+            if (tackenDistributionBockRe.min > tMin) {
+                (List(tackenDistributionBockRe.min - tMin) { 0 } + tackenDistributionBockRe.values())
+            } else {
+                tackenDistributionBockRe.values()
+            }
+        val tackenDistributionNoBockContraValuesOffsetCorrected =
+            if (tackenDistributionNoBockContra.min > tMin) {
+                (List(tackenDistributionNoBockContra.min - tMin) { 0 } + tackenDistributionNoBockContra.values())
+            } else {
+                tackenDistributionNoBockContra.values()
+            }
+        val tackenDistributionBockContraValuesOffsetCorrected =
+            if (tackenDistributionBockContra.min > tMin) {
+                (List(tackenDistributionBockContra.min - tMin) { 0 } + tackenDistributionBockContra.values())
+            } else {
+                tackenDistributionBockContra.values()
+            }
 
         return listOf(
             SimpleTextStatisticViewWrapper(
@@ -147,12 +204,89 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                     memberNames
                 )
             ),
-
             ColumnChartViewWrapper(
                 ColumnChartViewWrapper.ColumnChartData(
-                    "Wer war heute solo?",
-                    "Spiele",
+                    "Tacken bei S/N", "", "Tacken",
+                    listOf(
+                        ColumnChartViewWrapper.ColumnSeriesData(
+                            "Siege",
+                            listOf(
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "bei Sieg Re",
+                                    IStatisticViewWrapper.COLOR_POSITIVE_DARK,
+                                    memberTackenWinsWe
+                                ),
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "bei Sieg Contra",
+                                    IStatisticViewWrapper.COLOR_POSITIVE_LIGHT,
+                                    memberTackenWinsContra
+                                )
+                            )
+                        ),
+                        ColumnChartViewWrapper.ColumnSeriesData(
+                            "Niederlagen",
+                            listOf(
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "bei Ndl Re",
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_DARK,
+                                    memberTackenLossRe
+                                ),
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "bei Ndl Contra",
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT,
+                                    memberTackenLossContra
+                                )
+                            )
+                        )
+                    ),
+                    memberNames
+                )
+            ),
+            ColumnChartViewWrapper(
+                ColumnChartViewWrapper.ColumnChartData(
+                    "Tackenverteilung", "Tacken", "Spiele",
+                    listOf(
+                        ColumnChartViewWrapper.ColumnSeriesData(
+                            "Tacken Re",
+                            listOf(
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "Normal | Re",
+                                    IStatisticViewWrapper.COLOR_POSITIVE_LIGHT.replace("#", ""),
+                                    tackenDistributionNoBockReValuesOffsetCorrected,
+                                ),
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "Bock | Re",
+                                    IStatisticViewWrapper.COLOR_POSITIVE_DARK.replace("#", ""),
+                                    tackenDistributionBockReValuesOffsetCorrected,
+                                ),
+                            )
+                        ),
+                        ColumnChartViewWrapper.ColumnSeriesData(
+                            "Tacken Contra",
+                            listOf(
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "Normal | Con",
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT.replace("#", ""),
+                                    tackenDistributionNoBockContraValuesOffsetCorrected,
+                                ),
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "Bock | Con",
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_DARK.replace("#", ""),
+                                    tackenDistributionBockContraValuesOffsetCorrected,
+                                )
+                            )
+                        )
+                    ),
+                    tackenDistributionIndices.map { i -> i.toString() },
+                    true,
+                    350f
+                )
+            ),
+            ColumnChartViewWrapper(
+                ColumnChartViewWrapper.ColumnChartData(
+                    "Wer ist solo?",
                     "",
+                    "Spiele",
                     listOf(
                         ColumnChartViewWrapper.ColumnSeriesData(
                             "Siege",
@@ -176,25 +310,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                         )
                     ),
                     memberNames,
-                    250f
-                )
-            ),
-            ColumnChartViewWrapper(
-                ColumnChartViewWrapper.ColumnChartData(
-                    "Tackenverteilung", "Tacken", "Spiele",
-                    listOf(
-                        ColumnChartViewWrapper.ColumnSeriesData(
-                            "Tacken",
-                            listOf(
-                                ColumnChartViewWrapper.ColumnSeriesStackData(
-                                    "Tackenanzahl",
-                                    IStatisticViewWrapper.COLOR_NEURAL.replace("#", ""),
-                                    tackenDistribution.values(),
-                                )
-                            )
-                        )
-                    ),
-                    tackenDistribution.indices().map { i -> i.toString() }
+                    height = 250f
                 )
             )
         )

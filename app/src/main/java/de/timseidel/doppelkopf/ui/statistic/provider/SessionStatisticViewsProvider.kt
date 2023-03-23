@@ -1,5 +1,6 @@
 package de.timseidel.doppelkopf.ui.statistic.provider
 
+import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.statistic.StatisticUtil
 import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
 import de.timseidel.doppelkopf.ui.statistic.views.ColumnChartViewWrapper
@@ -78,8 +79,53 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
             playerTackenLossContra.add(-1 * p.contra.loss.tacken)
         }
 
-        val tackenDistribution =
-            StatisticUtil.getTackenDistribution(sessionStatistics.gameResultHistoryWinner)
+        val tackenDistributionNoBockRe =
+            StatisticUtil.getTackenDistribution(sessionStatistics.gameResultHistoryWinner.filter { gr -> !gr.isBockrunde && gr.faction == Faction.RE })
+        val tackenDistributionBockRe =
+            StatisticUtil.getTackenDistribution(sessionStatistics.gameResultHistoryWinner.filter { gr -> gr.isBockrunde && gr.faction == Faction.RE })
+        val tackenDistributionNoBockContra =
+            StatisticUtil.getTackenDistribution(sessionStatistics.gameResultHistoryWinner.filter { gr -> !gr.isBockrunde && gr.faction == Faction.CONTRA })
+        val tackenDistributionBockContra =
+            StatisticUtil.getTackenDistribution(sessionStatistics.gameResultHistoryWinner.filter { gr -> gr.isBockrunde && gr.faction == Faction.CONTRA })
+
+        val tMin = listOf(
+            tackenDistributionNoBockRe.min,
+            tackenDistributionBockRe.min,
+            tackenDistributionNoBockContra.min,
+            tackenDistributionBockContra.min
+        ).min()
+        val tMax = listOf(
+            tackenDistributionNoBockRe.min,
+            tackenDistributionBockRe.min,
+            tackenDistributionNoBockContra.min,
+            tackenDistributionBockContra.min
+        ).max()
+        val tackenDistributionIndices = (tMin..tMax).toList()
+
+        val tackenDistributionNoBockReValuesOffsetCorrected =
+            if (tackenDistributionNoBockRe.min > tMin) {
+                (List(tackenDistributionNoBockRe.min - tMin) { 0 } + tackenDistributionNoBockRe.values())
+            } else {
+                tackenDistributionNoBockRe.values()
+            }
+        val tackenDistributionBockReValuesOffsetCorrected =
+            if (tackenDistributionBockRe.min > tMin) {
+                (List(tackenDistributionBockRe.min - tMin) { 0 } + tackenDistributionBockRe.values())
+            } else {
+                tackenDistributionBockRe.values()
+            }
+        val tackenDistributionNoBockContraValuesOffsetCorrected =
+            if (tackenDistributionNoBockContra.min > tMin) {
+                (List(tackenDistributionNoBockContra.min - tMin) { 0 } + tackenDistributionNoBockContra.values())
+            } else {
+                tackenDistributionNoBockContra.values()
+            }
+        val tackenDistributionBockContraValuesOffsetCorrected =
+            if (tackenDistributionBockContra.min > tMin) {
+                (List(tackenDistributionBockContra.min - tMin) { 0 } + tackenDistributionBockContra.values())
+            } else {
+                tackenDistributionBockContra.values()
+            }
 
         return listOf(
             SimpleTextStatisticViewWrapper(
@@ -190,17 +236,39 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
                     "Tackenverteilung", "Tacken", "Spiele",
                     listOf(
                         ColumnChartViewWrapper.ColumnSeriesData(
-                            "Tacken",
+                            "Tacken Re",
                             listOf(
                                 ColumnChartViewWrapper.ColumnSeriesStackData(
-                                    "Tackenanzahl",
-                                    IStatisticViewWrapper.COLOR_NEURAL.replace("#", ""),
-                                    tackenDistribution.values(),
+                                    "Normal | Re",
+                                    IStatisticViewWrapper.COLOR_POSITIVE_LIGHT.replace("#", ""),
+                                    tackenDistributionNoBockReValuesOffsetCorrected,
+                                ),
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "Bock | Re",
+                                    IStatisticViewWrapper.COLOR_POSITIVE_DARK.replace("#", ""),
+                                    tackenDistributionBockReValuesOffsetCorrected,
+                                ),
+                            )
+                        ),
+                        ColumnChartViewWrapper.ColumnSeriesData(
+                            "Tacken Contra",
+                            listOf(
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "Normal | Con",
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT.replace("#", ""),
+                                    tackenDistributionNoBockContraValuesOffsetCorrected,
+                                ),
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "Bock | Con",
+                                    IStatisticViewWrapper.COLOR_NEGATIVE_DARK.replace("#", ""),
+                                    tackenDistributionBockContraValuesOffsetCorrected,
                                 )
                             )
                         )
                     ),
-                    tackenDistribution.indices().map { i -> i.toString() }
+                    tackenDistributionIndices.map { i -> i.toString() },
+                    true,
+                    350f
                 )
             ),
             SimpleTextStatisticViewWrapper(
@@ -210,9 +278,9 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
             ),
             ColumnChartViewWrapper(
                 ColumnChartViewWrapper.ColumnChartData(
-                    "Wer war solo?",
-                    "Spiele",
+                    "Wer ist solo?",
                     "",
+                    "Spiele",
                     listOf(
                         ColumnChartViewWrapper.ColumnSeriesData(
                             "Siege",
@@ -236,9 +304,10 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
                         )
                     ),
                     playerNames,
-                    250f
+                    height = 250f
                 )
+            ),
+
             )
-        )
     }
 }

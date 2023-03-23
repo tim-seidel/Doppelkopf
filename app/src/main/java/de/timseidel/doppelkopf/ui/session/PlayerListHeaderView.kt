@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Player
+import java.lang.Integer.min
 
 class PlayerListHeaderView constructor(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
@@ -39,6 +40,6 @@ class PlayerListHeaderView constructor(context: Context, attrs: AttributeSet? = 
         adapter = PlayerListHeaderAdapter(players)
         adapter.playerClickListener = playerClickListener
         rvPlayers.adapter = adapter
-        rvPlayers.layoutManager = GridLayoutManager(rvPlayers.context, players.size)
+        rvPlayers.layoutManager = GridLayoutManager(rvPlayers.context, min(players.size, 4))
     }
 }

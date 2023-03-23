@@ -33,7 +33,6 @@ class GroupInfoRequestById(private val groupId: String) :
                     val groupDto = doc.toObject<GroupDto>()
                     if (groupDto != null) {
                         val group = FirebaseDTO.fromGroupDTOtoGroup(groupDto)
-                        Logging.d(group.toString())
                         listener.onReadComplete(group)
                     } else {
                         Logging.e("Unable to convert ${doc.data} to GroupDTO")
@@ -63,7 +62,6 @@ class GroupInfoRequestByCode(private val groupCode: String) :
                     val groupDto = doc.firstOrNull()?.toObject<GroupDto>()
                     if (groupDto != null) {
                         val group = FirebaseDTO.fromGroupDTOtoGroup(groupDto)
-                        Logging.d(group.toString())
                         listener.onReadComplete(group)
                     } else {
                         Logging.e("Unable to convert ${doc.size()} to GroupDTO")
@@ -122,7 +120,6 @@ class SessionInfoRequest(private val groupId: String, private val sessionId: Str
                     val sessionDto = doc.toObject<SessionDto>()
                     if (sessionDto != null) {
                         val session = FirebaseDTO.fromSessionDTOtoSession(sessionDto)
-                        Logging.d(session.toString())
                         listener.onReadComplete(session)
                     } else {
                         Logging.e("Unable to convert ${doc.data} to SessionDTO")

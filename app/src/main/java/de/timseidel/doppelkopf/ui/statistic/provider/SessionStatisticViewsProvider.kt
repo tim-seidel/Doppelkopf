@@ -74,8 +74,8 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
 
             playerTackenWinsRe.add(p.re.wins.tacken)
             playerTackenWinsContra.add(p.contra.wins.tacken)
-            playerTackenLossRe.add(p.re.loss.tacken)
-            playerTackenLossContra.add(p.contra.loss.tacken)
+            playerTackenLossRe.add(-1 * p.re.loss.tacken)
+            playerTackenLossContra.add(-1 * p.contra.loss.tacken)
         }
 
         val tackenDistribution =

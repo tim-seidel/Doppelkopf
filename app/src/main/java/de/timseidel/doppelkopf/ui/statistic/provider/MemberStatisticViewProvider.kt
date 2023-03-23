@@ -76,6 +76,8 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
 
         val winLossHistory = mutableListOf<Int>()
         val winLossBockMarker = mutableListOf<String>()
+        val streakHistory = mutableListOf<Int>()
+        val streakHistoryWinLossMarker = mutableListOf<String>()
         var longestWinStreak = 0
         var longestLossStreak = 0
         var currentWinStreak = 0
@@ -86,12 +88,20 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
                 if (currentLossStreak > longestLossStreak) {
                     longestLossStreak = currentLossStreak
                 }
+                if (currentLossStreak > 0) {
+                    streakHistory.add(-1 * currentLossStreak)
+                    streakHistoryWinLossMarker.add("#".plus(IStatisticViewWrapper.COLOR_NEGATIVE_DARK))
+                }
                 currentLossStreak = 0
                 currentWinStreak += 1
             }
             if (!gr.isWinner && gr.faction != Faction.NONE) {
                 if (currentWinStreak > longestWinStreak) {
                     longestWinStreak = currentWinStreak
+                }
+                if (currentWinStreak > 0) {
+                    streakHistory.add(currentWinStreak)
+                    streakHistoryWinLossMarker.add("#".plus(IStatisticViewWrapper.COLOR_POSITIVE_DARK))
                 }
                 currentWinStreak = 0
                 currentLossStreak += 1
@@ -143,6 +153,35 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
             StatisticUtil.getAccumulatedStraftackenHistory(stats.gameResultHistory)
         val currentStrafTacken =
             if (strafTackenHistory.isNotEmpty()) strafTackenHistory.last() else 0
+
+        var lastWasWin = false
+        var winAfterLoss = 0
+        var winAfterWin = 0
+        var lossAfterWin = 0
+        var lossAfterLoss = 0
+        stats.gameResultHistory.forEach { gr ->
+            if (gr.faction != Faction.NONE) {
+                if (gr.isWinner) {
+                    if (!lastWasWin) {
+                        winAfterLoss += 1
+                    } else {
+                        winAfterWin += 1
+                    }
+                    lastWasWin = true
+                } else {
+                    if (lastWasWin) {
+                        lossAfterWin += 1
+                    } else {
+                        lossAfterLoss += 1
+                    }
+                    lastWasWin = false
+                }
+            }
+        }
+        val winAfterLossPercentage = if (winAfterLoss + lossAfterLoss > 0)
+            (winAfterLoss / ((winAfterLoss + lossAfterLoss) * 1f) * 100).toInt() else 50
+        val lossAfterWinPercentage = if (lossAfterWin + winAfterWin > 0)
+            (lossAfterWin / ((lossAfterWin + winAfterWin) * 1f) * 100).toInt() else 50
 
         return listOf(
             SimpleTextStatisticViewWrapper(
@@ -430,6 +469,32 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
                 "Längste Niederlagenserie",
                 "Die längste Niederlagenserie hielt folgende Anzahl von Spielen:",
                 longestLossStreak.toString()
+            ),
+            ScatterChartViewWrapper(
+                ScatterChartViewWrapper.ScatterChartData(
+                    "Serienverlauf",
+                    "Ndl | Seriendauer | Sieg",
+                    listOf(
+                        ScatterChartViewWrapper.ScatterLineData(
+                            "Verlauf von Sieges- und Ndlserien",
+                            streakHistory,
+                            streakHistoryWinLossMarker
+                        )
+                    ),
+                    showYAxisValues = true,
+                    showLegend = false,
+                    height = 300f
+                )
+            ),
+            SimpleTextStatisticViewWrapper(
+                "Bergauf",
+                "Nach einer Niederlage gewinnt ${stats.member.name} mit folgender Wahrscheinlichkeit das nächste Spiel:",
+                "$winAfterLossPercentage%"
+            ),
+            SimpleTextStatisticViewWrapper(
+                "Bergab",
+                "Nach einem Sieg verliert ${stats.member.name} mit folgender Wahrscheinlichkeit das nächste Spiel:",
+                "$lossAfterWinPercentage%"
             )
         )
     }

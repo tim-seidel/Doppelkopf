@@ -19,6 +19,7 @@ import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
 import de.timseidel.doppelkopf.model.statistic.group.GroupStatisticsCalculator
 import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
 import de.timseidel.doppelkopf.model.statistic.session.SessionStatisticsCalculator
+import de.timseidel.doppelkopf.ui.statistic.StatisticListAdapter
 import de.timseidel.doppelkopf.ui.statistic.provider.EmptyStatisticViewProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.GroupStatisticViewProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.IStatisticViewsProvider
@@ -90,7 +91,7 @@ class GroupStatisticFragment : Fragment() {
         val lvStatistic = binding.lvGroupStatistic
 
         val statisticItems = provider.getStatisticItems()
-        val adapter = GroupStatisticListAdapter(
+        val adapter = StatisticListAdapter(
             requireContext(),
             statisticItems
         )

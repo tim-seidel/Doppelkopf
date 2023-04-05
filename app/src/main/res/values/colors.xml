@@ -18,4 +18,10 @@
     <color name="gray_400">#FFBDBDBD</color>
     <color name="gray_600">#FF757575</color>
     <color name="error">#d62828</color>
+
+    <color name="transparent">#00000000</color>
+
+    <color name="gold">#FFD700</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="bronce">#CD7F32</color>
 </resources>

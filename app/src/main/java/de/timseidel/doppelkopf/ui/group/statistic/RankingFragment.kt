@@ -56,15 +56,15 @@ class RankingFragment : Fragment() {
     private fun showNextRanking() {
         if (rankings.size > 0) {
             currentRankingIndex = Math.floorMod(currentRankingIndex + 1, rankings.size)
+            setRanking(rankings[currentRankingIndex])
         }
-        setRanking(rankings[currentRankingIndex])
     }
 
     private fun showPreviousRanking() {
         if (rankings.size > 0) {
             currentRankingIndex = Math.floorMod(currentRankingIndex - 1, rankings.size)
+            setRanking(rankings[currentRankingIndex])
         }
-        setRanking(rankings[currentRankingIndex])
     }
 
     private fun setRanking(ranking: Ranking) {

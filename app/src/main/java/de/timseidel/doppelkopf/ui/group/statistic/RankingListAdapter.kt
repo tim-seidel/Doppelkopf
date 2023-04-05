@@ -24,6 +24,7 @@ class RankingListAdapter(private val rankingData: MutableList<RankingItem>) :
                     }
                 )
             )
+            view.setIsCupEnabled(position < 3)
         }
     }
 

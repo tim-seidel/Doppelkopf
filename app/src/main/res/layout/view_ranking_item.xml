@@ -7,6 +7,17 @@
     android:paddingHorizontal="4dp"
     android:paddingVertical="8dp">
 
+    <ImageView
+        android:id="@+id/iv_ranking_cup_icon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_ranking_item_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_ranking_item_name"
+        app:srcCompat="@drawable/ic_outline_emoji_events_24"
+        app:tint="@color/neural_dark" />
+
     <TextView
         android:id="@+id/tv_ranking_item_name"
         android:layout_width="0dp"
@@ -19,7 +30,7 @@
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_ranking_item_value"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_ranking_cup_icon"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Name" />
 

@@ -39,8 +39,7 @@ class GroupActivity : AppCompatActivity() {
             setOf(
                 R.id.navigation_session_history,
                 R.id.navigation_group_statistic,
-                R.id.navigation_member_ranking,
-                R.id.navigation_finances
+                R.id.navigation_member_ranking
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

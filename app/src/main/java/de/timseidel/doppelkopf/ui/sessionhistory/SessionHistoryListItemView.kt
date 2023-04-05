@@ -12,6 +12,7 @@ import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.util.Converter
+import kotlin.math.max
 
 class SessionHistoryListItemView constructor(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
@@ -67,7 +68,7 @@ class SessionHistoryListItemView constructor(context: Context, attrs: AttributeS
     fun setPlayers(players: List<Player>) {
         playerListAdapter = SessionHistoryListItemPlayerListAdapter(players)
         rvPlayers.adapter = playerListAdapter
-        rvPlayers.layoutManager = GridLayoutManager(rvPlayers.context, players.size)
+        rvPlayers.layoutManager = GridLayoutManager(rvPlayers.context, max(players.size, 1))
     }
 
     fun setTitle(title: String) {

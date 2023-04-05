@@ -24,7 +24,7 @@
     <string name="title_activity_session">SessionActivity</string>
     <string name="title_game_creation">Spiel erstellen</string>
     <string name="title_game_history">Spielverlauf</string>
-    <string name="title_session_statistic">Statisik</string>
+    <string name="title_session_statistic">Statistik</string>
     <string name="game_creation_player_assignment">Parteizuordnung</string>
     <string name="faction_contra">Contra</string>
     <string name="faction_re">Re</string>

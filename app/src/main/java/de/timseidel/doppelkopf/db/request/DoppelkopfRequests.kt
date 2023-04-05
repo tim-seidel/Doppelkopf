@@ -1,8 +1,11 @@
 package de.timseidel.doppelkopf.db.request
 
+import android.content.pm.PackageInstaller.SessionInfo
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import de.timseidel.doppelkopf.contracts.IPlayerController
+import de.timseidel.doppelkopf.contracts.ISessionController
+import de.timseidel.doppelkopf.controller.SessionController
 import de.timseidel.doppelkopf.db.FirebaseDTO
 import de.timseidel.doppelkopf.db.FirebaseStrings
 import de.timseidel.doppelkopf.db.GameDto
@@ -15,6 +18,7 @@ import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Group
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.Player
+import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.Logging
 import java.time.ZoneOffset
 
@@ -203,7 +207,7 @@ class SessionGamesRequest(
     }
 }
 
-class SessionListRequest(private val groupId: String) : BaseReadRequest<List<DokoSession>>() {
+class SessionInfoListRequest(private val groupId: String) : BaseReadRequest<List<DokoSession>>() {
     override fun execute(listener: ReadRequestListener<List<DokoSession>>) {
         readRequestListener = listener
 
@@ -229,5 +233,63 @@ class SessionListRequest(private val groupId: String) : BaseReadRequest<List<Dok
                 Logging.e("SessionListRequest failed with ", e)
                 onReadFailed()
             }
+    }
+}
+
+class SessionListRequest(private val sessionInfos: List<DokoSession>) :
+    BaseReadRequest<List<ISessionController>>() {
+    override fun execute(listener: ReadRequestListener<List<ISessionController>>) {
+        readRequestListener = listener
+
+        val sessions = mutableListOf<ISessionController>()
+        var remainingLoadCounter = sessionInfos.size
+
+        for (sessionInfo in sessionInfos) {
+            val sessionController = SessionController()
+            sessionController.set(sessionInfo)
+
+            SessionPlayersRequest(
+                DokoShortAccess.getGroupCtrl().getGroup().id,
+                sessionInfo.id
+            ).execute(object :
+                ReadRequestListener<List<Player>> {
+
+                override fun onReadComplete(result: List<Player>) {
+                    sessionController.getPlayerController().addPlayers(result)
+
+                    SessionGamesRequest(
+                        DokoShortAccess.getGroupCtrl().getGroup().id,
+                        sessionInfo.id,
+                        sessionController.getPlayerController()
+                    ).execute(
+                        object : ReadRequestListener<List<Game>> {
+                            override fun onReadComplete(result: List<Game>) {
+                                result.forEach { game ->
+                                    sessionController.getGameController().addGame(game)
+                                }
+
+                                sessions.add(sessionController)
+                                remainingLoadCounter -= 1
+
+                                if (remainingLoadCounter == 0) {
+                                    sessions.sortBy { s ->
+                                        s.getSession().date.toInstant(ZoneOffset.UTC).toEpochMilli()
+                                    }
+
+                                    onReadResult(sessions)
+                                }
+                            }
+
+                            override fun onReadFailed() {
+                                this.onReadFailed()
+                            }
+                        })
+                }
+
+                override fun onReadFailed() {
+                    this.onReadFailed()
+                }
+            })
+        }
     }
 }

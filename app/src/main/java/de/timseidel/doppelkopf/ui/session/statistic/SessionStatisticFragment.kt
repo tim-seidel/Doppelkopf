@@ -45,29 +45,16 @@ class SessionStatisticFragment : Fragment() {
         return root
     }
 
-    private fun calculateSessionStatistics(): SessionStatistics {
-        val games = DokoShortAccess.getGameCtrl().getGames()
-        val players = DokoShortAccess.getPlayerCtrl().getPlayers()
-
-        val calculator = SessionStatisticsCalculator()
-        val sessionStats = calculator.calculateSessionStatistics(games)
-        val playerStatistics = calculator.calculatePlayerStatistics(players, games)
-
-        playerStatistics.sortedBy { playerStatistic -> playerStatistic.player.name }
-            .forEach { playerStatistic ->
-                sessionStats.playerStatistics.add(playerStatistic)
-            }
-
-        return sessionStats
-    }
-
     private fun setupStatistics() {
         if (DokoShortAccess.getGameCtrl().getGames().isEmpty()) {
             setStatistics(EmptyStatisticViewProvider())
             return
         }
 
-        sessionStatistics = calculateSessionStatistics()
+        sessionStatistics = SessionStatisticsCalculator().calculateSessionStatistics(
+            DokoShortAccess.getPlayerCtrl().getPlayers(),
+            DokoShortAccess.getGameCtrl().getGames()
+        )
         setStatistics(SessionStatisticViewsProvider(sessionStatistics))
     }
 

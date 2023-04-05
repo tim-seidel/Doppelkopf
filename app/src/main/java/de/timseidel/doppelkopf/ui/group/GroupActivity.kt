@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,6 +15,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.databinding.ActivityMainBinding
+import de.timseidel.doppelkopf.util.DokoShortAccess
 
 class GroupActivity : AppCompatActivity() {
 
@@ -36,6 +39,7 @@ class GroupActivity : AppCompatActivity() {
             setOf(
                 R.id.navigation_session_history,
                 R.id.navigation_group_statistic,
+                R.id.navigation_member_ranking,
                 R.id.navigation_finances
             )
         )
@@ -53,8 +57,23 @@ class GroupActivity : AppCompatActivity() {
             clearCurrentGroupId()
             resetActivities()
             return true
+        } else if (item.itemId == R.id.menu_item_reset_group_statistics) {
+            DokoShortAccess.getStatsCtrl().reset()
+
+            showSwitchTabsToSeeChangesDialog()
+            return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showSwitchTabsToSeeChangesDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Statistikupdate")
+        builder.setMessage("Die Statistiken werden geupdated, sobald du einen Tab wechselst (und zurück).")
+        builder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.show()
     }
 
     private fun clearCurrentGroupId() {

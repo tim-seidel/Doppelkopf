@@ -18,6 +18,12 @@
         tools:layout="@layout/fragment_group_statistic" />
 
     <fragment
+        android:id="@+id/navigation_member_ranking"
+        android:name="de.timseidel.doppelkopf.ui.group.statistic.RankingFragment"
+        android:label="@string/navigation_title_member_ranking"
+        tools:layout="@layout/fragment_group_statistic" />
+
+    <fragment
         android:id="@+id/navigation_finances"
         android:name="de.timseidel.doppelkopf.ui.group.finances.FinancesFragment"
         android:label="@string/navigation_title_finances"

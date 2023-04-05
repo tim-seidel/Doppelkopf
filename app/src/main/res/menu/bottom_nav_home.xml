@@ -12,6 +12,11 @@
         android:title="@string/navigation_title_group_statistic" />
 
     <item
+        android:id="@+id/navigation_member_ranking"
+        android:icon="@drawable/ic_baseline_equalizer_24"
+        android:title="@string/navigation_title_member_ranking" />
+
+    <item
         android:id="@+id/navigation_finances"
         android:icon="@drawable/ic_baseline_savings_24"
         android:title="@string/navigation_title_finances" />

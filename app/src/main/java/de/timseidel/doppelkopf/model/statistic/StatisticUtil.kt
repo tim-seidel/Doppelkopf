@@ -34,6 +34,11 @@ class StatisticUtil {
             return tackenHistory
         }
 
+        fun getTotalStrafTacken(gameResults: List<GameResult>): Int {
+            val strafTackenHistory = getAccumulatedStraftackenHistory(gameResults)
+            return if (strafTackenHistory.isNotEmpty()) strafTackenHistory.last() else 0
+        }
+
         fun getTackenDistribution(
             gameResults: List<GameResult>,
             faction: Faction? = null

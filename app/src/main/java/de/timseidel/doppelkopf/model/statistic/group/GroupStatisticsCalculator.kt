@@ -11,12 +11,21 @@ import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
 
 class GroupStatisticsCalculator {
 
-    fun calculateGroupStatistics(sessionStatistics: List<SessionStatistics>): GroupStatistics {
+    fun calculateGroupStatistics(
+        members: List<Member>,
+        sessionStatistics: List<SessionStatistics>
+    ): GroupStatistics {
         val gStats = GroupStatistics()
         sessionStatistics.forEach { sStats ->
             gStats.sessionStatistics.add(sStats)
             addSessionStatisticsToGroupStatistics(gStats, sStats)
         }
+
+        val memberStatistics = calculateMemberStatistics(
+            members,
+            sessionStatistics
+        ).sortedBy { memberStatistic -> memberStatistic.member.name }
+        gStats.memberStatistics.addAll(memberStatistics)
 
         return gStats
     }
@@ -46,7 +55,7 @@ class GroupStatisticsCalculator {
         target.tacken += toBeAdded.tacken
     }
 
-    fun calculateMemberStatistics(
+    private fun calculateMemberStatistics(
         members: List<Member>,
         sessionStatistics: List<SessionStatistics>
     ): List<MemberStatistic> {

@@ -11,7 +11,19 @@ import de.timseidel.doppelkopf.model.statistic.StatisticEntry
 import de.timseidel.doppelkopf.util.GameUtil
 
 class SessionStatisticsCalculator {
-    fun calculateSessionStatistics(games: List<Game>): SessionStatistics {
+
+    fun calculateSessionStatistics(players: List<Player>, games: List<Game>): SessionStatistics {
+        val stats = calculateGeneralSessionStatistics(games)
+
+        val playerStatistics = calculateAllPlayerStatistics(players, games)
+            .sortedBy { playerStatistic -> playerStatistic.player.name }
+
+        stats.playerStatistics.addAll(playerStatistics)
+
+        return stats
+    }
+
+    fun calculateGeneralSessionStatistics(games: List<Game>): SessionStatistics {
         val stats = SessionStatistics()
 
         games.forEach { g ->
@@ -71,18 +83,18 @@ class SessionStatisticsCalculator {
         return stats
     }
 
-    fun calculatePlayerStatistic(
+    fun calculateSinglePlayerStatistics(
         player: Player,
-        players: List<Player>,
+        allPlayers: List<Player>,
         games: List<Game>
     ): PlayerStatistic {
 
         val stats = PlayerStatistic(
             player = player,
-            partners = getOtherPlayers(player, players).associateBy(
+            partners = getOtherPlayers(player, allPlayers).associateBy(
                 { it.id },
                 { PlayerToPlayerStatistic(it) }),
-            opponents = getOtherPlayers(player, players).associateBy(
+            opponents = getOtherPlayers(player, allPlayers).associateBy(
                 { it.id },
                 { PlayerToPlayerStatistic(it) }
             )
@@ -94,13 +106,13 @@ class SessionStatisticsCalculator {
         return stats
     }
 
-    fun calculatePlayerStatistics(
+    fun calculateAllPlayerStatistics(
         players: List<Player>,
         games: List<Game>
     ): List<PlayerStatistic> {
         val stats = mutableListOf<PlayerStatistic>()
         players.forEach { player ->
-            stats.add(calculatePlayerStatistic(player, players, games))
+            stats.add(calculateSinglePlayerStatistics(player, players, games))
         }
         return stats
     }

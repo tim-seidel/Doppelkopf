@@ -27,8 +27,6 @@ class GroupStatisticFragment : Fragment() {
     private var _binding: FragmentGroupStatisticBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var groupStatistics: GroupStatistics
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -80,16 +78,21 @@ class GroupStatisticFragment : Fragment() {
             MemberListHeaderAdapter.OnMemberClickListener {
 
             override fun onMemberClicked(member: Member) {
-                if (member.id == placeholderIdGroupStatistics) {
-                    setStatistics(GroupStatisticViewProvider(groupStatistics))
+                val stats = DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
+                if (stats == null) {
+                    setStatistics(EmptyStatisticViewProvider())
                 } else {
-                    val memberStatistic =
-                        groupStatistics.memberStatistics.firstOrNull { memberStatistic -> memberStatistic.member.id == member.id }
-
-                    if (memberStatistic != null) {
-                        setStatistics(MemberStatisticViewProvider(memberStatistic))
+                    if (member.id == placeholderIdGroupStatistics) {
+                        setStatistics(GroupStatisticViewProvider(stats))
                     } else {
-                        setStatistics(EmptyStatisticViewProvider())
+                        val memberStatistic =
+                            stats.memberStatistics.firstOrNull { memberStatistic -> memberStatistic.member.id == member.id }
+
+                        if (memberStatistic != null) {
+                            setStatistics(MemberStatisticViewProvider(memberStatistic))
+                        } else {
+                            setStatistics(EmptyStatisticViewProvider())
+                        }
                     }
                 }
             }

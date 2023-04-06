@@ -3,19 +3,19 @@ package de.timseidel.doppelkopf.controller
 import de.timseidel.doppelkopf.contracts.IGameController
 import de.timseidel.doppelkopf.contracts.IPlayerController
 import de.timseidel.doppelkopf.contracts.ISessionController
-import de.timseidel.doppelkopf.model.DokoSession
+import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.util.IdGenerator
 import java.time.LocalDateTime
 
 class SessionController : ISessionController {
 
-    private lateinit var _session: DokoSession
+    private lateinit var _session: Session
 
     private val playerController: IPlayerController = PlayerController()
     private val gameController: IGameController = GameController()
 
-    override fun createSession(sessionName: String): DokoSession {
-        return DokoSession(
+    override fun createSession(sessionName: String): Session {
+        return Session(
             IdGenerator.generateIdWithTimestamp("session"),
             sessionName,
             LocalDateTime.now(),
@@ -23,7 +23,7 @@ class SessionController : ISessionController {
         )
     }
 
-    override fun getSession(): DokoSession {
+    override fun getSession(): Session {
         return _session
     }
 
@@ -35,7 +35,7 @@ class SessionController : ISessionController {
         return gameController
     }
 
-    override fun set(session: DokoSession) {
+    override fun set(session: Session) {
         _session = session
         playerController.reset()
         gameController.reset()

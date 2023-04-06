@@ -1,7 +1,7 @@
 package de.timseidel.doppelkopf.db
 
 import com.google.firebase.firestore.FirebaseFirestore
-import de.timseidel.doppelkopf.model.DokoSession
+import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Group
 import de.timseidel.doppelkopf.model.Member
@@ -50,7 +50,7 @@ class DoppelkopfDatabase {
         batch.commit()
     }
 
-    fun storeSession(session: DokoSession, group: Group) {
+    fun storeSession(session: Session, group: Group) {
         val sessionDTO = FirebaseDTO.fromSessionToSessionDTO(session)
 
         db.collection(FirebaseStrings.collectionGroups)
@@ -60,7 +60,7 @@ class DoppelkopfDatabase {
             .set(sessionDTO)
     }
 
-    fun storePlayerInSession(player: Player, session: DokoSession, group: Group) {
+    fun storePlayerInSession(player: Player, session: Session, group: Group) {
         val playerDTO = FirebaseDTO.fromPlayerToPlayerDTO(player)
 
         db.collection(FirebaseStrings.collectionGroups)
@@ -72,7 +72,7 @@ class DoppelkopfDatabase {
             .set(playerDTO)
     }
 
-    fun storePlayersInSession(players: List<Player>, session: DokoSession, group: Group) {
+    fun storePlayersInSession(players: List<Player>, session: Session, group: Group) {
         val batch = db.batch()
 
         players.forEach { p ->
@@ -91,7 +91,7 @@ class DoppelkopfDatabase {
         batch.commit()
     }
 
-    fun storeGameInSession(game: Game, session: DokoSession, group: Group) {
+    fun storeGameInSession(game: Game, session: Session, group: Group) {
         val gameDTO = FirebaseDTO.fromGameToGameDTO(game)
         db.collection(FirebaseStrings.collectionGroups)
             .document(group.id)
@@ -102,7 +102,7 @@ class DoppelkopfDatabase {
             .set(gameDTO)
     }
 
-    fun storeGamesInSession(games: List<Game>, session: DokoSession, group: Group) {
+    fun storeGamesInSession(games: List<Game>, session: Session, group: Group) {
         val batch = db.batch()
 
         games.forEach { g ->

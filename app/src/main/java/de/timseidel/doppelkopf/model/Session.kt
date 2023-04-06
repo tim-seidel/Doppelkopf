@@ -2,7 +2,7 @@ package de.timseidel.doppelkopf.model
 
 import java.time.LocalDateTime
 
-data class DokoSession(
+data class Session(
     val id: String,
     var name: String,
     var date: LocalDateTime,

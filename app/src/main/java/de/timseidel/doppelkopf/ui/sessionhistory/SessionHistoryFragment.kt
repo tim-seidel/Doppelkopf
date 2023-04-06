@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import de.timseidel.doppelkopf.databinding.FragmentSessionHistoryBinding
-import de.timseidel.doppelkopf.model.DokoSession
+import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.session.SessionLoadingActivity
 import de.timseidel.doppelkopf.ui.session.creation.SessionCreationActivity
@@ -39,10 +39,10 @@ class SessionHistoryFragment : Fragment() {
         return root
     }
 
-    private fun setSessionHistoryList(sessions: List<DokoSession>) {
+    private fun setSessionHistoryList(sessions: List<Session>) {
         sessionHistoryListAdapter = SessionHistoryListAdapter(sessions, object :
             SessionHistoryListAdapter.OnSessionClickListener {
-            override fun onOpenSessionClicked(session: DokoSession) {
+            override fun onOpenSessionClicked(session: Session) {
                 redirectToSessionLoadingActivity(session.id)
             }
         })

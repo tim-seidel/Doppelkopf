@@ -15,7 +15,7 @@ import de.timseidel.doppelkopf.db.request.GroupInfoRequestById
 import de.timseidel.doppelkopf.db.request.GroupMembersRequest
 import de.timseidel.doppelkopf.db.request.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionInfoListRequest
-import de.timseidel.doppelkopf.model.DokoSession
+import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.model.Group
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.util.DokoShortAccess
@@ -85,8 +85,8 @@ class GroupLoadingActivity : AppCompatActivity() {
                     SessionInfoListRequest(
                         DokoShortAccess.getGroupCtrl().getGroup().id
                     ).execute(object :
-                        ReadRequestListener<List<DokoSession>> {
-                        override fun onReadComplete(sessionInfos: List<DokoSession>) {
+                        ReadRequestListener<List<Session>> {
+                        override fun onReadComplete(sessionInfos: List<Session>) {
                             DokoShortAccess.getSessionInfoCtrl().addSessionInfos(sessionInfos)
 
                             setMessage(getString(R.string.loading_finished))

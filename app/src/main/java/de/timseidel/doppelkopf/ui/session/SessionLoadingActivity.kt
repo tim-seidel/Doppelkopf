@@ -11,7 +11,7 @@ import de.timseidel.doppelkopf.db.request.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionGamesRequest
 import de.timseidel.doppelkopf.db.request.SessionInfoRequest
 import de.timseidel.doppelkopf.db.request.SessionPlayersRequest
-import de.timseidel.doppelkopf.model.DokoSession
+import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.util.DokoShortAccess
@@ -65,8 +65,8 @@ class SessionLoadingActivity : AppCompatActivity() {
 
     private fun loadSession(groupId: String, sessionId: String) {
         setMessage(getString(R.string.loading_session))
-        SessionInfoRequest(groupId, sessionId).execute(object : ReadRequestListener<DokoSession> {
-            override fun onReadComplete(result: DokoSession) {
+        SessionInfoRequest(groupId, sessionId).execute(object : ReadRequestListener<Session> {
+            override fun onReadComplete(result: Session) {
                 DokoShortAccess.getSessionCtrl().set(result)
 
                 setTitle(result.name)

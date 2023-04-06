@@ -4,23 +4,23 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.db.request.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionPlayersRequest
-import de.timseidel.doppelkopf.model.DokoSession
+import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import java.time.format.DateTimeFormatter
 
 class SessionHistoryListAdapter(
-    private val sessionInfo: List<DokoSession>,
+    private val sessionInfo: List<Session>,
     var sessionOpenListener: OnSessionClickListener? = null
 ) : RecyclerView.Adapter<SessionHistoryListAdapter.ViewHolder>() {
 
     interface OnSessionClickListener {
-        fun onOpenSessionClicked(session: DokoSession)
+        fun onOpenSessionClicked(session: Session)
     }
 
     class ViewHolder(private val sessionView: SessionHistoryListItemView) :
         RecyclerView.ViewHolder(sessionView) {
-        fun bind(session: DokoSession, listener: OnSessionClickListener?) {
+        fun bind(session: Session, listener: OnSessionClickListener?) {
             sessionView.setTitle(session.name)
             sessionView.setDescription(
                 "Gespielt am ${

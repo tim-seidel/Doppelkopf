@@ -1,7 +1,7 @@
 package de.timseidel.doppelkopf.db
 
 import de.timseidel.doppelkopf.contracts.IPlayerController
-import de.timseidel.doppelkopf.model.DokoSession
+import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.GameType
@@ -109,7 +109,7 @@ class FirebaseDTO() {
             )
         }
 
-        fun fromSessionToSessionDTO(session: DokoSession): SessionDto {
+        fun fromSessionToSessionDTO(session: Session): SessionDto {
             return SessionDto(
                 session.id,
                 session.name,
@@ -118,8 +118,8 @@ class FirebaseDTO() {
             )
         }
 
-        fun fromSessionDTOtoSession(dto: SessionDto): DokoSession {
-            return DokoSession(
+        fun fromSessionDTOtoSession(dto: SessionDto): Session {
+            return Session(
                 dto.id,
                 dto.name,
                 LocalDateTime.ofInstant(

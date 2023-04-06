@@ -1,14 +1,14 @@
 package de.timseidel.doppelkopf.contracts
 
-import de.timseidel.doppelkopf.model.DokoSession
+import de.timseidel.doppelkopf.model.Session
 
 interface ISessionInfoController {
 
-    fun addSessionInfo(sessionInfo: DokoSession)
+    fun addSessionInfo(sessionInfo: Session)
 
-    fun addSessionInfos(sessionInfos: List<DokoSession>)
+    fun addSessionInfos(sessionInfos: List<Session>)
 
-    fun getSessionInfoById(id: String): DokoSession
+    fun getSessionInfoById(id: String): Session
 
-    fun getSessionInfos(): List<DokoSession>
+    fun getSessionInfos(): List<Session>
 }

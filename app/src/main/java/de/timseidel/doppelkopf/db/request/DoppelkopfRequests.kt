@@ -1,6 +1,5 @@
 package de.timseidel.doppelkopf.db.request
 
-import android.content.pm.PackageInstaller.SessionInfo
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import de.timseidel.doppelkopf.contracts.IPlayerController
@@ -13,7 +12,7 @@ import de.timseidel.doppelkopf.db.GroupDto
 import de.timseidel.doppelkopf.db.MemberDto
 import de.timseidel.doppelkopf.db.PlayerDto
 import de.timseidel.doppelkopf.db.SessionDto
-import de.timseidel.doppelkopf.model.DokoSession
+import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Group
 import de.timseidel.doppelkopf.model.Member
@@ -108,9 +107,9 @@ class GroupMembersRequest(private val groupId: String) : BaseReadRequest<List<Me
 
 
 class SessionInfoRequest(private val groupId: String, private val sessionId: String) :
-    BaseReadRequest<DokoSession>() {
+    BaseReadRequest<Session>() {
 
-    override fun execute(listener: ReadRequestListener<DokoSession>) {
+    override fun execute(listener: ReadRequestListener<Session>) {
         readRequestListener = listener
 
         val db = FirebaseFirestore.getInstance()
@@ -207,8 +206,8 @@ class SessionGamesRequest(
     }
 }
 
-class SessionInfoListRequest(private val groupId: String) : BaseReadRequest<List<DokoSession>>() {
-    override fun execute(listener: ReadRequestListener<List<DokoSession>>) {
+class SessionInfoListRequest(private val groupId: String) : BaseReadRequest<List<Session>>() {
+    override fun execute(listener: ReadRequestListener<List<Session>>) {
         readRequestListener = listener
 
         val db = FirebaseFirestore.getInstance()
@@ -218,7 +217,7 @@ class SessionInfoListRequest(private val groupId: String) : BaseReadRequest<List
             .collection(FirebaseStrings.collectionSessions)
             .get()
             .addOnSuccessListener { docs ->
-                val sessions = mutableListOf<DokoSession>()
+                val sessions = mutableListOf<Session>()
                 for (doc in docs) {
                     val sessionDto = doc.toObject<SessionDto>()
                     val session = FirebaseDTO.fromSessionDTOtoSession(sessionDto)
@@ -236,7 +235,7 @@ class SessionInfoListRequest(private val groupId: String) : BaseReadRequest<List
     }
 }
 
-class SessionListRequest(private val sessionInfos: List<DokoSession>) :
+class SessionListRequest(private val sessionInfos: List<Session>) :
     BaseReadRequest<List<ISessionController>>() {
     override fun execute(listener: ReadRequestListener<List<ISessionController>>) {
         readRequestListener = listener

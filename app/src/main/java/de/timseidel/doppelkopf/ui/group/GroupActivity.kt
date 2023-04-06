@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -61,6 +60,8 @@ class GroupActivity : AppCompatActivity() {
 
             showSwitchTabsToSeeChangesDialog()
             return true
+        } else if (item.itemId == R.id.menu_item_group_show_group_code) {
+            showGroupCode()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -88,5 +89,16 @@ class GroupActivity : AppCompatActivity() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
         finish()
+    }
+
+    private fun showGroupCode() {
+        val groupCode = DokoShortAccess.getGroupCtrl().getGroup().code
+        AlertDialog.Builder(this)
+            .setTitle("Gruppencode")
+            .setMessage("Der Gruppencode ist: $groupCode")
+            .setPositiveButton("Okay") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 }

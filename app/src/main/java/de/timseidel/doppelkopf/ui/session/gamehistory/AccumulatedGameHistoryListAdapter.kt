@@ -2,24 +2,18 @@ package de.timseidel.doppelkopf.ui.session.gamehistory
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import de.timseidel.doppelkopf.controller.DoppelkopfManager
-import de.timseidel.doppelkopf.model.Game
+import de.timseidel.doppelkopf.model.GameResult
 
-
-class GameHistoryListAdapter(
-    private val games: List<Game>
-) : RecyclerView.Adapter<GameHistoryListAdapter.ViewHolder>() {
+class AccumulatedGameHistoryListAdapter(
+    private val games: List<List<GameResult>>
+) : RecyclerView.Adapter<AccumulatedGameHistoryListAdapter.ViewHolder>() {
 
     class ViewHolder(private val gameView: GameHistoryListItemView) :
         RecyclerView.ViewHolder(gameView) {
-        fun bind(game: Game, number: Int) {
-            val playerResults =
-                DoppelkopfManager.getInstance().getSessionController().getGameController()
-                    .getGameAsPlayerResults(game)
-
+        fun bind(number: Int, playerResults: List<GameResult>) {
             gameView.setGameNumber(number)
             gameView.setPlayerResults(playerResults)
-            gameView.setBockStatus(game.isBockrunde)
+            gameView.setBockStatus(if (playerResults.isNotEmpty()) playerResults.first().isBockrunde else false)
         }
     }
 
@@ -34,8 +28,8 @@ class GameHistoryListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val game = games[position]
-        holder.bind(game, games.size - position)
+        val playerResults = games[position]
+        holder.bind(games.size - position, playerResults)
     }
 
     override fun getItemCount(): Int {

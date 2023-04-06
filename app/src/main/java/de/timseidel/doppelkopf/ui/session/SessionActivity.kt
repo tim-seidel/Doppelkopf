@@ -2,9 +2,11 @@ package de.timseidel.doppelkopf.ui.session
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -36,7 +38,24 @@ class SessionActivity : AppCompatActivity() {
         binding = ActivitySessionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupToolbarMenu()
         setupBottomNavigation()
+    }
+
+    private fun setupToolbarMenu() {
+        addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_session, menu)
+            }
+
+            override fun onMenuItemSelected(item: MenuItem): Boolean {
+                if (item.itemId == R.id.menu_item_session_show_group_code) {
+                    showGroupCode()
+                    return true
+                }
+                return false
+            }
+        })
     }
 
     private fun portGroup() {
@@ -140,19 +159,6 @@ class SessionActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_session, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_item_session_show_group_code) {
-            showGroupCode()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun showGroupCode() {

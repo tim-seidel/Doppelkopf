@@ -14,6 +14,7 @@ import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.util.Converter
+import kotlin.math.max
 
 class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
@@ -50,23 +51,18 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
         tvGameNumber.text = if (number in 0..9) "0$number" else number.toString()
     }
 
-    fun setGame(game: Game) {
-        val playerResults =
-            DoppelkopfManager.getInstance().getSessionController().getGameController()
-                .getGameAsPlayerResults(game)
-        setResultsPlayers(playerResults)
+    fun setPlayerResults(playerResults: List<GameResult>) {
+        rvPlayerTacken.apply {
+            layoutManager = GridLayoutManager(rvPlayerTacken.context, max(playerResults.size, 1))
+        }
+        playerTackenAdapter.updatePlayerResults(playerResults)
+    }
 
-        if (game.isBockrunde) {
+    fun setBockStatus(isBockrunde: Boolean){
+        if (isBockrunde) {
             tvGameNumber.setTextColor(ContextCompat.getColor(context, R.color.error))
         } else {
             tvGameNumber.setTextColor(ContextCompat.getColor(context, R.color.neural))
         }
-    }
-
-    fun setResultsPlayers(playerResults: List<GameResult>) {
-        rvPlayerTacken.apply {
-            layoutManager = GridLayoutManager(rvPlayerTacken.context, playerResults.size)
-        }
-        playerTackenAdapter.updatePlayerResults(playerResults)
     }
 }

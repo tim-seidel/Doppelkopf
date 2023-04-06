@@ -148,7 +148,7 @@ class SessionActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_item_show_group_code) {
+        if (item.itemId == R.id.menu_item_session_show_group_code) {
             showGroupCode()
             return true
         }

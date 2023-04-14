@@ -11,4 +11,6 @@ interface ISessionInfoController {
     fun getSessionInfoById(id: String): Session
 
     fun getSessionInfos(): List<Session>
+
+    fun reset()
 }

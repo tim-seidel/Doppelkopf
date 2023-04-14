@@ -25,4 +25,8 @@ class SessionInfoController : ISessionInfoController {
     override fun getSessionInfos(): List<Session> {
         return sessionInfos
     }
+
+    override fun reset() {
+        sessionInfos.clear()
+    }
 }

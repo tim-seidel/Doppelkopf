@@ -39,5 +39,6 @@ class GroupController : IGroupController {
     override fun set(group: Group) {
         _group = group
         memberController.reset()
+        sessionInfoController.reset()
     }
 }

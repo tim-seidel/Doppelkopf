@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <item
-        android:id="@+id/menu_item_reset_group_statistics"
-        android:icon="@drawable/ic_baseline_autorenew_24"
-        android:iconTint="@color/white"
-        android:title="@string/nav_update_group_statistic"
-        app:iconTint="@color/white"
-        app:showAsAction="ifRoom" />
-
+    
     <item
         android:id="@+id/menu_item_group_show_group_code"
         android:icon="@drawable/ic_outline_pin_24"

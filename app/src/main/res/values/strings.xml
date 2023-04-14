@@ -63,4 +63,6 @@
     <string name="session_creation_create_new_member">Neuen Mitspieler hinzufügen</string>
     <string name="session_member_creation_unique_name">Bitte einen eindeutigen Namen anlegen</string>
     <string name="menu_game_history_change_tacken_mode">Tackenanzeige ändern</string>
+    <string name="dialog_refresh_statistics_title">Statistikupdate</string>
+    <string name="dialog_refresh_statistics_changes_tabs_to_apply">Die Statistiken werden geupdated, sobald du einen Tab wechselst (und zurück).</string>
 </resources>

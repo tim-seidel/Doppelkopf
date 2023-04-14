@@ -55,25 +55,10 @@ class GroupActivity : AppCompatActivity() {
             clearCurrentGroupId()
             resetActivities()
             return true
-        } else if (item.itemId == R.id.menu_item_reset_group_statistics) {
-            DokoShortAccess.getStatsCtrl().reset()
-
-            showSwitchTabsToSeeChangesDialog()
-            return true
         } else if (item.itemId == R.id.menu_item_group_show_group_code) {
             showGroupCode()
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun showSwitchTabsToSeeChangesDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Statistikupdate")
-        builder.setMessage("Die Statistiken werden geupdated, sobald du einen Tab wechselst (und zurück).")
-        builder.setPositiveButton("OK") { dialog, _ ->
-            dialog.dismiss()
-        }
-        builder.show()
     }
 
     private fun clearCurrentGroupId() {

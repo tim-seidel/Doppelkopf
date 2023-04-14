@@ -49,6 +49,8 @@ class SessionCreationActivity() : AppCompatActivity() {
         setupButtons()
         setupMemberSelectList()
 
+        checkSessionIsValid()
+
         setContentView(binding.root)
     }
 
@@ -63,6 +65,7 @@ class SessionCreationActivity() : AppCompatActivity() {
         etSessionName.addTextChangedListener(object : EditTextListener() {
             override fun afterTextChanged(s: Editable?) {
                 viewModel.sessionName = s.toString()
+                checkSessionIsValid()
             }
         })
     }
@@ -75,6 +78,13 @@ class SessionCreationActivity() : AppCompatActivity() {
         btnCreateSession.setOnClickListener {
             onCreateSessionClicked()
         }
+    }
+
+    private fun checkSessionIsValid(): Boolean {
+        val isValid = viewModel.checkIsSetupValid()
+        btnCreateSession.isEnabled = isValid
+
+        return isValid
     }
 
     private fun setupMemberSelectList() {
@@ -91,6 +101,7 @@ class SessionCreationActivity() : AppCompatActivity() {
             object : MemberSelectAdapter.MemberSelectListener {
                 override fun onMemberSelected(member: MemberSelection) {
                     member.isSelected = !member.isSelected
+                    checkSessionIsValid()
                 }
             })
 

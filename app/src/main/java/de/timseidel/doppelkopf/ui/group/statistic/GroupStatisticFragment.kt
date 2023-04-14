@@ -16,7 +16,7 @@ import androidx.lifecycle.Lifecycle
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.contracts.ISessionController
 import de.timseidel.doppelkopf.databinding.FragmentGroupStatisticBinding
-import de.timseidel.doppelkopf.db.request.ReadRequestListener
+import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionListRequest
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.ui.statistic.StatisticListAdapter

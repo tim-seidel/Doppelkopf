@@ -7,10 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import de.timseidel.doppelkopf.R
-import de.timseidel.doppelkopf.db.request.ReadRequestListener
-import de.timseidel.doppelkopf.db.request.SessionGamesRequest
+import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
+import de.timseidel.doppelkopf.db.request.SessionGameRequest
 import de.timseidel.doppelkopf.db.request.SessionInfoRequest
-import de.timseidel.doppelkopf.db.request.SessionPlayersRequest
+import de.timseidel.doppelkopf.db.request.SessionPlayerRequest
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Player
@@ -72,7 +72,7 @@ class SessionLoadingActivity : AppCompatActivity() {
                 setTitle(result.name)
                 setMessage(getString(R.string.loading_players))
 
-                SessionPlayersRequest(groupId, sessionId).execute(object :
+                SessionPlayerRequest(groupId, sessionId).execute(object :
                     ReadRequestListener<List<Player>> {
 
                     override fun onReadComplete(result: List<Player>) {
@@ -81,7 +81,7 @@ class SessionLoadingActivity : AppCompatActivity() {
 
                         setMessage(getString(R.string.loading_games))
 
-                        SessionGamesRequest(groupId, sessionId, pctrl).execute(
+                        SessionGameRequest(groupId, sessionId, pctrl).execute(
                             object : ReadRequestListener<List<Game>> {
 
                                 override fun onReadComplete(result: List<Game>) {

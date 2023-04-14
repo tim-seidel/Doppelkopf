@@ -1,4 +1,4 @@
-package de.timseidel.doppelkopf.db.request
+package de.timseidel.doppelkopf.db.request.base
 
 interface ReadRequestListener<R> {
 

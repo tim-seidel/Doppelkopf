@@ -2,8 +2,8 @@ package de.timseidel.doppelkopf.ui.sessionhistory
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import de.timseidel.doppelkopf.db.request.ReadRequestListener
-import de.timseidel.doppelkopf.db.request.SessionPlayersRequest
+import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
+import de.timseidel.doppelkopf.db.request.SessionPlayerRequest
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.util.DokoShortAccess
@@ -36,7 +36,7 @@ class SessionHistoryListAdapter(
                 listener?.onOpenSessionClicked(session)
             }
 
-            SessionPlayersRequest(DokoShortAccess.getGroupCtrl().getGroup().id, session.id).execute(
+            SessionPlayerRequest(DokoShortAccess.getGroupCtrl().getGroup().id, session.id).execute(
                 object : ReadRequestListener<List<Player>> {
                     override fun onReadComplete(result: List<Player>) {
                         sessionView.setPlayers(result)

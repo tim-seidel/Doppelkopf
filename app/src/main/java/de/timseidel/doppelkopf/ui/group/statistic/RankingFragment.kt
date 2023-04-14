@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.contracts.ISessionController
 import de.timseidel.doppelkopf.databinding.FragmentRankingBinding
-import de.timseidel.doppelkopf.db.request.ReadRequestListener
+import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionListRequest
 import de.timseidel.doppelkopf.model.Ranking
 import de.timseidel.doppelkopf.model.RankingItem

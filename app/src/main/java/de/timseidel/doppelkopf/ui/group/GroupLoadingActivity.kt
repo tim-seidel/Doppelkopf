@@ -12,8 +12,8 @@ import androidx.core.content.ContextCompat
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.db.request.GroupInfoRequestByCode
 import de.timseidel.doppelkopf.db.request.GroupInfoRequestById
-import de.timseidel.doppelkopf.db.request.GroupMembersRequest
-import de.timseidel.doppelkopf.db.request.ReadRequestListener
+import de.timseidel.doppelkopf.db.request.GroupMemberRequest
+import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionInfoListRequest
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.model.Group
@@ -73,7 +73,7 @@ class GroupLoadingActivity : AppCompatActivity() {
             setTitle(group.name)
             setMessage(getString(R.string.loading_players))
 
-            GroupMembersRequest(group.id).execute(object :
+            GroupMemberRequest(group.id).execute(object :
                 ReadRequestListener<List<Member>> {
 
                 override fun onReadComplete(members: List<Member>) {

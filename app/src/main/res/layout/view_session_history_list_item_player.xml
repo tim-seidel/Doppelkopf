@@ -19,7 +19,7 @@
         android:id="@+id/tv_session_history_item_player_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/neural_dark"
+        android:textColor="@color/primary_dark"
         android:textSize="16sp"
         tools:text="Spieler" />
 </LinearLayout>

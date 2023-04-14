@@ -24,8 +24,13 @@ class GroupInfoRequestById(private val groupId: String) :
                 if (doc != null) {
                     val groupDto = doc.toObject<GroupDto>()
                     if (groupDto != null) {
-                        val group = FirebaseDTO.fromGroupDTOtoGroup(groupDto)
-                        listener.onReadComplete(group)
+                        try {
+                            val group = FirebaseDTO.fromGroupDTOtoGroup(groupDto)
+                            listener.onReadComplete(group)
+                        } catch (e: Exception) {
+                            Logging.e("Unable to convert ${doc.data} to GroupDTO")
+                            listener.onReadFailed()
+                        }
                     } else {
                         Logging.e("Unable to convert ${doc.data} to GroupDTO")
                         listener.onReadFailed()
@@ -53,10 +58,15 @@ class GroupInfoRequestByCode(private val groupCode: String) :
                 if (!doc.isEmpty) {
                     val groupDto = doc.firstOrNull()?.toObject<GroupDto>()
                     if (groupDto != null) {
-                        val group = FirebaseDTO.fromGroupDTOtoGroup(groupDto)
-                        listener.onReadComplete(group)
+                        try {
+                            val group = FirebaseDTO.fromGroupDTOtoGroup(groupDto)
+                            listener.onReadComplete(group)
+                        } catch (e: Exception) {
+                            Logging.e("Unable to convert data to GroupDTO")
+                            listener.onReadFailed()
+                        }
                     } else {
-                        Logging.e("Unable to convert ${doc.size()} to GroupDTO")
+                        Logging.e("Unable to convert data to GroupDTO")
                         listener.onReadFailed()
                     }
                 } else {

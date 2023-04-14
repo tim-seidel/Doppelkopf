@@ -15,6 +15,11 @@ class SessionListRequest(private val sessionInfos: List<Session>) :
     override fun execute(listener: ReadRequestListener<List<ISessionController>>) {
         readRequestListener = listener
 
+        if (sessionInfos.isEmpty()) {
+            onReadResult(mutableListOf())
+            return
+        }
+
         val sessions = mutableListOf<ISessionController>()
         var remainingLoadCounter = sessionInfos.size
 

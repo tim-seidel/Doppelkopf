@@ -27,8 +27,13 @@ class SessionInfoRequest(private val groupId: String, private val sessionId: Str
                 if (doc != null) {
                     val sessionDto = doc.toObject<SessionDto>()
                     if (sessionDto != null) {
-                        val session = FirebaseDTO.fromSessionDTOtoSession(sessionDto)
-                        listener.onReadComplete(session)
+                        try {
+                            val session = FirebaseDTO.fromSessionDTOtoSession(sessionDto)
+                            listener.onReadComplete(session)
+                        } catch (e: Exception) {
+                            Logging.e("Unable to convert ${doc.data} to SessionDTO")
+                            listener.onReadFailed()
+                        }
                     } else {
                         Logging.e("Unable to convert ${doc.data} to SessionDTO")
                         listener.onReadFailed()
@@ -58,9 +63,17 @@ class SessionInfoListRequest(private val groupId: String) : BaseReadRequest<List
             .addOnSuccessListener { docs ->
                 val sessions = mutableListOf<Session>()
                 for (doc in docs) {
-                    val sessionDto = doc.toObject<SessionDto>()
-                    val session = FirebaseDTO.fromSessionDTOtoSession(sessionDto)
-                    sessions.add(session)
+                    try {
+                        val sessionDto = doc.toObject<SessionDto>()
+                        val session = FirebaseDTO.fromSessionDTOtoSession(sessionDto)
+                        sessions.add(session)
+                    } catch (e: Exception) {
+                        //Skipping this session and continue with the next others, does not return failure
+                        Logging.e(
+                            "SessionInfoListRequest: SessionInfo conversation of ${doc.data} failed with ",
+                            e
+                        )
+                    }
                 }
 
                 sessions.sortBy { s -> s.date.toInstant(ZoneOffset.UTC).toEpochMilli() }

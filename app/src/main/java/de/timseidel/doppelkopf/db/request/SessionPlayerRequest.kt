@@ -25,10 +25,17 @@ class SessionPlayerRequest(private val groupId: String, private val sessionId: S
             .get()
             .addOnSuccessListener { docs ->
                 val players = mutableListOf<Player>()
-                for (doc in docs) {
-                    val playerDto = doc.toObject<PlayerDto>()
-                    val player = FirebaseDTO.fromPlayerDTOtoPlayer(playerDto)
-                    players.add(player)
+                try {
+                    for (doc in docs) {
+                        val playerDto = doc.toObject<PlayerDto>()
+                        val player = FirebaseDTO.fromPlayerDTOtoPlayer(playerDto)
+                        players.add(player)
+                    }
+                } catch (e: Exception) {
+                    Logging.e(
+                        "SessionPlayerRequest: Player conversation of ${docs.size()} players failed with ",
+                        e
+                    )
                 }
 
                 onReadResult(players)

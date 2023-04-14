@@ -31,9 +31,14 @@ class SessionGameRequest(
             .addOnSuccessListener { docs ->
                 val games = mutableListOf<Game>()
                 for (doc in docs) {
-                    val gameDto = doc.toObject<GameDto>()
-                    val game = FirebaseDTO.fromGameDTOtoGame(gameDto, playerController)
-                    games.add(game)
+                    try{
+                        val gameDto = doc.toObject<GameDto>()
+                        val game = FirebaseDTO.fromGameDTOtoGame(gameDto, playerController)
+                        games.add(game)
+                    }catch (e: Exception) {
+                        //Skipping this game and continue with the next others, does not return failure
+                        Logging.e("SessionGameRequest: Game conversation of ${doc.data} failed with ", e)
+                    }
                 }
 
                 games.sortBy { g -> g.timestamp }

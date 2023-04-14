@@ -22,10 +22,18 @@ class GroupMemberRequest(private val groupId: String) : BaseReadRequest<List<Mem
             .get()
             .addOnSuccessListener { docs ->
                 val members = mutableListOf<Member>()
-                for (doc in docs) {
-                    val memberDto = doc.toObject<MemberDto>()
-                    val member = FirebaseDTO.fromMemberDTOtoMember(memberDto)
-                    members.add(member)
+                try {
+                    for (doc in docs) {
+                        val memberDto = doc.toObject<MemberDto>()
+                        val member = FirebaseDTO.fromMemberDTOtoMember(memberDto)
+                        members.add(member)
+                    }
+                } catch (e: Exception) {
+                    Logging.e(
+                        "GroupMemberRequest: Member conversation of ${docs.size()} members failed with ",
+                        e
+                    )
+                    onReadFailed()
                 }
 
                 onReadResult(members)

@@ -465,8 +465,9 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             ),
             ScatterChartViewWrapper(
                 ScatterChartViewWrapper.ScatterChartData(
-                    "Ergebnisverlauf (Bockrunden hervorgehoben",
-                    "Ndl. | Sieg",
+                    "Ergebnisverlauf",
+                    "Verlauf von Sieg, Aussetzen und Niederlage. Bockrunden sind rot hervorgehoben",
+                    "Ndl. | Aussetzen | Sieg",
                     listOf(
                         ScatterChartViewWrapper.ScatterLineData(
                             "Ergebnis (Bockrunden hervorgehoben)",
@@ -492,6 +493,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             ScatterChartViewWrapper(
                 ScatterChartViewWrapper.ScatterChartData(
                     "Serienverlauf",
+                    "Dauer der Sieges- und Niederlagenserien",
                     "Ndl | Seriendauer | Sieg",
                     listOf(
                         ScatterChartViewWrapper.ScatterLineData(

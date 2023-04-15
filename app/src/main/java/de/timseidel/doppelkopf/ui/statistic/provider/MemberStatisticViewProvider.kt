@@ -222,12 +222,12 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
             ),
             SimpleTextStatisticViewWrapper(
                 "Siegesrate ohne Bockrunden",
-                "In Spielen, die keine Bockrunde waren, hat ${stats.member.name} eine Siegesrate von:",
+                "In Spielen, die keine Bockrunde waren, hat ${stats.member.name} eine Siegesrate von (S: $winsNoBockrunde N: ${gamesNoBockrunde - winsNoBockrunde}):",
                 "$winrateNoBockrunde%"
             ),
             SimpleTextStatisticViewWrapper(
                 "Siegesrate in Bockrunden",
-                "In Spielen, die Bockrunden waren, hat ${stats.member.name} eine Siegesrate von:",
+                "In Spielen, die Bockrunden waren, hat ${stats.member.name} eine Siegesrate von (S: $winsBockrunde N: ${gamesBockrunde - winsBockrunde}):",
                 "$winrateBockrunde%"
             ),
             PieChartViewWrapper(
@@ -418,8 +418,9 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
             ),
             ScatterChartViewWrapper(
                 ScatterChartViewWrapper.ScatterChartData(
-                    "Ergebnisverlauf (Bockrunden hervorgehoben",
-                    "Ndl. | Sieg",
+                    "Ergebnisverlauf",
+                    "Verlauf von Sieg, Aussetzen und Niederlage. Bockrunden sind rot hervorgehoben",
+                    "Ndl. | Aussetzen | Sieg",
                     listOf(
                         ScatterChartViewWrapper.ScatterLineData(
                             "Ergebnis (Bockrunden hervorgehoben)",
@@ -445,6 +446,7 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
             ScatterChartViewWrapper(
                 ScatterChartViewWrapper.ScatterChartData(
                     "Serienverlauf",
+                    "Dauer der Sieges- und Niederlagenserien",
                     "Ndl | Seriendauer | Sieg",
                     listOf(
                         ScatterChartViewWrapper.ScatterLineData(

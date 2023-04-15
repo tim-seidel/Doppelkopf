@@ -10,6 +10,7 @@ import com.highsoft.highcharts.common.hichartsclasses.HILabels
 import com.highsoft.highcharts.common.hichartsclasses.HILegend
 import com.highsoft.highcharts.common.hichartsclasses.HILine
 import com.highsoft.highcharts.common.hichartsclasses.HIOptions
+import com.highsoft.highcharts.common.hichartsclasses.HISubtitle
 import com.highsoft.highcharts.common.hichartsclasses.HITitle
 import com.highsoft.highcharts.common.hichartsclasses.HIYAxis
 import com.highsoft.highcharts.core.HIChartView
@@ -19,6 +20,7 @@ class ScatterChartViewWrapper(private val chartData: ScatterChartData) : IStatis
 
     data class ScatterChartData(
         val title: String,
+        val subTitle: String,
         val yAxisName: String,
         val lineData: List<ScatterLineData>,
         val showYAxisValues: Boolean = true,
@@ -49,6 +51,10 @@ class ScatterChartViewWrapper(private val chartData: ScatterChartData) : IStatis
         val title = HITitle()
         title.text = chartData.title
         options.title = title
+
+        val subtitle = HISubtitle()
+        subtitle.text = chartData.subTitle
+        options.subtitle = subtitle
 
         val yAxis = HIYAxis()
         yAxis.title = HITitle()

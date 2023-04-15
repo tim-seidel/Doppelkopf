@@ -20,6 +20,7 @@ import de.timseidel.doppelkopf.model.statistic.StatisticUtil
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
+import kotlin.math.max
 
 
 class GameHistoryFragment : Fragment() {
@@ -69,9 +70,9 @@ class GameHistoryFragment : Fragment() {
     }
 
     private fun setupPlayerHeader() {
-        binding.headerGameHistoryList.setPlayers(
-            DokoShortAccess.getPlayerCtrl().getPlayers()
-        )
+        val players = DokoShortAccess.getPlayerCtrl().getPlayers()
+        binding.headerGameHistoryList.setRowSize(max(1, players.size))
+        binding.headerGameHistoryList.setPlayers(players)
     }
 
     private fun setupGameHistoryList() {
@@ -86,7 +87,7 @@ class GameHistoryFragment : Fragment() {
         listView.addItemDecoration(
             RecyclerViewMarginDecoration(
                 0,
-                Converter.convertDpToPixels(4f, listView.context)
+                Converter.convertDpToPixels(0f, listView.context)
             )
         )
     }

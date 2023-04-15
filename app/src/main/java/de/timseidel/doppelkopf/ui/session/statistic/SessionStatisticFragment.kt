@@ -17,6 +17,8 @@ import de.timseidel.doppelkopf.ui.statistic.provider.IStatisticViewsProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.PlayerStatisticViewsProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.SessionStatisticViewsProvider
 import de.timseidel.doppelkopf.util.DokoShortAccess
+import java.lang.Integer.max
+import java.lang.Integer.min
 
 class SessionStatisticFragment : Fragment() {
 
@@ -39,8 +41,8 @@ class SessionStatisticFragment : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.title =
             DokoShortAccess.getSessionCtrl().getSession().name
 
-        setupStatistics()
         setupPlayerSelect()
+        setupStatistics()
 
         return root
     }
@@ -59,6 +61,14 @@ class SessionStatisticFragment : Fragment() {
     }
 
     private fun setupPlayerSelect() {
+        val playerDefaultGroupStatisticPlaceholder =
+            Player(defaultSessionStatsPlayerPlaceholderId, "Alle")
+        val players = DokoShortAccess.getPlayerCtrl().getPlayers().toMutableList()
+        players.add(0, playerDefaultGroupStatisticPlaceholder)
+
+        binding.headerStatisticPlayerSelect.setRowSize(max(1, min(4, players.size)))
+        binding.headerStatisticPlayerSelect.setPlayers(players)
+
         binding.headerStatisticPlayerSelect.setListener(object : OnPlayerClickListener {
 
             override fun onPlayerClicked(player: Player) {
@@ -76,12 +86,6 @@ class SessionStatisticFragment : Fragment() {
                 }
             }
         })
-
-        val playerDefaultGroupStatisticPlaceholder =
-            Player(defaultSessionStatsPlayerPlaceholderId, "Alle")
-        val players = DokoShortAccess.getPlayerCtrl().getPlayers().toMutableList()
-        players.add(0, playerDefaultGroupStatisticPlaceholder)
-        binding.headerStatisticPlayerSelect.setPlayers(players)
     }
 
     private fun setStatistics(provider: IStatisticViewsProvider) {

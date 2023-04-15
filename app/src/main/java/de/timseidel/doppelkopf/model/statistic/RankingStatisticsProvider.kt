@@ -16,7 +16,9 @@ class RankingStatisticsProvider {
             getHighestContraWinPercentageRanking(groupStatistics),
             getMostPlayedSoliRanking(groupStatistics),
             getMostBockTackenGainRanking(groupStatistics),
-            getMostGamesRanking(groupStatistics)
+            getMostGamesRanking(groupStatistics),
+            getLongestWinStreakRanking(groupStatistics),
+            getLongestLossStreakRanking(groupStatistics)
         )
     }
 
@@ -143,6 +145,34 @@ class RankingStatisticsProvider {
                             .last() - StatisticUtil.getAccumulatedTackenHistoryWithoutBock(
                             memberStatistic.gameResultHistory
                         ).last()) else 0).toString()
+                )
+            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+
+        return ranking
+    }
+
+    private fun getLongestWinStreakRanking(groupStatistics: GroupStatistics): Ranking {
+        val ranking = Ranking(
+            "Längste Siegesserie",
+            groupStatistics.memberStatistics.map { memberStatistic ->
+                RankingItem(
+                    memberStatistic.member.name,
+                    (if (memberStatistic.gameResultHistory.isNotEmpty())
+                        SimpleStatisticsCalculator().calculateStreakStatistics(memberStatistic.gameResultHistory).longestWinStreak.toString() else 0).toString()
+                )
+            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+
+        return ranking
+    }
+
+    private fun getLongestLossStreakRanking(groupStatistics: GroupStatistics): Ranking {
+        val ranking = Ranking(
+            "Längste Niederlagenserie",
+            groupStatistics.memberStatistics.map { memberStatistic ->
+                RankingItem(
+                    memberStatistic.member.name,
+                    (if (memberStatistic.gameResultHistory.isNotEmpty())
+                        SimpleStatisticsCalculator().calculateStreakStatistics(memberStatistic.gameResultHistory).longestLossStreak.toString() else 0).toString()
                 )
             }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
 

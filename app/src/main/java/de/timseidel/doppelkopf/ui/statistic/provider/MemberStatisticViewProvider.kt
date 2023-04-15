@@ -154,34 +154,6 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
         val currentStrafTacken =
             if (strafTackenHistory.isNotEmpty()) strafTackenHistory.last() else 0
 
-        var lastWasWin = false
-        var winAfterLoss = 0
-        var winAfterWin = 0
-        var lossAfterWin = 0
-        var lossAfterLoss = 0
-        stats.gameResultHistory.forEach { gr ->
-            if (gr.faction != Faction.NONE) {
-                if (gr.isWinner) {
-                    if (!lastWasWin) {
-                        winAfterLoss += 1
-                    } else {
-                        winAfterWin += 1
-                    }
-                    lastWasWin = true
-                } else {
-                    if (lastWasWin) {
-                        lossAfterWin += 1
-                    } else {
-                        lossAfterLoss += 1
-                    }
-                    lastWasWin = false
-                }
-            }
-        }
-        val winAfterLossPercentage = if (winAfterLoss + lossAfterLoss > 0)
-            (winAfterLoss / ((winAfterLoss + lossAfterLoss) * 1f) * 100).toInt() else 50
-        val lossAfterWinPercentage = if (lossAfterWin + winAfterWin > 0)
-            (lossAfterWin / ((lossAfterWin + winAfterWin) * 1f) * 100).toInt() else 50
 
         return listOf(
             SimpleTextStatisticViewWrapper(
@@ -485,16 +457,6 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
                     showLegend = false,
                     height = 300f
                 )
-            ),
-            SimpleTextStatisticViewWrapper(
-                "Bergauf",
-                "Nach einer Niederlage gewinnt ${stats.member.name} mit folgender Wahrscheinlichkeit das nächste Spiel:",
-                "$winAfterLossPercentage%"
-            ),
-            SimpleTextStatisticViewWrapper(
-                "Bergab",
-                "Nach einem Sieg verliert ${stats.member.name} mit folgender Wahrscheinlichkeit das nächste Spiel:",
-                "$lossAfterWinPercentage%"
             )
         )
     }

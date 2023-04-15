@@ -25,6 +25,8 @@ import de.timseidel.doppelkopf.ui.statistic.provider.GroupStatisticViewProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.IStatisticViewsProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.MemberStatisticViewProvider
 import de.timseidel.doppelkopf.util.DokoShortAccess
+import kotlin.math.max
+import kotlin.math.min
 import java.time.LocalDateTime
 
 class GroupStatisticFragment : Fragment() {
@@ -141,6 +143,8 @@ class GroupStatisticFragment : Fragment() {
             Member(placeholderIdGroupStatistics, "Alle", LocalDateTime.now())
         val members = DokoShortAccess.getMemberCtrl().getMembers().toMutableList()
         members.add(0, memberDefaultGroupStatisticPlaceholder)
+
+        binding.headerStatisticMemberSelect.setRowSize(max(1, min(members.size, 4)))
         binding.headerStatisticMemberSelect.setMembers(members)
     }
 

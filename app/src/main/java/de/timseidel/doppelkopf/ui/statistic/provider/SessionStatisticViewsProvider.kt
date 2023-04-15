@@ -308,7 +308,7 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
             ),
             ColumnChartViewWrapper(
                 ColumnChartViewWrapper.ColumnChartData(
-                    "Wer ist solo?",
+                    "Solostatistiken",
                     "",
                     "Spiele",
                     listOf(

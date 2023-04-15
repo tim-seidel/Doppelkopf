@@ -133,12 +133,12 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                     "Spiele",
                     listOf(
                         PieChartViewWrapper.PieSliceData(
-                            "Re",
+                            "Sieg Re",
                             groupStatistics.re.wins.games - groupStatistics.solo.wins.games,
                             "#${IStatisticViewWrapper.COLOR_POSITIVE_DARK}"
                         ),
                         PieChartViewWrapper.PieSliceData(
-                            "Solo",
+                            "Sieg Solo",
                             groupStatistics.solo.wins.games,
                             "#${IStatisticViewWrapper.COLOR_POSITIVE_LIGHT}"
                         ),
@@ -147,7 +147,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                             groupStatistics.contra.wins.games - groupStatistics.solo.loss.games,
                             "#${IStatisticViewWrapper.COLOR_NEGATIVE_DARK}"
                         ), PieChartViewWrapper.PieSliceData(
-                            "Solo",
+                            "Ndl Solo",
                             groupStatistics.solo.loss.games,
                             "#${IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT}"
                         )
@@ -284,7 +284,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
             ),
             ColumnChartViewWrapper(
                 ColumnChartViewWrapper.ColumnChartData(
-                    "Wer ist solo?",
+                    "Solostatistiken",
                     "",
                     "Spiele",
                     listOf(

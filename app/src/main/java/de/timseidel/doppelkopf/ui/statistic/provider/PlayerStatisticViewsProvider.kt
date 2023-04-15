@@ -1,6 +1,7 @@
 package de.timseidel.doppelkopf.ui.statistic.provider
 
 import de.timseidel.doppelkopf.model.Faction
+import de.timseidel.doppelkopf.model.statistic.SimpleStatisticsCalculator
 import de.timseidel.doppelkopf.model.statistic.StatisticUtil
 import de.timseidel.doppelkopf.model.statistic.session.PlayerStatistic
 import de.timseidel.doppelkopf.ui.statistic.views.ColumnChartViewWrapper
@@ -48,36 +49,8 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
 
         val winLossHistory = mutableListOf<Int>()
         val winLossBockMarker = mutableListOf<String>()
-        val streakHistory = mutableListOf<Int>()
-        val streakHistoryWinLossMarker = mutableListOf<String>()
-        var longestWinStreak = 0
-        var longestLossStreak = 0
-        var currentWinStreak = 0
-        var currentLossStreak = 0
-        stats.gameResultHistory.forEach { gr ->
-            if (gr.isWinner && gr.faction != Faction.NONE) {
-                if (currentLossStreak > longestLossStreak) {
-                    longestLossStreak = currentLossStreak
-                }
-                if (currentLossStreak > 0) {
-                    streakHistory.add(-1 * currentLossStreak)
-                    streakHistoryWinLossMarker.add("#".plus(IStatisticViewWrapper.COLOR_NEGATIVE_DARK))
-                }
-                currentLossStreak = 0
-                currentWinStreak += 1
-            }
-            if (!gr.isWinner && gr.faction != Faction.NONE) {
-                if (currentWinStreak > longestWinStreak) {
-                    longestWinStreak = currentWinStreak
-                }
-                if (currentWinStreak > 0) {
-                    streakHistory.add(currentWinStreak)
-                    streakHistoryWinLossMarker.add("#".plus(IStatisticViewWrapper.COLOR_POSITIVE_DARK))
-                }
-                currentWinStreak = 0
-                currentLossStreak += 1
-            }
 
+        stats.gameResultHistory.forEach { gr ->
             winLossHistory.add(if (gr.faction != Faction.NONE) (if (gr.isWinner) 1 else -1) else 0)
             winLossBockMarker.add(
                 if (gr.faction != Faction.NONE) {
@@ -88,8 +61,16 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                 } else "#AFAFAF"
             )
         }
-        if (currentWinStreak > longestWinStreak) longestWinStreak = currentWinStreak
-        if (currentLossStreak > longestLossStreak) longestLossStreak = currentLossStreak
+
+        val streakStatistics =
+            SimpleStatisticsCalculator().calculateStreakStatistics(stats.gameResultHistory)
+        val streakHistoryWinLossMarker = mutableListOf<String>()
+        streakStatistics.streakHistory.forEach { streak ->
+            streakHistoryWinLossMarker.add(
+                if (streak > 0) "#".plus(IStatisticViewWrapper.COLOR_POSITIVE_DARK)
+                else "#".plus(IStatisticViewWrapper.COLOR_NEGATIVE_DARK)
+            )
+        }
 
         var gamesBockrunde = 0
         var winsBockrunde = 0
@@ -483,12 +464,12 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             SimpleTextStatisticViewWrapper(
                 "Längste Siegesserie",
                 "Die längste Siegesserie hielt folgende Anzahl von Spielen:",
-                longestWinStreak.toString()
+                streakStatistics.longestWinStreak.toString()
             ),
             SimpleTextStatisticViewWrapper(
                 "Längste Niederlagenserie",
                 "Die längste Niederlagenserie hielt folgende Anzahl von Spielen:",
-                longestLossStreak.toString()
+                streakStatistics.longestLossStreak.toString()
             ),
             ScatterChartViewWrapper(
                 ScatterChartViewWrapper.ScatterChartData(
@@ -498,7 +479,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                     listOf(
                         ScatterChartViewWrapper.ScatterLineData(
                             "Verlauf von Sieges- und Ndlserien",
-                            streakHistory,
+                            streakStatistics.streakHistory,
                             streakHistoryWinLossMarker
                         )
                     ),

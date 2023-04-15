@@ -4,14 +4,14 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Faction
 
 class GameHistoryListItemPlayerView constructor(context: Context, attrs: AttributeSet? = null) :
-    LinearLayout(context, attrs) {
+    ConstraintLayout(context, attrs) {
 
     private lateinit var tvPlayerTacken: TextView
     private lateinit var ivPlayerFaction: ImageView

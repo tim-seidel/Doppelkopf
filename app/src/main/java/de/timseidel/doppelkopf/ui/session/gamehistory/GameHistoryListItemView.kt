@@ -9,8 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
-import de.timseidel.doppelkopf.controller.DoppelkopfManager
-import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.util.Converter
@@ -40,7 +38,7 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
     }
 
     private fun setupRecyclerView() {
-        val dp4 = Converter.convertDpToPixels(4f, rvPlayerTacken.context)
+        val dp4 = Converter.convertDpToPixels(2f, rvPlayerTacken.context)
         rvPlayerTacken.addItemDecoration(RecyclerViewMarginDecoration(dp4, dp4))
 
         playerTackenAdapter = GameHistoryListItemPlayerListAdapter()

@@ -8,12 +8,13 @@
         android:id="@+id/tv_game_history_player_list_offset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:paddingHorizontal="4dp"
+        android:paddingVertical="4dp"
         android:text="00"
         android:textColor="@android:color/transparent"
-        android:textSize="22sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/header_game_history_list"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/header_game_history_list" />
@@ -23,6 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:layout_marginHorizontal="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_game_history_player_list_offset"
         app:layout_constraintTop_toTopOf="parent" />

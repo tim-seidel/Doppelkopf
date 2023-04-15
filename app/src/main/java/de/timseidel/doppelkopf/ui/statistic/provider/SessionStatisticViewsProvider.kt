@@ -6,6 +6,7 @@ import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
 import de.timseidel.doppelkopf.ui.statistic.views.ColumnChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.LineChartViewWrapper
+import de.timseidel.doppelkopf.ui.statistic.views.PieChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.SimpleTextStatisticViewWrapper
 
 class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatistics) :
@@ -132,6 +133,35 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
                 "Allgemeine Statistik",
                 "Hier siehst du die Statistiken eures Doppelkopfabends. Ihr habt so viele Spiele gespielt:",
                 sessionStatistics.general.total.games.toString()
+            ),
+            PieChartViewWrapper(
+                PieChartViewWrapper.PieChartData
+                    (
+                    "Re oder Contra?",
+                    "Verteilung der Siege von Re und Contra",
+                    "Spiele",
+                    listOf(
+                        PieChartViewWrapper.PieSliceData(
+                            "Sieg Re",
+                            sessionStatistics.re.wins.games - sessionStatistics.solo.wins.games,
+                            "#${IStatisticViewWrapper.COLOR_POSITIVE_DARK}"
+                        ),
+                        PieChartViewWrapper.PieSliceData(
+                            "Sieg Solo",
+                            sessionStatistics.solo.wins.games,
+                            "#${IStatisticViewWrapper.COLOR_POSITIVE_LIGHT}"
+                        ),
+                        PieChartViewWrapper.PieSliceData(
+                            "Ndl Contra",
+                            sessionStatistics.contra.wins.games - sessionStatistics.solo.loss.games,
+                            "#${IStatisticViewWrapper.COLOR_NEGATIVE_DARK}"
+                        ), PieChartViewWrapper.PieSliceData(
+                            "Ndl Solo",
+                            sessionStatistics.solo.loss.games,
+                            "#${IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT}"
+                        )
+                    )
+                )
             ),
             LineChartViewWrapper(
                 LineChartViewWrapper.LineChartData(

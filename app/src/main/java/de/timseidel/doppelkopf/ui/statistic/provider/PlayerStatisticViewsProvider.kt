@@ -11,6 +11,7 @@ import de.timseidel.doppelkopf.ui.statistic.views.LineChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.PieChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.ScatterChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.SimpleTextStatisticViewWrapper
+import de.timseidel.doppelkopf.util.RangeDistribution
 import kotlin.math.abs
 
 class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatisticViewsProvider {
@@ -71,6 +72,14 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                 if (streak > 0) "#".plus(IStatisticViewWrapper.COLOR_POSITIVE_DARK)
                 else "#".plus(IStatisticViewWrapper.COLOR_NEGATIVE_DARK)
             )
+        }
+
+        val streakDistribution = RangeDistribution(
+            -1 * streakStatistics.longestLossStreak,
+            streakStatistics.longestWinStreak
+        )
+        streakStatistics.streakHistory.forEach { streak ->
+            streakDistribution.increase(streak, 1)
         }
 
         var gamesBockrunde = 0
@@ -494,6 +503,25 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                     showYAxisValues = true,
                     showLegend = false,
                     height = 300f
+                )
+            ),
+            ColumnChartViewWrapper(
+                ColumnChartViewWrapper.ColumnChartData(
+                    "Serienverteilung", "Serienlänge", "Serienhäufigkeit",
+                    listOf(
+                        ColumnChartViewWrapper.ColumnSeriesData(
+                            "Serienlänge",
+                            listOf(
+                                ColumnChartViewWrapper.ColumnSeriesStackData(
+                                    "Serienhäufigkeit",
+                                    IStatisticViewWrapper.COLOR_NEURAL.replace("#", ""),
+                                    streakDistribution.values(),
+                                )
+                            )
+                        )
+                    ),
+                    streakDistribution.indices().map { i -> i.toString() },
+                    height = 250f
                 )
             )
         )

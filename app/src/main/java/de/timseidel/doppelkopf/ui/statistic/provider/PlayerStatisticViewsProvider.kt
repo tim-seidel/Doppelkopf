@@ -1,6 +1,7 @@
 package de.timseidel.doppelkopf.ui.statistic.provider
 
 import de.timseidel.doppelkopf.model.Faction
+import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.statistic.SimpleStatisticsCalculator
 import de.timseidel.doppelkopf.model.statistic.StatisticUtil
 import de.timseidel.doppelkopf.model.statistic.session.PlayerStatistic
@@ -129,6 +130,12 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             opponentTackenLossContra.add(-1 * o.contra.loss.tacken)
         }
 
+        var soloGamesAsContra = 0
+        stats.gameResultHistory.forEach { gr ->
+            if (gr.faction == Faction.CONTRA && gr.gameType == GameType.SOLO)
+                soloGamesAsContra += 1
+        }
+
         return listOf(
             SimpleTextStatisticViewWrapper(
                 "Statistik von ${stats.player.name}",
@@ -159,6 +166,35 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                         PieChartViewWrapper.PieSliceData(
                             "N Con",
                             abs(stats.contra.loss.games),
+                            "#${IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT}"
+                        )
+                    )
+                )
+            ),
+            PieChartViewWrapper(
+                PieChartViewWrapper.PieChartData(
+                    "Parteistatistik",
+                    "Spiele Re: ${stats.re.total.games}, Spiele Contra: ${stats.contra.total.games}",
+                    "Spiele",
+                    listOf(
+                        PieChartViewWrapper.PieSliceData(
+                            "Re",
+                            stats.re.total.games - stats.solo.total.games,
+                            "#${IStatisticViewWrapper.COLOR_POSITIVE_DARK}"
+                        ),
+                        PieChartViewWrapper.PieSliceData(
+                            "Re Solo",
+                            abs(stats.solo.total.games),
+                            "#${IStatisticViewWrapper.COLOR_POSITIVE_LIGHT}"
+                        ),
+                        PieChartViewWrapper.PieSliceData(
+                            "Contra",
+                            stats.contra.total.games - soloGamesAsContra,
+                            "#${IStatisticViewWrapper.COLOR_NEGATIVE_DARK}"
+                        ),
+                        PieChartViewWrapper.PieSliceData(
+                            "Contra Solo",
+                            soloGamesAsContra,
                             "#${IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT}"
                         )
                     )

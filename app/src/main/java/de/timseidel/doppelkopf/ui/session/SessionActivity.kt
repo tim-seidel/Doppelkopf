@@ -1,9 +1,13 @@
 package de.timseidel.doppelkopf.ui.session
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
@@ -23,6 +27,7 @@ import de.timseidel.doppelkopf.db.FirebaseStrings
 import de.timseidel.doppelkopf.db.GameDto
 import de.timseidel.doppelkopf.db.PlayerDto
 import de.timseidel.doppelkopf.db.SessionDto
+import de.timseidel.doppelkopf.export.CSVGameHistoryExporter
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.util.DokoShortAccess
@@ -52,6 +57,9 @@ class SessionActivity : AppCompatActivity() {
                 if (item.itemId == R.id.menu_item_session_show_group_code) {
                     showGroupCode()
                     return true
+                } else if (item.itemId == R.id.menu_session_export_csv) {
+                    exportSessionToCSV()
+                    return true
                 }
                 return false
             }
@@ -71,6 +79,24 @@ class SessionActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    private fun exportSessionToCSV() {
+        val exporter = CSVGameHistoryExporter()
+        val content = exporter.exportGameHistory(DokoShortAccess.getGameCtrl().getGames())
+
+        copyToClipboard(content)
+    }
+
+    private fun copyToClipboard(content: String) {
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("Doppelkopfabend als CSV", content)
+        clipboard.setPrimaryClip(clip)
+        Toast.makeText(
+            this,
+            "Doppelkopfabend als CSV in die Zwischenablage kopiert",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun showGroupCode() {

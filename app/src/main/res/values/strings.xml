@@ -60,6 +60,7 @@
     <string name="nav_clear_default_group">Zur Gruppenauswahl</string>
     <string name="nav_update_group_statistic">Gruppenstatistiken aktualisieren</string>
     <string name="menu_show_group_code">Gruppencode anzeigen</string>
+    <string name="menu_session_export_csv">Als CSV exportieren</string>
     <string name="session_creation_create_new_member">Neuen Mitspieler hinzufügen</string>
     <string name="session_member_creation_unique_name">Bitte einen eindeutigen Namen anlegen</string>
     <string name="menu_game_history_change_tacken_mode">Tackenanzeige ändern</string>

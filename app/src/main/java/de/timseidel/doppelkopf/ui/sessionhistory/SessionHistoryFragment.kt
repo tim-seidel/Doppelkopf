@@ -34,7 +34,8 @@ class SessionHistoryFragment : Fragment() {
 
         setupCreateSessionButton()
 
-        setSessionHistoryList(DokoShortAccess.getSessionInfoCtrl().getSessionInfos())
+        setSessionHistoryList(
+            DokoShortAccess.getSessionInfoCtrl().getSessionInfos().sortedByDescending { it.date })
 
         return root
     }

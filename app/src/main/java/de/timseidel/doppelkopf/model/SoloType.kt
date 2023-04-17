@@ -4,5 +4,7 @@ enum class SoloType {
     NONE,
     BUBENSOLO,
     DAMENSOLO,
-    TRUMPFSOLO
+    TRUMPFSOLO,
+    STILLEHOCHZEIT,
+    HOCHZEITALLEINE
 }

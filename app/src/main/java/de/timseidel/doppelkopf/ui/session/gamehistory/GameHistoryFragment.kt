@@ -87,7 +87,7 @@ class GameHistoryFragment : Fragment() {
         listView.addItemDecoration(
             RecyclerViewMarginDecoration(
                 0,
-                Converter.convertDpToPixels(6f, listView.context)
+                Converter.convertDpToPixels(12f, listView.context)
             )
         )
     }

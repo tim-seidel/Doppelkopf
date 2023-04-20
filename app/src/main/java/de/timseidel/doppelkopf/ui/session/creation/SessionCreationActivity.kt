@@ -24,6 +24,7 @@ import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.session.SessionActivity
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
+import de.timseidel.doppelkopf.util.DoppelkopfException
 import de.timseidel.doppelkopf.util.Logging
 
 class SessionCreationActivity() : AppCompatActivity() {
@@ -181,7 +182,7 @@ class SessionCreationActivity() : AppCompatActivity() {
             memberSelectAdapter.notifyDataSetChanged()
 
             sessionCreated()
-        } catch (e: Exception) {
+        } catch (e: DoppelkopfException) {
             Logging.e("Session konnte nicht erstellt werden: $viewModel", e)
             showSessionCreateError("Der Doppelkopfabend kann nicht erstellt werden: $e")
         }

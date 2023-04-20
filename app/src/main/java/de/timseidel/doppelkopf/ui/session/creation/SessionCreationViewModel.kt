@@ -15,7 +15,11 @@ class SessionCreationViewModel {
         memberSelections.forEach { ms ->
             if (ms.isSelected) memberCount += 1
         }
-        return memberCount >= 4
+
+        if (memberCount < 4) return false
+
+        val names = memberSelections.filter { ms -> ms.isSelected }.map { ms -> ms.member.name }
+        return names.distinct().count() == names.count()
     }
 
     fun reset() {

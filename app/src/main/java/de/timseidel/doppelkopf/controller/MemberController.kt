@@ -2,6 +2,7 @@ package de.timseidel.doppelkopf.controller
 
 import de.timseidel.doppelkopf.contracts.IMemberController
 import de.timseidel.doppelkopf.model.Member
+import de.timseidel.doppelkopf.util.DoppelkopfException
 import de.timseidel.doppelkopf.util.IdGenerator
 import java.time.LocalDateTime
 
@@ -21,7 +22,7 @@ class MemberController : IMemberController {
     }
 
     override fun createMembers(names: List<String>): List<Member> {
-        if (!validateNames(names)) throw Exception("Invalid name list (check for duplicates or empty name)")
+        if (!validateNames(names)) throw DoppelkopfException("Invalid name list (check for duplicates or empty name)")
 
         val memberList = mutableListOf<Member>()
         for (name in names)

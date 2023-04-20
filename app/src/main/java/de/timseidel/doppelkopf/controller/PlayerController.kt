@@ -4,6 +4,7 @@ import de.timseidel.doppelkopf.contracts.IPlayerController
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.PlayerAndFaction
+import de.timseidel.doppelkopf.util.DoppelkopfException
 import de.timseidel.doppelkopf.util.IdGenerator
 
 class PlayerController : IPlayerController {
@@ -20,7 +21,7 @@ class PlayerController : IPlayerController {
     }
 
     override fun createPlayers(names: List<String>): List<Player> {
-        if (!validateNames(names)) throw Exception("Invalid name list (check for duplicates or empty name)")
+        if (!validateNames(names)) throw DoppelkopfException("Invalid name list (check for duplicates or empty name $names)")
 
         val plys = mutableListOf<Player>()
         for (name in names)

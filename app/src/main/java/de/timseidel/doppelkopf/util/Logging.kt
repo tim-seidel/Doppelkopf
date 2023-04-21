@@ -2,6 +2,9 @@ package de.timseidel.doppelkopf.util
 
 import android.util.Log
 
+/**
+ * This class provides a simple logging interface with default formatting to the android console.
+ */
 class Logging {
 
     companion object {

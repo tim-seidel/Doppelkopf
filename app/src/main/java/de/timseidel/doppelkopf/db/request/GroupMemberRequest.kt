@@ -29,18 +29,16 @@ class GroupMemberRequest(private val groupId: String) : BaseReadRequest<List<Mem
                         members.add(member)
                     }
                 } catch (e: Exception) {
-                    Logging.e(
+                    failWithLog(
                         "GroupMemberRequest: Member conversation of ${docs.size()} members failed with ",
                         e
                     )
-                    onReadFailed()
                 }
 
                 onReadResult(members)
             }
             .addOnFailureListener { e ->
-                Logging.e("GroupMemberRequest failed with ", e)
-                onReadFailed()
+                failWithLog("GroupMemberRequest failed with ", e)
             }
     }
 }

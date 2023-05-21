@@ -41,8 +41,7 @@ class SessionPlayerRequest(private val groupId: String, private val sessionId: S
                 onReadResult(players)
             }
             .addOnFailureListener { e ->
-                Logging.e("SessionPlayerRequest failed with ", e)
-                onReadFailed()
+                failWithLog("SessionPlayerRequest failed with ", e)
             }
     }
 }

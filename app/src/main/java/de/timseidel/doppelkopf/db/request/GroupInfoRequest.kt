@@ -62,16 +62,13 @@ class GroupInfoRequestByCode(private val groupCode: String) :
                             val group = FirebaseDTO.fromGroupDTOtoGroup(groupDto)
                             listener.onReadComplete(group)
                         } catch (e: Exception) {
-                            Logging.e("Unable to convert data to GroupDTO")
-                            listener.onReadFailed()
+                            failWithLog("Unable to convert data to GroupDTO", e)
                         }
                     } else {
-                        Logging.e("Unable to convert data to GroupDTO")
-                        listener.onReadFailed()
+                        failWithLog("Unable to convert data to GroupDTO")
                     }
                 } else {
-                    Logging.e("No Group with code [$groupCode] found.")
-                    listener.onReadFailed()
+                    failWithLog("No Group with code [$groupCode] found.")
                 }
             }
     }

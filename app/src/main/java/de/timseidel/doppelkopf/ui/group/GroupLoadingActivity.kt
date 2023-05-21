@@ -51,6 +51,31 @@ class GroupLoadingActivity : AppCompatActivity() {
         checkLoadingMode()
     }
 
+    private fun findViews() {
+        tvTitle = findViewById(R.id.tv_group_loading_title)
+        tvMessage = findViewById(R.id.tv_group_loading_message)
+        ivLoadingIcon = findViewById(R.id.iv_group_loading_icon)
+        btnBack = findViewById(R.id.btn_group_loading_back)
+    }
+
+    private fun initButtons() {
+        btnBack.visibility = Button.GONE
+        btnBack.isEnabled = false
+    }
+
+    private fun initAnimation() {
+        val anim = AnimationUtils.loadAnimation(this, R.anim.animation_loading_rotate_shake)
+        ivLoadingIcon.startAnimation(anim)
+    }
+
+    private fun setTitle(title: String) {
+        tvTitle.text = title
+    }
+
+    private fun setMessage(message: String) {
+        tvMessage.text = message
+    }
+
     private fun checkLoadingMode() {
         when (intent.getStringExtra(KEY_LOADING_MODE)) {
             LOADING_MODE_ID -> {
@@ -61,6 +86,7 @@ class GroupLoadingActivity : AppCompatActivity() {
             }
             else -> {
                 Logging.e("GroupLoadingActivity", "GROUP LOADING MODE NOT SET (ID/CODE)")
+                handleLoadingError()
             }
         }
     }
@@ -93,9 +119,10 @@ class GroupLoadingActivity : AppCompatActivity() {
                             openGroupOverviewActivity()
                         }
 
-                        override fun onReadFailed() {}
+                        override fun onReadFailed() {
+                            handleLoadingError()
+                        }
                     })
-
                 }
 
                 override fun onReadFailed() {
@@ -111,10 +138,10 @@ class GroupLoadingActivity : AppCompatActivity() {
 
     private fun loadGroupById() {
         val id = intent.getStringExtra(KEY_GROUP_ID) ?: ""
-
         if (id.isEmpty()) {
             Logging.e("GroupLoadingActivity", "GROUP LOADING MODE IS ID BUT NO ID WAS PROVIDED)")
             handleLoadingError()
+            return
         }
 
         setMessage(getString(R.string.loading_group))
@@ -123,39 +150,14 @@ class GroupLoadingActivity : AppCompatActivity() {
 
     private fun loadGroupByCode() {
         val code = intent.getStringExtra(KEY_GROUP_CODE) ?: ""
-
         if (code.isEmpty()) {
             Logging.e("GroupLoadingActivity", "GROUP LOADING MODE IS CODE BUT NO CODE WAS PROVIDED")
             handleLoadingError()
+            return
         }
 
         setMessage(getString(R.string.loading_group))
         GroupInfoRequestByCode(code).execute(listener)
-    }
-
-    private fun setTitle(title: String) {
-        tvTitle.text = title
-    }
-
-    private fun setMessage(message: String) {
-        tvMessage.text = message
-    }
-
-    private fun findViews() {
-        tvTitle = findViewById(R.id.tv_group_loading_title)
-        tvMessage = findViewById(R.id.tv_group_loading_message)
-        ivLoadingIcon = findViewById(R.id.iv_group_loading_icon)
-        btnBack = findViewById(R.id.btn_group_loading_back)
-    }
-
-    private fun initButtons() {
-        btnBack.visibility = Button.GONE
-        btnBack.isEnabled = false
-    }
-
-    private fun initAnimation() {
-        val anim = AnimationUtils.loadAnimation(this, R.anim.animation_loading_rotate_shake)
-        ivLoadingIcon.startAnimation(anim)
     }
 
     private fun handleLoadingError() {
@@ -202,5 +204,11 @@ class GroupLoadingActivity : AppCompatActivity() {
         val intent = Intent(this, GroupActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        btnBack.setOnClickListener(null)
+        ivLoadingIcon.clearAnimation()
     }
 }

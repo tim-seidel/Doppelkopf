@@ -31,13 +31,16 @@ class SessionGameRequest(
             .addOnSuccessListener { docs ->
                 val games = mutableListOf<Game>()
                 for (doc in docs) {
-                    try{
+                    try {
                         val gameDto = doc.toObject<GameDto>()
                         val game = FirebaseDTO.fromGameDTOtoGame(gameDto, playerController)
                         games.add(game)
-                    }catch (e: Exception) {
+                    } catch (e: Exception) {
                         //Skipping this game and continue with the next others, does not return failure
-                        Logging.e("SessionGameRequest: Game conversation of ${doc.data} failed with ", e)
+                        Logging.e(
+                            "SessionGameRequest: (Skipping) Game conversation of ${doc.data} failed with ",
+                            e
+                        )
                     }
                 }
 
@@ -46,8 +49,7 @@ class SessionGameRequest(
                 onReadResult(games)
             }
             .addOnFailureListener { e ->
-                Logging.e("SessionGameRequest failed with ", e)
-                onReadFailed()
+                failWithLog("SessionGameRequest failed with ", e)
             }
     }
 }

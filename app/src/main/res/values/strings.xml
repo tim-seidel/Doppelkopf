@@ -46,6 +46,7 @@
     <string name="loading_players">Lade Mitspieler…</string>
     <string name="loading_sessionInfos">Lade Abendübersichten…</string>
     <string name="loading_session">Lade Doppelkopfabend…</string>
+    <string name="loading_session_no_success">Der Doppelkopfabend konnte nicht geladen werden.</string>
     <string name="loading_group">Lade Doppelkopfgruppe…</string>
     <string name="loading_group_no_success">Die Gruppe konnte nicht geladen werden.</string>
     <string name="loading_sessions">Lade Doppelkopfabende…</string>

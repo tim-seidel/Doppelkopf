@@ -31,21 +31,17 @@ class SessionInfoRequest(private val groupId: String, private val sessionId: Str
                             val session = FirebaseDTO.fromSessionDTOtoSession(sessionDto)
                             listener.onReadComplete(session)
                         } catch (e: Exception) {
-                            Logging.e("Unable to convert ${doc.data} to SessionDTO")
-                            listener.onReadFailed()
+                            failWithLog("Unable to convert ${doc.data} to SessionDTO", e)
                         }
                     } else {
-                        Logging.e("Unable to convert ${doc.data} to SessionDTO")
-                        listener.onReadFailed()
+                        failWithLog("Unable to convert ${doc.data} to SessionDTO")
                     }
                 } else {
-                    Logging.e("No Session with id [$sessionId] found.")
-                    listener.onReadFailed()
+                    failWithLog("No Session with id [$sessionId] found.")
                 }
             }
             .addOnFailureListener { e ->
-                Logging.e("SessionInfoRequest failed with ", e)
-                listener.onReadFailed()
+                failWithLog("SessionInfoRequest failed with ", e)
             }
     }
 }
@@ -81,8 +77,7 @@ class SessionInfoListRequest(private val groupId: String) : BaseReadRequest<List
                 onReadResult(sessions)
             }
             .addOnFailureListener { e ->
-                Logging.e("SessionListRequest failed with ", e)
-                onReadFailed()
+                failWithLog("SessionInfoListRequest failed with ", e)
             }
     }
 }

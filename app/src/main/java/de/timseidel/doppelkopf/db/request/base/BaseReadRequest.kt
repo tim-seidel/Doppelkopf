@@ -1,6 +1,8 @@
 package de.timseidel.doppelkopf.db.request.base
 
 import de.timseidel.doppelkopf.ui.util.ThreadingUtil
+import de.timseidel.doppelkopf.util.Logging
+import java.lang.Exception
 
 abstract class BaseReadRequest<R> {
     protected var readRequestListener: ReadRequestListener<R>? = null
@@ -13,5 +15,15 @@ abstract class BaseReadRequest<R> {
 
     protected fun onReadFailed() {
         ThreadingUtil.runOnUIThread { readRequestListener?.onReadFailed() }
+    }
+
+    protected fun failWithLog(message: String) {
+        Logging.e(message)
+        onReadFailed()
+    }
+
+    protected fun failWithLog(message: String, exception: Exception) {
+        Logging.e(message, exception)
+        onReadFailed()
     }
 }

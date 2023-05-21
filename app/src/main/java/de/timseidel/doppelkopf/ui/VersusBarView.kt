@@ -11,17 +11,28 @@ import de.timseidel.doppelkopf.R
 class VersusBarView constructor(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
 
+    private lateinit var tvLeft: TextView
+    private lateinit var tvRight: TextView
+    private lateinit var pbVersus: ProgressBar
+
     init {
         init(attrs)
     }
 
     private fun init(attrs: AttributeSet?) {
         View.inflate(context, R.layout.view_versus_bar, this)
+        findViews()
 
-        pb_versus = findViewById(R.id.pb_game_points)
-        tv_left = findViewById(R.id.tv_game_points_pb_left)
-        tv_right = findViewById(R.id.tv_game_points_pb_right)
+        setAttributes(attrs)
+    }
 
+    private fun findViews() {
+        pbVersus = findViewById(R.id.pb_game_points)
+        tvLeft = findViewById(R.id.tv_game_points_pb_left)
+        tvRight = findViewById(R.id.tv_game_points_pb_right)
+    }
+
+    private fun setAttributes(attrs: AttributeSet?) {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.VersusBarView)
         try {
             val min = ta.getInteger(R.styleable.VersusBarView_min, 0)
@@ -36,27 +47,23 @@ class VersusBarView constructor(context: Context, attrs: AttributeSet? = null) :
         }
     }
 
-    private lateinit var tv_left: TextView
-    private lateinit var tv_right: TextView
-    private lateinit var pb_versus: ProgressBar
-
     fun setMin(value: Int) {
-        pb_versus.min = value
+        pbVersus.min = value
     }
 
     fun setMax(value: Int) {
-        pb_versus.max = value
+        pbVersus.max = value
     }
 
     fun setProgress(value: Int) {
-        pb_versus.progress = value
+        pbVersus.progress = value
     }
 
     fun setLeftText(text: String) {
-        tv_left.text = text
+        tvLeft.text = text
     }
 
     fun setRightText(text: String) {
-        tv_right.text = text
+        tvRight.text = text
     }
 }

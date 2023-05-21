@@ -30,14 +30,13 @@ class SessionHistoryFragment : Fragment() {
     ): View {
 
         _binding = FragmentSessionHistoryBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
         setupCreateSessionButton()
-
         setSessionHistoryList(
-            DokoShortAccess.getSessionInfoCtrl().getSessionInfos().sortedByDescending { it.date })
+            DokoShortAccess.getSessionInfoCtrl().getSessionInfos().sortedByDescending { it.date }
+        )
 
-        return root
+        return binding.root
     }
 
     private fun setSessionHistoryList(sessions: List<Session>) {
@@ -66,9 +65,7 @@ class SessionHistoryFragment : Fragment() {
     }
 
     private fun setupCreateSessionButton() {
-        val gotoSessionCreationButton: FloatingActionButton = binding.fabAddSession
-
-        gotoSessionCreationButton.setOnClickListener {
+        binding.fabAddSession.setOnClickListener {
             val intent = Intent(context, SessionCreationActivity::class.java)
             startActivity(intent)
         }
@@ -76,6 +73,7 @@ class SessionHistoryFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.fabAddSession.setOnClickListener(null)
         _binding = null
     }
 }

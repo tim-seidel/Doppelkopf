@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Member
 import kotlin.math.max
+
 class MemberListHeaderView constructor(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
 
@@ -23,7 +24,6 @@ class MemberListHeaderView constructor(context: Context, attrs: AttributeSet? = 
 
     private fun init() {
         View.inflate(context, R.layout.view_member_list_header, this)
-
         findViews()
     }
 
@@ -39,7 +39,6 @@ class MemberListHeaderView constructor(context: Context, attrs: AttributeSet? = 
         adapter = MemberListHeaderAdapter(members)
         adapter.memberClickListener = memberClickListener
         rvPlayers.adapter = adapter
-
     }
 
     fun setRowSize(rowSize: Int) {

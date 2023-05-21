@@ -36,15 +36,11 @@ class StatisticsController : IStatisticsController {
             sessionStatistics
         )
 
-        //TODO: Vllt. ueberschreiben, damit jeder das aktuellste Objekt hat
         groupStatistics = stats
-
         return stats
     }
 
     override fun reset() {
         groupStatistics = null
     }
-
-
 }

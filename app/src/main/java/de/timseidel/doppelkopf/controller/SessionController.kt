@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 
 class SessionController : ISessionController {
 
-    private lateinit var _session: Session
+    private lateinit var session: Session
 
     private val playerController: IPlayerController = PlayerController()
     private val gameController: IGameController = GameController()
@@ -24,7 +24,7 @@ class SessionController : ISessionController {
     }
 
     override fun getSession(): Session {
-        return _session
+        return session
     }
 
     override fun getPlayerController(): IPlayerController {
@@ -36,7 +36,7 @@ class SessionController : ISessionController {
     }
 
     override fun set(session: Session) {
-        _session = session
+        this.session = session
         playerController.reset()
         gameController.reset()
     }

@@ -21,21 +21,24 @@ class PlayerController : IPlayerController {
     }
 
     override fun createPlayers(names: List<String>): List<Player> {
-        if (!validateNames(names)) throw DoppelkopfException("Invalid name list (check for duplicates or empty name $names)")
+        if (!validateNames(names)) {
+            throw DoppelkopfException("Invalid name list (check for duplicates or empty names: $names)")
+        }
 
-        val plys = mutableListOf<Player>()
-        for (name in names)
-            plys.add(createPlayer(name))
+        val playerList = mutableListOf<Player>()
+        for (name in names) {
+            playerList.add(createPlayer(name))
+        }
 
-        return plys
+        return playerList
     }
 
     override fun addPlayer(player: Player) {
         players.add(player)
     }
 
-    override fun addPlayers(p: List<Player>) {
-        players.addAll(p)
+    override fun addPlayers(players: List<Player>) {
+        this.players.addAll(players)
     }
 
     override fun removePlayer(player: Player) {
@@ -60,14 +63,20 @@ class PlayerController : IPlayerController {
         players.forEach { p ->
             asFaction.add(PlayerAndFaction(p, Faction.NONE))
         }
-
         return asFaction
     }
 
     override fun validateNames(names: List<String>): Boolean {
-        if (names.size != names.distinct().count()) return false
-        for (name in names)
-            if (name.trim().isEmpty()) return false
+        if (names.size != names.distinct().count()) {
+            return false
+        }
+
+        for (name in names) {
+            if (name.trim().isEmpty()) {
+                return false
+            }
+        }
+
         return true
     }
 

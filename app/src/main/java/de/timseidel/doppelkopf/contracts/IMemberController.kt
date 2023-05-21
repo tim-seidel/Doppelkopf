@@ -10,7 +10,7 @@ interface IMemberController {
 
     fun addMember(member: Member)
 
-    fun addMembers(memberList: List<Member>)
+    fun addMembers(members: List<Member>)
 
     fun removeMember(member: Member)
 

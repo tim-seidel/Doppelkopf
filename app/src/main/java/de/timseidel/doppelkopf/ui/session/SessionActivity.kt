@@ -68,7 +68,6 @@ class SessionActivity : AppCompatActivity() {
 
     private fun setupBottomNavigation() {
         val navView: BottomNavigationView = binding.navView
-
         val navController = findNavController(R.id.nav_host_fragment_activity_session)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -84,7 +83,6 @@ class SessionActivity : AppCompatActivity() {
     private fun exportSessionToCSV() {
         val exporter = CSVGameHistoryExporter()
         val content = exporter.exportGameHistory(DokoShortAccess.getGameCtrl().getGames())
-
         copyToClipboard(content)
     }
 

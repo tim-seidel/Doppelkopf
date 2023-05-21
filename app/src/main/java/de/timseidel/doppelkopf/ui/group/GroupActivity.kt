@@ -31,9 +31,7 @@ class GroupActivity : AppCompatActivity() {
 
     private fun setupBottomNavigation() {
         val navView: BottomNavigationView = binding.navView
-
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_session_history,

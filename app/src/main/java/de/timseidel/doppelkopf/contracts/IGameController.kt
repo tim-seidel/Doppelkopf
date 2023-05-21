@@ -27,7 +27,7 @@ interface IGameController {
 
     fun getGamesAsPlayerResults(): List<List<GameResult>>
 
-    fun getGamesOfPlayer(pId: String): List<Game>
+    fun getGamesOfPlayer(playerId: String): List<Game>
 
     fun reset()
 }

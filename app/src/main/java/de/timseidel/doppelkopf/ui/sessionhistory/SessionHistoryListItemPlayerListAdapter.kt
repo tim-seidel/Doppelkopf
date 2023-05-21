@@ -17,9 +17,7 @@ class SessionHistoryListItemPlayerListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = SessionHistoryListItemPlayerView(parent.context)
-
-        return ViewHolder(view)
+        return ViewHolder(SessionHistoryListItemPlayerView(parent.context))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

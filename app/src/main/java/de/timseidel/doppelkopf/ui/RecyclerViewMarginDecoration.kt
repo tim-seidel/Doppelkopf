@@ -4,7 +4,7 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerViewMarginDecoration(var _marginHorizontal: Int, var _marginVertical: Int) :
+class RecyclerViewMarginDecoration(var marginHorizontal: Int, var marginVertical: Int) :
     RecyclerView.ItemDecoration() {
     override fun getItemOffsets(
         outRect: Rect,
@@ -12,9 +12,9 @@ class RecyclerViewMarginDecoration(var _marginHorizontal: Int, var _marginVertic
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        outRect.left = _marginHorizontal
-        outRect.right = _marginHorizontal
-        outRect.top = _marginVertical
-        outRect.bottom = _marginVertical
+        outRect.left = marginHorizontal
+        outRect.right = marginHorizontal
+        outRect.top = marginVertical
+        outRect.bottom = marginVertical
     }
 }

@@ -8,30 +8,30 @@ import android.util.Log
 class Logging {
 
     companion object {
-        private const val logTag = "DOKO"
+        private const val LOG_TAG = "DOKO"
 
         fun d(msg: String) {
-            Log.d(logTag, msg)
+            Log.d(LOG_TAG, msg)
         }
 
         fun e(msg: String) {
-            Log.d(logTag, msg)
+            Log.d(LOG_TAG, msg)
         }
 
         fun d(className: String, msg: String) {
-            Log.d(logTag, "[$className]: $msg")
+            Log.d(LOG_TAG, "[$className]: $msg")
         }
 
         fun e(className: String, msg: String) {
-            Log.e(logTag, "[$className]: $msg")
+            Log.e(LOG_TAG, "[$className]: $msg")
         }
 
-        fun e(msg: String, ex: Exception) {
-            Log.e(logTag, "$msg || ${ex.toString()}")
+        fun e(msg: String, e: Exception) {
+            Log.e(LOG_TAG, "$msg || $e")
         }
 
-        fun e(className: String, msg: String, ex: Exception) {
-            Log.e(logTag, "[$className]: $msg || ${ex.toString()}")
+        fun e(className: String, msg: String, e: Exception) {
+            Log.e(LOG_TAG, "[$className]: $msg || $e")
         }
     }
 }

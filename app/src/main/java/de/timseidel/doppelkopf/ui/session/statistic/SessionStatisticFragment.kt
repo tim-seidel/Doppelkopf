@@ -37,7 +37,6 @@ class SessionStatisticFragment : Fragment() {
     ): View {
 
         _binding = FragmentSessionStatisticBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
         (activity as AppCompatActivity).supportActionBar?.title =
             DokoShortAccess.getSessionCtrl().getSession().name
@@ -45,28 +44,25 @@ class SessionStatisticFragment : Fragment() {
         setupStatistics()
         setupPlayerSelect()
 
-        return root
+        return binding.root
     }
 
     private fun setupStatistics() {
-        if (DokoShortAccess.getGameCtrl().getGames().isEmpty()) {
-            setStatistics(EmptyStatisticViewProvider())
-            return
-        }
-
         sessionStatistics = SessionStatisticsCalculator().calculateSessionStatistics(
             DokoShortAccess.getPlayerCtrl().getPlayers(),
             DokoShortAccess.getGameCtrl().getGames()
         )
-        setStatistics(SessionStatisticViewsProvider(sessionStatistics))
+
+        if (DokoShortAccess.getGameCtrl().getGames().isEmpty()) {
+            setStatistics(EmptyStatisticViewProvider())
+        } else {
+            setStatistics(SessionStatisticViewsProvider(sessionStatistics))
+        }
     }
 
     private fun setupPlayerSelect() {
-
         binding.headerStatisticPlayerSelect.setListener(object : OnPlayerClickListener {
-
             override fun onPlayerClicked(player: Player) {
-                Logging.d("Player clicked: ${player.name}")
                 if (player.id == defaultSessionStatsPlayerPlaceholderId) {
                     setStatistics(SessionStatisticViewsProvider(sessionStatistics))
                 } else {

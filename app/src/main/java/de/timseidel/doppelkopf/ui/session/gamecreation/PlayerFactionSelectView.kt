@@ -13,15 +13,28 @@ import de.timseidel.doppelkopf.model.Faction
 class PlayerFactionSelectView constructor(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
 
+    private lateinit var tvPlayerName: TextView
+    private lateinit var btnSelectRe: ImageButton
+    private lateinit var btnSelectContra: ImageButton
+
     init {
         init(attrs)
     }
 
     private fun init(attrs: AttributeSet?) {
         View.inflate(context, R.layout.view_player_faction_select, this)
-
         findViews()
 
+        applyAttributes(attrs)
+    }
+
+    private fun findViews() {
+        tvPlayerName = findViewById(R.id.tv_player_faction_select_name)
+        btnSelectRe = findViewById(R.id.btn_faction_re)
+        btnSelectContra = findViewById(R.id.btn_faction_contra)
+    }
+
+    private fun applyAttributes(attrs: AttributeSet?) {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.PlayerFactionSelectView)
         try {
             val playerName = ta.getString(R.styleable.PlayerFactionSelectView_playerName) ?: ""
@@ -29,16 +42,6 @@ class PlayerFactionSelectView constructor(context: Context, attrs: AttributeSet?
         } finally {
             ta.recycle()
         }
-    }
-
-    private lateinit var tvPlayerName: TextView
-    private lateinit var btnSelectRe: ImageButton
-    private lateinit var btnSelectContra: ImageButton
-
-    private fun findViews() {
-        tvPlayerName = findViewById(R.id.tv_player_faction_select_name)
-        btnSelectRe = findViewById(R.id.btn_faction_re)
-        btnSelectContra = findViewById(R.id.btn_faction_contra)
     }
 
     fun setPlayerName(name: String) {

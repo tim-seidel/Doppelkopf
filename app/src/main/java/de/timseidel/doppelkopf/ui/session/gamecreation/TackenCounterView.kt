@@ -10,15 +10,24 @@ import de.timseidel.doppelkopf.R
 class TackenCounterView constructor(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
 
+    private lateinit var tvTackenCount: TextView
+
     init {
         init(attrs)
     }
 
     private fun init(attrs: AttributeSet?) {
         View.inflate(context, R.layout.view_tacken_counter, this)
+        findViews()
 
+        applyAttributes(attrs)
+    }
+
+    private fun findViews() {
         tvTackenCount = findViewById(R.id.tv_tacken_count)
+    }
 
+    private fun applyAttributes(attrs: AttributeSet?) {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.TackenCounterView)
         try {
             val counter = ta.getInteger(R.styleable.TackenCounterView_tackenCount, 0)
@@ -28,17 +37,11 @@ class TackenCounterView constructor(context: Context, attrs: AttributeSet? = nul
         }
     }
 
-    private lateinit var tvTackenCount: TextView
-
     fun setCounter(value: Int) {
-        tvTackenCount.text = if (value in 0..9) "0$value" else value.toString()
-
-        /*
-        when {
-            value < 0 -> tvTackenCount.setTextColor(ContextCompat.getColor(context, R.color.deep_purple))
-            value ==  0 -> tvTackenCount.setTextColor(ContextCompat.getColor(context, R.color.black))
-            else -> tvTackenCount.setTextColor(ContextCompat.getColor(context, R.color.teal_dark))
+        tvTackenCount.text = if (value in 0..9) {
+            "0$value"
+        } else {
+            value.toString()
         }
-         */
     }
 }

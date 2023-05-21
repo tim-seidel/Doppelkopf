@@ -12,7 +12,9 @@ class GameCreationViewModel {
     var isBockrunde: Boolean = false
 
     fun checkIsFactionAssignmentValid(): Boolean {
-        if (playerFactionList.count() < 4) return false
+        if (playerFactionList.count() < 4) {
+            return false
+        }
 
         var reCount = 0;
         var contraCount = 0
@@ -24,15 +26,20 @@ class GameCreationViewModel {
             }
         }
 
-        //Only 2v2 or 1v3 (Solo) are valid
-        if ((reCount == 2 && contraCount == 2) || (reCount == 1 && contraCount == 3)) return true
+        if ((reCount == 2 && contraCount == 2) || (reCount == 1 && contraCount == 3)) {
+            return true
+        }
 
         return false
     }
 
     fun checkIsValid(): Boolean {
-        if (winningFaction == Faction.NONE) return false
-        if (gameScore < 0 || gameScore > 240) return false
+        if (winningFaction == Faction.NONE) {
+            return false
+        }
+        if (gameScore < 0 || gameScore > 240) {
+            return false
+        }
         return checkIsFactionAssignmentValid()
     }
 

@@ -9,14 +9,20 @@ class SessionCreationViewModel {
     var memberSelections = mutableListOf<MemberSelection>()
 
     fun checkIsSetupValid(): Boolean {
-        if (sessionName.length < 3) return false
+        if (sessionName.length < 3) {
+            return false
+        }
 
         var memberCount = 0
         memberSelections.forEach { ms ->
-            if (ms.isSelected) memberCount += 1
+            if (ms.isSelected) {
+                memberCount += 1
+            }
         }
 
-        if (memberCount < 4) return false
+        if (memberCount < 4) {
+            return false
+        }
 
         val names = memberSelections.filter { ms -> ms.isSelected }.map { ms -> ms.member.name }
         return names.distinct().count() == names.count()

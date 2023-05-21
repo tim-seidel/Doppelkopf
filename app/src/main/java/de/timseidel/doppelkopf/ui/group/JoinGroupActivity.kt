@@ -31,11 +31,11 @@ class JoinGroupActivity : AppCompatActivity() {
             intent.putExtra(GroupLoadingActivity.KEY_GROUP_ID, id)
             startActivity(intent)
         } else {
+            setContentView(binding.rootJoinGroup)
             setupButtons()
             setupCodeInput()
 
             checkGroupCode()
-            setContentView(binding.rootJoinGroup)
         }
     }
 

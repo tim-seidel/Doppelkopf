@@ -9,10 +9,9 @@ import java.time.LocalDateTime
 
 class GroupController : IGroupController {
 
-    private lateinit var _group: Group
+    private lateinit var group: Group
 
     private val sessionInfoController: ISessionInfoController = SessionInfoController()
-
     private val memberController: IMemberController = MemberController()
 
     override fun createGroup(groupName: String): Group {
@@ -25,7 +24,7 @@ class GroupController : IGroupController {
     }
 
     override fun getGroup(): Group {
-        return _group
+        return group
     }
 
     override fun getMemberController(): IMemberController {
@@ -37,7 +36,7 @@ class GroupController : IGroupController {
     }
 
     override fun set(group: Group) {
-        _group = group
+        this.group = group
         memberController.reset()
         sessionInfoController.reset()
     }

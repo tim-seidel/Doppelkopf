@@ -29,6 +29,7 @@ class GroupCreationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityGroupCreationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         setupButtons()
         setupNameInput()
@@ -36,46 +37,6 @@ class GroupCreationActivity : AppCompatActivity() {
 
         checkIsInputValid()
 
-        setContentView(binding.root)
-    }
-
-    private fun checkIsInputValid() {
-        binding.btnSaveGroup.isEnabled = groupCreationViewModel.isValid()
-    }
-
-    private fun onCreateGroupClicked() {
-        if (!groupCreationViewModel.isValid()) {
-            showGroupCreateError(getString(R.string.create_group_unable_to_create))
-        }
-
-        val groupCtrl = DoppelkopfManager.getInstance().getGroupController()
-        val group = groupCtrl.createGroup(groupCreationViewModel.groupName)
-        groupCtrl.set(group)
-
-        val db = Firebase.firestore
-        val firebase = DoppelkopfDatabase()
-        firebase.setFirestore(db)
-        firebase.storeGroup(group)
-
-        val memberNames = groupCreationViewModel.getFilteredMemberNames()
-        if (memberNames.isNotEmpty()) {
-            val members = groupCtrl.getMemberController().createMembers(memberNames)
-            groupCtrl.getMemberController().addMembers(members)
-            firebase.storeMembers(members, group)
-        }
-
-        groupCreated()
-    }
-
-    private fun groupCreated() {
-        val intent = Intent(this, GroupActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun showGroupCreateError(msg: String) {
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
     private fun setupButtons() {
@@ -110,5 +71,44 @@ class GroupCreationActivity : AppCompatActivity() {
                 Converter.convertDpToPixels(4f, listView.context)
             )
         )
+    }
+
+    private fun checkIsInputValid() {
+        binding.btnSaveGroup.isEnabled = groupCreationViewModel.isValid()
+    }
+
+    private fun showGroupCreationError(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+    }
+
+    private fun onCreateGroupClicked() {
+        if (!groupCreationViewModel.isValid()) {
+            showGroupCreationError(getString(R.string.create_group_unable_to_create))
+        }
+
+        val groupCtrl = DoppelkopfManager.getInstance().getGroupController()
+        val group = groupCtrl.createGroup(groupCreationViewModel.groupName)
+        groupCtrl.set(group)
+
+        val db = Firebase.firestore
+        val firebase = DoppelkopfDatabase()
+        firebase.setFirestore(db)
+        firebase.storeGroup(group)
+
+        val memberNames = groupCreationViewModel.getFilteredMemberNames()
+        if (memberNames.isNotEmpty()) {
+            val members = groupCtrl.getMemberController().createMembers(memberNames)
+            groupCtrl.getMemberController().addMembers(members)
+            firebase.storeMembers(members, group)
+        }
+
+        finishGroupCreation()
+    }
+
+    private fun finishGroupCreation() {
+        val intent = Intent(this, GroupActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
+        finish()
     }
 }

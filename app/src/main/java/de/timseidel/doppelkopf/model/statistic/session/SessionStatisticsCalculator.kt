@@ -88,7 +88,6 @@ class SessionStatisticsCalculator {
         allPlayers: List<Player>,
         games: List<Game>
     ): PlayerStatistic {
-
         val stats = PlayerStatistic(
             player = player,
             partners = getOtherPlayers(player, allPlayers).associateBy(
@@ -111,9 +110,11 @@ class SessionStatisticsCalculator {
         games: List<Game>
     ): List<PlayerStatistic> {
         val stats = mutableListOf<PlayerStatistic>()
+
         players.forEach { player ->
             stats.add(calculateSinglePlayerStatistics(player, players, games))
         }
+
         return stats
     }
 
@@ -134,10 +135,12 @@ class SessionStatisticsCalculator {
                         addGameResult(stats.solo, result)
                     }
                 }
+
                 Faction.CONTRA -> {
                     addGameResult(stats.general, result)
                     addGameResult(stats.contra, result)
                 }
+
                 else -> {}
             }
 

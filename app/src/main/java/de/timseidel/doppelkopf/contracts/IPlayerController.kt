@@ -11,7 +11,7 @@ interface IPlayerController {
 
     fun addPlayer(player: Player)
 
-    fun addPlayers(p: List<Player>)
+    fun addPlayers(players: List<Player>)
 
     fun removePlayer(player: Player)
 

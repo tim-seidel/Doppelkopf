@@ -6,27 +6,29 @@ import de.timseidel.doppelkopf.util.DoppelkopfException
 import de.timseidel.doppelkopf.util.IdGenerator
 import java.time.LocalDateTime
 
-//TODO: Member und Player verknuepfen
 class MemberController : IMemberController {
 
     private val members = mutableListOf<Member>()
 
     override fun createMember(name: String): Member {
-        val trimmedName = name.trim()
-        val nonEmptyName = trimmedName.ifEmpty { "Member" }
+        val correctedName = name.trim().ifEmpty { "Member" }
+
         return Member(
-            IdGenerator.generateIdWithTimestamp("member") + "_$nonEmptyName",
-            nonEmptyName,
+            IdGenerator.generateIdWithTimestamp("member") + "_$correctedName",
+            correctedName,
             LocalDateTime.now()
         )
     }
 
     override fun createMembers(names: List<String>): List<Member> {
-        if (!validateNames(names)) throw DoppelkopfException("Invalid name list (check for duplicates or empty name)")
+        if (!validateNames(names)) {
+            throw DoppelkopfException("Invalid name list (check for duplicates or empty name)")
+        }
 
         val memberList = mutableListOf<Member>()
-        for (name in names)
+        for (name in names) {
             memberList.add(createMember(name))
+        }
 
         return memberList
     }
@@ -35,8 +37,8 @@ class MemberController : IMemberController {
         members.add(member)
     }
 
-    override fun addMembers(memberList: List<Member>) {
-        members.addAll(memberList)
+    override fun addMembers(members: List<Member>) {
+        this.members.addAll(members)
     }
 
     override fun removeMember(member: Member) {
@@ -56,15 +58,21 @@ class MemberController : IMemberController {
     }
 
     override fun validateName(name: String): Boolean {
-        if (name.isEmpty()) return false
-        return getMemberByName(name) == null
+        return name.trim().isNotEmpty() && getMemberByName(name) == null
     }
 
     override fun validateNames(names: List<String>): Boolean {
-        if (names.size != names.distinct().count()) return false
+        if (names.size != names.distinct().count()) {
+            return false
+        }
+
         for (name in names) {
-            if (name.trim().isEmpty()) return false
-            if (getMemberByName(name) != null) return false
+            if (name.trim().isEmpty()) {
+                return false
+            }
+            if (getMemberByName(name) != null) {
+                return false
+            }
         }
         return true
     }

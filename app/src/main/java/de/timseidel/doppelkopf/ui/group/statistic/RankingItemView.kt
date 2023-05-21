@@ -22,10 +22,7 @@ class RankingItemView constructor(context: Context, attrs: AttributeSet? = null)
 
     private fun init(attrs: AttributeSet?) {
         View.inflate(context, R.layout.view_ranking_item, this)
-
-        ivCup = findViewById(R.id.iv_ranking_cup_icon)
-        tvName = findViewById(R.id.tv_ranking_item_name)
-        tvValue = findViewById(R.id.tv_ranking_item_value)
+        findViews()
 
         val ta = context.obtainStyledAttributes(attrs, R.styleable.RankingItemView)
         try {
@@ -35,6 +32,12 @@ class RankingItemView constructor(context: Context, attrs: AttributeSet? = null)
         } finally {
             ta.recycle()
         }
+    }
+
+    private fun findViews(){
+        ivCup = findViewById(R.id.iv_ranking_cup_icon)
+        tvName = findViewById(R.id.tv_ranking_item_name)
+        tvValue = findViewById(R.id.tv_ranking_item_value)
     }
 
     fun setName(name: String) {

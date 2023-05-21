@@ -31,9 +31,7 @@ class PlayerListHeaderAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = createPlayerNameView(parent.context)
-
-        return ViewHolder(view)
+        return ViewHolder(createPlayerNameView(parent.context))
     }
 
     private fun createPlayerNameView(context: Context): TextView {
@@ -46,12 +44,11 @@ class PlayerListHeaderAdapter(
         )
         layoutParams.setMargins(dp2)
         tv.layoutParams = layoutParams
-        tv.setPadding(0,dp2,0,dp2)
+        tv.setPadding(0, dp2, 0, dp2)
         tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
         tv.textSize = 20f
         tv.setTextColor(ContextCompat.getColor(context, R.color.neural_dark))
         tv.background = ContextCompat.getDrawable(context, R.drawable.border_background)
-        //tv.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM)
 
         return tv
     }

@@ -22,16 +22,21 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
 
     private fun init(attrs: AttributeSet?) {
         View.inflate(context, R.layout.view_game_history_list_item_player, this)
+        findViews()
 
+        applyAttributes(attrs)
+    }
+
+    private fun findViews() {
         tvPlayerTacken = findViewById(R.id.tv_ghli_player_tacken)
         ivPlayerFaction = findViewById(R.id.iv_ghli_player_faction)
+    }
 
+    private fun applyAttributes(attrs: AttributeSet?) {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.GameHistoryListItemPlayerView)
         try {
             val playerTacken =
                 ta.getInteger(R.styleable.GameHistoryListItemPlayerView_playerTacken, 0)
-            //val factionAsString = ta.getString(R.styleable.GameHistoryListItemPlayerView_playerFaction)
-
             setPlayerTacken(playerTacken)
         } finally {
             ta.recycle()
@@ -54,6 +59,7 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
                 )
                 tvPlayerTacken.visibility = VISIBLE
             }
+
             Faction.CONTRA -> {
                 ivPlayerFaction.setImageResource(R.drawable.ic_cards_diamond_24)
                 ivPlayerFaction.setColorFilter(
@@ -64,6 +70,7 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
                 )
                 tvPlayerTacken.visibility = VISIBLE
             }
+
             Faction.NONE -> {
                 ivPlayerFaction.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24)
                 ivPlayerFaction.setColorFilter(ContextCompat.getColor(context, R.color.gray_400))

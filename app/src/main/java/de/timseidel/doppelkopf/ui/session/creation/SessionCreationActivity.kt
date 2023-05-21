@@ -44,6 +44,7 @@ class SessionCreationActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivitySessionCreationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         findViews()
         setupEditTexts()
@@ -51,8 +52,6 @@ class SessionCreationActivity() : AppCompatActivity() {
         setupMemberSelectList()
 
         checkSessionIsValid()
-
-        setContentView(binding.root)
     }
 
     private fun findViews() {
@@ -163,6 +162,7 @@ class SessionCreationActivity() : AppCompatActivity() {
 
             val session = sessionCtrl.createSession(viewModel.sessionName)
             sessionCtrl.set(session)
+            DokoShortAccess.getSessionInfoCtrl().addSessionInfo(session)
 
             val playerNames = viewModel.memberSelections.filter { ms -> ms.isSelected }
                 .map { ms -> ms.member.name }

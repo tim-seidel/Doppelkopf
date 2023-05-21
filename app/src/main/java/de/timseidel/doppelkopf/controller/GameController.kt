@@ -72,10 +72,10 @@ class GameController : IGameController {
         return results
     }
 
-    override fun getGamesOfPlayer(pId: String): List<Game> {
+    override fun getGamesOfPlayer(playerId: String): List<Game> {
         val pGames = mutableListOf<Game>()
         games.forEach { g ->
-            if (g.players.any { p -> p.player.id == pId && p.faction != Faction.NONE }) pGames.add(g)
+            if (g.players.any { p -> p.player.id == playerId && p.faction != Faction.NONE }) pGames.add(g)
         }
 
         return pGames

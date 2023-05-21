@@ -10,10 +10,6 @@ import de.timseidel.doppelkopf.model.PlayerAndFaction
 class GameUtil {
     companion object {
 
-        fun isWinner(faction: Faction, points: Int): Boolean {
-            return faction == Faction.RE && points > 120 || faction == Faction.CONTRA && points >= 120
-        }
-
         fun isFactionCompositionSolo(players: List<PlayerAndFaction>): Boolean {
             val reCount = players.count { paf -> paf.faction == Faction.RE }
             val contraCount = players.count { paf -> paf.faction == Faction.CONTRA }
@@ -21,27 +17,29 @@ class GameUtil {
             return reCount == 1 && contraCount == 3
         }
 
-        fun isSoloPlayer(player: Player, game: Game): Boolean {
-            if (game.gameType != GameType.SOLO) return false
-            return (game.players.firstOrNull { p -> p.player.id == player.id }?.faction
-                ?: Faction.NONE) == Faction.RE
-        }
-
         fun getFactionTacken(faction: Faction, game: Game): Int {
-            if (faction == Faction.NONE || game.winningFaction == Faction.NONE) return 0
+            if (faction == Faction.NONE || game.winningFaction == Faction.NONE) {
+                return 0
+            }
 
             val isWinner = faction == game.winningFaction
             val isSoloFaction = game.gameType == GameType.SOLO && faction == Faction.RE
 
             var tacken = game.tacken
-            if (!isWinner) tacken *= -1
-            if (isSoloFaction) tacken *= 3
+            if (!isWinner) {
+                tacken *= -1
+            }
+            if (isSoloFaction) {
+                tacken *= 3
+            }
 
             return tacken
         }
 
         fun getFactionPoints(faction: Faction, winningFaction: Faction, winningPoints: Int): Int {
-            if (faction == Faction.NONE || winningFaction == Faction.NONE) return 0
+            if (faction == Faction.NONE || winningFaction == Faction.NONE) {
+                return 0
+            }
             return if (faction == winningFaction) winningPoints else 240 - winningPoints
         }
 

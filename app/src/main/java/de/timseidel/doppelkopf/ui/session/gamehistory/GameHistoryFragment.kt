@@ -52,7 +52,6 @@ class GameHistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val menuHost = requireHost() as MenuHost
-
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_game_history, menu)

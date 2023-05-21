@@ -11,20 +11,19 @@ class GameHistoryListItemPlayerListAdapter(
 ) :
     RecyclerView.Adapter<GameHistoryListItemPlayerListAdapter.ViewHolder>() {
 
-    class ViewHolder(val ghlipv: GameHistoryListItemPlayerView) : RecyclerView.ViewHolder(ghlipv) {
+    class ViewHolder(val playerView: GameHistoryListItemPlayerView) :
+        RecyclerView.ViewHolder(playerView) {
         fun bind(playerResult: GameResult) {
             val faction = playerResult.faction
 
-            ghlipv.setPlayerTacken(playerResult.tacken)
-            ghlipv.setPlayerFaction(faction, playerResult.isWinner)
-            ghlipv.setSolo(playerResult.gameType == GameType.SOLO && faction == Faction.RE)
+            playerView.setPlayerTacken(playerResult.tacken)
+            playerView.setPlayerFaction(faction, playerResult.isWinner)
+            playerView.setSolo(playerResult.gameType == GameType.SOLO && faction == Faction.RE)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = GameHistoryListItemPlayerView(parent.context)
-
-        return ViewHolder(view)
+        return ViewHolder(GameHistoryListItemPlayerView(parent.context))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -32,13 +31,13 @@ class GameHistoryListItemPlayerListAdapter(
         holder.bind(result)
     }
 
+    override fun getItemCount(): Int {
+        return playerResults.size
+    }
+
     fun updatePlayerResults(pr: List<GameResult>) {
         this.playerResults.clear()
         this.playerResults.addAll(pr)
         this.notifyDataSetChanged()
-    }
-
-    override fun getItemCount(): Int {
-        return playerResults.size
     }
 }

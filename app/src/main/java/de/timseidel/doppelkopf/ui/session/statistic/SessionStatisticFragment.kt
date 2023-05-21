@@ -69,7 +69,7 @@ class SessionStatisticFragment : Fragment() {
                     val playerStatistic =
                         sessionStatistics.playerStatistics.firstOrNull { playerStatistic -> playerStatistic.player.id == player.id }
 
-                    if (playerStatistic != null) {
+                    if (playerStatistic != null && playerStatistic.general.total.games > 0) {
                         setStatistics(PlayerStatisticViewsProvider(playerStatistic))
                     } else {
                         setStatistics(EmptyStatisticViewProvider())

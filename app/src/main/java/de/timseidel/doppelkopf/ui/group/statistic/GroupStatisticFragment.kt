@@ -113,7 +113,6 @@ class GroupStatisticFragment : Fragment() {
         })
     }
 
-
     private fun setupMemberSelect() {
         binding.headerStatisticMemberSelect.setListener(object :
             MemberListHeaderAdapter.OnMemberClickListener {
@@ -129,7 +128,7 @@ class GroupStatisticFragment : Fragment() {
                         val memberStatistic =
                             stats.memberStatistics.firstOrNull { memberStatistic -> memberStatistic.member.id == member.id }
 
-                        if (memberStatistic != null) {
+                        if (memberStatistic != null && memberStatistic.general.total.games > 0) {
                             setStatistics(MemberStatisticViewProvider(memberStatistic))
                         } else {
                             setStatistics(EmptyStatisticViewProvider())

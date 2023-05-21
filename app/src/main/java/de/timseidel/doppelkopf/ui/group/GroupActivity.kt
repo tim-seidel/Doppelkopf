@@ -55,6 +55,7 @@ class GroupActivity : AppCompatActivity() {
             return true
         } else if (item.itemId == R.id.menu_item_group_show_group_code) {
             showGroupCode()
+            return true
         }
         return super.onOptionsItemSelected(item)
     }

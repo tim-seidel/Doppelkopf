@@ -18,7 +18,7 @@ class CSVGameHistoryExporter {
             csv.append(p.player.name)
             csv.append(";")
         }
-        csv.append("\n")
+        csv.append("isBockrunde;winningFaction;gameType\n")
 
         games.forEach { g ->
             g.players.forEach { p ->
@@ -29,7 +29,11 @@ class CSVGameHistoryExporter {
                 csv.append(";")
             }
 
-            if (g.isBockrunde) csv.append("x")
+            if (g.isBockrunde) {
+                csv.append("x")
+            }
+            csv.append(";${g.winningFaction.name}")
+            csv.append(";${g.gameType.name}")
             csv.append("\n")
         }
 
@@ -48,7 +52,7 @@ class CSVGameHistoryExporter {
             csv.append(p.player.name)
             csv.append(";")
         }
-        csv.append("\n")
+        csv.append("isBockrunde;winningFaction;gameType\n")
 
         val tacken = MutableList(players.size) { 0 }
 
@@ -63,7 +67,11 @@ class CSVGameHistoryExporter {
                 csv.append(";")
             }
 
-            if (g.isBockrunde) csv.append("x")
+            if (g.isBockrunde) {
+                csv.append("x")
+            }
+            csv.append(";${g.winningFaction.name}")
+            csv.append(";${g.gameType.name}")
             csv.append("\n")
         }
 

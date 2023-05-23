@@ -27,6 +27,9 @@ class GroupActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupBottomNavigation()
+
+        val group = DokoShortAccess.getGroupCtrl().getGroup()
+        supportActionBar?.title = "[${group.code}] ${group.name}"
     }
 
     private fun setupBottomNavigation() {

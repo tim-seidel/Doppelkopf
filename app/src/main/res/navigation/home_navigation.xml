@@ -8,19 +8,16 @@
     <fragment
         android:id="@+id/navigation_session_history"
         android:name="de.timseidel.doppelkopf.ui.sessionhistory.SessionHistoryFragment"
-        android:label="@string/navigation_title_session_history"
         tools:layout="@layout/fragment_session_history" />
 
     <fragment
         android:id="@+id/navigation_group_statistic"
         android:name="de.timseidel.doppelkopf.ui.group.statistic.GroupStatisticFragment"
-        android:label="@string/navigation_title_group_statistic"
         tools:layout="@layout/fragment_group_statistic" />
 
     <fragment
         android:id="@+id/navigation_member_ranking"
         android:name="de.timseidel.doppelkopf.ui.group.statistic.RankingFragment"
-        android:label="@string/navigation_title_member_ranking"
         tools:layout="@layout/fragment_group_statistic" />
 
 </navigation>

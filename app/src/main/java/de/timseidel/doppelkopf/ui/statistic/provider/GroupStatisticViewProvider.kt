@@ -143,7 +143,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                             "#${IStatisticViewWrapper.COLOR_POSITIVE_LIGHT}"
                         ),
                         PieChartViewWrapper.PieSliceData(
-                            "Contra",
+                            "Sieg Contra",
                             groupStatistics.contra.wins.games - groupStatistics.solo.loss.games,
                             "#${IStatisticViewWrapper.COLOR_NEGATIVE_DARK}"
                         ), PieChartViewWrapper.PieSliceData(

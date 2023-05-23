@@ -152,7 +152,7 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
                             "#${IStatisticViewWrapper.COLOR_POSITIVE_LIGHT}"
                         ),
                         PieChartViewWrapper.PieSliceData(
-                            "Ndl Contra",
+                            "Sieg Contra",
                             sessionStatistics.contra.wins.games - sessionStatistics.solo.loss.games,
                             "#${IStatisticViewWrapper.COLOR_NEGATIVE_DARK}"
                         ), PieChartViewWrapper.PieSliceData(

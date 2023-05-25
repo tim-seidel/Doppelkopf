@@ -2,13 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root_loading"
+    android:id="@+id/root_session_loading"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.session.SessionLoadingActivity">
+    android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_loading_title"
+        android:id="@+id/tv_session_loading_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -22,27 +21,28 @@
         tools:text="Doppelkopf" />
 
     <ImageView
-        android:id="@+id/iv_loading_icon"
+        android:id="@+id/iv_session_loading_icon"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:contentDescription="Loading season icon"
-        app:layout_constraintBottom_toTopOf="@+id/tv_loading_message"
+        app:layout_constraintBottom_toTopOf="@+id/tv_session_loading_message"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_loading_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_session_loading_title"
         app:srcCompat="@drawable/ic_baseline_hourglass_empty_24"
         app:tint="@color/primary" />
 
     <TextView
-        android:id="@+id/tv_loading_message"
+        android:id="@+id/tv_session_loading_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@id/btn_session_loading_back"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,11 +55,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/back"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/neural"
         android:insetTop="0dp"
         android:insetBottom="0dp"
+        android:text="@string/back"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

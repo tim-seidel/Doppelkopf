@@ -5,11 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.animation.AnimationUtils
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.timseidel.doppelkopf.R
+import de.timseidel.doppelkopf.databinding.ActivityGroupLoadingBinding
 import de.timseidel.doppelkopf.db.request.GroupInfoRequestByCode
 import de.timseidel.doppelkopf.db.request.GroupInfoRequestById
 import de.timseidel.doppelkopf.db.request.GroupMemberRequest
@@ -31,49 +30,38 @@ class GroupLoadingActivity : AppCompatActivity() {
         const val LOADING_MODE_CODE = "LOADING_MODE_CODE"
     }
 
-    private lateinit var tvTitle: TextView
-    private lateinit var tvMessage: TextView
-    private lateinit var ivLoadingIcon: ImageView
-    private lateinit var btnBack: Button
+    private lateinit var binding: ActivityGroupLoadingBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_group_loading)
 
+        binding = ActivityGroupLoadingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         supportActionBar?.hide()
 
-        findViews()
         initButtons()
         initAnimation()
-
         setTitle(getString(R.string.app_name))
 
         checkLoadingMode()
     }
 
-    private fun findViews() {
-        tvTitle = findViewById(R.id.tv_group_loading_title)
-        tvMessage = findViewById(R.id.tv_group_loading_message)
-        ivLoadingIcon = findViewById(R.id.iv_group_loading_icon)
-        btnBack = findViewById(R.id.btn_group_loading_back)
-    }
-
     private fun initButtons() {
-        btnBack.visibility = Button.GONE
-        btnBack.isEnabled = false
+        binding.btnGroupLoadingBack.visibility = Button.GONE
+        binding.btnGroupLoadingBack.isEnabled = false
     }
 
     private fun initAnimation() {
         val anim = AnimationUtils.loadAnimation(this, R.anim.animation_loading_rotate_shake)
-        ivLoadingIcon.startAnimation(anim)
+        binding.ivGroupLoadingIcon.startAnimation(anim)
     }
 
     private fun setTitle(title: String) {
-        tvTitle.text = title
+        binding.tvGroupLoadingTitle.text = title
     }
 
     private fun setMessage(message: String) {
-        tvMessage.text = message
+        binding.tvGroupLoadingMessage.text = message
     }
 
     private fun checkLoadingMode() {
@@ -163,8 +151,8 @@ class GroupLoadingActivity : AppCompatActivity() {
     private fun handleLoadingError() {
         clearCurrentGroupId()
 
-        ivLoadingIcon.clearAnimation()
-        ivLoadingIcon.setImageDrawable(
+        binding.ivGroupLoadingIcon.clearAnimation()
+        binding.ivGroupLoadingIcon.setImageDrawable(
             ContextCompat.getDrawable(
                 this,
                 R.drawable.baseline_sentiment_very_dissatisfied_24
@@ -175,10 +163,10 @@ class GroupLoadingActivity : AppCompatActivity() {
     }
 
     private fun enableBackButton() {
-        btnBack.visibility = Button.VISIBLE
-        btnBack.isEnabled = true
+        binding.btnGroupLoadingBack.visibility = Button.VISIBLE
+        binding.btnGroupLoadingBack.isEnabled = true
 
-        btnBack.setOnClickListener {
+        binding.btnGroupLoadingBack.setOnClickListener {
             finish()
         }
     }
@@ -208,7 +196,7 @@ class GroupLoadingActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        btnBack.setOnClickListener(null)
-        ivLoadingIcon.clearAnimation()
+        binding.btnGroupLoadingBack.setOnClickListener(null)
+        binding.ivGroupLoadingIcon.clearAnimation()
     }
 }

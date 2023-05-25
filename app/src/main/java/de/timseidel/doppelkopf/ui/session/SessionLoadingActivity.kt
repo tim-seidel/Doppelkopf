@@ -4,11 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.animation.AnimationUtils
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.timseidel.doppelkopf.R
+import de.timseidel.doppelkopf.databinding.ActivitySessionLoadingBinding
 import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionGameRequest
 import de.timseidel.doppelkopf.db.request.SessionInfoRequest
@@ -25,50 +24,38 @@ class SessionLoadingActivity : AppCompatActivity() {
         const val KEY_SESSION_ID = "SESSION_ID"
     }
 
-    private lateinit var tvTitle: TextView
-    private lateinit var tvMessage: TextView
-    private lateinit var ivLoadingIcon: ImageView
-    private lateinit var btnBack: Button
-
+    private lateinit var binding: ActivitySessionLoadingBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_session_loading)
 
+        binding = ActivitySessionLoadingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         supportActionBar?.hide()
 
-        findViews()
         initButtons()
         initAnimation()
-
         setTitle(getString(R.string.app_name))
 
         checkAndStartSessionLoading()
     }
 
-    private fun findViews() {
-        tvTitle = findViewById(R.id.tv_loading_title)
-        tvMessage = findViewById(R.id.tv_loading_message)
-        ivLoadingIcon = findViewById(R.id.iv_loading_icon)
-        btnBack = findViewById(R.id.btn_session_loading_back)
-    }
-
     private fun initAnimation() {
         val anim = AnimationUtils.loadAnimation(this, R.anim.animation_loading_rotate_shake)
-        ivLoadingIcon.startAnimation(anim)
+        binding.ivSessionLoadingIcon.startAnimation(anim)
     }
 
     private fun initButtons() {
-        btnBack.visibility = Button.GONE
-        btnBack.isEnabled = false
+        binding.btnSessionLoadingBack.visibility = Button.GONE
+        binding.btnSessionLoadingBack.isEnabled = false
     }
 
     private fun setTitle(title: String) {
-        tvTitle.text = title
+        binding.tvSessionLoadingTitle.text = title
     }
 
     private fun setMessage(message: String) {
-        tvMessage.text = message
+        binding.tvSessionLoadingMessage.text = message
     }
 
     private fun checkAndStartSessionLoading() {
@@ -80,7 +67,6 @@ class SessionLoadingActivity : AppCompatActivity() {
             handleLoadingError()
         }
     }
-
 
     private fun loadSession(groupId: String, sessionId: String) {
         setMessage(getString(R.string.loading_session))
@@ -131,8 +117,8 @@ class SessionLoadingActivity : AppCompatActivity() {
     }
 
     private fun handleLoadingError() {
-        ivLoadingIcon.clearAnimation()
-        ivLoadingIcon.setImageDrawable(
+        binding.ivSessionLoadingIcon.clearAnimation()
+        binding.ivSessionLoadingIcon.setImageDrawable(
             ContextCompat.getDrawable(
                 this,
                 R.drawable.baseline_sentiment_very_dissatisfied_24
@@ -143,10 +129,10 @@ class SessionLoadingActivity : AppCompatActivity() {
     }
 
     private fun enableBackButton() {
-        btnBack.visibility = Button.VISIBLE
-        btnBack.isEnabled = true
+        binding.btnSessionLoadingBack.visibility = Button.VISIBLE
+        binding.btnSessionLoadingBack.isEnabled = true
 
-        btnBack.setOnClickListener {
+        binding.btnSessionLoadingBack.setOnClickListener {
             finish()
         }
     }
@@ -161,7 +147,7 @@ class SessionLoadingActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        btnBack.setOnClickListener(null)
-        ivLoadingIcon.clearAnimation()
+        binding.btnSessionLoadingBack.setOnClickListener(null)
+        binding.ivSessionLoadingIcon.clearAnimation()
     }
 }

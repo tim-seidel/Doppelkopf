@@ -67,4 +67,5 @@
     <string name="menu_game_history_change_tacken_mode">Tackenanzeige ändern</string>
     <string name="dialog_refresh_statistics_title">Statistikupdate</string>
     <string name="dialog_refresh_statistics_changes_tabs_to_apply">Die Statistiken werden geupdated, sobald du einen Tab wechselst (und zurück).</string>
+    <string name="group_member_creation_short_name_advice">Kurze Namen oder Spitznamen werden empfohlen, damit die Statistiken besser aussehen.</string>
 </resources>

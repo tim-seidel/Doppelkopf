@@ -44,6 +44,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_group_name" />
 
+    <TextView
+        android:id="@+id/tv_group_member_name_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:text="@string/group_member_creation_short_name_advice"
+        android:textColor="@color/neural"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_group_players" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_group_member_names"
         android:layout_width="0dp"
@@ -53,7 +66,7 @@
         app:layout_constraintBottom_toTopOf="@id/btn_save_group"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_group_players" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_group_member_name_info" />
 
     <Button
         android:id="@+id/btn_save_group"

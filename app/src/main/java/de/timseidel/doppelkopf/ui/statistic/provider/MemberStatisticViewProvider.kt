@@ -466,26 +466,9 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
                 "Die längste Niederlagenserie hielt folgende Anzahl von Spielen:",
                 streakStatistics.longestLossStreak.toString()
             ),
-            ScatterChartViewWrapper(
-                ScatterChartViewWrapper.ScatterChartData(
-                    "Serienverlauf",
-                    "Dauer der Sieges- und Niederlagenserien",
-                    "Ndl | Seriendauer | Sieg",
-                    listOf(
-                        ScatterChartViewWrapper.ScatterLineData(
-                            "Verlauf von Sieges- und Ndlserien",
-                            streakStatistics.streakHistory,
-                            streakHistoryWinLossMarker
-                        )
-                    ),
-                    showYAxisValues = true,
-                    showLegend = false,
-                    height = 300f
-                )
-            ),
             ColumnChartViewWrapper(
                 ColumnChartViewWrapper.ColumnChartData(
-                    "Serienverteilung", "Serienlänge", "Serienhäufigkeit",
+                    "Serienverteilung", "Ndl. | Serienlänge | Sieg", "Serienhäufigkeit",
                     listOf(
                         ColumnChartViewWrapper.ColumnSeriesData(
                             "Serienlänge",

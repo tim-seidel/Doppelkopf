@@ -16,22 +16,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 import de.timseidel.doppelkopf.R
-import de.timseidel.doppelkopf.controller.SessionController
 import de.timseidel.doppelkopf.databinding.ActivitySessionBinding
-import de.timseidel.doppelkopf.db.DoppelkopfDatabase
-import de.timseidel.doppelkopf.db.FirebaseDTO
-import de.timseidel.doppelkopf.db.FirebaseStrings
-import de.timseidel.doppelkopf.db.GameDto
-import de.timseidel.doppelkopf.db.PlayerDto
-import de.timseidel.doppelkopf.db.SessionDto
 import de.timseidel.doppelkopf.export.CSVGameHistoryExporter
-import de.timseidel.doppelkopf.model.Game
-import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.util.DokoShortAccess
-import de.timseidel.doppelkopf.util.Logging
 
 class SessionActivity : AppCompatActivity() {
 

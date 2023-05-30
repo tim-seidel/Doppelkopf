@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import de.timseidel.doppelkopf.databinding.FragmentSessionHistoryBinding
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration

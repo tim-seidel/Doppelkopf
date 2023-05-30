@@ -28,7 +28,7 @@ class GameHistoryFragment : Fragment() {
     private var _binding: FragmentGameHistoryBinding? = null
     private val binding get() = _binding!!
 
-    private var isGameHistoryAccumulated = false
+    private var isGameHistoryAccumulated = true
 
     override fun onCreateView(
         inflater: LayoutInflater,

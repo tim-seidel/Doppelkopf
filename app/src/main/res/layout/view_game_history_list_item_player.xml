@@ -5,7 +5,8 @@
     android:id="@+id/game_history_list_item_player_root"
     android:layout_width="match_parent"
     android:layout_height="36dp"
-    android:layout_gravity="center_vertical">
+    android:layout_gravity="center_vertical"
+    android:paddingStart="2dp">
 
     <ImageView
         android:id="@+id/iv_ghli_player_faction"

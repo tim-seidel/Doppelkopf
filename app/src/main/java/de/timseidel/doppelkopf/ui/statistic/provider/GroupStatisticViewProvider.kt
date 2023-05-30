@@ -9,6 +9,7 @@ import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.LineChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.PieChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.SimpleTextStatisticViewWrapper
+import kotlin.math.round
 
 class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
     IStatisticViewsProvider {
@@ -119,6 +120,9 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                 tackenDistributionBockContra.values()
             }
 
+        val percentReWin =
+            if (groupStatistics.general.total.games > 0) round(groupStatistics.re.wins.games / groupStatistics.general.total.games.toFloat() * 100).toInt() else 0
+
         return listOf(
             SimpleTextStatisticViewWrapper(
                 "Allgemeine Statistik",
@@ -129,7 +133,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                 PieChartViewWrapper.PieChartData
                     (
                     "Re oder Contra?",
-                    "Verteilung der Siege von Re und Contra",
+                    "Verteilung der Siege von Re ($percentReWin%) und Contra",
                     "Spiele",
                     listOf(
                         PieChartViewWrapper.PieSliceData(

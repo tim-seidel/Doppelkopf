@@ -13,6 +13,7 @@ import de.timseidel.doppelkopf.ui.statistic.views.ScatterChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.SimpleTextStatisticViewWrapper
 import de.timseidel.doppelkopf.util.RangeDistribution
 import kotlin.math.abs
+import kotlin.math.round
 
 class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatisticViewsProvider {
 
@@ -149,6 +150,12 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
                 soloGamesAsContra += 1
         }
 
+        val percentReGames =
+            if (stats.general.total.games > 0) round(stats.re.total.games / stats.general.total.games.toFloat() * 100).toInt() else 0
+
+        val percentWins =
+            if (stats.general.total.games > 0) round(stats.general.wins.games / stats.general.total.games.toFloat() * 100).toInt() else 0
+
         return listOf(
             SimpleTextStatisticViewWrapper(
                 "Statistik von ${stats.member.name}",
@@ -163,7 +170,7 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
             PieChartViewWrapper(
                 PieChartViewWrapper.PieChartData(
                     "Siege und Niederlagen",
-                    "Siege: ${stats.general.wins.games}, Niederlagen: ${stats.general.loss.games}",
+                    "Siege: ${stats.general.wins.games} ($percentWins%), Niederlagen: ${stats.general.loss.games}",
                     "Spiele",
                     listOf(
                         PieChartViewWrapper.PieSliceData(
@@ -192,7 +199,7 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
             PieChartViewWrapper(
                 PieChartViewWrapper.PieChartData(
                     "Parteistatistik",
-                    "Spiele Re: ${stats.re.total.games}, Spiele Contra: ${stats.contra.total.games}",
+                    "Spiele Re: ${stats.re.total.games} ($percentReGames%), Spiele Contra: ${stats.contra.total.games}",
                     "Spiele",
                     listOf(
                         PieChartViewWrapper.PieSliceData(

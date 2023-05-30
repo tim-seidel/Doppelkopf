@@ -8,6 +8,7 @@ import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.LineChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.PieChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.SimpleTextStatisticViewWrapper
+import kotlin.math.round
 
 class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatistics) :
     IStatisticViewsProvider {
@@ -128,6 +129,9 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
                 tackenDistributionBockContra.values()
             }
 
+        val percentReWin =
+            if (sessionStatistics.general.total.games > 0) round(sessionStatistics.re.wins.games / sessionStatistics.general.total.games.toFloat() * 100).toInt() else 0
+
         return listOf(
             SimpleTextStatisticViewWrapper(
                 "Allgemeine Statistik",
@@ -138,7 +142,7 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
                 PieChartViewWrapper.PieChartData
                     (
                     "Re oder Contra?",
-                    "Verteilung der Siege von Re und Contra",
+                    "Verteilung der Siege von Re ($percentReWin%) und Contra",
                     "Spiele",
                     listOf(
                         PieChartViewWrapper.PieSliceData(

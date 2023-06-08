@@ -183,8 +183,12 @@ class SessionCreationActivity() : AppCompatActivity() {
             memberSelectAdapter.notifyDataSetChanged()
 
             sessionCreated()
-        } catch (e: DoppelkopfException) {
-            Logging.e("Session konnte nicht erstellt werden: $viewModel", e)
+        } catch (e: Exception) {
+            Logging.e(
+                "SessionCreationActivity",
+                "Session konnte nicht erstellt werden: $viewModel",
+                e
+            )
             showSessionCreateError("Der Doppelkopfabend kann nicht erstellt werden: $e")
         }
     }

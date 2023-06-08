@@ -6,10 +6,15 @@ class GroupCreationViewModel {
     var memberNames = mutableListOf("")
 
     fun isValid(): Boolean {
-        return groupName.length >= 3
+        if (groupName.length < 3) {
+            return false
+        }
+
+        val names = getFilteredMemberNames()
+        return names.distinct().count() == names.count()
     }
 
     fun getFilteredMemberNames(): List<String> {
-        return memberNames.filter { name -> name.trim().isNotEmpty() }
+        return memberNames.filter { name -> name.trim().isNotEmpty() }.map { name -> name.trim() }
     }
 }

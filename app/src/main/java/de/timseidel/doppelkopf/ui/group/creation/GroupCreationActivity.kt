@@ -16,6 +16,7 @@ import de.timseidel.doppelkopf.ui.EditTextListener
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.group.GroupActivity
 import de.timseidel.doppelkopf.ui.util.Converter
+import de.timseidel.doppelkopf.util.Logging
 
 class GroupCreationActivity : AppCompatActivity() {
 
@@ -86,23 +87,33 @@ class GroupCreationActivity : AppCompatActivity() {
             showGroupCreationError(getString(R.string.create_group_unable_to_create))
         }
 
-        val groupCtrl = DoppelkopfManager.getInstance().getGroupController()
-        val group = groupCtrl.createGroup(groupCreationViewModel.groupName)
-        groupCtrl.set(group)
+        try {
+            val groupCtrl = DoppelkopfManager.getInstance().getGroupController()
+            val group = groupCtrl.createGroup(groupCreationViewModel.groupName)
+            groupCtrl.set(group)
 
-        val db = Firebase.firestore
-        val firebase = DoppelkopfDatabase()
-        firebase.setFirestore(db)
-        firebase.storeGroup(group)
+            val db = Firebase.firestore
+            val firebase = DoppelkopfDatabase()
+            firebase.setFirestore(db)
+            firebase.storeGroup(group)
 
-        val memberNames = groupCreationViewModel.getFilteredMemberNames()
-        if (memberNames.isNotEmpty()) {
-            val members = groupCtrl.getMemberController().createMembers(memberNames)
-            groupCtrl.getMemberController().addMembers(members)
-            firebase.storeMembers(members, group)
+            val memberNames = groupCreationViewModel.getFilteredMemberNames()
+            if (memberNames.isNotEmpty()) {
+                val members = groupCtrl.getMemberController().createMembers(memberNames)
+                groupCtrl.getMemberController().addMembers(members)
+                firebase.storeMembers(members, group)
+            }
+
+            finishGroupCreation()
+        } catch (e: Exception) {
+            Logging.e(
+                "GroupCreationActivity",
+                "Error while creating group: $groupCreationViewModel",
+                e
+            )
+            showGroupCreationError(getString(R.string.create_group_unable_to_create))
         }
 
-        finishGroupCreation()
     }
 
     private fun finishGroupCreation() {

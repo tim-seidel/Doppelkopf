@@ -38,7 +38,7 @@
     <string name="option_confirm_create_session">Erstellen</string>
     <string name="option_confirm_create_game">Erstellen</string>
     <string name="create_session_unable_to_create">Doppelkopfabend kann nicht erstellt werden. Stell sicher, dass es mindestens 4 Spieler*innen und einen Namen gibt.</string>
-    <string name="create_group_unable_to_create">Die Doppelkopfgruppe kann nicht erstellt werden. Stell sicher, dass du einen Namen eingegeben hast.</string>
+    <string name="create_group_unable_to_create">Die Doppelkopfgruppe kann nicht erstellt werden. Stell sicher, dass keine Namen doppelt sind und du einen Titel hast.</string>
     <string name="tacken">Tacken</string>
     <string name="desc_history_item_player_faction_icon">Faction of the player in this game</string>
     <string name="loading_finished">Fertig</string>

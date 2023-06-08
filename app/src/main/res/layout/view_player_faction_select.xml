@@ -23,8 +23,8 @@
 
     <ImageButton
         android:id="@+id/btn_faction_re"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/faction_select_re_desc"
         android:scaleType="centerCrop"
@@ -35,8 +35,8 @@
 
     <ImageButton
         android:id="@+id/btn_faction_contra"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/faction_select_contra_desc"
         android:scaleType="centerCrop"

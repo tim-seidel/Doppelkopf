@@ -107,6 +107,10 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
         val winrateNoBockrunde =
             if (gamesNoBockrunde > 0) ((winsNoBockrunde / (gamesNoBockrunde * 1f)) * 100).toInt() else 0
 
+        val gameResultsWithoutBock =
+            StatisticUtil.getAccumulatedTackenHistoryWithoutBock(stats.gameResultHistory)
+        val currentTackenWithoutBock =
+            if (gameResultsWithoutBock.isNotEmpty()) gameResultsWithoutBock.last() else 0
 
         stats.partners.values.forEach { p ->
             partnerNames.add(p.player.name)
@@ -225,11 +229,11 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                 LineChartViewWrapper.LineChartData(
                     "Tackenverlauf", "Tacken", listOf(
                         LineChartViewWrapper.ChartLineData(
-                            "Mit Bockrunden",
+                            "Mit Bockrunden (${stats.general.total.tacken})",
                             StatisticUtil.getAccumulatedTackenHistory(stats.gameResultHistory)
                         ),
                         LineChartViewWrapper.ChartLineData(
-                            "Ohne Bockrunden",
+                            "Ohne Bockrunden($currentTackenWithoutBock)",
                             StatisticUtil.getAccumulatedTackenHistoryWithoutBock(stats.gameResultHistory)
                         )
                     ),

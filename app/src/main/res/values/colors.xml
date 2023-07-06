@@ -15,6 +15,8 @@
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gray_200">#FFF8F8F8</color>
+    <color name="gray_300">#FFE8E8E8</color>
     <color name="gray_400">#FFBDBDBD</color>
     <color name="gray_600">#FF757575</color>
     <color name="error">#d62828</color>

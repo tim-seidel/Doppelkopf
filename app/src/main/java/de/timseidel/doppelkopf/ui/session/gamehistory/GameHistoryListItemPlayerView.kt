@@ -1,6 +1,7 @@
 package de.timseidel.doppelkopf.ui.session.gamehistory
 
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
@@ -15,6 +16,7 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
 
     private lateinit var tvPlayerTacken: TextView
     private lateinit var ivPlayerFaction: ImageView
+    private lateinit var clRoot: ConstraintLayout
 
     init {
         init(attrs)
@@ -30,6 +32,7 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
     private fun findViews() {
         tvPlayerTacken = findViewById(R.id.tv_ghli_player_tacken)
         ivPlayerFaction = findViewById(R.id.iv_ghli_player_faction)
+        clRoot = findViewById(R.id.root_game_history_list_item_player)
     }
 
     private fun applyAttributes(attrs: AttributeSet?) {
@@ -47,7 +50,7 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
         tvPlayerTacken.text = tacken.toString()
     }
 
-    fun setPlayerFaction(faction: Faction, isWinner: Boolean) {
+    fun setPlayerResult(faction: Faction, isWinner: Boolean, isSolo: Boolean) {
         when (faction) {
             Faction.RE -> {
                 ivPlayerFaction.setImageResource(R.drawable.ic_card_clubs_24)
@@ -76,12 +79,16 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
                 ivPlayerFaction.setColorFilter(ContextCompat.getColor(context, R.color.gray_400))
                 tvPlayerTacken.visibility = INVISIBLE
                 tvPlayerTacken.text = "0"
+                tvPlayerTacken.setTextColor(ContextCompat.getColor(context, R.color.black))
             }
         }
-    }
 
-    fun setSolo(isSolist: Boolean) {
-        background =
-            if (isSolist) ContextCompat.getDrawable(context, R.drawable.border_background) else null
+        clRoot.backgroundTintList =
+            ContextCompat.getColorStateList(
+                context,
+                if (isWinner && isSolo) R.color.gray_400
+                else if (isWinner) R.color.gray_300
+                else R.color.gray_200
+            )
     }
 }

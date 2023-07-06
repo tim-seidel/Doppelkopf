@@ -78,15 +78,9 @@ class GameHistoryFragment : Fragment() {
         val listView = binding.rvGameHistoryList
         listView.layoutManager = LinearLayoutManager(context)
         listView.addItemDecoration(
-            DividerItemDecoration(
-                listView.context,
-                LinearLayoutManager.VERTICAL
-            )
-        )
-        listView.addItemDecoration(
             RecyclerViewMarginDecoration(
                 0,
-                Converter.convertDpToPixels(12f, listView.context)
+                Converter.convertDpToPixels(1f, listView.context)
             )
         )
     }

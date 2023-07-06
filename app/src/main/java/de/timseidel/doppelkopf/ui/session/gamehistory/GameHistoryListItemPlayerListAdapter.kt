@@ -17,8 +17,7 @@ class GameHistoryListItemPlayerListAdapter(
             val faction = playerResult.faction
 
             playerView.setPlayerTacken(playerResult.tacken)
-            playerView.setPlayerFaction(faction, playerResult.isWinner)
-            playerView.setSolo(playerResult.gameType == GameType.SOLO && faction == Faction.RE)
+            playerView.setPlayerResult(faction, playerResult.isWinner, playerResult.gameType == GameType.SOLO && faction == Faction.RE)
         }
     }
 

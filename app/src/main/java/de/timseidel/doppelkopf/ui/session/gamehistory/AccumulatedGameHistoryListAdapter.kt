@@ -13,13 +13,7 @@ class AccumulatedGameHistoryListAdapter(
         fun bind(number: Int, playerResults: List<GameResult>) {
             gameView.setGameNumber(number)
             gameView.setPlayerResults(playerResults)
-            gameView.setBockStatus(
-                if (playerResults.isNotEmpty()) {
-                    playerResults.first().isBockrunde
-                } else {
-                    false
-                }
-            )
+            gameView.setBockStatus(playerResults.isNotEmpty() && playerResults.first().isBockrunde)
         }
     }
 

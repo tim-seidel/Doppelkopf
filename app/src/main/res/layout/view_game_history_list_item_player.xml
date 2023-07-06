@@ -2,35 +2,36 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/game_history_list_item_player_root"
+    android:id="@+id/root_game_history_list_item_player"
     android:layout_width="match_parent"
-    android:layout_height="36dp"
+    android:layout_height="48dp"
     android:layout_gravity="center_vertical"
+    android:background="#f8f8f8"
     android:paddingStart="2dp">
-
-    <ImageView
-        android:id="@+id/iv_ghli_player_faction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/desc_history_item_player_faction_icon"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_card_clubs_24" />
 
     <TextView
         android:id="@+id/tv_ghli_player_tacken"
-        android:layout_width="0dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="2dp"
-        android:autoSizeTextType="uniform"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
         android:gravity="center_vertical"
+        android:paddingStart="2dp"
         android:textColor="@color/neural_dark"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_ghli_player_faction"
+        app:layout_constraintEnd_toStartOf="@id/iv_ghli_player_faction"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="-4" />
 
+    <ImageView
+        android:id="@+id/iv_ghli_player_faction"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:contentDescription="@string/desc_history_item_player_faction_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_ghli_player_tacken"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_ghli_player_tacken"
+        app:srcCompat="@drawable/ic_card_clubs_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -61,7 +61,7 @@ class SessionHistoryListItemView constructor(context: Context, attrs: AttributeS
         rvPlayers.addItemDecoration(RecyclerViewMarginDecoration(dp4, dp4))
     }
 
-    fun setOpenSessionClickListener(l: View.OnClickListener) {
+    fun setOpenSessionClickListener(l: OnClickListener) {
         ibOpenSession.setOnClickListener(l)
     }
 

@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginEnd
 import androidx.core.view.setMargins
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R

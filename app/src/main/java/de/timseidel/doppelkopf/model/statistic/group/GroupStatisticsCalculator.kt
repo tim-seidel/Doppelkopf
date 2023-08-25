@@ -106,7 +106,7 @@ class GroupStatisticsCalculator {
         addStatisticEntry(memberStatistic.contra, playerStatistic.contra)
         addStatisticEntry(memberStatistic.solo, playerStatistic.solo)
 
-        playerStatistic.partners.forEach() { partner ->
+        playerStatistic.partners.forEach { partner ->
             val partnerPlayerStat = partner.value
             val partnerMemberStat = memberStatistic.partners[partner.value.player.name]
 
@@ -117,7 +117,7 @@ class GroupStatisticsCalculator {
             }
         }
 
-        playerStatistic.opponents.forEach() { opponent ->
+        playerStatistic.opponents.forEach { opponent ->
             val opponentPlayerStat = opponent.value
             val opponentMemberStat = memberStatistic.opponents[opponent.value.player.name]
 

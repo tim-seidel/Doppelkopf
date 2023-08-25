@@ -1,7 +1,6 @@
 package de.timseidel.doppelkopf.ui.session.gamehistory
 
 import android.content.Context
-import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
@@ -64,7 +63,7 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
             }
 
             Faction.CONTRA -> {
-                ivPlayerFaction.setImageResource(R.drawable.ic_cards_diamond_24)
+                ivPlayerFaction.setImageResource(R.drawable.ic_card_diamonds_24)
                 ivPlayerFaction.setColorFilter(
                     ContextCompat.getColor(
                         context,

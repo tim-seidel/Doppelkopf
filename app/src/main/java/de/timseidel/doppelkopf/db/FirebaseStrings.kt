@@ -2,11 +2,11 @@ package de.timseidel.doppelkopf.db
 
 class FirebaseStrings {
     companion object {
-        val collectionUsers = "users"
-        val collectionGroups = "groups"
-        val collectionMembers = "members"
-        val collectionSessions = "sessions"
-        val collectionGames = "games"
-        val collectionPlayers = "players"
+        const val collectionUsers = "users"
+        const val collectionGroups = "groups"
+        const val collectionMembers = "members"
+        const val collectionSessions = "sessions"
+        const val collectionGames = "games"
+        const val collectionPlayers = "players"
     }
 }

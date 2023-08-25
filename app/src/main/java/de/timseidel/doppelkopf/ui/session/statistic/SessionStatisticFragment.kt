@@ -17,7 +17,6 @@ import de.timseidel.doppelkopf.ui.statistic.provider.IStatisticViewsProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.PlayerStatisticViewsProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.SessionStatisticViewsProvider
 import de.timseidel.doppelkopf.util.DokoShortAccess
-import de.timseidel.doppelkopf.util.Logging
 import java.lang.Integer.max
 import java.lang.Integer.min
 

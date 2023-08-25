@@ -67,7 +67,7 @@ data class GameDto(
     constructor() : this("", 0, Faction.NONE, 0, 0, false, GameType.NORMAL, emptyList())
 }
 
-class FirebaseDTO() {
+class FirebaseDTO {
     companion object {
         fun fromGroupToGroupDTO(group: Group): GroupDto {
             return GroupDto(

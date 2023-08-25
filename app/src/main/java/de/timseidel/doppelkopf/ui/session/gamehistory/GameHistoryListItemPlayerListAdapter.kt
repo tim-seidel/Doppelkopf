@@ -11,7 +11,7 @@ class GameHistoryListItemPlayerListAdapter(
 ) :
     RecyclerView.Adapter<GameHistoryListItemPlayerListAdapter.ViewHolder>() {
 
-    class ViewHolder(val playerView: GameHistoryListItemPlayerView) :
+    class ViewHolder(private val playerView: GameHistoryListItemPlayerView) :
         RecyclerView.ViewHolder(playerView) {
         fun bind(playerResult: GameResult) {
             val faction = playerResult.faction

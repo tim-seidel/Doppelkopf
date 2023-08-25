@@ -16,7 +16,7 @@ class GameCreationViewModel {
             return false
         }
 
-        var reCount = 0;
+        var reCount = 0
         var contraCount = 0
         playerFactionList.forEach { pf ->
             when (pf.faction) {

@@ -8,7 +8,6 @@ import de.timseidel.doppelkopf.db.MemberDto
 import de.timseidel.doppelkopf.db.request.base.BaseReadRequest
 import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Member
-import de.timseidel.doppelkopf.util.Logging
 
 class GroupMemberRequest(private val groupId: String) : BaseReadRequest<List<Member>>() {
 

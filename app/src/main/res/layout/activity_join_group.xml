@@ -51,7 +51,8 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_join_group"
         app:layout_constraintEnd_toEndOf="@+id/tv_enter_code"
-        app:layout_constraintStart_toStartOf="@+id/tv_enter_code" />
+        app:layout_constraintStart_toStartOf="@+id/tv_enter_code"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/btn_join_group"

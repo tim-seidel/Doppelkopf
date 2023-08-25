@@ -99,7 +99,7 @@
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:text="@string/faction_contra"
-                    app:icon="@drawable/ic_cards_diamond_24"
+                    app:icon="@drawable/ic_card_diamonds_24"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/btn_winner_re"
                     app:layout_constraintTop_toTopOf="parent" />

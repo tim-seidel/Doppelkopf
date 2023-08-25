@@ -24,10 +24,9 @@ import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.session.SessionActivity
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
-import de.timseidel.doppelkopf.util.DoppelkopfException
 import de.timseidel.doppelkopf.util.Logging
 
-class SessionCreationActivity() : AppCompatActivity() {
+class SessionCreationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySessionCreationBinding
 

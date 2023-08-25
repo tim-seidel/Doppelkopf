@@ -64,23 +64,13 @@ class RankingFragment : Fragment() {
             override fun onMenuItemSelected(item: MenuItem): Boolean {
                 if (item.itemId == R.id.menu_item_reset_group_statistics) {
                     DokoShortAccess.getStatsCtrl().reset()
-                    showSwitchTabsToSeeChangesDialog()
+                    setupStatistics()
 
                     return true
                 }
                 return false
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-    }
-
-    private fun showSwitchTabsToSeeChangesDialog() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(getString(R.string.dialog_refresh_statistics_title))
-        builder.setMessage(getString(R.string.dialog_refresh_statistics_changes_tabs_to_apply))
-        builder.setPositiveButton(getString(R.string.okay)) { dialog, _ ->
-            dialog.dismiss()
-        }
-        builder.show()
     }
 
     private fun setupRankingTitle() {

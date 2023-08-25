@@ -72,6 +72,8 @@ class GroupActivity : AppCompatActivity() {
     }
 
     private fun resetActivities() {
+        DokoShortAccess.getStatsCtrl().reset()
+
         val intent = Intent(this, JoinGroupActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)

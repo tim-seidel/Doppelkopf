@@ -33,6 +33,20 @@
         android:paddingHorizontal="4dp"
         android:text="@string/enter_group_code"
         android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_enter_group_code_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_enter_group_code_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:text="@string/group_code_access_info"
+        android:textAlignment="center"
+        android:textColor="@color/neural"
+        android:textSize="12sp"
+        android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@+id/et_group_code"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

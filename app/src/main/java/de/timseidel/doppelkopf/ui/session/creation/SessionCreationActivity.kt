@@ -194,8 +194,8 @@ class SessionCreationActivity : AppCompatActivity() {
 
     private fun sessionCreated() {
         val intent = Intent(this, SessionActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
+        finish()
     }
 
     private fun showSessionCreateError(msg: String) {

@@ -27,19 +27,22 @@ class SessionHistoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentSessionHistoryBinding.inflate(inflater, container, false)
 
         setupCreateSessionButton()
-        setSessionHistoryList(
-            DokoShortAccess.getSessionInfoCtrl().getSessionInfos().sortedByDescending { it.date }
-        )
+        setupSessionHistory()
 
         return binding.root
     }
 
-    private fun setSessionHistoryList(sessions: List<Session>) {
-        sessionHistoryListAdapter = SessionHistoryListAdapter(sessions, object :
+    override fun onResume() {
+        super.onResume()
+        updateSessionHistory()
+    }
+
+
+    private fun setupSessionHistory() {
+        sessionHistoryListAdapter = SessionHistoryListAdapter(mutableListOf(), object :
             SessionHistoryListAdapter.OnSessionClickListener {
             override fun onOpenSessionClicked(session: Session) {
                 redirectToSessionLoadingActivity(session.id)
@@ -54,6 +57,13 @@ class SessionHistoryFragment : Fragment() {
                 Converter.convertDpToPixels(8f, listView.context),
                 Converter.convertDpToPixels(4f, listView.context)
             )
+        )
+    }
+
+    private fun updateSessionHistory() {
+        sessionHistoryListAdapter.setSessionInfos(
+            DokoShortAccess.getSessionInfoCtrl().getSessionInfos()
+                .sortedByDescending { it.date }
         )
     }
 

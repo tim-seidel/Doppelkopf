@@ -7,10 +7,11 @@ import de.timseidel.doppelkopf.db.request.SessionPlayerRequest
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.util.DokoShortAccess
+import de.timseidel.doppelkopf.util.Logging
 import java.time.format.DateTimeFormatter
 
 class SessionHistoryListAdapter(
-    private val sessionInfo: List<Session>,
+    private val sessionInfo: MutableList<Session>,
     var sessionOpenListener: OnSessionClickListener? = null
 ) : RecyclerView.Adapter<SessionHistoryListAdapter.ViewHolder>() {
 
@@ -60,6 +61,12 @@ class SessionHistoryListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val session = sessionInfo[position]
         holder.bind(session, sessionOpenListener)
+    }
+
+    fun setSessionInfos(sessionInfos: List<Session>) {
+        sessionInfo.clear()
+        sessionInfo.addAll(sessionInfos)
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {

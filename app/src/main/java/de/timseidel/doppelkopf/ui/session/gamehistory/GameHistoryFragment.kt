@@ -65,6 +65,13 @@ class GameHistoryFragment : Fragment() {
                 return false
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+        setupToolbar()
+    }
+
+    private fun setupToolbar() {
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
     private fun setupPlayerHeader() {

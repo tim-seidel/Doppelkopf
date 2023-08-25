@@ -60,10 +60,9 @@ class GameCreationFragment : Fragment() {
             DoppelkopfManager.getInstance().getSessionController().getPlayerController()
                 .getPlayersAsFaction()
 
-        (activity as AppCompatActivity).supportActionBar?.title =
-            DokoShortAccess.getSessionCtrl().getSession().name
 
         findViews()
+        setupToolbar()
         setUpPlayerFactionSelectList()
         setupButtons()
         setupPointsInput()
@@ -85,6 +84,14 @@ class GameCreationFragment : Fragment() {
         vbVersusBarScore = binding.versusBarPoints
         cbIsBockrunde = binding.cbIsBockrunde
         btnSaveGame = binding.btnSaveGame
+    }
+
+    private fun setupToolbar(){
+        (activity as AppCompatActivity).supportActionBar?.title =
+            DokoShortAccess.getSessionCtrl().getSession().name
+
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
     private fun setupButtons() {

@@ -37,13 +37,19 @@ class SessionStatisticFragment : Fragment() {
 
         _binding = FragmentSessionStatisticBinding.inflate(inflater, container, false)
 
-        (activity as AppCompatActivity).supportActionBar?.title =
-            DokoShortAccess.getSessionCtrl().getSession().name
-
+        setupToolbar()
         setupStatistics()
         setupPlayerSelect()
 
         return binding.root
+    }
+
+    private fun setupToolbar(){
+        (activity as AppCompatActivity).supportActionBar?.title =
+            DokoShortAccess.getSessionCtrl().getSession().name
+
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
     private fun setupStatistics() {

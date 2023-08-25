@@ -20,19 +20,40 @@ import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.databinding.ActivitySessionBinding
 import de.timseidel.doppelkopf.export.CSVGameHistoryExporter
 import de.timseidel.doppelkopf.util.DokoShortAccess
+import de.timseidel.doppelkopf.util.Logging
 
 class SessionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySessionBinding
 
+    /**
+     * Due to Android specific things, setupToolbar needs to be called after setupBottomNavigation for the back button to work.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivitySessionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupToolbarMenu()
+        //First
         setupBottomNavigation()
+        //Second
+        setupToolbar()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupToolbar() {
+        supportActionBar?.title = DokoShortAccess.getSessionCtrl().getSession().name
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        setupToolbarMenu()
     }
 
     private fun setupToolbarMenu() {

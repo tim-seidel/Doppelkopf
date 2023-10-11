@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,9 +21,7 @@ import de.timseidel.doppelkopf.databinding.FragmentGameCreationBinding
 import de.timseidel.doppelkopf.db.DoppelkopfDatabase
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameType
-import de.timseidel.doppelkopf.ui.EditTextListener
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
-import de.timseidel.doppelkopf.ui.VersusBarView
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.GameUtil
@@ -41,8 +38,6 @@ class GameCreationFragment : Fragment() {
     private lateinit var ibIncreaseTacken: ImageButton
     private lateinit var btnWinningFactionRe: Button
     private lateinit var btnWinningFactionContra: Button
-    private lateinit var etGameScore: EditText
-    private lateinit var vbVersusBarScore: VersusBarView
     private lateinit var cbIsBockrunde: CheckBox
     private lateinit var btnSaveGame: Button
 
@@ -65,7 +60,6 @@ class GameCreationFragment : Fragment() {
         setupToolbar()
         setUpPlayerFactionSelectList()
         setupButtons()
-        setupPointsInput()
         setupBockrundeInput()
 
         checkSaveGameButtonEnabled()
@@ -80,8 +74,6 @@ class GameCreationFragment : Fragment() {
         ibIncreaseTacken = tcTackenCounter.findViewById(R.id.ib_increase_tacken)
         btnWinningFactionRe = binding.btnWinnerRe
         btnWinningFactionContra = binding.btnWinnerContra
-        etGameScore = binding.etGamePoints
-        vbVersusBarScore = binding.versusBarPoints
         cbIsBockrunde = binding.cbIsBockrunde
         btnSaveGame = binding.btnSaveGame
     }
@@ -116,21 +108,6 @@ class GameCreationFragment : Fragment() {
         btnSaveGame.setOnClickListener {
             onCreateGameClicked()
         }
-    }
-
-    private fun setupPointsInput() {
-        etGameScore.addTextChangedListener(object : EditTextListener() {
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val input = s.toString()
-                try {
-                    viewModel.gameScore = input.toInt()
-                } catch (_: Exception) {
-                    viewModel.gameScore = 0
-                }
-
-                applyGameScore()
-            }
-        })
     }
 
     private fun setupBockrundeInput() {
@@ -168,7 +145,6 @@ class GameCreationFragment : Fragment() {
     private fun applyViewModel() {
         applyWinningFaction()
         applyTacken()
-        applyGameScore()
         applyIsBockrunde()
     }
 
@@ -203,13 +179,6 @@ class GameCreationFragment : Fragment() {
         btn.background.setTint(ContextCompat.getColor(btn.context, colorResId))
     }
 
-    private fun applyGameScore() {
-        vbVersusBarScore.setProgress(viewModel.gameScore)
-        vbVersusBarScore.setLeftText(viewModel.gameScore.toString())
-        vbVersusBarScore.setRightText((240 - viewModel.gameScore).toString())
-        checkSaveGameButtonEnabled()
-    }
-
     private fun checkSaveGameButtonEnabled() {
         val isValid = viewModel.checkIsValid()
 
@@ -232,7 +201,7 @@ class GameCreationFragment : Fragment() {
                 .createGame(
                     viewModel.playerFactionList.map { it.copy() },
                     viewModel.winningFaction,
-                    viewModel.gameScore,
+                    0,
                     viewModel.tackenCount,
                     viewModel.isBockrunde,
                     if (GameUtil.isFactionCompositionSolo(viewModel.playerFactionList)) GameType.SOLO else GameType.NORMAL

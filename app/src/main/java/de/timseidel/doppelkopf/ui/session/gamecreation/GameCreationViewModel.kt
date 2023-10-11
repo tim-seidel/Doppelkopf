@@ -8,7 +8,6 @@ class GameCreationViewModel {
     var playerFactionList: List<PlayerAndFaction> = mutableListOf()
     var winningFaction: Faction = Faction.NONE
     var tackenCount: Int = 0
-    var gameScore: Int = 0
     var isBockrunde: Boolean = false
 
     fun checkIsFactionAssignmentValid(): Boolean {
@@ -37,16 +36,12 @@ class GameCreationViewModel {
         if (winningFaction == Faction.NONE) {
             return false
         }
-        if (gameScore < 0 || gameScore > 240) {
-            return false
-        }
         return checkIsFactionAssignmentValid()
     }
 
     fun reset() {
         winningFaction = Faction.NONE
         tackenCount = 0
-        gameScore = 0
         isBockrunde = false
 
         playerFactionList.forEach { paf ->
@@ -55,7 +50,7 @@ class GameCreationViewModel {
     }
 
     override fun toString(): String {
-        return "${winningFaction.name} | $tackenCount | $gameScore | $playerFactionList | $isBockrunde"
+        return "${winningFaction.name} | $tackenCount | $playerFactionList | $isBockrunde"
     }
 
 }

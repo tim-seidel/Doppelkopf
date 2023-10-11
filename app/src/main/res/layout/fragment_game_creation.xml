@@ -118,43 +118,6 @@
 
             </de.timseidel.doppelkopf.ui.session.gamecreation.TackenCounterView>
 
-            <EditText
-                android:id="@+id/et_game_points"
-                style="@style/Widget.AppCompat.EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/border_background"
-                android:ems="10"
-                android:gravity="center_horizontal|center_vertical"
-                android:hint="@string/points_winner"
-                android:importantForAutofill="no"
-                android:inputType="numberDecimal"
-                android:maxLength="3"
-                android:minHeight="48dp"
-                android:paddingVertical="8dp"
-                android:selectAllOnFocus="true"
-                android:singleLine="true"
-                android:textSize="22sp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_tacken_counter" />
-
-            <de.timseidel.doppelkopf.ui.VersusBarView
-                android:id="@+id/versus_bar_points"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="8dp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_game_points"
-                app:max="240"
-                app:min="0" />
-
             <CheckBox
                 android:id="@+id/cb_is_bockrunde"
                 android:layout_width="match_parent"

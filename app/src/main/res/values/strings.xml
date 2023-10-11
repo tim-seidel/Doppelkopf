@@ -70,4 +70,5 @@
     <string name="group_member_creation_short_name_advice">Kurze Namen oder Spitznamen werden empfohlen, damit die Statistiken besser aussehen.</string>
     <string name="default_tacken_input_score">00</string>
     <string name="group_code_access_info">Den Gruppencode kann in der Gruppenübersicht oder einem Doppelkopfabend über das 3-Punkte-Menü angezeigt werden.</string>
+    <string name="session_history_open_session">Doppelkopfabend aufrufen</string>
 </resources>

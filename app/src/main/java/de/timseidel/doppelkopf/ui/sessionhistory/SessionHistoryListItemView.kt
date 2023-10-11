@@ -22,6 +22,7 @@ class SessionHistoryListItemView constructor(context: Context, attrs: AttributeS
     private lateinit var rvPlayers: RecyclerView
     private lateinit var ibOpenSession: ImageButton
     private lateinit var playerListAdapter: SessionHistoryListItemPlayerListAdapter
+    private var sessionOpenListener: OnClickListener? = null
 
     init {
         init(attrs)
@@ -33,6 +34,8 @@ class SessionHistoryListItemView constructor(context: Context, attrs: AttributeS
         findViews()
         parseAttributes(attrs)
         setupRecyclerView()
+
+        setOnClickListener { sessionOpenListener?.onClick(this) }
     }
 
     private fun findViews() {
@@ -61,8 +64,9 @@ class SessionHistoryListItemView constructor(context: Context, attrs: AttributeS
         rvPlayers.addItemDecoration(RecyclerViewMarginDecoration(dp4, dp4))
     }
 
-    fun setOpenSessionClickListener(l: OnClickListener) {
-        ibOpenSession.setOnClickListener(l)
+    fun setOpenSessionClickListener(listener: OnClickListener) {
+        sessionOpenListener = listener
+        ibOpenSession.setOnClickListener(listener)
     }
 
     fun setPlayers(players: List<Player>) {

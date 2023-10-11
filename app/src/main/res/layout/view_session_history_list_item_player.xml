@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:tint="@color/primary_dark"
-        android:contentDescription="Player icon"
+        android:contentDescription="@string/player"
         app:srcCompat="@drawable/ic_baseline_person_outline_24" />
 
     <TextView

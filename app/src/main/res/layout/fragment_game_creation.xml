@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/sv_game_creation_wrapper"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_save_game"
@@ -14,125 +14,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <de.timseidel.doppelkopf.ui.GameConfigurationView
+            android:id="@+id/gcv_create_game_configuration"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"/>
 
-            <TextView
-                android:id="@+id/tv_game_creation_title_player"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/border_background"
-                android:backgroundTint="@color/neural_dark"
-                android:paddingVertical="4dp"
-                android:text="@string/game_creation_player_assignment"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_game_creation_player_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginTop="4dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_game_creation_title_player" />
-
-            <TextView
-                android:id="@+id/tv_game_creation_title_result"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="28dp"
-                android:background="@drawable/border_background"
-                android:backgroundTint="@color/neural_dark"
-                android:paddingVertical="4dp"
-                android:text="@string/game_result"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_game_creation_player_list" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_winning_faction_select"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_game_creation_title_result">
-
-                <Button
-                    android:id="@+id/btn_winner_re"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:backgroundTint="@color/primary_light"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:text="@string/faction_re"
-                    app:icon="@drawable/ic_card_clubs_24"
-                    app:layout_constraintEnd_toStartOf="@id/btn_winner_contra"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/btn_winner_contra"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:backgroundTint="@color/secondary_light"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:text="@string/faction_contra"
-                    app:icon="@drawable/ic_card_diamonds_24"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/btn_winner_re"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <de.timseidel.doppelkopf.ui.session.gamecreation.TackenCounterView
-                android:id="@+id/layout_tacken_counter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/border_background"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cl_winning_faction_select">
-
-            </de.timseidel.doppelkopf.ui.session.gamecreation.TackenCounterView>
-
-            <CheckBox
-                android:id="@+id/cb_is_bockrunde"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/border_background"
-                android:buttonTint="@color/neural"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="@string/check_is_bockrunde"
-                android:textColor="@color/neural_dark"
-                android:textSize="20sp" />
-
-        </LinearLayout>
     </ScrollView>
 
     <Button

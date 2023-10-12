@@ -6,16 +6,17 @@ import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Faction
+import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.PlayerAndFaction
 
 class PlayerFactionSelectAdapter(
     private val players: List<PlayerAndFaction>,
-    private val listener: PlayerFactionClickListener
+    var listener: PlayerFactionClickListener? = null
 ) :
     RecyclerView.Adapter<PlayerFactionSelectAdapter.ViewHolder>() {
 
     interface PlayerFactionClickListener {
-        fun onFactionClicked(position: Int, selectedFaction: Faction): Faction
+        fun onFactionUpdate(player: Player, newFaction: Faction)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -49,14 +50,24 @@ class PlayerFactionSelectAdapter(
             holder.playerFactionSelectView.findViewById(R.id.btn_faction_contra)
 
         btnRe.setOnClickListener {
-            val result = listener.onFactionClicked(position, Faction.RE)
-            players[position].faction = result
-            holder.setFaction(result)
+            val newFaction = getNewFaction(players[position].faction, Faction.RE)
+            listener?.onFactionUpdate(players[position].player, Faction.RE)
+            players[position].faction = newFaction
+            holder.setFaction(newFaction)
         }
         btnContra.setOnClickListener {
-            val result = listener.onFactionClicked(position, Faction.CONTRA)
-            players[position].faction = result
-            holder.setFaction(result)
+            val newFaction = getNewFaction(players[position].faction, Faction.CONTRA)
+            listener?.onFactionUpdate(players[position].player, Faction.CONTRA)
+            players[position].faction = newFaction
+            holder.setFaction(newFaction)
+        }
+    }
+
+    private fun getNewFaction(currentFaction: Faction, selectedFaction: Faction): Faction{
+        return when(selectedFaction) {
+            Faction.RE -> if (currentFaction != Faction.RE) Faction.RE else Faction.NONE
+            Faction.CONTRA -> if (currentFaction != Faction.CONTRA) Faction.CONTRA else Faction.NONE
+            Faction.NONE -> selectedFaction
         }
     }
 

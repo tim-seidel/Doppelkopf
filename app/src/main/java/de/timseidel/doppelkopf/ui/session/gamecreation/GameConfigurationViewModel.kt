@@ -3,14 +3,14 @@ package de.timseidel.doppelkopf.ui.session.gamecreation
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.PlayerAndFaction
 
-class GameCreationViewModel {
+class GameConfiguration {
 
     var playerFactionList: List<PlayerAndFaction> = mutableListOf()
     var winningFaction: Faction = Faction.NONE
     var tackenCount: Int = 0
     var isBockrunde: Boolean = false
 
-    fun checkIsFactionAssignmentValid(): Boolean {
+    fun isFactionAssignmentValid(): Boolean {
         if (playerFactionList.count() < 4) {
             return false
         }
@@ -32,11 +32,11 @@ class GameCreationViewModel {
         return false
     }
 
-    fun checkIsValid(): Boolean {
+    fun isValid(): Boolean {
         if (winningFaction == Faction.NONE) {
             return false
         }
-        return checkIsFactionAssignmentValid()
+        return isFactionAssignmentValid()
     }
 
     fun reset() {

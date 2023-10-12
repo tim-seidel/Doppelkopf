@@ -5,14 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.CheckBox
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import de.timseidel.doppelkopf.R
@@ -21,8 +17,8 @@ import de.timseidel.doppelkopf.databinding.FragmentGameCreationBinding
 import de.timseidel.doppelkopf.db.DoppelkopfDatabase
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameType
-import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
-import de.timseidel.doppelkopf.ui.util.Converter
+import de.timseidel.doppelkopf.model.Player
+import de.timseidel.doppelkopf.ui.GameConfigurationView
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.GameUtil
 import de.timseidel.doppelkopf.util.Logging
@@ -32,17 +28,10 @@ class GameCreationFragment : Fragment() {
     private var _binding: FragmentGameCreationBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var rvPlayerFactionSelect: RecyclerView
-    private lateinit var tcTackenCounter: TackenCounterView
-    private lateinit var ibDecreaseTacken: ImageButton
-    private lateinit var ibIncreaseTacken: ImageButton
-    private lateinit var btnWinningFactionRe: Button
-    private lateinit var btnWinningFactionContra: Button
-    private lateinit var cbIsBockrunde: CheckBox
+    private lateinit var gameConfigurationView: GameConfigurationView
     private lateinit var btnSaveGame: Button
 
-    private lateinit var playerFactionSelectAdapter: PlayerFactionSelectAdapter
-    private val viewModel: GameCreationViewModel = GameCreationViewModel()
+    private var gameConfiguration: GameConfiguration = GameConfiguration()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,34 +40,31 @@ class GameCreationFragment : Fragment() {
     ): View {
         _binding = FragmentGameCreationBinding.inflate(inflater, container, false)
 
-        viewModel.playerFactionList =
-            DoppelkopfManager.getInstance().getSessionController().getPlayerController()
-                .getPlayersAsFaction()
-
+        setupViewModel()
 
         findViews()
         setupToolbar()
-        setUpPlayerFactionSelectList()
+        setupGameConfiguration()
         setupButtons()
-        setupBockrundeInput()
 
         checkSaveGameButtonEnabled()
 
         return binding.rootGameCreation
     }
 
-    private fun findViews() {
-        rvPlayerFactionSelect = binding.rvGameCreationPlayerList
-        tcTackenCounter = binding.layoutTackenCounter
-        ibDecreaseTacken = tcTackenCounter.findViewById(R.id.ib_decrease_tacken)
-        ibIncreaseTacken = tcTackenCounter.findViewById(R.id.ib_increase_tacken)
-        btnWinningFactionRe = binding.btnWinnerRe
-        btnWinningFactionContra = binding.btnWinnerContra
-        cbIsBockrunde = binding.cbIsBockrunde
-        btnSaveGame = binding.btnSaveGame
+    private fun setupViewModel() {
+        gameConfiguration.playerFactionList = DokoShortAccess.getPlayerCtrl().getPlayersAsFaction()
+        gameConfiguration.winningFaction = Faction.NONE
+        gameConfiguration.tackenCount = 0
+        gameConfiguration.isBockrunde = false
     }
 
-    private fun setupToolbar(){
+    private fun findViews() {
+        btnSaveGame = binding.btnSaveGame
+        gameConfigurationView = binding.gcvCreateGameConfiguration
+    }
+
+    private fun setupToolbar() {
         (activity as AppCompatActivity).supportActionBar?.title =
             DokoShortAccess.getSessionCtrl().getSession().name
 
@@ -87,92 +73,31 @@ class GameCreationFragment : Fragment() {
     }
 
     private fun setupButtons() {
-        ibDecreaseTacken.setOnClickListener {
-            viewModel.tackenCount -= 1
-            applyTacken()
-        }
-        ibIncreaseTacken.setOnClickListener {
-            viewModel.tackenCount += 1
-            applyTacken()
-        }
-
-        btnWinningFactionRe.setOnClickListener {
-            viewModel.winningFaction = Faction.RE
-            applyWinningFaction()
-        }
-        btnWinningFactionContra.setOnClickListener {
-            viewModel.winningFaction = Faction.CONTRA
-            applyWinningFaction()
-        }
-
         btnSaveGame.setOnClickListener {
             onCreateGameClicked()
         }
     }
 
-    private fun setupBockrundeInput() {
-        cbIsBockrunde.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.isBockrunde = isChecked
-        }
-    }
+    private fun setupGameConfiguration() {
+        gameConfigurationView.setGameConfiguration(gameConfiguration)
 
-    private fun setUpPlayerFactionSelectList() {
-        playerFactionSelectAdapter = PlayerFactionSelectAdapter(
-            viewModel.playerFactionList,
-            object : PlayerFactionSelectAdapter.PlayerFactionClickListener {
-                override fun onFactionClicked(position: Int, selectedFaction: Faction): Faction {
-                    val player = viewModel.playerFactionList[position]
-                    val newFaction = when (player.faction) {
-                        Faction.RE -> if (selectedFaction == Faction.CONTRA) Faction.CONTRA else Faction.NONE
-                        Faction.CONTRA -> if (selectedFaction == Faction.RE) Faction.RE else Faction.NONE
-                        Faction.NONE -> selectedFaction
-                    }
-
-                    viewModel.playerFactionList[position].faction = newFaction
-
-                    checkSaveGameButtonEnabled()
-
-                    return newFaction
-                }
-            })
-
-        val dp4 = Converter.convertDpToPixels(4f, rvPlayerFactionSelect.context)
-        rvPlayerFactionSelect.adapter = playerFactionSelectAdapter
-        rvPlayerFactionSelect.layoutManager = GridLayoutManager(binding.rootGameCreation.context, 2)
-        rvPlayerFactionSelect.addItemDecoration(RecyclerViewMarginDecoration(dp4, dp4))
-    }
-
-    private fun applyViewModel() {
-        applyWinningFaction()
-        applyTacken()
-        applyIsBockrunde()
-    }
-
-    private fun applyWinningFaction() {
-        when (viewModel.winningFaction) {
-            Faction.RE -> {
-                setButtonColor(btnWinningFactionRe, R.color.primary)
-                setButtonColor(btnWinningFactionContra, R.color.secondary_light)
+        gameConfigurationView.setGameConfigurationChangeListener(object :
+            GameConfigurationView.GameConfigurationChangeListener {
+            override fun onTackenCountChanged(tackenCount: Int) {
+                gameConfiguration.tackenCount = tackenCount
+                checkSaveGameButtonEnabled()
             }
-            Faction.CONTRA -> {
-                setButtonColor(btnWinningFactionRe, R.color.primary_light)
-                setButtonColor(btnWinningFactionContra, R.color.secondary)
-            }
-            Faction.NONE -> {
-                setButtonColor(btnWinningFactionRe, R.color.primary_light)
-                setButtonColor(btnWinningFactionContra, R.color.secondary_light)
-            }
-        }
-        checkSaveGameButtonEnabled()
-    }
 
-    private fun applyTacken() {
-        tcTackenCounter.setCounter(viewModel.tackenCount)
-        checkSaveGameButtonEnabled()
-    }
+            override fun onWinningFactionChanged(winningFaction: Faction) {
+                gameConfiguration.winningFaction = winningFaction
+                checkSaveGameButtonEnabled()
+            }
 
-    private fun applyIsBockrunde() {
-        cbIsBockrunde.isChecked = viewModel.isBockrunde
+            override fun onPlayerFactionChanged(player: Player, faction: Faction) {
+                gameConfiguration.playerFactionList.find { it.player == player }?.faction = faction
+                checkSaveGameButtonEnabled()
+            }
+        })
     }
 
     private fun setButtonColor(btn: Button, colorResId: Int) {
@@ -180,14 +105,16 @@ class GameCreationFragment : Fragment() {
     }
 
     private fun checkSaveGameButtonEnabled() {
-        val isValid = viewModel.checkIsValid()
+        val isValid = gameConfiguration.isValid()
+
+        Logging.d("GameCreationFragment", "ViewModel: $gameConfiguration")
 
         btnSaveGame.isEnabled = isValid
         setButtonColor(btnSaveGame, if (isValid) R.color.neural else R.color.neural_light)
     }
 
     private fun onCreateGameClicked() {
-        if (!viewModel.checkIsValid()) {
+        if (!gameConfiguration.isValid()) {
             Toast.makeText(
                 context,
                 getString(R.string.game_creation_error),
@@ -199,12 +126,12 @@ class GameCreationFragment : Fragment() {
         try {
             val game = DoppelkopfManager.getInstance().getSessionController().getGameController()
                 .createGame(
-                    viewModel.playerFactionList.map { it.copy() },
-                    viewModel.winningFaction,
+                    gameConfiguration.playerFactionList.map { it.copy() },
+                    gameConfiguration.winningFaction,
                     0,
-                    viewModel.tackenCount,
-                    viewModel.isBockrunde,
-                    if (GameUtil.isFactionCompositionSolo(viewModel.playerFactionList)) GameType.SOLO else GameType.NORMAL
+                    gameConfiguration.tackenCount,
+                    gameConfiguration.isBockrunde,
+                    if (GameUtil.isFactionCompositionSolo(gameConfiguration.playerFactionList)) GameType.SOLO else GameType.NORMAL
                 )
             DokoShortAccess.getGameCtrl().addGame(game)
 
@@ -232,9 +159,8 @@ class GameCreationFragment : Fragment() {
     }
 
     private fun resetViewModel() {
-        viewModel.reset()
-        applyViewModel()
-        playerFactionSelectAdapter.resetPlayerFactions()
+        gameConfiguration.reset()
+        gameConfigurationView.resetGameConfiguration()
     }
 
     override fun onDestroyView() {

@@ -446,23 +446,6 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
                     opponentNamesWithTacken
                 )
             ),
-            ScatterChartViewWrapper(
-                ScatterChartViewWrapper.ScatterChartData(
-                    "Ergebnisverlauf",
-                    "Verlauf von Sieg, Aussetzen und Niederlage. Bockrunden sind rot hervorgehoben",
-                    "Ndl. | Aussetzen | Sieg",
-                    listOf(
-                        ScatterChartViewWrapper.ScatterLineData(
-                            "Ergebnis (Bockrunden hervorgehoben)",
-                            winLossHistory,
-                            winLossBockMarker
-                        )
-                    ),
-                    showYAxisValues = false,
-                    showLegend = false,
-                    height = 300f
-                )
-            ),
             SimpleTextStatisticViewWrapper(
                 "Längste Siegesserie",
                 "Die längste Siegesserie hielt folgende Anzahl von Spielen:",

@@ -9,44 +9,50 @@
         style="@style/Widget.AppCompat.ImageButton"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_margin="0dp"
-        android:layout_marginEnd="8dp"
         android:backgroundTint="@color/neural"
         android:contentDescription="@string/desc_button_decrease_tacken"
         android:minHeight="48dp"
         android:src="@drawable/ic_baseline_remove_black_24"
-        app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/tv_tacken_count"
         app:layout_constraintEnd_toStartOf="@+id/tv_tacken_count"
-        app:layout_constraintTop_toTopOf="@+id/tv_tacken_count" />
+        app:layout_constraintTop_toTopOf="@+id/tv_tacken_count"
+        app:tint="@color/white" />
 
     <TextView
         android:id="@+id/tv_tacken_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="6dp"
-        android:paddingHorizontal="4dp"
+        android:layout_marginVertical="4dp"
         android:textColor="@color/neural"
         android:textSize="80sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="0" />
+        tools:text="00" />
 
     <ImageButton
         android:id="@+id/ib_increase_tacken"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:backgroundTint="@color/neural"
         android:contentDescription="@string/desc_button_increase_tacken"
         android:minHeight="48dp"
         android:src="@drawable/ic_baseline_add_black_24"
-        app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/tv_tacken_count"
         app:layout_constraintStart_toEndOf="@+id/tv_tacken_count"
-        app:layout_constraintTop_toTopOf="@+id/tv_tacken_count" />
+        app:layout_constraintTop_toTopOf="@+id/tv_tacken_count"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_tacken_count_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tacken"
+        app:layout_constraintBottom_toBottomOf="@+id/ib_increase_tacken"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+ />
 
 </merge>

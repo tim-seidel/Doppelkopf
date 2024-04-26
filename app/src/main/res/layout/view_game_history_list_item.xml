@@ -15,6 +15,7 @@
         android:paddingVertical="2dp"
         android:textColor="@color/neural"
         android:textSize="16sp"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/rv_game_history_item_player_tacken_list"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/rv_game_history_item_player_tacken_list"

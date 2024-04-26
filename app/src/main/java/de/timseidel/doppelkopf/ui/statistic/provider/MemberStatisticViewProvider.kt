@@ -138,6 +138,7 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
             StatisticUtil.getAccumulatedTackenHistoryWithoutBock(stats.gameResultHistory)
         val currentTackenWithoutBock =
             if (gameResultsWithoutBock.isNotEmpty()) gameResultsWithoutBock.last() else 0
+        val bockTackenDiff = stats.general.total.tacken - currentTackenWithoutBock
 
         val strafTackenHistory =
             StatisticUtil.getAccumulatedStraftackenHistory(stats.gameResultHistory)
@@ -249,6 +250,11 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
                     ),
                     350f
                 ),
+            ),
+            SimpleTextStatisticViewWrapper(
+                "Bock auf Bockrunden?",
+                "Folgende Tackendifferenz hat ${stats.member.name} in Bockrunden gemacht:",
+                (if (bockTackenDiff > 0) "+" else "") + bockTackenDiff.toString(),
             ),
             SimpleTextStatisticViewWrapper(
                 "Siegesrate ohne Bockrunden",

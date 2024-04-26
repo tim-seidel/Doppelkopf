@@ -111,6 +111,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             StatisticUtil.getAccumulatedTackenHistoryWithoutBock(stats.gameResultHistory)
         val currentTackenWithoutBock =
             if (gameResultsWithoutBock.isNotEmpty()) gameResultsWithoutBock.last() else 0
+        val bockTackenDiff = stats.general.total.tacken - currentTackenWithoutBock
 
         stats.partners.values.forEach { p ->
             partnerNames.add(p.player.name)
@@ -164,7 +165,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             ),
             PieChartViewWrapper(
                 PieChartViewWrapper.PieChartData(
-                    "Siege und Niederlagen",
+                    "Siege und Niederlagen in Bockrunden",
                     "Siege: ${stats.general.wins.games} ($percentWins%), Niederlagen: ${stats.general.loss.games}",
                     "Spiele",
                     listOf(

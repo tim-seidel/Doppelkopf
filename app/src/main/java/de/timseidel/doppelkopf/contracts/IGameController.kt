@@ -19,7 +19,11 @@ interface IGameController {
 
     fun addGame(game: Game)
 
+    fun updateGame(gameId: String, updatedGame: Game)
+
     fun removeGame(game: Game)
+
+    fun getGame(gameId: String): Game?
 
     fun getGames(): List<Game>
 

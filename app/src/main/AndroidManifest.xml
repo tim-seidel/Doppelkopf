@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Doppelkopf"
         tools:targetApi="33">
+        <activity android:name=".ui.session.gameedit.GameEditActivity" />
         <activity
             android:name=".ui.group.JoinGroupActivity"
             android:exported="true">

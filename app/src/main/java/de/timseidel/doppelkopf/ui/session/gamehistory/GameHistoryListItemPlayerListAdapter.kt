@@ -2,22 +2,24 @@ package de.timseidel.doppelkopf.ui.session.gamehistory
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import de.timseidel.doppelkopf.model.Faction
-import de.timseidel.doppelkopf.model.GameResult
-import de.timseidel.doppelkopf.model.GameType
+import de.timseidel.doppelkopf.model.GameHistoryColumn
 
 class GameHistoryListItemPlayerListAdapter(
-    private val playerResults: MutableList<GameResult> = mutableListOf(),
+    private val scores: MutableList<GameHistoryColumn> = mutableListOf(),
 ) :
     RecyclerView.Adapter<GameHistoryListItemPlayerListAdapter.ViewHolder>() {
 
     class ViewHolder(private val playerView: GameHistoryListItemPlayerView) :
         RecyclerView.ViewHolder(playerView) {
-        fun bind(playerResult: GameResult) {
-            val faction = playerResult.faction
+        fun bind(score: GameHistoryColumn) {
+            val faction = score.faction
 
-            playerView.setPlayerTacken(playerResult.tacken)
-            playerView.setPlayerResult(faction, playerResult.isWinner, playerResult.gameType == GameType.SOLO && faction == Faction.RE)
+            playerView.setPlayerTacken(score.score)
+            playerView.setPlayerResult(
+                faction,
+                score.isWinner,
+                score.isSolo
+            )
         }
     }
 
@@ -26,17 +28,17 @@ class GameHistoryListItemPlayerListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val result = playerResults[position]
+        val result = scores[position]
         holder.bind(result)
     }
 
     override fun getItemCount(): Int {
-        return playerResults.size
+        return scores.size
     }
 
-    fun updatePlayerResults(pr: List<GameResult>) {
-        this.playerResults.clear()
-        this.playerResults.addAll(pr)
+    fun updateScores(scores: List<GameHistoryColumn>) {
+        this.scores.clear()
+        this.scores.addAll(scores)
         this.notifyDataSetChanged()
     }
 }

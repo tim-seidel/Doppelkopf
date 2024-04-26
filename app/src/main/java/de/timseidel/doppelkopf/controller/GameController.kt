@@ -37,8 +37,36 @@ class GameController : IGameController {
         games.add(game)
     }
 
+    override fun updateGame(gameId: String, updatedGame: Game) {
+        val game = games.find { g -> g.id == gameId }
+        if (game != null) {
+            game.timestamp = updatedGame.timestamp
+            game.players.forEach { p ->
+                val updatedPlayer = updatedGame.players.find { up -> up.player.id == p.player.id }
+                if (updatedPlayer != null) {
+                    p.faction = updatedPlayer.faction
+                }
+            }
+            game.winningFaction = updatedGame.winningFaction
+            game.winningPoints = updatedGame.winningPoints
+            game.tacken = updatedGame.tacken
+            game.isBockrunde = updatedGame.isBockrunde
+            game.gameType = updatedGame.gameType
+            game.soloType = updatedGame.soloType
+        }
+        games.indexOf(games.find { g -> g.id == gameId }).let { index ->
+            if (index != -1) {
+                games[index] = updatedGame
+            }
+        }
+    }
+
     override fun removeGame(game: Game) {
         games.remove(game)
+    }
+
+    override fun getGame(gameId: String): Game? {
+        return games.find { g -> g.id == gameId }
     }
 
     override fun getGames(): List<Game> {
@@ -51,10 +79,15 @@ class GameController : IGameController {
         game.players.forEach { p ->
             results.add(
                 GameResult(
+                    game.id,
                     p.faction,
                     p.faction == game.winningFaction,
                     GameUtil.getFactionTacken(p.faction, game),
-                    GameUtil.getFactionPoints(p.faction, game.winningFaction, game.winningPoints),
+                    GameUtil.getFactionPoints(
+                        p.faction,
+                        game.winningFaction,
+                        game.winningPoints
+                    ),
                     game.isBockrunde,
                     game.gameType
                 )
@@ -75,7 +108,9 @@ class GameController : IGameController {
     override fun getGamesOfPlayer(playerId: String): List<Game> {
         val pGames = mutableListOf<Game>()
         games.forEach { g ->
-            if (g.players.any { p -> p.player.id == playerId && p.faction != Faction.NONE }) pGames.add(g)
+            if (g.players.any { p -> p.player.id == playerId && p.faction != Faction.NONE }) pGames.add(
+                g
+            )
         }
 
         return pGames

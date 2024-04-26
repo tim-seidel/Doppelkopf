@@ -10,7 +10,7 @@ import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.PlayerAndFaction
 
 class PlayerFactionSelectAdapter(
-    private val players: List<PlayerAndFaction>,
+    private var players: MutableList<PlayerAndFaction>,
     var listener: PlayerFactionClickListener? = null
 ) :
     RecyclerView.Adapter<PlayerFactionSelectAdapter.ViewHolder>() {
@@ -63,8 +63,8 @@ class PlayerFactionSelectAdapter(
         }
     }
 
-    private fun getNewFaction(currentFaction: Faction, selectedFaction: Faction): Faction{
-        return when(selectedFaction) {
+    private fun getNewFaction(currentFaction: Faction, selectedFaction: Faction): Faction {
+        return when (selectedFaction) {
             Faction.RE -> if (currentFaction != Faction.RE) Faction.RE else Faction.NONE
             Faction.CONTRA -> if (currentFaction != Faction.CONTRA) Faction.CONTRA else Faction.NONE
             Faction.NONE -> selectedFaction
@@ -76,9 +76,29 @@ class PlayerFactionSelectAdapter(
     }
 
     fun resetPlayerFactions() {
+        if (players.isEmpty()) {
+            return
+        }
+
         players.forEach { p ->
             p.faction = Faction.NONE
         }
+        notifyItemRangeChanged(0, players.size)
+    }
+
+    fun updatePlayerFaction(player: Player, faction: Faction) {
+        val playerIndex = players.indexOfFirst { it.player.id == player.id }
+        if (playerIndex == -1) {
+            return
+        }
+
+        players[playerIndex].faction = faction
+        notifyItemChanged(playerIndex)
+    }
+
+    fun updatePlayerFactionList(updatedPlayers: List<PlayerAndFaction>) {
+        players.clear()
+        players.addAll(updatedPlayers)
         notifyItemRangeChanged(0, players.size)
     }
 }

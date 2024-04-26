@@ -87,7 +87,7 @@ class GroupStatisticsCalculator {
                     // Add filler games to history
                     for (i in 1..sessionStat.general.total.games) {
                         memberStat.gameResultHistory.add(
-                            GameResult(Faction.NONE, false, 0, 0, false, GameType.NORMAL)
+                            GameResult("", Faction.NONE, false, 0, 0, false, GameType.NORMAL)
                         )
                     }
                 }

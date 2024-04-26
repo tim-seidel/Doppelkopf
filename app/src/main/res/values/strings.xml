@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="or">oder</string>
     <string name="back">Zurück</string>
     <string name="okay">Okay</string>
@@ -24,8 +24,10 @@
     <string name="title_activity_session">SessionActivity</string>
     <string name="title_game_creation">Spiel erstellen</string>
     <string name="title_game_history">Spielverlauf</string>
+    <string name="title_game_edit">Spiel bearbeiten</string>
     <string name="title_session_statistic">Statistik</string>
     <string name="game_creation_player_assignment">Parteizuordnung</string>
+    <string name="game_creation_player_assignment_factions" tools:ignore="ExtraTranslation">(♣ Re, ♦ Contra)</string>
     <string name="faction_contra">Contra</string>
     <string name="faction_re">Re</string>
     <string name="faction_select_re_desc">Select re faction</string>
@@ -52,7 +54,9 @@
     <string name="loading_sessions">Lade Doppelkopfabende…</string>
     <string name="save">Speichern</string>
     <string name="game_saved">Spiel gespeichert!</string>
+    <string name="game_updated">Spiel aktualisiert!</string>
     <string name="game_creation_error">Das Spiel wird nicht erstellt, da die Einstellungen nicht gültig sind</string>
+    <string name="game_edit_error">Das Spiel wird nicht aktualisiert, da die Einstellungen nicht gültig sind</string>
     <string name="check_is_bockrunde">Ist Bockrunde</string>
     <string name="enter_group_code">Gruppencode eingeben</string>
     <string name="hint_group_code">000000</string>

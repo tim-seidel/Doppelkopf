@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Faction
-import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.PlayerAndFaction
 import de.timseidel.doppelkopf.ui.session.gamecreation.GameConfiguration
@@ -20,9 +19,11 @@ import de.timseidel.doppelkopf.ui.session.gamecreation.PlayerFactionSelectAdapte
 import de.timseidel.doppelkopf.ui.session.gamecreation.TackenCounterView
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
+import de.timseidel.doppelkopf.util.Logging
 
 class GameConfigurationView constructor(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
+
 
     private lateinit var rvPlayerFactionSelect: RecyclerView
     private lateinit var tcTackenCounter: TackenCounterView
@@ -33,15 +34,11 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
     private lateinit var playerFactionSelectAdapter: PlayerFactionSelectAdapter
     private var gameConfigurationChangeListener: GameConfigurationChangeListener? = null
 
-    private var playerFactionList: List<PlayerAndFaction> = emptyList()
-    private var winningFaction: Faction = Faction.NONE
-    private var tackenCount: Int = 0
-    private var isBockrunde: Boolean = false
-
     interface GameConfigurationChangeListener {
         fun onTackenCountChanged(tackenCount: Int)
         fun onWinningFactionChanged(winningFaction: Faction)
         fun onPlayerFactionChanged(player: Player, faction: Faction)
+        fun onBockrundeChanged(isBockrunde: Boolean)
     }
 
     init {
@@ -54,7 +51,7 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
 
         applyAttributes(attrs)
 
-        setUpPlayerFactionSelectList()
+        setupPlayerFactionSelectList()
         setupFactionButtons()
         setupTackenCounter()
         setupBockrundeInput()
@@ -81,34 +78,31 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
     }
 
     fun setGameConfiguration(gameConfiguration: GameConfiguration) {
-        this.playerFactionList = gameConfiguration.playerFactionList
-        this.winningFaction = gameConfiguration.winningFaction
-        this.tackenCount = gameConfiguration.tackenCount
-        this.isBockrunde = gameConfiguration.isBockrunde
-
-        applyGameConfiguration()
+        Logging.d(
+            "GameConfigurationView SET",
+            "GameConfiguration: ${gameConfiguration.playerFactionList}"
+        )
+        setTackenCount(gameConfiguration.tackenCount)
+        setIsBockrunde(gameConfiguration.isBockrunde)
+        setWinningFaction(gameConfiguration.winningFaction)
+        setPlayerFactionList(gameConfiguration.playerFactionList)
     }
 
     fun resetGameConfiguration() {
-        playerFactionList = emptyList()
-        winningFaction = Faction.NONE
-        tackenCount = 0
-        isBockrunde = false
-
-        applyGameConfiguration()
+        setWinningFaction(Faction.NONE)
+        setTackenCount(0)
+        setIsBockrunde(false)
+        doPlayerFactionReset()
     }
 
-    private fun setUpPlayerFactionSelectList() {
+    private fun setupPlayerFactionSelectList() {
         val playerAndFactions: List<PlayerAndFaction> =
             DokoShortAccess.getPlayerCtrl().getPlayersAsFaction()
-        playerFactionList = playerAndFactions.toList()
 
         playerFactionSelectAdapter = PlayerFactionSelectAdapter(
-            playerAndFactions,
+            playerAndFactions.toMutableList(),
             object : PlayerFactionSelectAdapter.PlayerFactionClickListener {
                 override fun onFactionUpdate(player: Player, newFaction: Faction) {
-                    playerFactionList.find { it.player == player }?.faction = newFaction
-
                     gameConfigurationChangeListener?.onPlayerFactionChanged(
                         player,
                         newFaction
@@ -125,15 +119,9 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
 
     private fun setupFactionButtons() {
         btnWinningFactionRe.setOnClickListener {
-            winningFaction = Faction.RE
-            applyWinningFaction()
-
             gameConfigurationChangeListener?.onWinningFactionChanged(Faction.RE)
         }
         btnWinningFactionContra.setOnClickListener {
-            winningFaction = Faction.CONTRA
-            applyWinningFaction()
-
             gameConfigurationChangeListener?.onWinningFactionChanged(Faction.CONTRA)
         }
     }
@@ -141,8 +129,6 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
     private fun setupTackenCounter() {
         tcTackenCounter.setTackenChangeListener(object : TackenCounterView.TackenChangeListener {
             override fun onTackenChanged(count: Int) {
-                tackenCount = count
-
                 gameConfigurationChangeListener?.onTackenCountChanged(count)
             }
         })
@@ -150,17 +136,16 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
 
     private fun setupBockrundeInput() {
         cbIsBockrunde.setOnCheckedChangeListener { _, isChecked ->
-            isBockrunde = isChecked
+            gameConfigurationChangeListener?.onBockrundeChanged(isChecked)
         }
     }
 
-    private fun applyGameConfiguration() {
-        applyWinningFaction()
-        applyTackenCount()
-        applyIsBockrunde()
+
+    fun setTackenCount(tackenCount: Int) {
+        tcTackenCounter.setTackenCount(tackenCount)
     }
 
-    private fun applyWinningFaction() {
+    fun setWinningFaction(winningFaction: Faction) {
         when (winningFaction) {
             Faction.RE -> {
                 setButtonColor(btnWinningFactionRe, R.color.primary)
@@ -179,12 +164,22 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         }
     }
 
-    private fun applyTackenCount() {
-        tcTackenCounter.setTackenCount(tackenCount)
+
+    fun setIsBockrunde(isBockrunde: Boolean) {
+        cbIsBockrunde.isChecked = isBockrunde
     }
 
-    private fun applyIsBockrunde() {
-        cbIsBockrunde.isChecked = isBockrunde
+    fun setPlayerFaction(player: Player, faction: Faction) {
+        playerFactionSelectAdapter.updatePlayerFaction(player, faction)
+    }
+
+    fun doPlayerFactionReset() {
+        playerFactionSelectAdapter.resetPlayerFactions()
+    }
+
+    fun setPlayerFactionList(playerFactionList: List<PlayerAndFaction>) {
+        Logging.d("GameConfigurationView APPLY", "PlayerFactionList: $playerFactionList")
+        playerFactionSelectAdapter.updatePlayerFactionList(playerFactionList)
     }
 
     private fun setButtonColor(btn: Button, colorResId: Int) {

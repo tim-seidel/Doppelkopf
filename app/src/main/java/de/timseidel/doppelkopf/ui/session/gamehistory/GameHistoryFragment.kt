@@ -1,5 +1,7 @@
 package de.timseidel.doppelkopf.ui.session.gamehistory
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -7,6 +9,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -17,8 +21,12 @@ import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.databinding.FragmentGameHistoryBinding
 import de.timseidel.doppelkopf.model.statistic.StatisticUtil
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
+import de.timseidel.doppelkopf.ui.session.gameedit.GameEditActivity
+import de.timseidel.doppelkopf.ui.session.gameedit.GameEditClickListener
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
+import de.timseidel.doppelkopf.util.GameUtil
+import de.timseidel.doppelkopf.util.Logging
 import kotlin.math.max
 
 
@@ -28,6 +36,16 @@ class GameHistoryFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var isGameHistoryAccumulated = true
+    private lateinit var gameHistoryListAdapter: GameHistoryListAdapter
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+
+    private val gameEditClickListener = object : GameEditClickListener {
+        override fun onGameEditClicked(gameId: String) {
+            val intent = Intent(context, GameEditActivity::class.java)
+            intent.putExtra(GameEditActivity.KEY_GAME_EDIT_ID, gameId)
+            activityResultLauncher.launch(intent)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +59,7 @@ class GameHistoryFragment : Fragment() {
 
         setupPlayerHeader()
         setupGameHistoryList()
+        setupEditResultLauncher()
 
         setGameHistory(isGameHistoryAccumulated)
 
@@ -92,18 +111,37 @@ class GameHistoryFragment : Fragment() {
     }
 
     private fun setGameHistory(accumulated: Boolean) {
+        gameHistoryListAdapter = createAdapter(accumulated, gameEditClickListener)
+        binding.rvGameHistoryList.adapter = gameHistoryListAdapter
+    }
+
+    private fun createAdapter(
+        accumulated: Boolean,
+        listener: GameEditClickListener
+    ): GameHistoryListAdapter {
         val games = DokoShortAccess.getGameCtrl().getGames()
+        val history = GameUtil.getGameHistory(games)
 
-        if (accumulated) {
-            val playerResults = DokoShortAccess.getGameCtrl().getGamesAsPlayerResults()
-            val accumulatedGameResults =
-                StatisticUtil.convertGameHistoriesToAccumulatedHistories(playerResults)
-
-            binding.rvGameHistoryList.adapter =
-                AccumulatedGameHistoryListAdapter(accumulatedGameResults.reversed())
+        Logging.d("GameHistoryFragment", "History: Updating history")
+        return if (accumulated) {
+            val accumulatedHistory = StatisticUtil.accumulateGameHistory(history)
+            return GameHistoryListAdapter(accumulatedHistory.reversed().toMutableList(), listener)
         } else {
-            binding.rvGameHistoryList.adapter = GameHistoryListAdapter(games.reversed())
+            GameHistoryListAdapter(history.reversed().toMutableList(), listener)
         }
+    }
+
+    private fun setupEditResultLauncher() {
+        activityResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    Logging.d("GameHistoryFragment", "Result ok")
+                    setGameHistory(isGameHistoryAccumulated)
+                    //gameHistoryListAdapter.notifyItemChanged(0)
+                } else {
+                    Logging.d("GameHistoryFragment", "Result not ok")
+                }
+            }
     }
 
     override fun onDestroyView() {

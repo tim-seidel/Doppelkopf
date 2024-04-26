@@ -19,7 +19,6 @@ import de.timseidel.doppelkopf.ui.session.gamecreation.PlayerFactionSelectAdapte
 import de.timseidel.doppelkopf.ui.session.gamecreation.TackenCounterView
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
-import de.timseidel.doppelkopf.util.Logging
 
 class GameConfigurationView constructor(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
@@ -78,10 +77,6 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
     }
 
     fun setGameConfiguration(gameConfiguration: GameConfiguration) {
-        Logging.d(
-            "GameConfigurationView SET",
-            "GameConfiguration: ${gameConfiguration.playerFactionList}"
-        )
         setTackenCount(gameConfiguration.tackenCount)
         setIsBockrunde(gameConfiguration.isBockrunde)
         setWinningFaction(gameConfiguration.winningFaction)
@@ -178,7 +173,6 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
     }
 
     fun setPlayerFactionList(playerFactionList: List<PlayerAndFaction>) {
-        Logging.d("GameConfigurationView APPLY", "PlayerFactionList: $playerFactionList")
         playerFactionSelectAdapter.updatePlayerFactionList(playerFactionList)
     }
 

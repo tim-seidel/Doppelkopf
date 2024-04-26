@@ -26,7 +26,6 @@ import de.timseidel.doppelkopf.ui.session.gameedit.GameEditClickListener
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.GameUtil
-import de.timseidel.doppelkopf.util.Logging
 import kotlin.math.max
 
 
@@ -122,7 +121,6 @@ class GameHistoryFragment : Fragment() {
         val games = DokoShortAccess.getGameCtrl().getGames()
         val history = GameUtil.getGameHistory(games)
 
-        Logging.d("GameHistoryFragment", "History: Updating history")
         return if (accumulated) {
             val accumulatedHistory = StatisticUtil.accumulateGameHistory(history)
             return GameHistoryListAdapter(accumulatedHistory.reversed().toMutableList(), listener)
@@ -135,11 +133,7 @@ class GameHistoryFragment : Fragment() {
         activityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    Logging.d("GameHistoryFragment", "Result ok")
                     setGameHistory(isGameHistoryAccumulated)
-                    //gameHistoryListAdapter.notifyItemChanged(0)
-                } else {
-                    Logging.d("GameHistoryFragment", "Result not ok")
                 }
             }
     }

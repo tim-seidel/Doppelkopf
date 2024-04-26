@@ -2,12 +2,12 @@ package de.timseidel.doppelkopf.model
 
 data class Game(
     val id: String,
-    val timestamp: Long,
-    val players: List<PlayerAndFaction>,
-    val winningFaction: Faction,
-    val winningPoints: Int,
-    val tacken: Int,
-    val isBockrunde: Boolean,
-    val gameType: GameType = GameType.NORMAL,
-    val soloType: SoloType = SoloType.NONE,
+    var timestamp: Long,
+    var players: List<PlayerAndFaction>,
+    var winningFaction: Faction,
+    var winningPoints: Int,
+    var tacken: Int,
+    var isBockrunde: Boolean,
+    var gameType: GameType = GameType.NORMAL,
+    var soloType: SoloType = SoloType.NONE,
 )

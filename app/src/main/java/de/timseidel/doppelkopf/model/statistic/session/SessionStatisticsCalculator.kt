@@ -30,6 +30,7 @@ class SessionStatisticsCalculator {
             if (g.winningFaction != Faction.NONE) {
                 val winnerResult =
                     GameResult(
+                        g.id,
                         g.winningFaction,
                         true,
                         g.tacken,
@@ -39,6 +40,7 @@ class SessionStatisticsCalculator {
                     )
                 val loserResult =
                     GameResult(
+                        g.id,
                         if (g.winningFaction == Faction.RE) Faction.CONTRA else Faction.RE,
                         false,
                         -1 * g.tacken,

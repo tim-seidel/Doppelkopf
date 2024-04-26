@@ -120,4 +120,15 @@ class DoppelkopfDatabase {
 
         batch.commit()
     }
+
+    fun updateGameInSession(updatedGame: Game, session: Session, group: Group) {
+        val gameDTO = FirebaseDTO.fromGameToGameDTO(updatedGame)
+        db.collection(FirebaseStrings.collectionGroups)
+            .document(group.id)
+            .collection(FirebaseStrings.collectionSessions)
+            .document(session.id)
+            .collection(FirebaseStrings.collectionGames)
+            .document(updatedGame.id)
+            .set(gameDTO)
+    }
 }

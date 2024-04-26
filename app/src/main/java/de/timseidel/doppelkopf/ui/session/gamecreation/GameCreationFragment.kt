@@ -85,16 +85,29 @@ class GameCreationFragment : Fragment() {
             GameConfigurationView.GameConfigurationChangeListener {
             override fun onTackenCountChanged(tackenCount: Int) {
                 gameConfiguration.tackenCount = tackenCount
+
+                gameConfigurationView.setTackenCount(tackenCount)
                 checkSaveGameButtonEnabled()
             }
 
             override fun onWinningFactionChanged(winningFaction: Faction) {
                 gameConfiguration.winningFaction = winningFaction
+
+                gameConfigurationView.setWinningFaction(winningFaction)
                 checkSaveGameButtonEnabled()
             }
 
             override fun onPlayerFactionChanged(player: Player, faction: Faction) {
                 gameConfiguration.playerFactionList.find { it.player == player }?.faction = faction
+
+                gameConfigurationView.setPlayerFaction(player, faction)
+                checkSaveGameButtonEnabled()
+            }
+
+            override fun onBockrundeChanged(isBockrunde: Boolean) {
+                gameConfiguration.isBockrunde = isBockrunde
+
+                gameConfigurationView.setIsBockrunde(isBockrunde)
                 checkSaveGameButtonEnabled()
             }
         })

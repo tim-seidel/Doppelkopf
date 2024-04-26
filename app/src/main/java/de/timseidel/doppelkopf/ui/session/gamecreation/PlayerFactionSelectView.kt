@@ -1,6 +1,7 @@
 package de.timseidel.doppelkopf.ui.session.gamecreation
 
 import android.content.Context
+import android.media.Image
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageButton
@@ -57,26 +58,23 @@ class PlayerFactionSelectView constructor(context: Context, attrs: AttributeSet?
     }
 
     private fun setRe() {
-        btnSelectRe.setColorFilter(ContextCompat.getColor(btnSelectRe.context, R.color.primary))
-        setFactionPassive(btnSelectContra)
+        applyFactionButtonColors(btnSelectRe, R.color.white, R.color.primary)
+        applyFactionButtonColors(btnSelectContra, R.color.secondary_light, R.color.white)
     }
 
     private fun setContra() {
-        setFactionPassive(btnSelectRe)
-        btnSelectContra.setColorFilter(
-            ContextCompat.getColor(
-                btnSelectContra.context,
-                R.color.secondary
-            )
-        )
+        applyFactionButtonColors(btnSelectRe, R.color.primary_light, R.color.white)
+        applyFactionButtonColors(btnSelectContra, R.color.white, R.color.secondary)
     }
+
 
     private fun resetFaction() {
-        setFactionPassive(btnSelectRe)
-        setFactionPassive(btnSelectContra)
+        applyFactionButtonColors(btnSelectRe, R.color.primary_light, R.color.white)
+        applyFactionButtonColors(btnSelectContra, R.color.secondary_light, R.color.white)
     }
 
-    private fun setFactionPassive(btn: ImageButton) {
-        btn.setColorFilter(ContextCompat.getColor(btn.context, R.color.gray_400))
+    private fun applyFactionButtonColors(btnFaction: ImageButton, foregroundColorCode: Int, backgroundColorCode: Int){
+        btnFaction.setColorFilter(ContextCompat.getColor(btnFaction.context, foregroundColorCode))
+        btnFaction.background.setTint(ContextCompat.getColor(btnFaction.context, backgroundColorCode))
     }
 }

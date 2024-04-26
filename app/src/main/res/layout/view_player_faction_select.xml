@@ -5,14 +5,14 @@
     android:id="@+id/root_player_faction_select"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingHorizontal="2dp"
     android:background="@drawable/border_background">
 
     <TextView
         android:id="@+id/tv_player_faction_select_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
+        android:layout_marginHorizontal="2dp"
         android:textSize="20sp"
         android:textColor="@color/neural_dark"
         app:layout_constraintBottom_toBottomOf="@+id/btn_faction_re"

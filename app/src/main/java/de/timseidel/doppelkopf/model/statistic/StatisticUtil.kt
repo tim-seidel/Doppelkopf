@@ -1,6 +1,8 @@
 package de.timseidel.doppelkopf.model.statistic
 
 import de.timseidel.doppelkopf.model.Faction
+import de.timseidel.doppelkopf.model.GameHistoryColumn
+import de.timseidel.doppelkopf.model.GameHistoryItem
 import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.util.GameUtil
 import de.timseidel.doppelkopf.util.RangeDistribution
@@ -59,45 +61,33 @@ class StatisticUtil {
             return distribution
         }
 
-        fun convertGameHistoryToAccumulatedHistory(gameResults: List<GameResult>): List<GameResult> {
-            val accumulatedGameHistory = mutableListOf<GameResult>()
-            gameResults.forEach { gr ->
-                accumulatedGameHistory.add(
-                    GameResult(
-                        gr.faction,
-                        gr.isWinner,
-                        gr.tacken + if (accumulatedGameHistory.isNotEmpty()) accumulatedGameHistory.last().tacken else 0,
-                        gr.points,
-                        gr.isBockrunde,
-                        gr.gameType
+
+        fun accumulateGameHistory(history: List<GameHistoryItem>): List<GameHistoryItem> {
+            val accumulatedHistory = mutableListOf<GameHistoryItem>()
+
+            history.forEach { item ->
+                val accScores = mutableListOf<GameHistoryColumn>()
+                item.scores.forEachIndexed { playerIndex, score ->
+                    accScores.add(
+                        GameHistoryColumn(
+                            score.faction,
+                            score.score + (if (accumulatedHistory.isNotEmpty()) accumulatedHistory.last().scores[playerIndex].score else 0),
+                            score.isWinner,
+                            score.isSolo
+                        )
+                    )
+                }
+                accumulatedHistory.add(
+                    GameHistoryItem(
+                        item.game,
+                        item.number,
+                        accScores,
+                        item.isBockrunde
                     )
                 )
             }
 
-            return accumulatedGameHistory
-        }
-
-        fun convertGameHistoriesToAccumulatedHistories(gameHistory: List<List<GameResult>>): List<List<GameResult>> {
-            val accumulatedGameHistory = mutableListOf<List<GameResult>>()
-
-            gameHistory.forEach { game ->
-                val gamePlayerResults = mutableListOf<GameResult>()
-                game.forEachIndexed { playerIndex, playerResult ->
-                    gamePlayerResults.add(
-                        GameResult(
-                            playerResult.faction,
-                            playerResult.isWinner,
-                            playerResult.tacken + if (accumulatedGameHistory.isNotEmpty()) accumulatedGameHistory.last()[playerIndex].tacken else 0,
-                            playerResult.points,
-                            playerResult.isBockrunde,
-                            playerResult.gameType
-                        )
-                    )
-                }
-                accumulatedGameHistory.add(gamePlayerResults)
-            }
-
-            return accumulatedGameHistory
+            return accumulatedHistory
         }
     }
 }

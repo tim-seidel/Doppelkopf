@@ -2,6 +2,8 @@ package de.timseidel.doppelkopf.util
 
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
+import de.timseidel.doppelkopf.model.GameHistoryColumn
+import de.timseidel.doppelkopf.model.GameHistoryItem
 import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.Player
@@ -50,9 +52,10 @@ class GameUtil {
         fun getPlayerResult(player: Player, game: Game): GameResult {
             val paf = game.players.firstOrNull { paf -> paf.player.id == player.id }
             return if (paf == null) {
-                GameResult(Faction.NONE, false, 0, 0, false, GameType.NORMAL)
+                GameResult("", Faction.NONE, false, 0, 0, false, GameType.NORMAL)
             } else {
                 GameResult(
+                    game.id,
                     paf.faction,
                     paf.faction == game.winningFaction,
                     getFactionTacken(paf.faction, game),
@@ -61,6 +64,37 @@ class GameUtil {
                     game.gameType
                 )
             }
+        }
+
+        fun getGameHistory(games: List<Game>): List<GameHistoryItem> {
+            val gameHistory = mutableListOf<GameHistoryItem>()
+            games.forEachIndexed { i, game ->
+                val scores = mutableListOf<GameHistoryColumn>()
+
+                game.players.forEach { paf ->
+                    val result = GameUtil.getPlayerResult(paf.player, game)
+                    scores.add(
+                        GameHistoryColumn(
+                            result.faction,
+                            result.tacken,
+                            result.isWinner,
+                            isPlayerPlayingSolo(paf.player, game)
+                        )
+                    )
+                }
+
+                gameHistory.add(
+                    GameHistoryItem(
+                        game,
+                        i + 1,
+                        scores,
+                        game.isBockrunde
+
+                    )
+                )
+            }
+
+            return gameHistory
         }
 
         fun isPlayerPlayingSolo(player: Player, game: Game): Boolean {

@@ -1,6 +1,8 @@
 package de.timseidel.doppelkopf.ui.session.gamehistory
 
 import android.content.Context
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
@@ -9,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
-import de.timseidel.doppelkopf.model.GameResult
+import de.timseidel.doppelkopf.model.GameHistoryColumn
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.util.Converter
 import kotlin.math.max
@@ -17,9 +19,15 @@ import kotlin.math.max
 class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
 
+    interface GameHistoryListItemEditListener {
+        fun onGameEditClicked()
+    }
+
     private lateinit var tvGameNumber: TextView
     private lateinit var rvPlayerTacken: RecyclerView
     private lateinit var playerTackenAdapter: GameHistoryListItemPlayerListAdapter
+    private lateinit var gameId: String
+    private var gameEditListener: GameHistoryListItemEditListener? = null
 
     init {
         init()
@@ -45,6 +53,14 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
         rvPlayerTacken.adapter = playerTackenAdapter
     }
 
+    fun setGameEditListener(gameEditListener: GameHistoryListItemEditListener?) {
+        this.gameEditListener = gameEditListener
+    }
+
+    fun setGameId(gameId: String) {
+        this.gameId = gameId
+    }
+
     fun setGameNumber(number: Int) {
         tvGameNumber.text = if (number in 0..9) {
             "0$number"
@@ -53,11 +69,40 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
         }
     }
 
-    fun setPlayerResults(playerResults: List<GameResult>) {
-        rvPlayerTacken.apply {
-            layoutManager = GridLayoutManager(rvPlayerTacken.context, max(playerResults.size, 1))
+
+    fun setIsEditable(isEditable: Boolean) {
+        /*
+        if (isEditable) {
+            val iconDrawable = ContextCompat.getDrawable(context, R.drawable.ic_baseline_edit_24)
+            iconDrawable?.colorFilter = BlendModeColorFilter(
+                ContextCompat.getColor(context, R.color.neural),
+                BlendMode.SRC_IN
+            )
+            tvGameNumber.setCompoundDrawablesWithIntrinsicBounds(iconDrawable, null, null, null)
+            tvGameNumber.text = ""
+            tvGameNumber.setOnClickListener {
+                gameEditListener?.onGameEditClicked()
+
+            }
+        } else {
+            tvGameNumber.setOnClickListener(null)
         }
-        playerTackenAdapter.updatePlayerResults(playerResults)
+        */
+
+        if(isEditable) {
+            tvGameNumber.setOnClickListener {
+                gameEditListener?.onGameEditClicked()
+            }
+        } else {
+            tvGameNumber.setOnClickListener(null)
+        }
+    }
+
+    fun setScores(scores: List<GameHistoryColumn>) {
+        rvPlayerTacken.apply {
+            layoutManager = GridLayoutManager(rvPlayerTacken.context, max(scores.size, 1))
+        }
+        playerTackenAdapter.updateScores(scores)
     }
 
     fun setBockStatus(isBockrunde: Boolean) {

@@ -47,6 +47,7 @@
         style="@android:style/Widget.Material.ImageButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_marginEnd="4dp"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/session_history_open_session"
         android:scaleX="2"

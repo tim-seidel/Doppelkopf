@@ -1,5 +1,6 @@
 package de.timseidel.doppelkopf.model.statistic
 
+import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Ranking
 import de.timseidel.doppelkopf.model.RankingItem
 import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
@@ -18,7 +19,9 @@ class RankingStatisticsProvider {
             getMostBockTackenGainRanking(groupStatistics),
             getMostGamesRanking(groupStatistics),
             getLongestWinStreakRanking(groupStatistics),
-            getLongestLossStreakRanking(groupStatistics)
+            getLongestLossStreakRanking(groupStatistics),
+            getMaxTackenWin(groupStatistics),
+            getMaxTackenLoss(groupStatistics)
         )
     }
 
@@ -175,6 +178,34 @@ class RankingStatisticsProvider {
                         SimpleStatisticsCalculator().calculateStreakStatistics(memberStatistic.gameResultHistory).longestLossStreak.toString() else 0).toString()
                 )
             }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+
+        return ranking
+    }
+
+    private fun getMaxTackenWin(groupStatistics: GroupStatistics): Ranking {
+        val ranking = Ranking(
+            "Höchster Tackengewinn",
+            groupStatistics.memberStatistics.map { memberStatistic ->
+                RankingItem(
+                    memberStatistic.member.name,
+                    (memberStatistic.gameResultHistory.filter { gr -> gr.isWinner && gr.faction != Faction.NONE }
+                        .maxOfOrNull { it.tacken } ?: 0).toString()
+                )
+            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+
+        return ranking
+    }
+
+    private fun getMaxTackenLoss(groupStatistics: GroupStatistics): Ranking {
+        val ranking = Ranking(
+            "Höchster Tackenverlust",
+            groupStatistics.memberStatistics.map { memberStatistic ->
+                RankingItem(
+                    memberStatistic.member.name,
+                    (memberStatistic.gameResultHistory.filter { gr -> !gr.isWinner && gr.faction != Faction.NONE }
+                        .minOfOrNull { it.tacken } ?: 0).toString()
+                )
+            }.sortedBy { rankingItem -> rankingItem.value.toInt() })
 
         return ranking
     }

@@ -1,8 +1,7 @@
 package de.timseidel.doppelkopf.ui.session.gamehistory
 
 import android.content.Context
-import android.graphics.BlendMode
-import android.graphics.BlendModeColorFilter
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
@@ -69,27 +68,8 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
         }
     }
 
-
     fun setIsEditable(isEditable: Boolean) {
-        /*
         if (isEditable) {
-            val iconDrawable = ContextCompat.getDrawable(context, R.drawable.ic_baseline_edit_24)
-            iconDrawable?.colorFilter = BlendModeColorFilter(
-                ContextCompat.getColor(context, R.color.neural),
-                BlendMode.SRC_IN
-            )
-            tvGameNumber.setCompoundDrawablesWithIntrinsicBounds(iconDrawable, null, null, null)
-            tvGameNumber.text = ""
-            tvGameNumber.setOnClickListener {
-                gameEditListener?.onGameEditClicked()
-
-            }
-        } else {
-            tvGameNumber.setOnClickListener(null)
-        }
-        */
-
-        if(isEditable) {
             tvGameNumber.setOnClickListener {
                 gameEditListener?.onGameEditClicked()
             }
@@ -108,8 +88,10 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
     fun setBockStatus(isBockrunde: Boolean) {
         if (isBockrunde) {
             tvGameNumber.setTextColor(ContextCompat.getColor(context, R.color.error))
+            tvGameNumber.setTypeface(null, Typeface.ITALIC)
         } else {
             tvGameNumber.setTextColor(ContextCompat.getColor(context, R.color.neural))
+            tvGameNumber.setTypeface(null, Typeface.NORMAL)
         }
     }
 }

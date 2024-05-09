@@ -208,6 +208,11 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                     memberNames
                 )
             ),
+            SimpleTextStatisticViewWrapper(
+                "Durchschnittliche Tacken",
+                "Die durchschnittliche Anzahl an Tacken, die pro Spiel erzielt wird:",
+                "%.2f".format(groupStatistics.general.total.getTackenPerGame())
+            ),
             ColumnChartViewWrapper(
                 ColumnChartViewWrapper.ColumnChartData(
                     "Tacken bei S/N", "", "Tacken",

@@ -13,7 +13,7 @@
     <string name="navigation_title_group_statistic">Statistik</string>
     <string name="navigation_title_member_ranking">Ranglisten</string>
     <string name="session_players">Mitspielende</string>
-    <string name="player">Spieler*in</string>
+    <string name="player">Spieler:in</string>
     <string name="desc_create_session_button">Button to create a new session</string>
     <string name="doko_session">Doppelkopfabend</string>
     <string name="group_name">Gruppenname</string>
@@ -27,7 +27,7 @@
     <string name="title_game_edit">Spiel bearbeiten</string>
     <string name="title_session_statistic">Statistik</string>
     <string name="game_creation_player_assignment">Parteizuordnung</string>
-    <string name="game_creation_player_assignment_factions" tools:ignore="ExtraTranslation">(♣ Re, ♦ Contra)</string>
+    <string name="game_creation_player_assignment_factions">(♣ Re, ♦ Contra)</string>
     <string name="faction_contra">Contra</string>
     <string name="faction_re">Re</string>
     <string name="faction_select_re_desc">Select re faction</string>
@@ -39,7 +39,7 @@
     <string name="desc_button_increase_tacken">Increase tacken</string>
     <string name="option_confirm_create_session">Erstellen</string>
     <string name="option_confirm_create_game">Erstellen</string>
-    <string name="create_session_unable_to_create">Doppelkopfabend kann nicht erstellt werden. Stell sicher, dass es mindestens 4 Spieler*innen und einen Namen gibt.</string>
+    <string name="create_session_unable_to_create">Doppelkopfabend kann nicht erstellt werden. Stell sicher, dass es mindestens 4 Spieler:innen und einen Namen gibt.</string>
     <string name="create_group_unable_to_create">Die Doppelkopfgruppe kann nicht erstellt werden. Stell sicher, dass keine Namen doppelt sind und du einen Titel hast.</string>
     <string name="tacken">Tacken</string>
     <string name="desc_history_item_player_faction_icon">Faction of the player in this game</string>
@@ -71,11 +71,11 @@
     <string name="menu_game_history_change_tacken_mode">Tackenanzeige ändern</string>
     <string name="dialog_refresh_statistics_title">Statistikupdate</string>
     <string name="dialog_refresh_statistics_changes_tabs_to_apply">Die Statistiken werden geupdated, sobald du einen Tab wechselst (und zurück).</string>
-    <string name="group_member_creation_short_name_advice">Kurze Namen oder Spitznamen werden empfohlen, damit die Statistiken und Tabellen übersichtlicher sind.</string>
+    <string name="group_member_creation_short_name_advice">Kurze Namen oder Spitznamen werden empfohlen, damit die Statistiken und Tabellen übersichtlicher sind. Gib mindestens 4 an. Leere Namen werden übersprungen.</string>
     <string name="default_tacken_input_score">00</string>
     <string name="group_code_access_info">Den Gruppencode kann in der Gruppenübersicht oder einem Doppelkopfabend über das 3-Punkte-Menü angezeigt werden.</string>
     <string name="session_history_open_session">Doppelkopfabend aufrufen</string>
     <string name="desc_session_creation_member_list_create_member">Neuen Mitspieler erstellen und hinzufügen.</string>
-    <string name="session_select_players_hint">Wähle Mitspieler*innen für diese Doppelkopfrunde aus.</string>
+    <string name="session_select_players_hint">Wähle Mitspieler:innen für diese Doppelkopfrunde aus.</string>
     <string name="tv_session_group_name_hint">Lege einen Namen für diese Runde fest.</string>
 </resources>

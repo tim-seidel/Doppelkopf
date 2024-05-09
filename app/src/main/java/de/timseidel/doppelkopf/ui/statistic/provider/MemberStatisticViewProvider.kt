@@ -164,7 +164,7 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
                 stats.sessionStatistics.size.toString()
             ),
             SimpleTextStatisticViewWrapper(
-                "Vielspieler*in?",
+                "Vielspieler:in?",
                 "${stats.member.name} hat so viele Spiele gespielt:",
                 stats.general.total.games.toString()
             ),

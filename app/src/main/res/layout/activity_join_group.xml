@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/app_name"
+        android:textColor="@color/primary_dark"
         android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,6 +33,7 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="4dp"
         android:text="@string/enter_group_code"
+        android:textColor="@color/primary_dark"
         android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_enter_group_code_info"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,6 +60,7 @@
         android:layout_marginBottom="4dp"
         android:ems="10"
         android:hint="@string/hint_group_code"
+        android:importantForAutofill="no"
         android:inputType="number"
         android:maxLength="6"
         android:singleLine="true"
@@ -65,8 +68,7 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_join_group"
         app:layout_constraintEnd_toEndOf="@+id/tv_enter_code"
-        app:layout_constraintStart_toStartOf="@+id/tv_enter_code"
-        android:importantForAutofill="no" />
+        app:layout_constraintStart_toStartOf="@+id/tv_enter_code" />
 
     <Button
         android:id="@+id/btn_join_group"
@@ -77,9 +79,9 @@
         android:layout_marginBottom="8dp"
         android:drawableStart="@drawable/baseline_person_add_alt_24"
         android:drawableTint="@color/white"
-        android:text="@string/join_group"
         android:insetTop="0dp"
         android:insetBottom="0dp"
+        android:text="@string/join_group"
         app:layout_constraintBottom_toTopOf="@id/tv_or"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -100,11 +102,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:drawableStart="@drawable/ic_baseline_add_white_24"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:text="@string/create_group"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

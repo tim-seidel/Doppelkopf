@@ -14,13 +14,16 @@
     <string name="navigation_title_member_ranking">Ranglisten</string>
     <string name="session_players">Mitspielende</string>
     <string name="player">Spieler:in</string>
+    <string name="add_member">Weitere Mitspieler:in</string>
     <string name="desc_create_session_button">Button to create a new session</string>
     <string name="doko_session">Doppelkopfabend</string>
     <string name="group_name">Gruppenname</string>
+    <string name="group_name_hint">Lege einen Namen für eure Doppelkopfgruppe fest.</string>
     <string name="date_hint">Datum</string>
     <string name="session_general_data">Allgemein</string>
     <string name="group_general_data_heading">Allgemein</string>
     <string name="start_session">Starten</string>
+    <string name="title_welcome">Los geht\'s!</string>
     <string name="title_session_creation">Doppelkopfrunde erstellen</string>
     <string name="title_game_creation">Spiel erstellen</string>
     <string name="title_game_history">Spielverlauf</string>

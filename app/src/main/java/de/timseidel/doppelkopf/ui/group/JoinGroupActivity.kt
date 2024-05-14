@@ -32,6 +32,8 @@ class JoinGroupActivity : AppCompatActivity() {
             startActivity(intent)
         } else {
             setContentView(binding.rootJoinGroup)
+
+            title = getString(R.string.title_welcome)
             setupButtons()
             setupCodeInput()
 

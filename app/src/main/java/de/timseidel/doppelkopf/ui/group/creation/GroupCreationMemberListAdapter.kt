@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.ui.EditTextListener
@@ -66,10 +67,12 @@ class GroupCreationMemberListAdapter(
 
     private fun createAddMemberView(context: Context): View {
         val btn = Button(context)
-        btn.text = context.resources.getString(R.string.player)
+        btn.text = context.resources.getString(R.string.add_member)
+        val dp16 = Converter.convertDpToPixels(16f, context)
+        btn.setPadding(dp16)
         btn.setTextColor(ContextCompat.getColor(context, R.color.white))
         btn.backgroundTintList =
-            ColorStateList.valueOf(ContextCompat.getColor(context, R.color.neural))
+            ColorStateList.valueOf(ContextCompat.getColor(context, R.color.primary))
         btn.setCompoundDrawablesWithIntrinsicBounds(
             ContextCompat.getDrawable(context, R.drawable.ic_baseline_add_white_24),
             null,

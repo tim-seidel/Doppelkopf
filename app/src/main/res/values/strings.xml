@@ -21,6 +21,7 @@
     <string name="session_general_data">Allgemein</string>
     <string name="group_general_data_heading">Allgemein</string>
     <string name="start_session">Starten</string>
+    <string name="title_session_creation">Doppelkopfrunde erstellen</string>
     <string name="title_activity_session">SessionActivity</string>
     <string name="title_game_creation">Spiel erstellen</string>
     <string name="title_game_history">Spielverlauf</string>

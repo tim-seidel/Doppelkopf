@@ -3,6 +3,7 @@ package de.timseidel.doppelkopf.ui.session.creation
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -46,6 +47,7 @@ class SessionCreationActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         findViews()
+        setupToolbar()
         setupEditTexts()
         setupButtons()
         setupMemberSelectList()
@@ -58,6 +60,19 @@ class SessionCreationActivity : AppCompatActivity() {
         rvMemberSelectList = binding.rvSessionCreationMemberList
         btnCreateSession = binding.btnSaveSession
         btnCreateMember = binding.ibSessionAddMember
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupToolbar() {
+        setTitle(R.string.title_session_creation)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
     private fun setupEditTexts() {

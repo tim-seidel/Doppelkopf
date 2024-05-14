@@ -3,6 +3,7 @@ package de.timseidel.doppelkopf.ui.group.creation
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +33,7 @@ class GroupCreationActivity : AppCompatActivity() {
         binding = ActivityGroupCreationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupToolbar()
         setupButtons()
         setupNameInput()
         setupNameList()
@@ -39,6 +41,20 @@ class GroupCreationActivity : AppCompatActivity() {
         checkIsInputValid()
 
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupToolbar() {
+        setTitle(R.string.title_session_creation)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+    }
+
 
     private fun setupButtons() {
         binding.btnSaveGroup.setOnClickListener {

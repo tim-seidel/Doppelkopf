@@ -74,7 +74,7 @@
     <string name="dialog_refresh_statistics_changes_tabs_to_apply">Die Statistiken werden geupdated, sobald du einen Tab wechselst (und zurück).</string>
     <string name="group_member_creation_short_name_advice">Kurze Namen oder Spitznamen werden empfohlen, damit die Statistiken und Tabellen übersichtlicher sind. Gib mindestens 4 an. Leere Namen werden übersprungen.</string>
     <string name="default_tacken_input_score">00</string>
-    <string name="group_code_access_info">Den Gruppencode kann in der Gruppenübersicht oder einem Doppelkopfabend über das 3-Punkte-Menü angezeigt werden.</string>
+    <string name="group_code_access_info">Der Gruppencode kann in der Gruppenübersicht oder einer Doppelkopfrunde über das 3-Punkte-Menü angezeigt werden.</string>
     <string name="session_history_open_session">Doppelkopfabend aufrufen</string>
     <string name="desc_session_creation_member_list_create_member">Neuen Mitspieler erstellen und hinzufügen.</string>
     <string name="session_select_players_hint">Wähle Mitspieler:innen für diese Doppelkopfrunde aus.</string>

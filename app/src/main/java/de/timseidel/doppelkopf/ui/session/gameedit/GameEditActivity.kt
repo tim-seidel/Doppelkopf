@@ -1,6 +1,7 @@
 package de.timseidel.doppelkopf.ui.session.gameedit
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -39,9 +40,9 @@ class GameEditActivity : AppCompatActivity() {
 
         binding = ActivityGameEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setTitle(R.string.title_game_edit)
 
         findViews()
+        setupToolbar()
         setupButtons()
 
         val game = getGameToEdit()
@@ -56,6 +57,18 @@ class GameEditActivity : AppCompatActivity() {
         checkSaveGameButtonEnabled()
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupToolbar() {
+        setTitle(R.string.title_game_edit)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+    }
 
     private fun getGameToEdit(): Game? {
         val gameId = getGameId()

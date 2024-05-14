@@ -8,14 +8,14 @@
 
     <TextView
         android:id="@+id/tv_game_history_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="36dp"
+        android:layout_height="48dp"
         android:background="@drawable/border_background"
+        android:gravity="center"
         android:paddingHorizontal="4dp"
         android:paddingVertical="2dp"
         android:textColor="@color/neural"
         android:textSize="16sp"
-        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/rv_game_history_item_player_tacken_list"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/rv_game_history_item_player_tacken_list"

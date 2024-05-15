@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.GameHistoryColumn
+import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.util.Converter
 import kotlin.math.max
@@ -60,11 +61,16 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
         this.gameId = gameId
     }
 
-    fun setGameNumber(number: Int) {
-        tvGameNumber.text = if (number in 0..9) {
-            "0$number"
-        } else {
-            number.toString()
+    fun setGameNumber(number: Int, gameType: GameType) {
+        when (gameType) {
+            GameType.NORMAL -> tvGameNumber.text = if (number in 0..9) {
+                "0$number"
+            } else {
+                number.toString()
+            }
+            GameType.SCHWARZVERLOREN -> tvGameNumber.text = " V "
+            GameType.HOCHZEIT -> tvGameNumber.text = " H "
+            GameType.SOLO -> tvGameNumber.text = " S "
         }
     }
 

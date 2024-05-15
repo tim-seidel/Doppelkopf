@@ -1,6 +1,7 @@
 package de.timseidel.doppelkopf.ui.session.gamecreation
 
 import de.timseidel.doppelkopf.model.Faction
+import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.PlayerAndFaction
 
 class GameConfiguration {
@@ -9,6 +10,7 @@ class GameConfiguration {
     var winningFaction: Faction = Faction.NONE
     var tackenCount: Int = 0
     var isBockrunde: Boolean = false
+    var gameType: GameType = GameType.NORMAL
 
     fun isFactionAssignmentValid(): Boolean {
         if (playerFactionList.count() < 4) {

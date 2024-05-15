@@ -101,6 +101,17 @@ class GameCreationFragment : Fragment() {
                 gameConfiguration.playerFactionList.find { it.player == player }?.faction = faction
 
                 gameConfigurationView.setPlayerFaction(player, faction)
+
+                //Auto switch game type if solo is detected or vice versa. Does not auto switch if game type is already set to special game type
+                if(GameUtil.isFactionCompositionSolo(gameConfiguration.playerFactionList) && gameConfiguration.gameType == GameType.NORMAL) {
+                    gameConfiguration.gameType = GameType.SOLO
+                    gameConfigurationView.setGameType(GameType.SOLO)
+                }
+                if (!GameUtil.isFactionCompositionSolo(gameConfiguration.playerFactionList) && gameConfiguration.gameType == GameType.SOLO) {
+                    gameConfiguration.gameType = GameType.NORMAL
+                    gameConfigurationView.setGameType(GameType.NORMAL)
+                }
+
                 checkSaveGameButtonEnabled()
             }
 
@@ -108,6 +119,13 @@ class GameCreationFragment : Fragment() {
                 gameConfiguration.isBockrunde = isBockrunde
 
                 gameConfigurationView.setIsBockrunde(isBockrunde)
+                checkSaveGameButtonEnabled()
+            }
+
+            override fun onGameTypeChanged(gameType: GameType) {
+                gameConfiguration.gameType = gameType
+
+                gameConfigurationView.setGameType(gameType)
                 checkSaveGameButtonEnabled()
             }
         })
@@ -142,8 +160,8 @@ class GameCreationFragment : Fragment() {
                     0,
                     gameConfiguration.tackenCount,
                     gameConfiguration.isBockrunde,
-                    if (GameUtil.isFactionCompositionSolo(gameConfiguration.playerFactionList)) GameType.SOLO else GameType.NORMAL
-                )
+                    gameConfiguration.gameType
+               )
             DokoShortAccess.getGameCtrl().addGame(game)
 
             val db = Firebase.firestore

@@ -37,6 +37,7 @@
     <string name="faction_select_re_desc">Select re faction</string>
     <string name="faction_select_contra_desc">Select contra faction</string>
     <string name="game_result">Spielergebnis</string>
+    <string name="game_features">Spieleigenschaften</string>
     <string name="points_winner">Siegerpunkte</string>
     <string name="points_re">Punkte Re</string>
     <string name="desc_button_decrease_tacken">Decrease tacken</string>

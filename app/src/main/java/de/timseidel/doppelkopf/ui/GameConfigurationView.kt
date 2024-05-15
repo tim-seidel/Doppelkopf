@@ -4,14 +4,19 @@ import android.content.Context
 
 import android.util.AttributeSet
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.LinearLayout
+import android.widget.Spinner
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Faction
+import de.timseidel.doppelkopf.model.GameType
+import de.timseidel.doppelkopf.model.GameTypeHelper
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.PlayerAndFaction
 import de.timseidel.doppelkopf.ui.session.gamecreation.GameConfiguration
@@ -20,6 +25,7 @@ import de.timseidel.doppelkopf.ui.session.gamecreation.TackenCounterView
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
 
+//TODO: Check if GameType SOLO is legit. Notify user if not.
 class GameConfigurationView constructor(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
 
@@ -29,6 +35,7 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
     private lateinit var btnWinningFactionRe: Button
     private lateinit var btnWinningFactionContra: Button
     private lateinit var cbIsBockrunde: CheckBox
+    private lateinit var spGameType: Spinner
 
     private lateinit var playerFactionSelectAdapter: PlayerFactionSelectAdapter
     private var gameConfigurationChangeListener: GameConfigurationChangeListener? = null
@@ -38,6 +45,7 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         fun onWinningFactionChanged(winningFaction: Faction)
         fun onPlayerFactionChanged(player: Player, faction: Faction)
         fun onBockrundeChanged(isBockrunde: Boolean)
+        fun onGameTypeChanged(gameType: GameType)
     }
 
     init {
@@ -54,6 +62,7 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         setupFactionButtons()
         setupTackenCounter()
         setupBockrundeInput()
+        setupGameTypeSpinner()
     }
 
     fun setGameConfigurationChangeListener(listener: GameConfigurationChangeListener?) {
@@ -66,6 +75,7 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         btnWinningFactionRe = findViewById(R.id.btn_winner_re)
         btnWinningFactionContra = findViewById(R.id.btn_winner_contra)
         cbIsBockrunde = findViewById(R.id.cb_is_bockrunde)
+        spGameType = findViewById(R.id.sp_game_type)
     }
 
     private fun applyAttributes(attrs: AttributeSet?) {
@@ -81,6 +91,7 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         setIsBockrunde(gameConfiguration.isBockrunde)
         setWinningFaction(gameConfiguration.winningFaction)
         setPlayerFactionList(gameConfiguration.playerFactionList)
+        setGameType(gameConfiguration.gameType)
     }
 
     fun resetGameConfiguration() {
@@ -88,6 +99,7 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         setTackenCount(0)
         setIsBockrunde(false)
         doPlayerFactionReset()
+        setGameType(GameType.NORMAL)
     }
 
     private fun setupPlayerFactionSelectList() {
@@ -135,6 +147,24 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         }
     }
 
+    private fun setupGameTypeSpinner() {
+        val gameTypeStrings = GameTypeHelper.getStringList()
+
+        val adapter = ArrayAdapter(context, R.layout.view_game_type_spinner, gameTypeStrings)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spGameType.adapter = adapter
+
+        spGameType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val gameType = GameTypeHelper.getGameTypeByString(gameTypeStrings[position])
+                gameConfigurationChangeListener?.onGameTypeChanged(gameType)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+              //gameConfigurationChangeListener?.onGameTypeChanged(GameType.NORMAL)
+            }
+        }
+    }
 
     fun setTackenCount(tackenCount: Int) {
         tcTackenCounter.setTackenCount(tackenCount)

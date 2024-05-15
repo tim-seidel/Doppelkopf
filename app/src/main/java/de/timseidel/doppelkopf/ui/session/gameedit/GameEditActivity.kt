@@ -15,7 +15,6 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.Player
-import de.timseidel.doppelkopf.model.PlayerAndFaction
 import de.timseidel.doppelkopf.ui.GameConfigurationView
 import de.timseidel.doppelkopf.ui.session.gamecreation.GameConfiguration
 import de.timseidel.doppelkopf.util.DokoShortAccess
@@ -84,6 +83,7 @@ class GameEditActivity : AppCompatActivity() {
         gameConfiguration.winningFaction = game.winningFaction
         gameConfiguration.tackenCount = game.tacken
         gameConfiguration.isBockrunde = game.isBockrunde
+        gameConfiguration.gameType = game.gameType
     }
 
     private fun findViews() {
@@ -120,6 +120,17 @@ class GameEditActivity : AppCompatActivity() {
                 gameConfiguration.playerFactionList.find { it.player == player }?.faction = faction
 
                 gameConfigurationView.setPlayerFaction(player, faction)
+
+                //Auto switch game type if solo is detected or vice versa. Does not auto switch if game type is already set to special game type
+                if (GameUtil.isFactionCompositionSolo(gameConfiguration.playerFactionList) && gameConfiguration.gameType == GameType.NORMAL) {
+                    gameConfiguration.gameType = GameType.SOLO
+                    gameConfigurationView.setGameType(GameType.SOLO)
+                }
+                if (!GameUtil.isFactionCompositionSolo(gameConfiguration.playerFactionList) && gameConfiguration.gameType == GameType.SOLO) {
+                    gameConfiguration.gameType = GameType.NORMAL
+                    gameConfigurationView.setGameType(GameType.NORMAL)
+                }
+
                 checkSaveGameButtonEnabled()
             }
 
@@ -127,6 +138,13 @@ class GameEditActivity : AppCompatActivity() {
                 gameConfiguration.isBockrunde = isBockrunde
 
                 gameConfigurationView.setIsBockrunde(isBockrunde)
+                checkSaveGameButtonEnabled()
+            }
+
+            override fun onGameTypeChanged(gameType: GameType) {
+                gameConfiguration.gameType = gameType
+
+                gameConfigurationView.setGameType(gameType)
                 checkSaveGameButtonEnabled()
             }
         })
@@ -174,7 +192,7 @@ class GameEditActivity : AppCompatActivity() {
                 gameToEdit.winningPoints,
                 gameConfiguration.tackenCount,
                 gameConfiguration.isBockrunde,
-                if (GameUtil.isFactionCompositionSolo(gameConfiguration.playerFactionList)) GameType.SOLO else GameType.NORMAL,
+                gameConfiguration.gameType,
                 gameToEdit.soloType
             )
 

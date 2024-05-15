@@ -12,7 +12,7 @@ class GameHistoryListItemViewHolder(val gameView: GameHistoryListItemView) :
         isEditable: Boolean,
     ) {
         gameView.setGameId(model.game.id)
-        gameView.setGameNumber(model.number)
+        gameView.setGameNumber(model.number, model.game.gameType)
         gameView.setScores(model.scores)
         gameView.setBockStatus(model.isBockrunde)
         gameView.setIsEditable(isEditable)

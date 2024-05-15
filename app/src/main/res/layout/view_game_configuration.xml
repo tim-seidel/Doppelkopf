@@ -18,14 +18,14 @@
             android:id="@+id/tv_game_creation_title_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="4dp"
             android:gravity="center"
+            android:paddingVertical="4dp"
             android:text="@string/game_creation_player_assignment"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/white"
             android:textStyle="bold"
-            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintEnd_toStartOf="@+id/tv_game_creation_title_player_factions"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,8 +40,8 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/tv_game_creation_title_player"
-          app:layout_constraintStart_toEndOf="@id/tv_game_creation_title_player"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_game_creation_title_player"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -61,10 +61,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/border_background"
         android:backgroundTint="@color/neural_dark"
-        android:paddingVertical="4dp"
+        android:padding="4dp"
         android:text="@string/game_result"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -127,18 +127,63 @@
 
     </de.timseidel.doppelkopf.ui.session.gamecreation.TackenCounterView>
 
-    <CheckBox
-        android:id="@+id/cb_is_bockrunde"
+    <TextView
+        android:id="@+id/tv_game_creation_title_features"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/border_background"
+        android:backgroundTint="@color/neural_dark"
+        android:padding="4dp"
+        android:text="@string/game_features"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_game_creation_player_list" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_game_features"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/border_background"
-        android:buttonTint="@color/neural"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="@string/check_is_bockrunde"
-        android:textColor="@color/neural_dark"
-        android:textSize="20sp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_game_creation_title_result">
+
+
+        <Spinner
+            android:id="@+id/sp_game_type"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/border_background"
+            android:spinnerMode="dropdown"
+            app:layout_constraintEnd_toStartOf="@id/cb_is_bockrunde"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/cb_is_bockrunde"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/border_background"
+            android:buttonTint="@color/neural"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/check_is_bockrunde"
+            android:textColor="@color/neural_dark"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/sp_game_type"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

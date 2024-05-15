@@ -85,7 +85,7 @@ class GroupActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle("Gruppencode")
             .setMessage("Der Gruppencode ist: $groupCode")
-            .setPositiveButton("Okay") { dialog, _ ->
+            .setPositiveButton(R.string.okay) { dialog, _ ->
                 dialog.dismiss()
             }
             .show()

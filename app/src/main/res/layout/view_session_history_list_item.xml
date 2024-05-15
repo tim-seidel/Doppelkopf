@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/border_background"
-    android:padding="4dp">
+    android:paddingHorizontal="4dp"
+    android:paddingVertical="2dp">
 
     <TextView
         android:id="@+id/tv_session_title"
@@ -34,7 +35,7 @@
         android:id="@+id/rv_session_list_players"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ib_open_session"
@@ -47,7 +48,6 @@
         style="@android:style/Widget.Material.ImageButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="4dp"
         android:backgroundTint="@color/transparent"
         android:contentDescription="@string/session_history_open_session"
         android:scaleX="2"

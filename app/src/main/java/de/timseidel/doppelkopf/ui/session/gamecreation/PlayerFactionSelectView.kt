@@ -1,7 +1,6 @@
 package de.timseidel.doppelkopf.ui.session.gamecreation
 
 import android.content.Context
-import android.media.Image
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageButton

@@ -81,4 +81,6 @@
     <string name="desc_session_creation_member_list_create_member">Neuen Mitspieler erstellen und hinzufügen.</string>
     <string name="session_select_players_hint">Wähle Mitspieler:innen für diese Doppelkopfrunde aus.</string>
     <string name="tv_session_group_name_hint">Lege einen Namen für diese Runde fest.</string>
+    <string name="no_sessions_played_yet_title">Misch\' schonmal die Karten!</string>
+    <string name="no_sessions_played_yet_desc">Tippe auf den Button unten, um eure erste Doppelkopfrunde zu starten!</string>
 </resources>

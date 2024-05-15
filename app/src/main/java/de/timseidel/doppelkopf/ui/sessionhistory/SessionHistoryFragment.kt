@@ -61,10 +61,11 @@ class SessionHistoryFragment : Fragment() {
     }
 
     private fun updateSessionHistory() {
-        sessionHistoryListAdapter.setSessionInfos(
-            DokoShortAccess.getSessionInfoCtrl().getSessionInfos()
-                .sortedByDescending { it.date }
-        )
+        val sessionInfos = DokoShortAccess.getSessionInfoCtrl().getSessionInfos()
+        sessionHistoryListAdapter.setSessionInfos(sessionInfos.sortedByDescending { it.date })
+
+        binding.llNoSessionsTextWrapper.visibility = if (sessionInfos.isEmpty()) View.VISIBLE else View.GONE
+        binding.rvSessions.visibility = if (sessionInfos.isEmpty()) View.GONE else View.VISIBLE
     }
 
     private fun redirectToSessionLoadingActivity(sessionId: String) {

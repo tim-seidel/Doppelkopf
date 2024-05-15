@@ -165,7 +165,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             ),
             PieChartViewWrapper(
                 PieChartViewWrapper.PieChartData(
-                    "Siege und Niederlagen in Bockrunden",
+                    "Siege und Niederlagen",
                     "Siege: ${stats.general.wins.games} ($percentWins%), Niederlagen: ${stats.general.loss.games}",
                     "Spiele",
                     listOf(

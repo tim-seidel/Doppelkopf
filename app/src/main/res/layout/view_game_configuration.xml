@@ -70,6 +70,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/white"
         android:textStyle="bold"
+        app:drawableEndCompat="@drawable/ic_outline_help_24"
+        app:drawableTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rv_game_creation_player_list" />
@@ -141,6 +143,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/white"
         android:textStyle="bold"
+        app:drawableEndCompat="@drawable/ic_outline_help_24"
+        app:drawableTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rv_game_creation_player_list" />

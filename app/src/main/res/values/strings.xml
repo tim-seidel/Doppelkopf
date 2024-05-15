@@ -85,4 +85,6 @@
     <string name="tv_session_group_name_hint">Lege einen Namen für diese Runde fest.</string>
     <string name="no_sessions_played_yet_title">Misch\' schonmal die Karten!</string>
     <string name="no_sessions_played_yet_desc">Tippe auf den Button unten, um eure erste Doppelkopfrunde zu starten!</string>
+    <string name="game_result_help">Gib das Spielergebnis ein, indem du:\n - Die Siegerpartei (Re oder Contra) auswählst\n- Die Tacken (Wertungspunkte, nicht die Kartenpunkte) angibst</string>
+    <string name="game_features_help">Wähle die weiteren Eigenschaften dieses Spiels aus. Du kannst angeben:\n- Ob ihr ein Normalspiel oder eine besondere Runde wie z.B. eine Hochzeit oder ein Solo gespielt habt.\n- Falls ihr mit Bockrunden spielt, könnt ihr dies ebenfalls markieren. Das System nimmt dann an, dass die Tacken/Wertungszahl von euch verdoppelt wurde.</string>
 </resources>

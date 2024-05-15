@@ -1,5 +1,6 @@
 package de.timseidel.doppelkopf.ui
 
+import android.app.AlertDialog
 import android.content.Context
 
 import android.util.AttributeSet
@@ -10,6 +11,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,6 +38,8 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
     private lateinit var btnWinningFactionContra: Button
     private lateinit var cbIsBockrunde: CheckBox
     private lateinit var spGameType: Spinner
+    private lateinit var tvGameResultTitle: TextView
+    private lateinit var tvGameFeaturesTitle: TextView
 
     private lateinit var playerFactionSelectAdapter: PlayerFactionSelectAdapter
     private var gameConfigurationChangeListener: GameConfigurationChangeListener? = null
@@ -63,6 +67,7 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         setupTackenCounter()
         setupBockrundeInput()
         setupGameTypeSpinner()
+        setupTitleHelp()
     }
 
     fun setGameConfigurationChangeListener(listener: GameConfigurationChangeListener?) {
@@ -76,6 +81,8 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         btnWinningFactionContra = findViewById(R.id.btn_winner_contra)
         cbIsBockrunde = findViewById(R.id.cb_is_bockrunde)
         spGameType = findViewById(R.id.sp_game_type)
+        tvGameResultTitle = findViewById(R.id.tv_game_creation_title_result)
+        tvGameFeaturesTitle = findViewById(R.id.tv_game_creation_title_features)
     }
 
     private fun applyAttributes(attrs: AttributeSet?) {
@@ -166,6 +173,24 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         }
     }
 
+    private fun setupTitleHelp() {
+        tvGameResultTitle.setOnClickListener {
+            AlertDialog.Builder(context)
+                .setTitle(R.string.game_result)
+                .setMessage(R.string.game_result_help)
+                .setPositiveButton(R.string.okay, null)
+                .show()
+        }
+
+        tvGameFeaturesTitle.setOnClickListener {
+            AlertDialog.Builder(context)
+                .setTitle(R.string.game_features)
+                .setMessage(R.string.game_features_help)
+                .setPositiveButton(R.string.okay, null)
+                .show()
+        }
+    }
+
     fun setTackenCount(tackenCount: Int) {
         tcTackenCounter.setTackenCount(tackenCount)
     }
@@ -204,6 +229,10 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
 
     fun setPlayerFactionList(playerFactionList: List<PlayerAndFaction>) {
         playerFactionSelectAdapter.updatePlayerFactionList(playerFactionList)
+    }
+
+    fun setGameType(gameType: GameType) {
+        spGameType.setSelection(GameTypeHelper.getIntByGameType(gameType))
     }
 
     private fun setButtonColor(btn: Button, colorResId: Int) {

@@ -95,7 +95,8 @@ class SessionStatisticFragment : Fragment() {
     private fun setStatistics(provider: IStatisticViewsProvider) {
         val lvStatistic = binding.lvStatistic
 
-        val statisticItems = provider.getStatisticItems()
+        val withBockSettings = DokoShortAccess.getSettingsCtrl().getSettings().isBockrundeEnabled
+        val statisticItems = provider.getStatisticItems(withBockSettings)
         val adapter = StatisticListAdapter(
             requireContext(),
             statisticItems

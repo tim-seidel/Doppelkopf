@@ -51,13 +51,13 @@ class PlayerFactionSelectAdapter(
 
         btnRe.setOnClickListener {
             val newFaction = getNewFaction(players[position].faction, Faction.RE)
-            listener?.onFactionUpdate(players[position].player, Faction.RE)
+            listener?.onFactionUpdate(players[position].player, newFaction)
             players[position].faction = newFaction
             holder.setFaction(newFaction)
         }
         btnContra.setOnClickListener {
             val newFaction = getNewFaction(players[position].faction, Faction.CONTRA)
-            listener?.onFactionUpdate(players[position].player, Faction.CONTRA)
+            listener?.onFactionUpdate(players[position].player, newFaction)
             players[position].faction = newFaction
             holder.setFaction(newFaction)
         }

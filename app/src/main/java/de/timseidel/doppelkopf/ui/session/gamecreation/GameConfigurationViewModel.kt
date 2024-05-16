@@ -3,6 +3,7 @@ package de.timseidel.doppelkopf.ui.session.gamecreation
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.PlayerAndFaction
+import de.timseidel.doppelkopf.util.GameUtil
 
 class GameConfiguration {
 
@@ -38,13 +39,19 @@ class GameConfiguration {
         if (winningFaction == Faction.NONE) {
             return false
         }
-        return isFactionAssignmentValid()
+        if (!isFactionAssignmentValid()) {
+            return false
+        }
+
+        return GameUtil.isGameTypeValid(gameType, playerFactionList).first
     }
+
 
     fun reset() {
         winningFaction = Faction.NONE
         tackenCount = 0
         isBockrunde = false
+        gameType = GameType.NORMAL
 
         playerFactionList.forEach { paf ->
             paf.faction = Faction.NONE

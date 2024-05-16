@@ -85,50 +85,71 @@ class GameCreationFragment : Fragment() {
             GameConfigurationView.GameConfigurationChangeListener {
             override fun onTackenCountChanged(tackenCount: Int) {
                 gameConfiguration.tackenCount = tackenCount
-
                 gameConfigurationView.setTackenCount(tackenCount)
+
                 checkSaveGameButtonEnabled()
             }
 
             override fun onWinningFactionChanged(winningFaction: Faction) {
                 gameConfiguration.winningFaction = winningFaction
-
                 gameConfigurationView.setWinningFaction(winningFaction)
+
                 checkSaveGameButtonEnabled()
             }
 
             override fun onPlayerFactionChanged(player: Player, faction: Faction) {
                 gameConfiguration.playerFactionList.find { it.player == player }?.faction = faction
-
                 gameConfigurationView.setPlayerFaction(player, faction)
 
-                //Auto switch game type if solo is detected or vice versa. Does not auto switch if game type is already set to special game type
-                if(GameUtil.isFactionCompositionSolo(gameConfiguration.playerFactionList) && gameConfiguration.gameType == GameType.NORMAL) {
-                    gameConfiguration.gameType = GameType.SOLO
-                    gameConfigurationView.setGameType(GameType.SOLO)
-                }
-                if (!GameUtil.isFactionCompositionSolo(gameConfiguration.playerFactionList) && gameConfiguration.gameType == GameType.SOLO) {
-                    gameConfiguration.gameType = GameType.NORMAL
-                    gameConfigurationView.setGameType(GameType.NORMAL)
-                }
+                checkAutoSwitchGameType()
+                checkErrorMessage()
 
                 checkSaveGameButtonEnabled()
             }
 
             override fun onBockrundeChanged(isBockrunde: Boolean) {
                 gameConfiguration.isBockrunde = isBockrunde
-
                 gameConfigurationView.setIsBockrunde(isBockrunde)
+
                 checkSaveGameButtonEnabled()
             }
 
             override fun onGameTypeChanged(gameType: GameType) {
                 gameConfiguration.gameType = gameType
-
                 gameConfigurationView.setGameType(gameType)
+
+                checkErrorMessage()
                 checkSaveGameButtonEnabled()
             }
         })
+    }
+
+    private fun checkErrorMessage() {
+        val errorMessage =
+            GameUtil.isGameTypeValid(
+                gameConfiguration.gameType,
+                gameConfiguration.playerFactionList
+            ).second
+
+        gameConfigurationView.setGameTypeErrorMessage(if (gameConfiguration.gameType == GameType.SCHWARZVERLOREN) errorMessage else "")
+    }
+
+    /**
+     * Auto switch game type if solo is detected or vice versa.
+     * Does not auto switch if game type is already set to special game type
+     */
+    private fun checkAutoSwitchGameType() {
+        val gt = gameConfiguration.gameType
+        if (gt != GameType.NORMAL && gt != GameType.SOLO) return
+
+        if (GameUtil.isFactionCompositionSolo(gameConfiguration.playerFactionList) && gt == GameType.NORMAL) {
+            gameConfiguration.gameType = GameType.SOLO
+            gameConfigurationView.setGameType(GameType.SOLO)
+        }
+        if (!GameUtil.isFactionCompositionSolo(gameConfiguration.playerFactionList) && gt == GameType.SOLO) {
+            gameConfiguration.gameType = GameType.NORMAL
+            gameConfigurationView.setGameType(GameType.NORMAL)
+        }
     }
 
     private fun setButtonColor(btn: Button, colorResId: Int) {
@@ -161,7 +182,7 @@ class GameCreationFragment : Fragment() {
                     gameConfiguration.tackenCount,
                     gameConfiguration.isBockrunde,
                     gameConfiguration.gameType
-               )
+                )
             DokoShortAccess.getGameCtrl().addGame(game)
 
             val db = Firebase.firestore

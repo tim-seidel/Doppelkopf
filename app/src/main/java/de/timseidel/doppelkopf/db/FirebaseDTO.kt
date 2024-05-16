@@ -6,6 +6,7 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.Group
+import de.timseidel.doppelkopf.model.GroupSettings
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.PlayerAndFaction
@@ -18,9 +19,10 @@ data class GroupDto(
     var id: String,
     var code: String,
     var name: String,
-    var timeCreated: Long
+    var timeCreated: Long,
+    var settingIsBockrundeEnabled: Boolean
 ) {
-    constructor() : this("", "", "", 0)
+    constructor() : this("", "", "", 0, true)
 }
 
 data class MemberDto(
@@ -69,12 +71,13 @@ data class GameDto(
 
 class FirebaseDTO {
     companion object {
-        fun fromGroupToGroupDTO(group: Group): GroupDto {
+        fun fromGroupToGroupDTO(group: Group, groupSettings: GroupSettings): GroupDto {
             return GroupDto(
                 group.id,
                 group.code,
                 group.name,
-                group.date.toInstant(ZoneOffset.UTC).toEpochMilli()
+                group.date.toInstant(ZoneOffset.UTC).toEpochMilli(),
+                groupSettings.isBockrundeEnabled
             )
         }
 
@@ -88,6 +91,10 @@ class FirebaseDTO {
                 ),
                 dto.name
             )
+        }
+
+        fun fromGroupDTOtoGroupSettings(dto: GroupDto): GroupSettings {
+            return GroupSettings(dto.settingIsBockrundeEnabled)
         }
 
         fun fromMemberToMemberDTO(member: Member): MemberDto {

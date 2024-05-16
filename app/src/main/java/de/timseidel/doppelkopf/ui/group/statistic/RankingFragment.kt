@@ -180,7 +180,8 @@ class RankingFragment : Fragment() {
     }
 
     private fun calculateRankings(groupStatistics: GroupStatistics) {
-        rankings = RankingStatisticsProvider().getRankings(groupStatistics).toMutableList()
+        val withBockSettings = DokoShortAccess.getSettingsCtrl().getSettings().isBockrundeEnabled
+        rankings = RankingStatisticsProvider().getRankings(groupStatistics, withBockSettings).toMutableList()
 
         if (rankings.isNotEmpty()) {
             setRanking(rankings.first())

@@ -4,5 +4,5 @@ import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 
 interface IStatisticViewsProvider {
 
-    fun getStatisticItems(): List<IStatisticViewWrapper>
+    fun getStatisticItems(isBockrundeEnabled: Boolean): List<IStatisticViewWrapper>
 }

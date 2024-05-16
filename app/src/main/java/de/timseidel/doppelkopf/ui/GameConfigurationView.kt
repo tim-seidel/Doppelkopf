@@ -26,8 +26,8 @@ import de.timseidel.doppelkopf.ui.session.gamecreation.PlayerFactionSelectAdapte
 import de.timseidel.doppelkopf.ui.session.gamecreation.TackenCounterView
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
+import de.timseidel.doppelkopf.util.GameUtil
 
-//TODO: Check if GameType SOLO is legit. Notify user if not.
 class GameConfigurationView constructor(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
 
@@ -40,6 +40,7 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
     private lateinit var spGameType: Spinner
     private lateinit var tvGameResultTitle: TextView
     private lateinit var tvGameFeaturesTitle: TextView
+    private lateinit var tvGameTypeErrorMessage: TextView
 
     private lateinit var playerFactionSelectAdapter: PlayerFactionSelectAdapter
     private var gameConfigurationChangeListener: GameConfigurationChangeListener? = null
@@ -83,6 +84,7 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         spGameType = findViewById(R.id.sp_game_type)
         tvGameResultTitle = findViewById(R.id.tv_game_creation_title_result)
         tvGameFeaturesTitle = findViewById(R.id.tv_game_creation_title_features)
+        tvGameTypeErrorMessage = findViewById(R.id.tv_game_creation_gametype_error_message)
     }
 
     private fun applyAttributes(attrs: AttributeSet?) {
@@ -149,9 +151,14 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
     }
 
     private fun setupBockrundeInput() {
-        cbIsBockrunde.setOnCheckedChangeListener { _, isChecked ->
-            gameConfigurationChangeListener?.onBockrundeChanged(isChecked)
+        val settings = DokoShortAccess.getSettingsCtrl().getSettings()
+
+        if (settings.isBockrundeEnabled) {
+            cbIsBockrunde.setOnCheckedChangeListener { _, isChecked ->
+                gameConfigurationChangeListener?.onBockrundeChanged(isChecked)
+            }
         }
+        cbIsBockrunde.visibility = if (settings.isBockrundeEnabled) View.VISIBLE else View.GONE
     }
 
     private fun setupGameTypeSpinner() {
@@ -162,13 +169,18 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         spGameType.adapter = adapter
 
         spGameType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 val gameType = GameTypeHelper.getGameTypeByString(gameTypeStrings[position])
                 gameConfigurationChangeListener?.onGameTypeChanged(gameType)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-              //gameConfigurationChangeListener?.onGameTypeChanged(GameType.NORMAL)
+                //gameConfigurationChangeListener?.onGameTypeChanged(GameType.NORMAL)
             }
         }
     }
@@ -233,6 +245,15 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
 
     fun setGameType(gameType: GameType) {
         spGameType.setSelection(GameTypeHelper.getIntByGameType(gameType))
+    }
+
+    fun setGameTypeErrorMessage(message: String) {
+        tvGameTypeErrorMessage.text = message
+        if (message.isNotEmpty()) {
+            tvGameTypeErrorMessage.visibility = View.VISIBLE
+        } else {
+            tvGameTypeErrorMessage.visibility = View.GONE
+        }
     }
 
     private fun setButtonColor(btn: Button, colorResId: Int) {

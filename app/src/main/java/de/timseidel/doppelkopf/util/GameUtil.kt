@@ -38,6 +38,48 @@ class GameUtil {
             return tacken
         }
 
+        fun isGameTypeValid(
+            gameType: GameType,
+            playerFactionList: List<PlayerAndFaction>
+        ): Pair<Boolean, String> {
+            val reCount = playerFactionList.count { paf -> paf.faction == Faction.RE }
+            val contraCount = playerFactionList.count { paf -> paf.faction == Faction.CONTRA }
+
+            when (gameType) {
+                GameType.NORMAL -> {
+                    return Pair(
+                        reCount == 2 && contraCount == 2,
+                        "Wähle für ein Normalspiel genau 2 Re und 2 Contra Spieler:innen aus."
+                    )
+                }
+
+                GameType.HOCHZEIT -> {
+                    return Pair(
+                        reCount == 2 && contraCount == 2,
+                        "Hochzeit: Genau 2x Re für die Hochzeitspartei und 2x Contra."
+                    )
+                }
+
+                GameType.SCHWARZVERLOREN -> {
+                    return Pair(
+                        reCount == 1 && contraCount == 3,
+                        "Schwarz verloren: 1x Re als Verliererpartei und 3x Contra."
+                    )
+                }
+
+                GameType.SOLO -> {
+                    return Pair(
+                        reCount == 1 && contraCount == 3,
+                        "Solo: 1x Re als Solopartei und 3x Contra."
+                    )
+                }
+
+                else -> {
+                    return Pair(false, "Ungültiger Spieltyp.")
+                }
+            }
+        }
+
         fun getFactionPoints(faction: Faction, winningFaction: Faction, winningPoints: Int): Int {
             if (faction == Faction.NONE || winningFaction == Faction.NONE) {
                 return 0

@@ -5,7 +5,7 @@ import de.timseidel.doppelkopf.ui.statistic.views.SimpleTextStatisticViewWrapper
 
 class EmptyStatisticViewProvider : IStatisticViewsProvider {
 
-    override fun getStatisticItems(): List<IStatisticViewWrapper> {
+    override fun getStatisticItems(isBockrundeEnabled: Boolean): List<IStatisticViewWrapper> {
         return listOf(
             SimpleTextStatisticViewWrapper(
                 "Keine Statistiken verfügbar",

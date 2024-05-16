@@ -19,6 +19,7 @@
     <string name="doko_session">Doppelkopfabend</string>
     <string name="group_name">Gruppenname</string>
     <string name="group_name_hint">Lege einen Namen für eure Doppelkopfgruppe fest.</string>
+    <string name="group_toggle_bockrunden_hint">Lege fest, ob ihr Spiele als Bockrunden kennzeichnen könnt. Die App nimmt an, dass die Wertung dieser verdoppelt wurde. Für Bockrunden werden dann zusätzliche Statistiken erzeugt.</string>
     <string name="date_hint">Datum</string>
     <string name="session_general_data">Allgemein</string>
     <string name="group_general_data_heading">Allgemein</string>
@@ -28,6 +29,7 @@
     <string name="title_game_creation">Spiel erstellen</string>
     <string name="title_game_history">Spielverlauf</string>
     <string name="title_game_edit">Spiel bearbeiten</string>
+    <string name="title_group_settings">Gruppeneinstellung erstellen</string>
     <string name="title_session_statistic">Statistik</string>
     <string name="game_creation_player_assignment">Parteizuordnung</string>
     <string name="game_creation_player_assignment_factions">(♣ Re, ♦ Contra)</string>
@@ -69,6 +71,7 @@
     <string name="nav_clear_default_group">Zur Gruppenauswahl</string>
     <string name="nav_update_group_statistic">Gruppenstatistiken aktualisieren</string>
     <string name="menu_show_group_code">Gruppencode anzeigen</string>
+    <string name="menu_edit_group_settings">Gruppeneinstellungen</string>
     <string name="menu_session_export_csv">Als CSV exportieren</string>
     <string name="session_creation_create_new_member">Neuen Mitspieler hinzufügen</string>
     <string name="session_member_creation_unique_name">Bitte einen eindeutigen Namen anlegen</string>
@@ -86,4 +89,6 @@
     <string name="no_sessions_played_yet_desc">Tippe auf den Button unten, um eure erste Doppelkopfrunde zu starten!</string>
     <string name="game_result_help">Gib das Spielergebnis ein, indem du:\n - Die Siegerpartei (Re oder Contra) auswählst\n- Die Tacken (Wertungspunkte, nicht die Kartenpunkte) angibst</string>
     <string name="game_features_help">Wähle die weiteren Eigenschaften dieses Spiels aus. Du kannst angeben:\n- Ob ihr ein Normalspiel oder eine besondere Runde wie z.B. eine Hochzeit oder ein Solo gespielt habt.\n- Falls ihr mit Bockrunden spielt, könnt ihr dies ebenfalls markieren. Das System nimmt dann an, dass die Tacken/Wertungszahl von euch verdoppelt wurde.</string>
+    <string name="enable_bockrunden">Bockrunden anschalten</string>
+    <string name="save_group_settings">Einstellungen speichern</string>
 </resources>

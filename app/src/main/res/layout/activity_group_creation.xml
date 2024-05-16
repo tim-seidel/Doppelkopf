@@ -67,11 +67,31 @@
             android:textColorHint="#757575" />
 
         <TextView
+            android:id="@+id/tv_group_bockrunde_enable_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/group_toggle_bockrunden_hint"
+            android:textColor="@color/neural"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+
+        <CheckBox
+            android:id="@+id/cb_group_bockrunden_enable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:textColor="@color/neural"
+            android:textSize="16sp"
+            android:text="@string/enable_bockrunden" />
+
+        <TextView
             android:id="@+id/tv_group_players"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="@string/session_players"
             android:textColor="@color/primary_dark"
             android:textSize="20sp" />

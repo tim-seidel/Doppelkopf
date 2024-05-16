@@ -8,11 +8,12 @@ import de.timseidel.doppelkopf.db.GroupDto
 import de.timseidel.doppelkopf.db.request.base.BaseReadRequest
 import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Group
+import de.timseidel.doppelkopf.model.GroupSettings
 import de.timseidel.doppelkopf.util.Logging
 
 class GroupInfoRequestById(private val groupId: String) :
-    BaseReadRequest<Group>() {
-    override fun execute(listener: ReadRequestListener<Group>) {
+    BaseReadRequest<Pair<Group, GroupSettings>>() {
+    override fun execute(listener: ReadRequestListener<Pair<Group, GroupSettings>>) {
         readRequestListener = listener
 
         val db = FirebaseFirestore.getInstance()
@@ -26,7 +27,8 @@ class GroupInfoRequestById(private val groupId: String) :
                     if (groupDto != null) {
                         try {
                             val group = FirebaseDTO.fromGroupDTOtoGroup(groupDto)
-                            listener.onReadComplete(group)
+                            val settings = FirebaseDTO.fromGroupDTOtoGroupSettings(groupDto)
+                            listener.onReadComplete(Pair(group, settings))
                         } catch (e: Exception) {
                             Logging.e("Unable to convert ${doc.data} to GroupDTO")
                             listener.onReadFailed()
@@ -44,13 +46,12 @@ class GroupInfoRequestById(private val groupId: String) :
 }
 
 class GroupInfoRequestByCode(private val groupCode: String) :
-    BaseReadRequest<Group>() {
+    BaseReadRequest<Pair<Group, GroupSettings>>() {
 
-    override fun execute(listener: ReadRequestListener<Group>) {
+    override fun execute(listener: ReadRequestListener<Pair<Group, GroupSettings>>) {
         readRequestListener = listener
 
         val db = FirebaseFirestore.getInstance()
-
         db.collection(FirebaseStrings.collectionGroups)
             .whereEqualTo("code", groupCode)
             .get()
@@ -60,7 +61,8 @@ class GroupInfoRequestByCode(private val groupCode: String) :
                     if (groupDto != null) {
                         try {
                             val group = FirebaseDTO.fromGroupDTOtoGroup(groupDto)
-                            listener.onReadComplete(group)
+                            val settings = FirebaseDTO.fromGroupDTOtoGroupSettings(groupDto)
+                            listener.onReadComplete(Pair(group, settings))
                         } catch (e: Exception) {
                             failWithLog("Unable to convert data to GroupDTO", e)
                         }

@@ -149,6 +149,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rv_game_creation_player_list" />
 
+    <TextView
+        android:id="@+id/tv_game_creation_gametype_error_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="4dp"
+        android:textAlignment="center"
+        android:textColor="@color/neural"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        android:visibility="gone" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_game_features"
         android:layout_width="match_parent"

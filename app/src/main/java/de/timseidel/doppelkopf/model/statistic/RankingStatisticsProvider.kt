@@ -7,8 +7,8 @@ import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
 
 class RankingStatisticsProvider {
 
-    fun getRankings(groupStatistics: GroupStatistics): List<Ranking> {
-        return listOf(
+    fun getRankings(groupStatistics: GroupStatistics, isBockrundeEnabled: Boolean): List<Ranking> {
+        val rankings = mutableListOf(
             getMostTackenRanking(groupStatistics),
             getMostStrafTackenRanking(groupStatistics),
             getMostTackenAtWinsRanking(groupStatistics),
@@ -16,13 +16,18 @@ class RankingStatisticsProvider {
             getHighestReWinPercentageRanking(groupStatistics),
             getHighestContraWinPercentageRanking(groupStatistics),
             getMostPlayedSoliRanking(groupStatistics),
-            getMostBockTackenGainRanking(groupStatistics),
             getMostGamesRanking(groupStatistics),
             getLongestWinStreakRanking(groupStatistics),
             getLongestLossStreakRanking(groupStatistics),
             getMaxTackenWin(groupStatistics),
             getMaxTackenLoss(groupStatistics)
         )
+
+        if (isBockrundeEnabled) {
+            rankings.add(getMostBockTackenGainRanking(groupStatistics))
+        }
+
+        return rankings
     }
 
     private fun getMostGamesRanking(groupStatistics: GroupStatistics): Ranking {

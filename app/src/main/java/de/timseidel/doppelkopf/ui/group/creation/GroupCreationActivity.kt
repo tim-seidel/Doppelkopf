@@ -13,10 +13,12 @@ import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.controller.DoppelkopfManager
 import de.timseidel.doppelkopf.databinding.ActivityGroupCreationBinding
 import de.timseidel.doppelkopf.db.DoppelkopfDatabase
+import de.timseidel.doppelkopf.model.GroupSettings
 import de.timseidel.doppelkopf.ui.EditTextListener
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.group.GroupActivity
 import de.timseidel.doppelkopf.ui.util.Converter
+import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.Logging
 
 class GroupCreationActivity : AppCompatActivity() {
@@ -35,6 +37,7 @@ class GroupCreationActivity : AppCompatActivity() {
 
         setupToolbar()
         setupButtons()
+        setupBockrundenCheckbox()
         setupNameInput()
         setupNameList()
 
@@ -59,6 +62,13 @@ class GroupCreationActivity : AppCompatActivity() {
     private fun setupButtons() {
         binding.btnSaveGroup.setOnClickListener {
             onCreateGroupClicked()
+        }
+    }
+
+    private fun setupBockrundenCheckbox() {
+        binding.cbGroupBockrundenEnable.setOnCheckedChangeListener { _, isChecked ->
+            groupCreationViewModel.isBockrundeEnabled = isChecked
+            checkIsInputValid()
         }
     }
 
@@ -108,10 +118,15 @@ class GroupCreationActivity : AppCompatActivity() {
             val group = groupCtrl.createGroup(groupCreationViewModel.groupName)
             groupCtrl.set(group)
 
+            val groupSettings =
+                GroupSettings(groupCreationViewModel.isBockrundeEnabled)
+            DokoShortAccess.getSettingsCtrl().set(groupSettings)
+
             val db = Firebase.firestore
             val firebase = DoppelkopfDatabase()
             firebase.setFirestore(db)
-            firebase.storeGroup(group)
+
+            firebase.storeGroup(group, groupSettings)
 
             val memberNames = groupCreationViewModel.getFilteredMemberNames()
             if (memberNames.isNotEmpty()) {

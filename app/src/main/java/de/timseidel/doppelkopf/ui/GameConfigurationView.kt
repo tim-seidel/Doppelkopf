@@ -28,7 +28,6 @@ import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.GameUtil
 
-//TODO: Check if GameType SOLO is legit. Notify user if not.
 class GameConfigurationView constructor(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
 
@@ -152,9 +151,14 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
     }
 
     private fun setupBockrundeInput() {
-        cbIsBockrunde.setOnCheckedChangeListener { _, isChecked ->
-            gameConfigurationChangeListener?.onBockrundeChanged(isChecked)
+        val settings = DokoShortAccess.getSettingsCtrl().getSettings()
+
+        if (settings.isBockrundeEnabled) {
+            cbIsBockrunde.setOnCheckedChangeListener { _, isChecked ->
+                gameConfigurationChangeListener?.onBockrundeChanged(isChecked)
+            }
         }
+        cbIsBockrunde.visibility = if (settings.isBockrundeEnabled) View.VISIBLE else View.GONE
     }
 
     private fun setupGameTypeSpinner() {

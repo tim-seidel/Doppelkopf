@@ -14,6 +14,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.databinding.ActivityMainBinding
+import de.timseidel.doppelkopf.ui.group.settings.GroupSettingsActivity
 import de.timseidel.doppelkopf.util.DokoShortAccess
 
 class GroupActivity : AppCompatActivity() {
@@ -58,6 +59,10 @@ class GroupActivity : AppCompatActivity() {
             return true
         } else if (item.itemId == R.id.menu_item_group_show_group_code) {
             showGroupCode()
+            return true
+        }else if (item.itemId == R.id.menu_item_group_group_settings) {
+            val intent = Intent(this, GroupSettingsActivity::class.java)
+            startActivity(intent)
             return true
         }
         return super.onOptionsItemSelected(item)

@@ -16,6 +16,7 @@ import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionInfoListRequest
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.model.Group
+import de.timseidel.doppelkopf.model.GroupSettings
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.Logging
@@ -69,9 +70,11 @@ class GroupLoadingActivity : AppCompatActivity() {
             LOADING_MODE_ID -> {
                 loadGroupById()
             }
+
             LOADING_MODE_CODE -> {
                 loadGroupByCode()
             }
+
             else -> {
                 Logging.e("GroupLoadingActivity", "GROUP LOADING MODE NOT SET (ID/CODE)")
                 handleLoadingError()
@@ -79,10 +82,12 @@ class GroupLoadingActivity : AppCompatActivity() {
         }
     }
 
-    private val listener = object : ReadRequestListener<Group> {
+    private val listener = object : ReadRequestListener<Pair<Group, GroupSettings>> {
 
-        override fun onReadComplete(group: Group) {
+        override fun onReadComplete(groupAndSettings: Pair<Group, GroupSettings>) {
+            val (group, settings) = groupAndSettings
             DokoShortAccess.getGroupCtrl().set(group)
+            DokoShortAccess.getSettingsCtrl().set(settings)
 
             setTitle(group.name)
             setMessage(getString(R.string.loading_players))

@@ -14,6 +14,7 @@ import de.timseidel.doppelkopf.model.GameHistoryColumn
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.util.Converter
+import de.timseidel.doppelkopf.util.DokoShortAccess
 import kotlin.math.max
 
 class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet? = null) :
@@ -92,7 +93,8 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
     }
 
     fun setBockStatus(isBockrunde: Boolean) {
-        if (isBockrunde) {
+        val bockEnabled = DokoShortAccess.getSettingsCtrl().getSettings().isBockrundeEnabled
+        if (isBockrunde && bockEnabled) {
             tvGameNumber.setTextColor(ContextCompat.getColor(context, R.color.error))
             tvGameNumber.setTypeface(null, Typeface.ITALIC)
         } else {

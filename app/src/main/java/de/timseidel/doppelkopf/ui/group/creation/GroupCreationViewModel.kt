@@ -4,6 +4,7 @@ class GroupCreationViewModel {
 
     var groupName = ""
     var memberNames = mutableListOf("")
+    var isBockrundeEnabled = false
 
     fun isValid(): Boolean {
         if (groupName.length < 3) {

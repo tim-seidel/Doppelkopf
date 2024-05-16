@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_activity_group_settings"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btn_save_group_settings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/save_group_settings"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_baseline_check_24"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_group_settings_wrapper"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/btn_save_group_settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_group_settings_general"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/group_general_data_heading"
+            android:textColor="@color/primary_dark"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tv_group_settings_bockrunde_enable_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/group_toggle_bockrunden_hint"
+            android:textColor="@color/neural"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+
+        <CheckBox
+            android:id="@+id/cb_group_settings_bockrunden_enable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:text="@string/enable_bockrunden"
+            android:textColor="@color/neural"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

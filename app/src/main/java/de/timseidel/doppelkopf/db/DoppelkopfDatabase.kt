@@ -4,6 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Group
+import de.timseidel.doppelkopf.model.GroupSettings
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.Player
 
@@ -15,12 +16,18 @@ class DoppelkopfDatabase {
         db = firestore
     }
 
-    fun storeGroup(group: Group) {
-        val groupDto = FirebaseDTO.fromGroupToGroupDTO(group)
+    fun storeGroup(group: Group, groupSettings: GroupSettings) {
+        val groupDto = FirebaseDTO.fromGroupToGroupDTO(group, groupSettings)
 
         db.collection(FirebaseStrings.collectionGroups)
             .document(group.id)
             .set(groupDto)
+    }
+
+    fun storeGroupSettings(group: Group, groupSettings: GroupSettings) {
+        db.collection(FirebaseStrings.collectionGroups)
+            .document(group.id)
+            .update("settingIsBockrundeEnabled", groupSettings.isBockrundeEnabled)
     }
 
     fun storeMember(member: Member, group: Group) {

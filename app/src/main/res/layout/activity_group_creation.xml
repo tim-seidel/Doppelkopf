@@ -21,101 +21,132 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/ll_group_creation_input"
-        android:layout_width="match_parent"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/sv_group_creation_wrapper"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/btn_save_group"
+        app:layout_constraintBottom_toTopOf="@+id/btn_save_group"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_group_general"
+        <LinearLayout
+            android:id="@+id/ll_group_creation_input"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/group_general_data_heading"
-            android:textColor="@color/primary_dark"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/tv_group_name_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:text="@string/group_name_hint"
-            android:textColor="@color/neural"
-            android:textSize="14sp"
-            android:textStyle="italic" />
-
-        <EditText
-            android:id="@+id/et_group_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:layout_marginTop="4dp"
-            android:autofillHints=""
-            android:drawableStart="@drawable/ic_baseline_description_24"
-            android:ems="10"
-            android:hint="@string/group_name"
-            android:inputType="textPersonName"
-            android:singleLine="true"
-            android:textColorHint="#757575" />
-
-        <TextView
-            android:id="@+id/tv_group_bockrunde_enable_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="4dp"
-            android:text="@string/group_toggle_bockrunden_hint"
-            android:textColor="@color/neural"
-            android:textSize="14sp"
-            android:textStyle="italic" />
-
-        <CheckBox
-            android:id="@+id/cb_group_bockrunden_enable"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:textColor="@color/neural"
-            android:textSize="16sp"
-            android:text="@string/enable_bockrunden" />
-
-        <TextView
-            android:id="@+id/tv_group_players"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/session_players"
-            android:textColor="@color/primary_dark"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/tv_group_member_name_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:text="@string/group_member_creation_short_name_advice"
-            android:textColor="@color/neural"
-            android:textSize="14sp"
-            android:textStyle="italic" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_group_member_names"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@id/btn_save_group"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_group_member_name_info" />
-    </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_group_general"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/group_general_data_heading"
+                android:textColor="@color/primary_dark"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/tv_group_name_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:text="@string/group_name_hint"
+                android:textColor="@color/neural"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+
+            <EditText
+                android:id="@+id/et_group_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:autofillHints=""
+                android:drawableStart="@drawable/ic_baseline_description_24"
+                android:hint="@string/group_name"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:singleLine="true"
+                android:textColorHint="#757575" />
+
+            <TextView
+                android:id="@+id/tv_group_bockrunde_info_short"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/group_toggle_bockrunden_hint_short"
+                android:textColor="@color/neural"
+                android:textSize="14sp"
+                android:textStyle="italic" />
 
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
+
+                <CheckBox
+                    android:id="@+id/cb_group_bockrunden_enable"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:background="@drawable/border_background"
+                    android:text="@string/enable_bockrunden"
+                    android:textColor="@color/neural"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toStartOf="@id/ib_bockrunden_info"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/ib_bockrunden_info"
+                    android:layout_width="48dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/border_background"
+                    android:foreground="@drawable/ic_outline_help_24"
+                    android:foregroundTint="@color/primary"
+                    app:layout_constraintBottom_toBottomOf="@id/cb_group_bockrunden_enable"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/cb_group_bockrunden_enable" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_group_players"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/session_players"
+                android:textColor="@color/primary_dark"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/tv_group_member_name_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:text="@string/group_member_creation_short_name_advice"
+                android:textColor="@color/neural"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_group_member_names"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                app:layout_constraintBottom_toTopOf="@id/btn_save_group"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_group_member_name_info" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

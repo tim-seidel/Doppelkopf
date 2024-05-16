@@ -19,7 +19,8 @@
     <string name="doko_session">Doppelkopfabend</string>
     <string name="group_name">Gruppenname</string>
     <string name="group_name_hint">Lege einen Namen für eure Doppelkopfgruppe fest.</string>
-    <string name="group_toggle_bockrunden_hint">Lege fest, ob ihr Spiele als Bockrunden kennzeichnen könnt. Die App nimmt an, dass die Wertung dieser verdoppelt wurde. Für Bockrunden werden dann zusätzliche Statistiken erzeugt.</string>
+    <string name="group_toggle_bockrunden_hint_short">Lege fest, ob ihr Spiele als Bockrunden kennzeichnen könnt.</string>
+    <string name="group_toggle_bockrunden_hint">Lege fest, ob ihr Spiele als Bockrunden kennzeichnen könnt. Die App nimmt an, dass deren Wertung von euch verdoppelt wurde. Für Bockrunden werden zusätzliche Statistiken erzeugt. Ihr könnt diese Einstellung später noch ändern.</string>
     <string name="date_hint">Datum</string>
     <string name="session_general_data">Allgemein</string>
     <string name="group_general_data_heading">Allgemein</string>

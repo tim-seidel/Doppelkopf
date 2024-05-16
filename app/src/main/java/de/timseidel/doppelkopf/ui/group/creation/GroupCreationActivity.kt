@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.ktx.firestore
@@ -37,12 +38,12 @@ class GroupCreationActivity : AppCompatActivity() {
 
         setupToolbar()
         setupButtons()
+        setupInfoButtons()
         setupBockrundenCheckbox()
         setupNameInput()
         setupNameList()
 
         checkIsInputValid()
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -64,6 +65,17 @@ class GroupCreationActivity : AppCompatActivity() {
             onCreateGroupClicked()
         }
     }
+
+    private fun setupInfoButtons() {
+        binding.ibBockrundenInfo.setOnClickListener {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.enable_bockrunden)
+                .setMessage(R.string.group_toggle_bockrunden_hint)
+                .setPositiveButton(R.string.okay, null)
+                .show()
+        }
+    }
+
 
     private fun setupBockrundenCheckbox() {
         binding.cbGroupBockrundenEnable.setOnCheckedChangeListener { _, isChecked ->

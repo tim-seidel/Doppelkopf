@@ -17,12 +17,13 @@ import de.timseidel.doppelkopf.ui.util.Converter
 
 class GroupCreationMemberListAdapter(
     private val names: MutableList<String>,
-    var memberClickListener: OnMemberClickListener? = null
+    var memberClickListener: MemberListener? = null
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    interface OnMemberClickListener {
+    interface MemberListener {
         fun onAddMemberClicked()
+        fun onMemberNameChanged(name : String, position: Int)
     }
 
     class MemberViewHolder(
@@ -109,6 +110,7 @@ class GroupCreationMemberListAdapter(
         override fun afterTextChanged(s: Editable?) {
             if (position != -1) {
                 names[position] = s.toString()
+                memberClickListener?.onMemberNameChanged(s.toString(), position)
             }
         }
     }

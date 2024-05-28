@@ -12,6 +12,10 @@ class GroupCreationViewModel {
         }
 
         val names = getFilteredMemberNames()
+        if (names.size < 4) {
+            return false
+        }
+
         return names.distinct().count() == names.count()
     }
 

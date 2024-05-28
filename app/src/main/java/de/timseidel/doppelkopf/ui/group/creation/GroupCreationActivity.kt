@@ -95,9 +95,15 @@ class GroupCreationActivity : AppCompatActivity() {
 
     private fun setupNameList() {
         memberNameListAdapter.memberClickListener =
-            object : GroupCreationMemberListAdapter.OnMemberClickListener {
+            object : GroupCreationMemberListAdapter.MemberListener {
                 override fun onAddMemberClicked() {
                     memberNameListAdapter.addRow()
+                    checkIsInputValid()
+                }
+
+                override fun onMemberNameChanged(name: String, position: Int) {
+                    //Currently no need to manually changes the name because the member list is passed by reference
+                    //TODO: Change that
                     checkIsInputValid()
                 }
             }

@@ -4,7 +4,7 @@ import de.timseidel.doppelkopf.model.Group
 
 interface IGroupController {
 
-    fun createGroup(groupName: String): Group
+    fun createGroup(groupName: String, groupCode: String): Group
 
     fun getGroup(): Group
 

@@ -14,6 +14,8 @@ import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.controller.DoppelkopfManager
 import de.timseidel.doppelkopf.databinding.ActivityGroupCreationBinding
 import de.timseidel.doppelkopf.db.DoppelkopfDatabase
+import de.timseidel.doppelkopf.db.request.CreateUniqueGroupCodeRequest
+import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.GroupSettings
 import de.timseidel.doppelkopf.ui.EditTextListener
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
@@ -126,34 +128,47 @@ class GroupCreationActivity : AppCompatActivity() {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
+    private fun onGroupCodeCreated(groupCode: String) {
+        val groupCtrl = DoppelkopfManager.getInstance().getGroupController()
+
+        val group = groupCtrl.createGroup(groupCreationViewModel.groupName, groupCode)
+        groupCtrl.set(group)
+
+        val groupSettings =
+            GroupSettings(groupCreationViewModel.isBockrundeEnabled)
+        DokoShortAccess.getSettingsCtrl().set(groupSettings)
+
+        val db = Firebase.firestore
+        val firebase = DoppelkopfDatabase()
+        firebase.setFirestore(db)
+
+        firebase.storeGroup(group, groupSettings)
+
+        val memberNames = groupCreationViewModel.getFilteredMemberNames()
+        if (memberNames.isNotEmpty()) {
+            val members = groupCtrl.getMemberController().createMembers(memberNames)
+            groupCtrl.getMemberController().addMembers(members)
+            firebase.storeMembers(members, group)
+        }
+
+        finishGroupCreation()
+    }
+
     private fun onCreateGroupClicked() {
         if (!groupCreationViewModel.isValid()) {
             showGroupCreationError(getString(R.string.create_group_unable_to_create))
         }
 
         try {
-            val groupCtrl = DoppelkopfManager.getInstance().getGroupController()
-            val group = groupCtrl.createGroup(groupCreationViewModel.groupName)
-            groupCtrl.set(group)
+            CreateUniqueGroupCodeRequest(3).execute(object : ReadRequestListener<String> {
+                override fun onReadComplete(result: String) {
+                    onGroupCodeCreated(result)
+                }
 
-            val groupSettings =
-                GroupSettings(groupCreationViewModel.isBockrundeEnabled)
-            DokoShortAccess.getSettingsCtrl().set(groupSettings)
-
-            val db = Firebase.firestore
-            val firebase = DoppelkopfDatabase()
-            firebase.setFirestore(db)
-
-            firebase.storeGroup(group, groupSettings)
-
-            val memberNames = groupCreationViewModel.getFilteredMemberNames()
-            if (memberNames.isNotEmpty()) {
-                val members = groupCtrl.getMemberController().createMembers(memberNames)
-                groupCtrl.getMemberController().addMembers(members)
-                firebase.storeMembers(members, group)
-            }
-
-            finishGroupCreation()
+                override fun onReadFailed() {
+                    showGroupCreationError(getString(R.string.create_group_unable_to_create_groupcode))
+                }
+            })
         } catch (e: Exception) {
             Logging.e(
                 "GroupCreationActivity",
@@ -162,7 +177,6 @@ class GroupCreationActivity : AppCompatActivity() {
             )
             showGroupCreationError(getString(R.string.create_group_unable_to_create))
         }
-
     }
 
     private fun finishGroupCreation() {

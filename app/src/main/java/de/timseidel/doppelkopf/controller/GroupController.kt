@@ -14,7 +14,7 @@ class GroupController : IGroupController {
     private val sessionInfoController: ISessionInfoController = SessionInfoController()
     private val memberController: IMemberController = MemberController()
 
-    override fun createGroup(groupName: String): Group {
+    override fun createGroup(groupName: String, groupCode: String): Group {
         return Group(
             IdGenerator.generateIdWithTimestamp("group"),
             IdGenerator.generateGroupCode(),

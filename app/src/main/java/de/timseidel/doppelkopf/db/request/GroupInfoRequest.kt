@@ -75,3 +75,17 @@ class GroupInfoRequestByCode(private val groupCode: String) :
             }
     }
 }
+
+class GroupCodeExistsRequest(private val groupCode: String) : BaseReadRequest<Boolean>() {
+    override fun execute(listener: ReadRequestListener<Boolean>) {
+        readRequestListener = listener
+
+        val db = FirebaseFirestore.getInstance()
+        db.collection(FirebaseStrings.collectionGroups)
+            .whereEqualTo("code", groupCode)
+            .get()
+            .addOnSuccessListener { doc ->
+                listener.onReadComplete(!doc.isEmpty)
+            }
+    }
+}

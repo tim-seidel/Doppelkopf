@@ -30,6 +30,7 @@ class GroupSettingsActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
+            setResult(RESULT_CANCELED)
             finish()
         }
         return super.onOptionsItemSelected(item)
@@ -51,6 +52,7 @@ class GroupSettingsActivity : AppCompatActivity() {
     private fun setupButtons() {
         binding.btnSaveGroupSettings.setOnClickListener {
             saveSettings()
+            setResult(RESULT_OK)
             finish()
         }
     }

@@ -1,10 +1,12 @@
 package de.timseidel.doppelkopf.ui.group
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -52,6 +54,12 @@ class GroupActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    private val startSettingsForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            DokoShortAccess.getStatsCtrl().invalidate()
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_item_clear_default_group) {
             clearCurrentGroupId()
@@ -62,7 +70,7 @@ class GroupActivity : AppCompatActivity() {
             return true
         }else if (item.itemId == R.id.menu_item_group_group_settings) {
             val intent = Intent(this, GroupSettingsActivity::class.java)
-            startActivity(intent)
+            startSettingsForResult.launch(intent)
             return true
         }
         return super.onOptionsItemSelected(item)

@@ -125,9 +125,8 @@ class RankingFragment : Fragment() {
     }
 
     private fun setupStatistics() {
-        val groupStatistics = DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
-        if (groupStatistics != null) {
-            calculateRankings(groupStatistics)
+        if (DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
+            calculateRankings(DokoShortAccess.getStatsCtrl().getCachedGroupStatistics())
         } else {
             loadDataForStatistics()
         }
@@ -167,21 +166,19 @@ class RankingFragment : Fragment() {
     }
 
     private fun calculateAndApplyGroupStatistics(sessions: List<ISessionController>) {
-        var stats = DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
-
-        if (stats == null) {
-            stats = DokoShortAccess.getStatsCtrl().calculateGroupStatistics(
+        if (!DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
+            DokoShortAccess.getStatsCtrl().calculateGroupStatistics(
                 DokoShortAccess.getMemberCtrl().getMembers(),
                 sessions
             )
         }
-
-        calculateRankings(stats)
+        calculateRankings(DokoShortAccess.getStatsCtrl().getCachedGroupStatistics())
     }
 
     private fun calculateRankings(groupStatistics: GroupStatistics) {
         val withBockSettings = DokoShortAccess.getSettingsCtrl().getSettings().isBockrundeEnabled
-        rankings = RankingStatisticsProvider().getRankings(groupStatistics, withBockSettings).toMutableList()
+        rankings = RankingStatisticsProvider().getRankings(groupStatistics, withBockSettings)
+            .toMutableList()
 
         if (rankings.isNotEmpty()) {
             setRanking(rankings.first())

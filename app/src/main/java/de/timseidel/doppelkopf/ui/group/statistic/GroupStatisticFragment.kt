@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -19,12 +18,14 @@ import de.timseidel.doppelkopf.databinding.FragmentGroupStatisticBinding
 import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionListRequest
 import de.timseidel.doppelkopf.model.Member
+import de.timseidel.doppelkopf.model.StatisticStatus
 import de.timseidel.doppelkopf.ui.statistic.StatisticListAdapter
 import de.timseidel.doppelkopf.ui.statistic.provider.EmptyStatisticViewProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.GroupStatisticViewProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.IStatisticViewsProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.MemberStatisticViewProvider
 import de.timseidel.doppelkopf.util.DokoShortAccess
+import de.timseidel.doppelkopf.util.Logging
 import kotlin.math.max
 import kotlin.math.min
 import java.time.LocalDateTime
@@ -34,6 +35,9 @@ class GroupStatisticFragment : Fragment() {
     private val placeholderIdGroupStatistics = "__default_group"
 
     private var _binding: FragmentGroupStatisticBinding? = null
+
+    private val cachedSessions = mutableListOf<ISessionController>() //TODO: Nicht nur hier cachen?
+
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -44,7 +48,7 @@ class GroupStatisticFragment : Fragment() {
 
         _binding = FragmentGroupStatisticBinding.inflate(inflater, container, false)
 
-        setupStatistics()
+        initStatistics()
         setupMemberSelect()
 
         return binding.root
@@ -63,7 +67,7 @@ class GroupStatisticFragment : Fragment() {
             override fun onMenuItemSelected(item: MenuItem): Boolean {
                 if (item.itemId == R.id.menu_item_reset_group_statistics) {
                     DokoShortAccess.getStatsCtrl().reset()
-                    setupStatistics()
+                    loadAndSetupStatistics()
                     return true
                 }
                 return false
@@ -71,21 +75,20 @@ class GroupStatisticFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun setupStatistics() {
-        val sessionInfos = DokoShortAccess.getSessionInfoCtrl().getSessionInfos()
-        if (sessionInfos.isEmpty()) {
-            setStatistics(EmptyStatisticViewProvider())
+    private fun initStatistics() {
+        if (DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
+            Logging.d("GroupStatisticFragment | initStatistics", "Cached statistics available")
+            setCachedStatistics()
         } else {
-            val groupStatistics = DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
-            if (groupStatistics != null) {
-                setStatistics(GroupStatisticViewProvider(groupStatistics))
-            } else {
-                loadDataForStatistics()
-            }
+            Logging.d(
+                "GroupStatisticFragment | initStatistics",
+                "Cached statistics not available. Loading..."
+            )
+            loadAndSetupStatistics()
         }
     }
 
-    private fun loadDataForStatistics() {
+    private fun loadAndSetupStatistics() {
         val sessionInfos = DokoShortAccess.getSessionInfoCtrl().getSessionInfos()
 
         showSessionLoadingStart()
@@ -93,7 +96,12 @@ class GroupStatisticFragment : Fragment() {
         SessionListRequest(sessionInfos).execute(object :
             ReadRequestListener<List<ISessionController>> {
             override fun onReadComplete(result: List<ISessionController>) {
-                calculateAndApplyGroupStatistics(result)
+                Logging.d("GroupStatisticFragment | loadAndSetupStatistics", "Sessions loaded")
+                cachedSessions.clear()
+                cachedSessions.addAll(result)
+
+                checkAndTriggerStatisticsCalculation(result)
+                setCachedStatistics()
             }
 
             override fun onReadFailed() {
@@ -107,10 +115,10 @@ class GroupStatisticFragment : Fragment() {
             MemberListHeaderAdapter.OnMemberClickListener {
 
             override fun onMemberClicked(member: Member) {
-                val stats = DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
-                if (stats == null) {
+                if (DokoShortAccess.getStatsCtrl().getStatus() == StatisticStatus.EMPTY) {
                     setStatistics(EmptyStatisticViewProvider())
                 } else {
+                    val stats = DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
                     if (member.id == placeholderIdGroupStatistics) {
                         setStatistics(GroupStatisticViewProvider(stats))
                     } else {
@@ -164,17 +172,38 @@ class GroupStatisticFragment : Fragment() {
         ).show()
     }
 
-    private fun calculateAndApplyGroupStatistics(sessions: List<ISessionController>) {
-        var stats = DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
 
-        if (stats == null) {
-            stats = DokoShortAccess.getStatsCtrl().calculateGroupStatistics(
+    private fun checkAndTriggerStatisticsCalculation(sessions: List<ISessionController>) {
+        Logging.d(
+            "GroupStatisticFragment | checkAndTriggerStatisticsCalculation",
+            "Checking and triggering statistics calculation"
+        )
+        if (!DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
+            Logging.d(
+                "GroupStatisticFragment | checkAndTriggerStatisticsCalculation",
+                "Calculating statistics"
+            )
+            DokoShortAccess.getStatsCtrl().calculateGroupStatistics(
                 DokoShortAccess.getMemberCtrl().getMembers(),
                 sessions
             )
         }
+    }
 
-        setStatistics(GroupStatisticViewProvider(stats))
+    private fun setCachedStatistics() {
+        Logging.d("GroupStatisticFragment | setCachedStatistics", "Setting cached statistics")
+        setStatistics(
+            GroupStatisticViewProvider(
+                DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
+            )
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Logging.d("GroupStatisticFragment | onResume", "Resuming")
+        checkAndTriggerStatisticsCalculation(cachedSessions)
+        setCachedStatistics()
     }
 
     override fun onDestroyView() {

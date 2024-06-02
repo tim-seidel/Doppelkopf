@@ -4,6 +4,7 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.statistic.StatisticUtil
 import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
+import de.timseidel.doppelkopf.model.statistic.session.PlayerStatistic
 import de.timseidel.doppelkopf.ui.statistic.views.ColumnChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.LineChartViewWrapper
@@ -141,6 +142,25 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
         val percentReWin =
             if (groupStatistics.general.total.games > 0) round(groupStatistics.re.wins.games / groupStatistics.general.total.games.toFloat() * 100).toInt() else 0
 
+        var maxTackenResult: PlayerStatistic? = null
+        groupStatistics.sessionStatistics.forEach { ss ->
+            val maxSessionTacken = ss.playerStatistics.maxByOrNull { ps -> ps.general.total.tacken }
+            if (maxSessionTacken != null) {
+                if (maxTackenResult == null || maxSessionTacken.general.total.tacken > maxTackenResult!!.general.total.tacken) {
+                    maxTackenResult = maxSessionTacken
+                }
+            }
+        }
+
+        var minTackenResult: PlayerStatistic? = null
+        groupStatistics.sessionStatistics.forEach { ss ->
+            val minSessionTacken = ss.playerStatistics.minByOrNull { ps -> ps.general.total.tacken }
+            if (minSessionTacken != null) {
+                if (minTackenResult == null || minSessionTacken.general.total.tacken < minTackenResult!!.general.total.tacken) {
+                    minTackenResult = minSessionTacken
+                }
+            }
+        }
 
         val totalGamesTextStat = SimpleTextStatisticViewWrapper(
             "Allgemeine Statistik",
@@ -392,12 +412,26 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
             )
         )
 
+        val maxTackenResultTextStat = SimpleTextStatisticViewWrapper(
+            "Bestes Ergebnis",
+            "Das höchste erzielte Tackenergebnis hat ${maxTackenResult?.player?.name} erzielt:",
+            "${maxTackenResult?.general?.total?.tacken}"
+        )
+
+        val minTackenResultTextStat = SimpleTextStatisticViewWrapper(
+            "Schlechtestes Ergebnis",
+            "Das niedrigste erzielte Tackenergebnis hat ${minTackenResult?.player?.name} erzielt:",
+            "${minTackenResult?.general?.total?.tacken}"
+        )
+
         if (isBockrundeEnabled) {
             return listOf(
                 totalGamesTextStat,
                 parteiPieChart,
                 tackenLineChart,
                 tackenIgnoringBockLineChart,
+                maxTackenResultTextStat,
+                minTackenResultTextStat,
                 winLossPlayerBarChart,
                 averageTackenPerGameTextStat,
                 tackenWinLossPlayerBarChart,
@@ -411,7 +445,8 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                 totalGamesTextStat,
                 parteiPieChart,
                 tackenLineChart,
-                totalStraftackenTextStat,
+                maxTackenResultTextStat,
+                minTackenResultTextStat,
                 winLossPlayerBarChart,
                 averageTackenPerGameTextStat,
                 tackenWinLossPlayerBarChart,

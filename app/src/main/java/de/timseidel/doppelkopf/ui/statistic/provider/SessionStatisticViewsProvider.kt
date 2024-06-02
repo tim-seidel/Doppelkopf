@@ -52,6 +52,9 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
             )
         }
 
+        val totalNegativeTacken =
+            2 * (sessionStatistics.gameResultHistoryLoser.sumOf { gr -> if (gr.tacken < 0) -1 * gr.tacken else 0 } + sessionStatistics.gameResultHistoryWinner.sumOf { gr -> if (gr.tacken < 0) -1 * gr.tacken else 0 })
+
         val playerNames = playerStats.map { p -> p.player.name }
 
         val playerWinsRe = mutableListOf<Int>()
@@ -65,7 +68,6 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
         val playerTackenWinsContra = mutableListOf<Int>()
         val playerTackenLossRe = mutableListOf<Int>()
         val playerTackenLossContra = mutableListOf<Int>()
-
 
         playerStats.forEach { p ->
             playerWinsRe.add(p.re.wins.games)
@@ -201,9 +203,15 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
             sessionStatistics.general.total.getTackenPerGame().toString()
         )
 
+        val totalStraftackenTextStat = SimpleTextStatisticViewWrapper(
+            "Straftacken",
+            "Insgesamt wurden so viele Straftacken verteilt:",
+            totalNegativeTacken.toString()
+        )
+
         val straftackenLineChart = LineChartViewWrapper(
             LineChartViewWrapper.LineChartData(
-                "Straftacken", "Straftacken", playerTackenLosses, 400f
+                "Straftackensammlung", "Straftacken", playerTackenLosses, 400f
             )
         )
 
@@ -401,6 +409,7 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
                 parteiPieChart,
                 tackenLineChart,
                 tackenIgnoringBockLineChart,
+                totalStraftackenTextStat,
                 straftackenLineChart,
                 winLossPlayerBarChart,
                 averageTackenPerGameTextStat,
@@ -414,6 +423,7 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
                 totalGamesTextStat,
                 parteiPieChart,
                 tackenLineChart,
+                totalStraftackenTextStat,
                 straftackenLineChart,
                 winLossPlayerBarChart,
                 averageTackenPerGameTextStat,

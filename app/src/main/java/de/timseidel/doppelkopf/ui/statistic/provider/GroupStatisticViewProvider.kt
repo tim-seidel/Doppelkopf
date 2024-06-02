@@ -8,6 +8,7 @@ import de.timseidel.doppelkopf.ui.statistic.views.ColumnChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.LineChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.PieChartViewWrapper
+import de.timseidel.doppelkopf.ui.statistic.views.SimpleTextStatisticView
 import de.timseidel.doppelkopf.ui.statistic.views.SimpleTextStatisticViewWrapper
 import kotlin.math.round
 
@@ -37,6 +38,11 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                     history
                 )
             )
+        }
+
+        var totalNegativeTacken = 0
+        groupStatistics.sessionStatistics.forEach { ss ->
+            totalNegativeTacken += 2 * (ss.gameResultHistoryLoser.sumOf { gr -> if (gr.tacken < 0) -1 * gr.tacken else 0 } + ss.gameResultHistoryWinner.sumOf { gr -> if (gr.tacken < 0) -1 * gr.tacken else 0 })
         }
 
         val memberNames = groupStatistics.memberStatistics.map { m -> m.member.name }
@@ -184,6 +190,12 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                 "Tackenverlauf ohne Bockrunden", "Tacken", memberTackenHistoriesWithoutBock,
                 height = 400f
             )
+        )
+
+        val totalStraftackenTextStat = SimpleTextStatisticViewWrapper(
+            "Straftacken",
+            "Insgesamt wurden so viele Straftacken verteilt:",
+            totalNegativeTacken.toString()
         )
 
         val winLossPlayerBarChart = ColumnChartViewWrapper(
@@ -389,6 +401,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                 winLossPlayerBarChart,
                 averageTackenPerGameTextStat,
                 tackenWinLossPlayerBarChart,
+                totalStraftackenTextStat,
                 tackenBarChartBockEnabled,
                 soloTextStat,
                 soloPlayerBarChart
@@ -398,9 +411,11 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                 totalGamesTextStat,
                 parteiPieChart,
                 tackenLineChart,
+                totalStraftackenTextStat,
                 winLossPlayerBarChart,
                 averageTackenPerGameTextStat,
                 tackenWinLossPlayerBarChart,
+                totalStraftackenTextStat,
                 tackenBarChartBockDisabled,
                 soloTextStat,
                 soloPlayerBarChart

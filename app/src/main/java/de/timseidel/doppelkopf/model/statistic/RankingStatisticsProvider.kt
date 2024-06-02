@@ -4,6 +4,7 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Ranking
 import de.timseidel.doppelkopf.model.RankingItem
 import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
+import de.timseidel.doppelkopf.model.statistic.session.PlayerStatistic
 
 class RankingStatisticsProvider {
 
@@ -20,7 +21,11 @@ class RankingStatisticsProvider {
             getLongestWinStreakRanking(groupStatistics),
             getLongestLossStreakRanking(groupStatistics),
             getMaxTackenWin(groupStatistics),
-            getMaxTackenLoss(groupStatistics)
+            getMaxTackenLoss(groupStatistics),
+            getHighestSessionTackenGainRanking(groupStatistics),
+            getLowestSessionTackenGainRanking(groupStatistics),
+            getHighestSessionTackenRanking(groupStatistics),
+            getLowestSessionTackenRanking(groupStatistics)
         )
 
         if (isBockrundeEnabled) {
@@ -213,5 +218,109 @@ class RankingStatisticsProvider {
             }.sortedBy { rankingItem -> rankingItem.value.toInt() })
 
         return ranking
+    }
+
+    private fun getHighestSessionTackenGainRanking(groupStatistics: GroupStatistics): Ranking {
+
+        val ranking = Ranking(
+            "Höchstes Sessionergebnis (Tacken)",
+            groupStatistics.memberStatistics.map { memberStatistic ->
+                RankingItem(
+                    memberStatistic.member.name,
+                    getHighestSessionEndTacken(memberStatistic.sessionStatistics).toString()
+                )
+            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+
+        return ranking
+    }
+
+    private fun getLowestSessionTackenGainRanking(groupStatistics: GroupStatistics): Ranking {
+
+        val ranking = Ranking(
+            "Niedrigstes Sessionergebnis (Tacken)",
+            groupStatistics.memberStatistics.map { memberStatistic ->
+                RankingItem(
+                    memberStatistic.member.name,
+                    getLowestSessionEndTacken(memberStatistic.sessionStatistics).toString()
+                )
+            }.sortedBy { rankingItem -> rankingItem.value.toInt() })
+
+        return ranking
+    }
+
+    private fun getHighestSessionTackenRanking(groupStatistics: GroupStatistics): Ranking {
+
+        val ranking = Ranking(
+            "Höchster Tackenstand",
+            groupStatistics.memberStatistics.map { memberStatistic ->
+                RankingItem(
+                    memberStatistic.member.name,
+                    getHighestSessionTacken(memberStatistic.sessionStatistics).toString()
+                )
+            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+
+        return ranking
+    }
+
+    private fun getLowestSessionTackenRanking(groupStatistics: GroupStatistics): Ranking {
+
+        val ranking = Ranking(
+            "Niedrigster Tackenstand",
+            groupStatistics.memberStatistics.map { memberStatistic ->
+                RankingItem(
+                    memberStatistic.member.name,
+                    getLowestSessionTacken(memberStatistic.sessionStatistics).toString()
+                )
+            }.sortedBy { rankingItem -> rankingItem.value.toInt() })
+
+        return ranking
+    }
+
+    private fun getHighestSessionEndTacken(sessionStatistics: List<PlayerStatistic>): Int {
+        val session = sessionStatistics.maxByOrNull { it.general.total.tacken }
+        if (session != null) {
+            return session.general.total.tacken
+        }
+        return 0
+    }
+
+    private fun getLowestSessionEndTacken(sessionStatistics: List<PlayerStatistic>): Int {
+        val session = sessionStatistics.minByOrNull { it.general.total.tacken }
+        if (session != null) {
+            return session.general.total.tacken
+        }
+        return 0
+    }
+
+    private fun getHighestSessionTacken(sessionStatistics: List<PlayerStatistic>): Int {
+        var maxTacken = 0
+        sessionStatistics.forEach { playerStatistic ->
+            val accumulated =
+                StatisticUtil.getAccumulatedTackenHistory(playerStatistic.gameResultHistory)
+            if (accumulated.isNotEmpty()) {
+                val max = accumulated.max()
+                if (max > maxTacken) {
+                    maxTacken = max
+                }
+            }
+        }
+
+        return maxTacken
+    }
+
+    private fun getLowestSessionTacken(sessionStatistics: List<PlayerStatistic>): Int {
+        var minTacken = 0
+        sessionStatistics.forEach { playerStatistic ->
+            val accumulated =
+                StatisticUtil.getAccumulatedTackenHistory(playerStatistic.gameResultHistory)
+            if (accumulated.isNotEmpty()) {
+                val min = accumulated.min()
+                if (min < minTacken) {
+                    minTacken = min
+                }
+            }
+        }
+
+        return minTacken
     }
 }

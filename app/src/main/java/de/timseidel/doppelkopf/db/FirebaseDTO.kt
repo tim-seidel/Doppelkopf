@@ -1,6 +1,6 @@
 package de.timseidel.doppelkopf.db
 
-import de.timseidel.doppelkopf.contracts.IPlayerController
+import de.timseidel.doppelkopf.contracts.IMemberController
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
@@ -8,8 +8,8 @@ import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.Group
 import de.timseidel.doppelkopf.model.GroupSettings
 import de.timseidel.doppelkopf.model.Member
-import de.timseidel.doppelkopf.model.Player
-import de.timseidel.doppelkopf.model.PlayerAndFaction
+import de.timseidel.doppelkopf.model.MemberAndFaction
+import de.timseidel.doppelkopf.util.Logging
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -37,20 +37,14 @@ data class SessionDto(
     var id: String,
     var name: String,
     var timeCreated: Long,
-    var tackenPrice: Double
+    var tackenPrice: Double,
+    var memberIds: List<String>
 ) {
-    constructor() : this("", "", 0, 0.0)
+    constructor() : this("", "", 0, 0.0, emptyList())
 }
 
-data class PlayerDto(
-    var id: String,
-    var name: String
-) {
-    constructor() : this("", "")
-}
-
-data class PlayerAndFactionDto(
-    var playerId: String,
+data class MemberAndFactionDto(
+    var memberId: String,
     var faction: Faction
 ) {
     constructor() : this("", Faction.NONE)
@@ -64,7 +58,7 @@ data class GameDto(
     var points: Int,
     var isBockrunde: Boolean,
     var gameType: GameType,
-    var factions: List<PlayerAndFactionDto>
+    var factions: List<MemberAndFactionDto>
 ) {
     constructor() : this("", 0, Faction.NONE, 0, 0, false, GameType.NORMAL, emptyList())
 }
@@ -117,15 +111,31 @@ class FirebaseDTO {
         }
 
         fun fromSessionToSessionDTO(session: Session): SessionDto {
+            val memberIds: MutableList<String> = mutableListOf()
+            session.members.forEach { m -> memberIds.add(m.id) }
+
             return SessionDto(
                 session.id,
                 session.name,
                 session.date.toInstant(ZoneOffset.UTC).toEpochMilli(),
-                session.tackenPrice
+                session.tackenPrice,
+                memberIds
             )
         }
 
-        fun fromSessionDTOtoSession(dto: SessionDto): Session {
+        fun fromSessionDTOtoSession(dto: SessionDto, memberController: IMemberController): Session {
+            val members = mutableListOf<Member>()
+
+            dto.memberIds.forEach { mDto ->
+                val member = memberController.getMemberById(mDto)
+
+                if (member != null) {
+                    members.add(member)
+                } else {
+                    Logging.e("Creating session from DTO: Member with id [$mDto] not found.")
+                }
+            }
+
             return Session(
                 dto.id,
                 dto.name,
@@ -133,22 +143,15 @@ class FirebaseDTO {
                     Instant.ofEpochMilli(dto.timeCreated),
                     ZoneId.systemDefault()
                 ),
-                dto.tackenPrice
+                dto.tackenPrice,
+                members
             )
         }
 
-        fun fromPlayerToPlayerDTO(player: Player): PlayerDto {
-            return PlayerDto(player.id, player.name)
-        }
-
-        fun fromPlayerDTOtoPlayer(dto: PlayerDto): Player {
-            return Player(dto.id, dto.name)
-        }
-
         fun fromGameToGameDTO(game: Game): GameDto {
-            val resultDTOs = mutableListOf<PlayerAndFactionDto>()
-            game.players.forEach { paf ->
-                resultDTOs.add(PlayerAndFactionDto(paf.player.id, paf.faction))
+            val resultDTOs = mutableListOf<MemberAndFactionDto>()
+            game.members.forEach { paf ->
+                resultDTOs.add(MemberAndFactionDto(paf.member.id, paf.faction))
             }
 
             return GameDto(
@@ -163,19 +166,18 @@ class FirebaseDTO {
             )
         }
 
-        fun fromGameDTOtoGame(dto: GameDto, playerController: IPlayerController): Game {
-            val factions = mutableListOf<PlayerAndFaction>()
-            dto.factions.forEach { paf ->
-                factions.add(
-                    PlayerAndFaction(
-                        playerController.getPlayerById(paf.playerId)
-                            ?: throw Exception("Player with id [${paf.playerId}] not found."),
-                        paf.faction
-                    )
-                )
+        fun fromGameDTOtoGame(dto: GameDto, memberController: IMemberController): Game {
+            val factions = mutableListOf<MemberAndFaction>()
+            dto.factions.forEach { maf ->
+                val member = memberController.getMemberById(maf.memberId)
+                if (member != null) {
+                    factions.add(MemberAndFaction(member, maf.faction))
+                } else {
+                    Logging.e("Creating game from DTO: Member with id [${maf.memberId}] not found.")
+                }
             }
 
-            factions.sortBy { f -> f.player.id }
+            factions.sortBy { f -> f.member.id }
 
             return Game(
                 dto.id,

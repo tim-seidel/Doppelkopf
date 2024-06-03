@@ -8,7 +8,7 @@ interface ISessionInfoController {
 
     fun addSessionInfos(sessionInfos: List<Session>)
 
-    fun getSessionInfoById(id: String): Session
+    fun getSessionInfoById(id: String): Session?
 
     fun getSessionInfos(): List<Session>
 

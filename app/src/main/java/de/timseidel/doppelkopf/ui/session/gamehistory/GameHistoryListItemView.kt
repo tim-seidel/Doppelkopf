@@ -26,7 +26,7 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
 
     private lateinit var tvGameNumber: TextView
     private lateinit var rvPlayerTacken: RecyclerView
-    private lateinit var playerTackenAdapter: GameHistoryListItemPlayerListAdapter
+    private lateinit var memberTackenAdapter: GameHistoryListItemPlayerListAdapter
     private lateinit var gameId: String
     private var gameEditListener: GameHistoryListItemEditListener? = null
 
@@ -50,8 +50,8 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
         val dp4 = Converter.convertDpToPixels(2f, rvPlayerTacken.context)
         rvPlayerTacken.addItemDecoration(RecyclerViewMarginDecoration(dp4, dp4))
 
-        playerTackenAdapter = GameHistoryListItemPlayerListAdapter()
-        rvPlayerTacken.adapter = playerTackenAdapter
+        memberTackenAdapter = GameHistoryListItemPlayerListAdapter()
+        rvPlayerTacken.adapter = memberTackenAdapter
     }
 
     fun setGameEditListener(gameEditListener: GameHistoryListItemEditListener?) {
@@ -89,7 +89,7 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
         rvPlayerTacken.apply {
             layoutManager = GridLayoutManager(rvPlayerTacken.context, max(scores.size, 1))
         }
-        playerTackenAdapter.updateScores(scores)
+        memberTackenAdapter.updateScores(scores)
     }
 
     fun setBockStatus(isBockrunde: Boolean) {

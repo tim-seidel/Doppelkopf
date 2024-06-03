@@ -27,7 +27,8 @@ class StatisticsController : IStatisticsController {
         sessions.forEach { session ->
             val singleSessionStatistics =
                 SessionStatisticsCalculator().calculateSessionStatistics(
-                    session.getPlayerController().getPlayers(),
+                    session.getSession().id,
+                    session.getSession().members,
                     session.getGameController().getGames()
                 )
             sessionStatistics.add(singleSessionStatistics)
@@ -40,7 +41,7 @@ class StatisticsController : IStatisticsController {
 
         groupStatistics = stats
 
-        status = if(members.isEmpty() || sessionStatistics.isEmpty()) {
+        status = if (members.isEmpty() || sessionStatistics.isEmpty()) {
             StatisticStatus.EMPTY
         } else {
             StatisticStatus.CACHED

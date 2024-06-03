@@ -4,7 +4,7 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.statistic.SimpleStatisticsCalculator
 import de.timseidel.doppelkopf.model.statistic.StatisticUtil
-import de.timseidel.doppelkopf.model.statistic.session.PlayerStatistic
+import de.timseidel.doppelkopf.model.statistic.session.MemberSessionStatistic
 import de.timseidel.doppelkopf.ui.statistic.views.ColumnChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.LineChartViewWrapper
@@ -15,7 +15,7 @@ import de.timseidel.doppelkopf.util.RangeDistribution
 import kotlin.math.abs
 import kotlin.math.round
 
-class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatisticViewsProvider {
+class PlayerStatisticViewsProvider(private var stats: MemberSessionStatistic) : IStatisticViewsProvider {
     override fun getStatisticItems(isBockrundeEnabled: Boolean): List<IStatisticViewWrapper> {
         val tackenDistribution = StatisticUtil.getTackenDistribution(
             stats.gameResultHistory.filter { r -> r.faction != Faction.NONE },
@@ -114,9 +114,9 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
         val bockTackenDiff = stats.general.total.tacken - currentTackenWithoutBock
 
         stats.partners.values.forEach { p ->
-            partnerNames.add(p.player.name)
-            partnerNamesWithTacken.add("${p.player.name} (${p.general.total.tacken})")
-            partnerNamesWithGames.add("${p.player.name} (${p.general.total.games})")
+            partnerNames.add(p.member.name)
+            partnerNamesWithTacken.add("${p.member.name} (${p.general.total.tacken})")
+            partnerNamesWithGames.add("${p.member.name} (${p.general.total.games})")
 
             partnerWinsRe.add(p.re.wins.games)
             partnerWinsContra.add(p.contra.wins.games)
@@ -130,9 +130,9 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
         }
 
         stats.opponents.values.forEach { o ->
-            opponentNames.add(o.player.name)
-            opponentNamesWithTacken.add("${o.player.name} (${o.general.total.tacken})")
-            opponentNamesWithGames.add("${o.player.name} (${o.general.total.games})")
+            opponentNames.add(o.member.name)
+            opponentNamesWithTacken.add("${o.member.name} (${o.general.total.tacken})")
+            opponentNamesWithGames.add("${o.member.name} (${o.general.total.games})")
 
             opponentWinsRe.add(o.re.wins.games)
             opponentWinsContra.add(o.contra.wins.games)
@@ -158,8 +158,8 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             if (stats.general.total.games > 0) round(stats.general.wins.games / stats.general.total.games.toFloat() * 100).toInt() else 0
 
         val totalGamesTextStat = SimpleTextStatisticViewWrapper(
-            "Statistik von ${stats.player.name}",
-            "Hier siehst du die Statistiken von ${stats.player.name}. Er/Sie hat so viele Spiele gespielt:",
+            "Statistik von ${stats.member.name}",
+            "Hier siehst du die Statistiken von ${stats.member.name}. Er/Sie hat so viele Spiele gespielt:",
             stats.general.total.games.toString()
         )
 
@@ -225,7 +225,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
 
         val currentTackenTextStat = SimpleTextStatisticViewWrapper(
             "Aktuelle Tacken",
-            "${stats.player.name} steht aktuell bei dieser Tackenanzahl:",
+            "${stats.member.name} steht aktuell bei dieser Tackenanzahl:",
             stats.general.total.tacken.toString()
         )
 
@@ -259,18 +259,18 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
 
         val tackenDiffWithBockrundenTextStat = SimpleTextStatisticViewWrapper(
             "Bock auf Bockrunden?",
-            "Folgende Tackendifferenz hat ${stats.player.name} in Bockrunden gemacht:",
+            "Folgende Tackendifferenz hat ${stats.member.name} in Bockrunden gemacht:",
             (if (bockTackenDiff > 0) "+" else "") + bockTackenDiff.toString(),
         )
 
         val winRateOutsideOfBockTextStat = SimpleTextStatisticViewWrapper(
             "Siegesrate ohne Bockrunden",
-            "In Spielen, die keine Bockrunde waren, hat ${stats.player.name} eine Siegesrate von:",
+            "In Spielen, die keine Bockrunde waren, hat ${stats.member.name} eine Siegesrate von:",
             "$winrateNoBockrunde%"
         )
         val winRateInBockTextStat = SimpleTextStatisticViewWrapper(
             "Siegesrate in Bockrunden",
-            "In Spielen, die Bockrunden waren, hat ${stats.player.name} eine Siegesrate von:",
+            "In Spielen, die Bockrunden waren, hat ${stats.member.name} eine Siegesrate von:",
             "$winrateBockrunde%"
         )
 
@@ -306,19 +306,19 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
 
         val totalTackenLossTextStat = SimpleTextStatisticViewWrapper(
             "Schuldschein",
-            "${stats.player.name} muss so viele verlorene Tacken bezahlen:",
+            "${stats.member.name} muss so viele verlorene Tacken bezahlen:",
             StatisticUtil.getAccumulatedStraftackenHistory(stats.gameResultHistory).last()
                 .toString()
         )
 
         val averageWinTackenTextStat = SimpleTextStatisticViewWrapper(
             "Siegesausbeute",
-            "Wenn ${stats.player.name} gewinnt, bekommt er/sie im Schnitt diese Tacken:",
+            "Wenn ${stats.member.name} gewinnt, bekommt er/sie im Schnitt diese Tacken:",
             "%.2f".format(stats.general.wins.getTackenPerGame())
         )
         val averageLossTackenTextStat = SimpleTextStatisticViewWrapper(
             "Schmerzliche Verluste",
-            "Wenn ${stats.player.name} verliert, kostet das im Schnitt etwa diese Tacken:",
+            "Wenn ${stats.member.name} verliert, kostet das im Schnitt etwa diese Tacken:",
             "%.2f".format(stats.general.loss.getTackenPerGame())
         )
 
@@ -342,13 +342,13 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             )
         )
 
-        val playerSoloTextStat = SimpleTextStatisticViewWrapper(
+        val memberSoloTextStat = SimpleTextStatisticViewWrapper(
             "Begnadeter Solist?",
-            if (stats.solo.total.games > 0) "${stats.player.name} hat ${stats.solo.total.games} Soli gespielt und dabei folgende Tacken gemacht:" else "${stats.player.name} hat keine Soli gespielt.",
+            if (stats.solo.total.games > 0) "${stats.member.name} hat ${stats.solo.total.games} Soli gespielt und dabei folgende Tacken gemacht:" else "${stats.member.name} hat keine Soli gespielt.",
             stats.solo.total.tacken.toString()
         )
 
-        val playerWithPlayerGamesBarchart = ColumnChartViewWrapper(
+        val memberWithPlayerGamesBarchart = ColumnChartViewWrapper(
             ColumnChartViewWrapper.ColumnChartData(
                 "Spiele mit ...", "", "Spiele",
                 listOf(
@@ -387,7 +387,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             )
         )
 
-        val playerWithPlayerTackenBarchart = ColumnChartViewWrapper(
+        val memberWithPlayerTackenBarchart = ColumnChartViewWrapper(
             ColumnChartViewWrapper.ColumnChartData(
                 "Tacken mit ...", "", "Tacken",
                 listOf(
@@ -426,7 +426,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             )
         )
 
-        val playerVsPlayerGamesBarchart = ColumnChartViewWrapper(
+        val memberVsPlayerGamesBarchart = ColumnChartViewWrapper(
             ColumnChartViewWrapper.ColumnChartData(
                 "Spiele gegen ...", "", "Spiele",
                 listOf(
@@ -465,7 +465,7 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
             )
         )
 
-        val playerVsPlayerTackenBarchart = ColumnChartViewWrapper(
+        val memberVsPlayerTackenBarchart = ColumnChartViewWrapper(
             ColumnChartViewWrapper.ColumnChartData(
                 "Tacken gegen ...", "", "Tacken",
                 listOf(
@@ -568,11 +568,11 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                 averageWinTackenTextStat,
                 averageLossTackenTextStat,
                 tackenDistributionBarchart,
-                playerSoloTextStat,
-                playerWithPlayerGamesBarchart,
-                playerWithPlayerTackenBarchart,
-                playerVsPlayerGamesBarchart,
-                playerVsPlayerTackenBarchart,
+                memberSoloTextStat,
+                memberWithPlayerGamesBarchart,
+                memberWithPlayerTackenBarchart,
+                memberVsPlayerGamesBarchart,
+                memberVsPlayerTackenBarchart,
                 gameWinLossScatter,
                 longestWinStreakTextStat,
                 longestLossStreakTextStat,
@@ -590,11 +590,11 @@ class PlayerStatisticViewsProvider(private var stats: PlayerStatistic) : IStatis
                 averageWinTackenTextStat,
                 averageLossTackenTextStat,
                 tackenDistributionBarchart,
-                playerSoloTextStat,
-                playerWithPlayerGamesBarchart,
-                playerWithPlayerTackenBarchart,
-                playerVsPlayerGamesBarchart,
-                playerVsPlayerTackenBarchart,
+                memberSoloTextStat,
+                memberWithPlayerGamesBarchart,
+                memberWithPlayerTackenBarchart,
+                memberVsPlayerGamesBarchart,
+                memberVsPlayerTackenBarchart,
                 gameWinLossScatter,
                 longestWinStreakTextStat,
                 longestLossStreakTextStat,

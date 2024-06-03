@@ -7,6 +7,5 @@ class FirebaseStrings {
         const val collectionMembers = "members"
         const val collectionSessions = "sessions"
         const val collectionGames = "games"
-        const val collectionPlayers = "players"
     }
 }

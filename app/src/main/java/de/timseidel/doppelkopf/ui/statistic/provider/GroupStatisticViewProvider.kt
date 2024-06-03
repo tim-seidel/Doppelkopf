@@ -4,12 +4,11 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.statistic.StatisticUtil
 import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
-import de.timseidel.doppelkopf.model.statistic.session.PlayerStatistic
+import de.timseidel.doppelkopf.model.statistic.session.MemberSessionStatistic
 import de.timseidel.doppelkopf.ui.statistic.views.ColumnChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.LineChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.PieChartViewWrapper
-import de.timseidel.doppelkopf.ui.statistic.views.SimpleTextStatisticView
 import de.timseidel.doppelkopf.ui.statistic.views.SimpleTextStatisticViewWrapper
 import kotlin.math.round
 
@@ -142,9 +141,9 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
         val percentReWin =
             if (groupStatistics.general.total.games > 0) round(groupStatistics.re.wins.games / groupStatistics.general.total.games.toFloat() * 100).toInt() else 0
 
-        var maxTackenResult: PlayerStatistic? = null
+        var maxTackenResult: MemberSessionStatistic? = null
         groupStatistics.sessionStatistics.forEach { ss ->
-            val maxSessionTacken = ss.playerStatistics.maxByOrNull { ps -> ps.general.total.tacken }
+            val maxSessionTacken = ss.memberSessionStatistics.maxByOrNull { ps -> ps.general.total.tacken }
             if (maxSessionTacken != null) {
                 if (maxTackenResult == null || maxSessionTacken.general.total.tacken > maxTackenResult!!.general.total.tacken) {
                     maxTackenResult = maxSessionTacken
@@ -152,9 +151,9 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
             }
         }
 
-        var minTackenResult: PlayerStatistic? = null
+        var minTackenResult: MemberSessionStatistic? = null
         groupStatistics.sessionStatistics.forEach { ss ->
-            val minSessionTacken = ss.playerStatistics.minByOrNull { ps -> ps.general.total.tacken }
+            val minSessionTacken = ss.memberSessionStatistics.minByOrNull { ps -> ps.general.total.tacken }
             if (minSessionTacken != null) {
                 if (minTackenResult == null || minSessionTacken.general.total.tacken < minTackenResult!!.general.total.tacken) {
                     minTackenResult = minSessionTacken
@@ -414,13 +413,13 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
 
         val maxTackenResultTextStat = SimpleTextStatisticViewWrapper(
             "Bestes Ergebnis",
-            "Das höchste erzielte Tackenergebnis hat ${maxTackenResult?.player?.name} erzielt:",
+            "Das höchste erzielte Tackenergebnis hat ${maxTackenResult?.member?.name} erzielt:",
             "${maxTackenResult?.general?.total?.tacken}"
         )
 
         val minTackenResultTextStat = SimpleTextStatisticViewWrapper(
             "Schlechtestes Ergebnis",
-            "Das niedrigste erzielte Tackenergebnis hat ${minTackenResult?.player?.name} erzielt:",
+            "Das niedrigste erzielte Tackenergebnis hat ${minTackenResult?.member?.name} erzielt:",
             "${minTackenResult?.general?.total?.tacken}"
         )
 

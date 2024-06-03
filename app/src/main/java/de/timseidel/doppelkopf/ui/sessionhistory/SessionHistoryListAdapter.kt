@@ -2,12 +2,7 @@ package de.timseidel.doppelkopf.ui.sessionhistory
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
-import de.timseidel.doppelkopf.db.request.SessionPlayerRequest
 import de.timseidel.doppelkopf.model.Session
-import de.timseidel.doppelkopf.model.Player
-import de.timseidel.doppelkopf.util.DokoShortAccess
-import de.timseidel.doppelkopf.util.Logging
 import java.time.format.DateTimeFormatter
 
 class SessionHistoryListAdapter(
@@ -36,15 +31,6 @@ class SessionHistoryListAdapter(
             sessionView.setOpenSessionClickListener {
                 listener?.onOpenSessionClicked(session)
             }
-
-            SessionPlayerRequest(DokoShortAccess.getGroupCtrl().getGroup().id, session.id).execute(
-                object : ReadRequestListener<List<Player>> {
-                    override fun onReadComplete(result: List<Player>) {
-                        sessionView.setPlayers(result)
-                    }
-
-                    override fun onReadFailed() {}
-                })
         }
     }
 

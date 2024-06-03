@@ -1,7 +1,9 @@
 package de.timseidel.doppelkopf.controller
 
 import de.timseidel.doppelkopf.contracts.IMemberController
+import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Member
+import de.timseidel.doppelkopf.model.MemberAndFaction
 import de.timseidel.doppelkopf.util.DoppelkopfException
 import de.timseidel.doppelkopf.util.IdGenerator
 import java.time.LocalDateTime
@@ -55,6 +57,10 @@ class MemberController : IMemberController {
 
     override fun getMembers(): List<Member> {
         return members.toList()
+    }
+
+    override fun getMembersAsFaction(): List<MemberAndFaction> {
+        return members.map { m -> MemberAndFaction(m, Faction.NONE) }
     }
 
     override fun validateName(name: String): Boolean {

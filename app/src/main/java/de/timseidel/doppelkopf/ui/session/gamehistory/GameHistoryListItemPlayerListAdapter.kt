@@ -9,13 +9,13 @@ class GameHistoryListItemPlayerListAdapter(
 ) :
     RecyclerView.Adapter<GameHistoryListItemPlayerListAdapter.ViewHolder>() {
 
-    class ViewHolder(private val playerView: GameHistoryListItemPlayerView) :
-        RecyclerView.ViewHolder(playerView) {
+    class ViewHolder(private val memberView: GameHistoryListItemPlayerView) :
+        RecyclerView.ViewHolder(memberView) {
         fun bind(score: GameHistoryColumn) {
             val faction = score.faction
 
-            playerView.setPlayerTacken(score.score)
-            playerView.setPlayerResult(
+            memberView.setPlayerTacken(score.score)
+            memberView.setPlayerResult(
                 faction,
                 score.isWinner,
                 score.isSolo

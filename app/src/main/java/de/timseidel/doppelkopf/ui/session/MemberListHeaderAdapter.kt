@@ -8,24 +8,24 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.setMargins
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
-import de.timseidel.doppelkopf.model.Player
+import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.ui.util.Converter
 
-class PlayerListHeaderAdapter(
-    private val players: List<Player> = listOf(),
-    var playerClickListener: OnPlayerClickListener? = null
+class MemberListHeaderAdapter(
+    private val members: List<Member> = listOf(),
+    var memberClickListener: OnMemberClickListener? = null
 ) :
-    RecyclerView.Adapter<PlayerListHeaderAdapter.ViewHolder>() {
+    RecyclerView.Adapter<MemberListHeaderAdapter.ViewHolder>() {
 
-    interface OnPlayerClickListener {
-        fun onPlayerClicked(player: Player)
+    interface OnMemberClickListener {
+        fun onPlayerClicked(member: Member)
     }
 
-    class ViewHolder(private val playerView: TextView) : RecyclerView.ViewHolder(playerView) {
-        fun bind(player: Player, listener: OnPlayerClickListener?) {
-            playerView.text = player.name
-            playerView.setOnClickListener {
-                listener?.onPlayerClicked(player)
+    class ViewHolder(private val memberView: TextView) : RecyclerView.ViewHolder(memberView) {
+        fun bind(member: Member, listener: OnMemberClickListener?) {
+            memberView.text = member.name
+            memberView.setOnClickListener {
+                listener?.onPlayerClicked(member)
             }
         }
     }
@@ -54,11 +54,11 @@ class PlayerListHeaderAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val player = players[position]
-        holder.bind(player, playerClickListener)
+        val member = members[position]
+        holder.bind(member, memberClickListener)
     }
 
     override fun getItemCount(): Int {
-        return players.size
+        return members.size
     }
 }

@@ -8,13 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.databinding.ActivitySessionLoadingBinding
-import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionGameRequest
+import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionInfoRequest
-import de.timseidel.doppelkopf.db.request.SessionPlayerRequest
-import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.model.Game
-import de.timseidel.doppelkopf.model.Player
+import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.Logging
 
@@ -75,39 +73,23 @@ class SessionLoadingActivity : AppCompatActivity() {
                 DokoShortAccess.getSessionCtrl().set(result)
 
                 setTitle(result.name)
-                setMessage(getString(R.string.loading_players))
+                setMessage(getString(R.string.loading_games))
 
-                SessionPlayerRequest(groupId, sessionId).execute(object :
-                    ReadRequestListener<List<Player>> {
+                SessionGameRequest(groupId, sessionId, DokoShortAccess.getMemberCtrl()).execute(
+                    object : ReadRequestListener<List<Game>> {
+                        override fun onReadComplete(result: List<Game>) {
+                            result.forEach { g ->
+                                DokoShortAccess.getGameCtrl().addGame(g)
+                            }
 
-                    override fun onReadComplete(result: List<Player>) {
-                        val pctrl = DokoShortAccess.getPlayerCtrl()
-                        pctrl.addPlayers(result)
+                            setMessage(getString(R.string.loading_finished))
+                            openSessionActivity()
+                        }
 
-                        setMessage(getString(R.string.loading_games))
-
-                        SessionGameRequest(groupId, sessionId, pctrl).execute(
-                            object : ReadRequestListener<List<Game>> {
-                                override fun onReadComplete(result: List<Game>) {
-                                    result.forEach { g ->
-                                        DokoShortAccess.getGameCtrl().addGame(g)
-                                    }
-
-                                    setMessage(getString(R.string.loading_finished))
-
-                                    openSessionActivity()
-                                }
-
-                                override fun onReadFailed() {
-                                    handleLoadingError()
-                                }
-                            })
-                    }
-
-                    override fun onReadFailed() {
-                        handleLoadingError()
-                    }
-                })
+                        override fun onReadFailed() {
+                            handleLoadingError()
+                        }
+                    })
             }
 
             override fun onReadFailed() {

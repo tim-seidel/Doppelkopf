@@ -14,39 +14,39 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
     IStatisticViewsProvider {
 
     override fun getStatisticItems(isBockrundeEnabled: Boolean): List<IStatisticViewWrapper> {
-        val playerStats = sessionStatistics.playerStatistics
+        val memberSessionStats = sessionStatistics.memberSessionStatistics
 
-        val playerTackenHistories = mutableListOf<LineChartViewWrapper.ChartLineData>()
-        playerStats.forEach { p ->
+        val memberTackenHistories = mutableListOf<LineChartViewWrapper.ChartLineData>()
+        memberSessionStats.forEach { p ->
             val history = StatisticUtil.getAccumulatedTackenHistory(p.gameResultHistory)
             val last = if (history.isNotEmpty()) history.last() else 0
-            playerTackenHistories.add(
+            memberTackenHistories.add(
                 LineChartViewWrapper.ChartLineData(
-                    "${p.player.name} ($last)",
+                    "${p.member.name} ($last)",
                     history
                 )
             )
         }
 
-        val playerTackenHistoriesWithoutBock = mutableListOf<LineChartViewWrapper.ChartLineData>()
-        playerStats.forEach { p ->
+        val memberTackenHistoriesWithoutBock = mutableListOf<LineChartViewWrapper.ChartLineData>()
+        memberSessionStats.forEach { p ->
             val history = StatisticUtil.getAccumulatedTackenHistoryWithoutBock(p.gameResultHistory)
             val last = if (history.isNotEmpty()) history.last() else 0
-            playerTackenHistoriesWithoutBock.add(
+            memberTackenHistoriesWithoutBock.add(
                 LineChartViewWrapper.ChartLineData(
-                    "${p.player.name} ($last)",
+                    "${p.member.name} ($last)",
                     history
                 )
             )
         }
 
-        val playerTackenLosses = mutableListOf<LineChartViewWrapper.ChartLineData>()
-        playerStats.forEach { p ->
+        val memberTackenLosses = mutableListOf<LineChartViewWrapper.ChartLineData>()
+        memberSessionStats.forEach { p ->
             val history = StatisticUtil.getAccumulatedStraftackenHistory(p.gameResultHistory)
             val last = if (history.isNotEmpty()) history.last() else 0
-            playerTackenLosses.add(
+            memberTackenLosses.add(
                 LineChartViewWrapper.ChartLineData(
-                    "${p.player.name} ($last | ${last * 5 / 100f}€)",
+                    "${p.member.name} ($last | ${last * 5 / 100f}€)",
                     history
                 )
             )
@@ -55,32 +55,32 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
         val totalNegativeTacken =
             2 * (sessionStatistics.gameResultHistoryLoser.sumOf { gr -> if (gr.tacken < 0) -1 * gr.tacken else 0 } + sessionStatistics.gameResultHistoryWinner.sumOf { gr -> if (gr.tacken < 0) -1 * gr.tacken else 0 })
 
-        val playerNames = playerStats.map { p -> p.player.name }
+        val memberNames = memberSessionStats.map { p -> p.member.name }
 
-        val playerWinsRe = mutableListOf<Int>()
-        val playerWinsContra = mutableListOf<Int>()
-        val playerLossRe = mutableListOf<Int>()
-        val playerLossContra = mutableListOf<Int>()
-        val playerWinsSolo = mutableListOf<Int>()
-        val playerLossSolo = mutableListOf<Int>()
+        val memberWinsRe = mutableListOf<Int>()
+        val memberWinsContra = mutableListOf<Int>()
+        val memberLossRe = mutableListOf<Int>()
+        val memberLossContra = mutableListOf<Int>()
+        val memberWinsSolo = mutableListOf<Int>()
+        val memberLossSolo = mutableListOf<Int>()
 
-        val playerTackenWinsRe = mutableListOf<Int>()
-        val playerTackenWinsContra = mutableListOf<Int>()
-        val playerTackenLossRe = mutableListOf<Int>()
-        val playerTackenLossContra = mutableListOf<Int>()
+        val memberTackenWinsRe = mutableListOf<Int>()
+        val memberTackenWinsContra = mutableListOf<Int>()
+        val memberTackenLossRe = mutableListOf<Int>()
+        val memberTackenLossContra = mutableListOf<Int>()
 
-        playerStats.forEach { p ->
-            playerWinsRe.add(p.re.wins.games)
-            playerWinsContra.add(p.contra.wins.games)
-            playerLossRe.add(p.re.loss.games)
-            playerLossContra.add(p.contra.loss.games)
-            playerWinsSolo.add(p.solo.wins.games)
-            playerLossSolo.add(p.solo.loss.games)
+        memberSessionStats.forEach { p ->
+            memberWinsRe.add(p.re.wins.games)
+            memberWinsContra.add(p.contra.wins.games)
+            memberLossRe.add(p.re.loss.games)
+            memberLossContra.add(p.contra.loss.games)
+            memberWinsSolo.add(p.solo.wins.games)
+            memberLossSolo.add(p.solo.loss.games)
 
-            playerTackenWinsRe.add(p.re.wins.tacken)
-            playerTackenWinsContra.add(p.contra.wins.tacken)
-            playerTackenLossRe.add(-1 * p.re.loss.tacken)
-            playerTackenLossContra.add(-1 * p.contra.loss.tacken)
+            memberTackenWinsRe.add(p.re.wins.tacken)
+            memberTackenWinsContra.add(p.contra.wins.tacken)
+            memberTackenLossRe.add(-1 * p.re.loss.tacken)
+            memberTackenLossContra.add(-1 * p.contra.loss.tacken)
         }
 
         val tackenDistributionNoBockRe =
@@ -185,14 +185,14 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
 
         val tackenLineChart = LineChartViewWrapper(
             LineChartViewWrapper.LineChartData(
-                "Tackenverlauf", "Tacken", playerTackenHistories,
+                "Tackenverlauf", "Tacken", memberTackenHistories,
                 height = 400f
             )
         )
 
         val tackenIgnoringBockLineChart = LineChartViewWrapper(
             LineChartViewWrapper.LineChartData(
-                "Tackenverlauf ohne Bockrunden", "Tacken", playerTackenHistoriesWithoutBock,
+                "Tackenverlauf ohne Bockrunden", "Tacken", memberTackenHistoriesWithoutBock,
                 height = 400f
             )
         )
@@ -211,7 +211,7 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
 
         val straftackenLineChart = LineChartViewWrapper(
             LineChartViewWrapper.LineChartData(
-                "Straftackensammlung", "Straftacken", playerTackenLosses, 400f
+                "Straftackensammlung", "Straftacken", memberTackenLosses, 400f
             )
         )
 
@@ -225,12 +225,12 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
                             ColumnChartViewWrapper.ColumnSeriesStackData(
                                 "Siege Re",
                                 IStatisticViewWrapper.COLOR_POSITIVE_DARK,
-                                playerWinsRe
+                                memberWinsRe
                             ),
                             ColumnChartViewWrapper.ColumnSeriesStackData(
                                 "Siege Contra",
                                 IStatisticViewWrapper.COLOR_POSITIVE_LIGHT,
-                                playerWinsContra
+                                memberWinsContra
                             )
                         )
                     ),
@@ -240,17 +240,17 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
                             ColumnChartViewWrapper.ColumnSeriesStackData(
                                 "Ndl Re",
                                 IStatisticViewWrapper.COLOR_NEGATIVE_DARK,
-                                playerLossRe
+                                memberLossRe
                             ),
                             ColumnChartViewWrapper.ColumnSeriesStackData(
                                 "Ndl Contra",
                                 IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT,
-                                playerLossContra
+                                memberLossContra
                             )
                         )
                     )
                 ),
-                playerNames
+                memberNames
             )
         )
 
@@ -264,12 +264,12 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
                             ColumnChartViewWrapper.ColumnSeriesStackData(
                                 "bei Sieg Re",
                                 IStatisticViewWrapper.COLOR_POSITIVE_DARK,
-                                playerTackenWinsRe
+                                memberTackenWinsRe
                             ),
                             ColumnChartViewWrapper.ColumnSeriesStackData(
                                 "bei Sieg Contra",
                                 IStatisticViewWrapper.COLOR_POSITIVE_LIGHT,
-                                playerTackenWinsContra
+                                memberTackenWinsContra
                             )
                         )
                     ),
@@ -279,17 +279,17 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
                             ColumnChartViewWrapper.ColumnSeriesStackData(
                                 "bei Ndl Re",
                                 IStatisticViewWrapper.COLOR_NEGATIVE_DARK,
-                                playerTackenLossRe
+                                memberTackenLossRe
                             ),
                             ColumnChartViewWrapper.ColumnSeriesStackData(
                                 "bei Ndl Contra",
                                 IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT,
-                                playerTackenLossContra
+                                memberTackenLossContra
                             )
                         )
                     )
                 ),
-                playerNames
+                memberNames
             )
         )
 
@@ -383,7 +383,7 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
                             ColumnChartViewWrapper.ColumnSeriesStackData(
                                 "Siege",
                                 IStatisticViewWrapper.COLOR_POSITIVE_DARK.replace("#", ""),
-                                playerWinsSolo
+                                memberWinsSolo
                             )
                         )
                     ),
@@ -393,12 +393,12 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
                             ColumnChartViewWrapper.ColumnSeriesStackData(
                                 "Niederlagen",
                                 IStatisticViewWrapper.COLOR_NEGATIVE_DARK.replace("#", ""),
-                                playerLossSolo
+                                memberLossSolo
                             )
                         )
                     )
                 ),
-                playerNames,
+                memberNames,
                 height = 250f
             )
         )

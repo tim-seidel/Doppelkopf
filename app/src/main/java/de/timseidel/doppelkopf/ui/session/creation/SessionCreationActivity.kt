@@ -175,15 +175,10 @@ class SessionCreationActivity : AppCompatActivity() {
         try {
             val sessionCtrl = DoppelkopfManager.getInstance().getSessionController()
 
-            val session = sessionCtrl.createSession(viewModel.sessionName)
+            val selectedMembers = viewModel.memberSelections.filter { ms -> ms.isSelected }
+            val session = sessionCtrl.createSession(viewModel.sessionName, selectedMembers.map { ms -> ms.member })
             sessionCtrl.set(session)
             DokoShortAccess.getSessionInfoCtrl().addSessionInfo(session)
-
-            val playerNames = viewModel.memberSelections.filter { ms -> ms.isSelected }
-                .map { ms -> ms.member.name }
-
-            val players = sessionCtrl.getPlayerController().createPlayers(playerNames)
-            sessionCtrl.getPlayerController().addPlayers(players)
 
             val db = Firebase.firestore
             val firebase = DoppelkopfDatabase()
@@ -191,7 +186,6 @@ class SessionCreationActivity : AppCompatActivity() {
 
             val group = DokoShortAccess.getGroupCtrl().getGroup()
             firebase.storeSession(session, group)
-            firebase.storePlayersInSession(players, session, group)
 
             viewModel.reset()
             memberSelectAdapter.notifyDataSetChanged()

@@ -37,9 +37,9 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
     private fun applyAttributes(attrs: AttributeSet?) {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.GameHistoryListItemPlayerView)
         try {
-            val playerTacken =
+            val memberTacken =
                 ta.getInteger(R.styleable.GameHistoryListItemPlayerView_playerTacken, 0)
-            setPlayerTacken(playerTacken)
+            setPlayerTacken(memberTacken)
         } finally {
             ta.recycle()
         }

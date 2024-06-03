@@ -1,8 +1,9 @@
 package de.timseidel.doppelkopf.db.request
 
+import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
-import de.timseidel.doppelkopf.contracts.IPlayerController
+import de.timseidel.doppelkopf.contracts.IMemberController
 import de.timseidel.doppelkopf.db.FirebaseDTO
 import de.timseidel.doppelkopf.db.FirebaseStrings
 import de.timseidel.doppelkopf.db.GameDto
@@ -14,7 +15,7 @@ import de.timseidel.doppelkopf.util.Logging
 class SessionGameRequest(
     private val groupId: String,
     private val sessionId: String,
-    private val playerController: IPlayerController
+    private val memberController: IMemberController
 ) :
     BaseReadRequest<List<Game>>() {
 
@@ -33,7 +34,7 @@ class SessionGameRequest(
                 for (doc in docs) {
                     try {
                         val gameDto = doc.toObject<GameDto>()
-                        val game = FirebaseDTO.fromGameDTOtoGame(gameDto, playerController)
+                        val game = FirebaseDTO.fromGameDTOtoGame(gameDto, memberController)
                         games.add(game)
                     } catch (e: Exception) {
                         //Skipping this game and continue with the next others, does not return failure
@@ -50,6 +51,32 @@ class SessionGameRequest(
             }
             .addOnFailureListener { e ->
                 failWithLog("SessionGameRequest failed with ", e)
+            }
+    }
+}
+
+class SessionGameCountRequest(
+    private val groupId: String,
+    private val sessionId: String
+) :
+    BaseReadRequest<Int>() {
+
+    override fun execute(listener: ReadRequestListener<Int>) {
+        readRequestListener = listener
+
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection(FirebaseStrings.collectionGroups)
+            .document(groupId)
+            .collection(FirebaseStrings.collectionSessions)
+            .document(sessionId)
+            .collection(FirebaseStrings.collectionGames)
+            .count()
+            .get(AggregateSource.SERVER)
+            .addOnSuccessListener { response ->
+                onReadResult(response.count.toInt())
+            }.addOnFailureListener { e ->
+                failWithLog("SessionGameCountRequest failed with ", e)
             }
     }
 }

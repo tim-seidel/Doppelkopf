@@ -10,10 +10,10 @@ import androidx.core.content.ContextCompat
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Faction
 
-class PlayerFactionSelectView constructor(context: Context, attrs: AttributeSet? = null) :
+class MemberFactionSelectView constructor(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
 
-    private lateinit var tvPlayerName: TextView
+    private lateinit var tvMemberName: TextView
     private lateinit var btnSelectRe: ImageButton
     private lateinit var btnSelectContra: ImageButton
 
@@ -29,7 +29,7 @@ class PlayerFactionSelectView constructor(context: Context, attrs: AttributeSet?
     }
 
     private fun findViews() {
-        tvPlayerName = findViewById(R.id.tv_player_faction_select_name)
+        tvMemberName = findViewById(R.id.tv_player_faction_select_name)
         btnSelectRe = findViewById(R.id.btn_faction_re)
         btnSelectContra = findViewById(R.id.btn_faction_contra)
     }
@@ -37,15 +37,15 @@ class PlayerFactionSelectView constructor(context: Context, attrs: AttributeSet?
     private fun applyAttributes(attrs: AttributeSet?) {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.PlayerFactionSelectView)
         try {
-            val playerName = ta.getString(R.styleable.PlayerFactionSelectView_playerName) ?: ""
-            setPlayerName(playerName)
+            val memberName = ta.getString(R.styleable.PlayerFactionSelectView_playerName) ?: ""
+            setMemberName(memberName)
         } finally {
             ta.recycle()
         }
     }
 
-    fun setPlayerName(name: String) {
-        tvPlayerName.text = name
+    fun setMemberName(name: String) {
+        tvMemberName.text = name
     }
 
     fun setFaction(faction: Faction) {

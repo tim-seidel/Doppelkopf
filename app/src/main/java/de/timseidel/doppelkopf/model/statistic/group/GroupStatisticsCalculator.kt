@@ -6,7 +6,7 @@ import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.statistic.SimpleStatisticEntry
 import de.timseidel.doppelkopf.model.statistic.StatisticEntry
-import de.timseidel.doppelkopf.model.statistic.session.PlayerStatistic
+import de.timseidel.doppelkopf.model.statistic.session.MemberSessionStatistic
 import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
 
 class GroupStatisticsCalculator {
@@ -79,10 +79,10 @@ class GroupStatisticsCalculator {
 
         sessionStatistics.forEach { sessionStat ->
             memberStatistics.forEach { memberStat ->
-                val playerStat =
-                    sessionStat.playerStatistics.firstOrNull { p -> p.player.name == memberStat.member.name }
-                if (playerStat != null) {
-                    addSessionPlayerStatisticsToMemberStatistics(memberStat, playerStat)
+                val memberSessionStats =
+                    sessionStat.memberSessionStatistics.firstOrNull { p -> p.member.name == memberStat.member.name }
+                if (memberSessionStats != null) {
+                    addSessionPlayerStatisticsToMemberStatistics(memberStat, memberSessionStats)
                 } else {
                     // Add filler games to history
                     for (i in 1..sessionStat.general.total.games) {
@@ -99,16 +99,16 @@ class GroupStatisticsCalculator {
 
     private fun addSessionPlayerStatisticsToMemberStatistics(
         memberStatistic: MemberStatistic,
-        playerStatistic: PlayerStatistic
+        memberSessionStatistic: MemberSessionStatistic
     ) {
-        addStatisticEntry(memberStatistic.general, playerStatistic.general)
-        addStatisticEntry(memberStatistic.re, playerStatistic.re)
-        addStatisticEntry(memberStatistic.contra, playerStatistic.contra)
-        addStatisticEntry(memberStatistic.solo, playerStatistic.solo)
+        addStatisticEntry(memberStatistic.general, memberSessionStatistic.general)
+        addStatisticEntry(memberStatistic.re, memberSessionStatistic.re)
+        addStatisticEntry(memberStatistic.contra, memberSessionStatistic.contra)
+        addStatisticEntry(memberStatistic.solo, memberSessionStatistic.solo)
 
-        playerStatistic.partners.forEach { partner ->
+        memberSessionStatistic.partners.forEach { partner ->
             val partnerPlayerStat = partner.value
-            val partnerMemberStat = memberStatistic.partners[partner.value.player.name]
+            val partnerMemberStat = memberStatistic.partners[partner.value.member.name]
 
             if (partnerMemberStat != null) {
                 addStatisticEntry(partnerMemberStat.general, partnerPlayerStat.general)
@@ -117,9 +117,9 @@ class GroupStatisticsCalculator {
             }
         }
 
-        playerStatistic.opponents.forEach { opponent ->
+        memberSessionStatistic.opponents.forEach { opponent ->
             val opponentPlayerStat = opponent.value
-            val opponentMemberStat = memberStatistic.opponents[opponent.value.player.name]
+            val opponentMemberStat = memberStatistic.opponents[opponent.value.member.name]
 
             if (opponentMemberStat != null) {
                 addStatisticEntry(opponentMemberStat.general, opponentPlayerStat.general)
@@ -128,8 +128,8 @@ class GroupStatisticsCalculator {
             }
         }
 
-        memberStatistic.gameResultHistory.addAll(playerStatistic.gameResultHistory)
-        memberStatistic.sessionStatistics.add(playerStatistic)
+        memberStatistic.gameResultHistory.addAll(memberSessionStatistic.gameResultHistory)
+        memberStatistic.sessionStatistics.add(memberSessionStatistic)
     }
 
     private fun getOtherMembers(member: Member, allMembers: List<Member>): List<Member> {

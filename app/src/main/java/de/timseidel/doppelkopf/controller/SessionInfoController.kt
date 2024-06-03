@@ -18,8 +18,8 @@ class SessionInfoController : ISessionInfoController {
         this.sessionInfos.sortBy { si -> si.date.toInstant(ZoneOffset.UTC).toEpochMilli() }
     }
 
-    override fun getSessionInfoById(id: String): Session {
-        return sessionInfos.first { si -> si.id == id }
+    override fun getSessionInfoById(id: String): Session? {
+        return sessionInfos.firstOrNull { si -> si.id == id }
     }
 
     override fun getSessionInfos(): List<Session> {

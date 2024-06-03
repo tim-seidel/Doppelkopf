@@ -6,7 +6,6 @@ import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Group
 import de.timseidel.doppelkopf.model.GroupSettings
 import de.timseidel.doppelkopf.model.Member
-import de.timseidel.doppelkopf.model.Player
 
 class DoppelkopfDatabase {
 
@@ -67,37 +66,6 @@ class DoppelkopfDatabase {
             .set(sessionDTO)
     }
 
-    fun storePlayerInSession(player: Player, session: Session, group: Group) {
-        val playerDTO = FirebaseDTO.fromPlayerToPlayerDTO(player)
-
-        db.collection(FirebaseStrings.collectionGroups)
-            .document(group.id)
-            .collection(FirebaseStrings.collectionSessions)
-            .document(session.id)
-            .collection(FirebaseStrings.collectionPlayers)
-            .document(player.id)
-            .set(playerDTO)
-    }
-
-    fun storePlayersInSession(players: List<Player>, session: Session, group: Group) {
-        val batch = db.batch()
-
-        players.forEach { p ->
-            val playerDTO = FirebaseDTO.fromPlayerToPlayerDTO(p)
-            batch.set(
-                db.collection(FirebaseStrings.collectionGroups)
-                    .document(group.id)
-                    .collection(FirebaseStrings.collectionSessions)
-                    .document(session.id)
-                    .collection(FirebaseStrings.collectionPlayers)
-                    .document(p.id),
-                playerDTO
-            )
-        }
-
-        batch.commit()
-    }
-
     fun storeGameInSession(game: Game, session: Session, group: Group) {
         val gameDTO = FirebaseDTO.fromGameToGameDTO(game)
         db.collection(FirebaseStrings.collectionGroups)
@@ -137,5 +105,14 @@ class DoppelkopfDatabase {
             .collection(FirebaseStrings.collectionGames)
             .document(updatedGame.id)
             .set(gameDTO)
+    }
+
+    fun updateSessionMembers(session: Session, group: Group) {
+        val sessionDto = FirebaseDTO.fromSessionToSessionDTO(session)
+        db.collection(FirebaseStrings.collectionGroups)
+            .document(group.id)
+            .collection(FirebaseStrings.collectionSessions)
+            .document(session.id)
+            .update("memberIds", sessionDto.memberIds)
     }
 }

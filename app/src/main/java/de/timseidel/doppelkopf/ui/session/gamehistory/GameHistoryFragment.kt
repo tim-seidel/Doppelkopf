@@ -93,9 +93,9 @@ class GameHistoryFragment : Fragment() {
     }
 
     private fun setupPlayerHeader() {
-        val players = DokoShortAccess.getPlayerCtrl().getPlayers()
-        binding.headerGameHistoryList.setRowSize(max(1, players.size))
-        binding.headerGameHistoryList.setPlayers(players)
+        val members = DokoShortAccess.getSessionCtrl().getSession().members
+        binding.headerGameHistoryList.setRowSize(max(1, members.size))
+        binding.headerGameHistoryList.setMembers(members)
     }
 
     private fun setupGameHistoryList() {

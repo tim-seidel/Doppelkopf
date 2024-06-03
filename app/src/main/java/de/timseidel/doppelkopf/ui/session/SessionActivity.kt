@@ -16,9 +16,14 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.databinding.ActivitySessionBinding
+import de.timseidel.doppelkopf.db.DoppelkopfDatabase
+import de.timseidel.doppelkopf.db.FirebaseStrings
 import de.timseidel.doppelkopf.export.CSVGameHistoryExporter
+import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.Logging
 
@@ -39,6 +44,58 @@ class SessionActivity : AppCompatActivity() {
         setupBottomNavigation()
         //Second
         setupToolbar()
+
+        //migratePlayersToMembers()
+    }
+
+    private fun migratePlayersToMembers() {
+        migrateMemberList()
+        migrateGames()
+        migratePlayerList()
+    }
+
+    private fun migrateMemberList(){
+        val players = DokoShortAccess.getPlayerCtrl().getPlayers()
+        val members =
+            players.map { player -> DokoShortAccess.getMemberCtrl().getMemberByName(player.name) }
+
+        val participatingMemberIds = members.map { member -> member!!.id }
+
+        val db = DoppelkopfDatabase()
+        db.setFirestore(Firebase.firestore)
+
+        db.updateSessionMembers(
+            DokoShortAccess.getSessionCtrl().getSession(),
+            DokoShortAccess.getGroupCtrl().getGroup(),
+            participatingMemberIds
+        )
+    }
+
+    private fun migratePlayerList(){
+        //Remove the player Collection from the session. Will be done by hand
+    }
+
+    class MemberAndFactionId(val memberId: String, val faction: Faction)
+
+    private fun migrateGames(){
+        val games = DokoShortAccess.getGameCtrl().getGames()
+        val db = DoppelkopfDatabase()
+        db.setFirestore(Firebase.firestore)
+
+        games.forEach { game ->
+            val memberAndFactionIds = game.players.map { player ->
+                val member = DokoShortAccess.getMemberCtrl().getMemberByName(player.player.name)
+                MemberAndFactionId(member!!.id, player.faction)
+            }
+
+            Firebase.firestore.collection(FirebaseStrings.collectionGroups)
+                .document(DokoShortAccess.getGroupCtrl().getGroup().id)
+                .collection(FirebaseStrings.collectionSessions)
+                .document(DokoShortAccess.getSessionCtrl().getSession().id)
+                .collection(FirebaseStrings.collectionGames)
+                .document(game.id)
+                .update("factions", memberAndFactionIds)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

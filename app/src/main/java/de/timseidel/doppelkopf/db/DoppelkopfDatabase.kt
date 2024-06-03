@@ -138,4 +138,12 @@ class DoppelkopfDatabase {
             .document(updatedGame.id)
             .set(gameDTO)
     }
+
+    fun updateSessionMembers(session: Session, group: Group, memberIds: List<String>) {
+        db.collection(FirebaseStrings.collectionGroups)
+            .document(group.id)
+            .collection(FirebaseStrings.collectionSessions)
+            .document(session.id)
+            .update("memberIds", memberIds)
+    }
 }

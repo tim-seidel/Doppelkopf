@@ -31,6 +31,8 @@ class SessionHistoryListAdapter(
             sessionView.setOpenSessionClickListener {
                 listener?.onOpenSessionClicked(session)
             }
+
+            sessionView.setMembers(session.members)
         }
     }
 

@@ -53,7 +53,8 @@ class GameCreationFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        gameConfiguration.memberFactionList = DokoShortAccess.getMemberCtrl().getMembersAsFaction()
+        gameConfiguration.memberFactionList = DokoShortAccess.getMemberCtrl()
+            .getMembersAsFaction(DokoShortAccess.getSessionCtrl().getSession().members)
         gameConfiguration.winningFaction = Faction.NONE
         gameConfiguration.tackenCount = 0
         gameConfiguration.isBockrunde = false
@@ -98,7 +99,8 @@ class GameCreationFragment : Fragment() {
             }
 
             override fun onMemberFactionChanged(member: Member, faction: Faction) {
-                gameConfiguration.memberFactionList.find { maf -> maf.member.id == member.id }?.faction = faction
+                gameConfiguration.memberFactionList.find { maf -> maf.member.id == member.id }?.faction =
+                    faction
                 gameConfigurationView.setMemberFaction(member, faction)
 
                 checkAutoSwitchGameType()

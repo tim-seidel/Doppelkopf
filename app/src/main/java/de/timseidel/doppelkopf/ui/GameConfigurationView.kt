@@ -111,8 +111,8 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
     }
 
     private fun setupPlayerFactionSelectList() {
-        val memberAndFactions: List<MemberAndFaction> =
-            DokoShortAccess.getMemberCtrl().getMembersAsFaction()
+        val memberAndFactions: List<MemberAndFaction> = DokoShortAccess.getMemberCtrl()
+            .getMembersAsFaction(DokoShortAccess.getSessionCtrl().getSession().members)
 
         memberFactionSelectAdapter = MemberFactionSelectAdapter(
             memberAndFactions.toMutableList(),

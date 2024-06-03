@@ -4,27 +4,27 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.GameType
-import de.timseidel.doppelkopf.model.Player
-import de.timseidel.doppelkopf.model.PlayerAndFaction
+import de.timseidel.doppelkopf.model.Member
+import de.timseidel.doppelkopf.model.MemberAndFaction
 import de.timseidel.doppelkopf.model.statistic.SimpleStatisticEntry
 import de.timseidel.doppelkopf.model.statistic.StatisticEntry
 import de.timseidel.doppelkopf.util.GameUtil
 
 class SessionStatisticsCalculator {
 
-    fun calculateSessionStatistics(players: List<Player>, games: List<Game>): SessionStatistics {
-        val stats = calculateGeneralSessionStatistics(games)
+    fun calculateSessionStatistics(sessionId: String, members: List<Member>, games: List<Game>): SessionStatistics {
+        val stats = calculateGeneralSessionStatistics(sessionId, games)
 
-        val playerStatistics = calculateAllPlayerStatistics(players, games)
-            .sortedBy { playerStatistic -> playerStatistic.player.name }
+        val memberStatistics = calculateAllMemberSessionStatistics(members, games)
+            .sortedBy { memberStatistic -> memberStatistic.member.name }
 
-        stats.playerStatistics.addAll(playerStatistics)
+        stats.memberSessionStatistics.addAll(memberStatistics)
 
         return stats
     }
 
-    fun calculateGeneralSessionStatistics(games: List<Game>): SessionStatistics {
-        val stats = SessionStatistics()
+    fun calculateGeneralSessionStatistics(sessionId: String, games: List<Game>): SessionStatistics {
+        val stats = SessionStatistics(sessionId)
 
         games.forEach { g ->
             if (g.winningFaction != Faction.NONE) {
@@ -85,55 +85,55 @@ class SessionStatisticsCalculator {
         return stats
     }
 
-    fun calculateSinglePlayerStatistics(
-        player: Player,
-        allPlayers: List<Player>,
+    fun calculateSingleMemberSessionStatistics(
+        member: Member,
+        allMembers: List<Member>,
         games: List<Game>
-    ): PlayerStatistic {
-        val stats = PlayerStatistic(
-            player = player,
-            partners = getOtherPlayers(player, allPlayers).associateBy(
+    ): MemberSessionStatistic {
+        val stats = MemberSessionStatistic(
+            member = member,
+            partners = getOtherMembers(member, allMembers).associateBy(
                 { it.id },
-                { PlayerToPlayerStatistic(it) }),
-            opponents = getOtherPlayers(player, allPlayers).associateBy(
+                { MemberToMemberSessionStatistic(it) }),
+            opponents = getOtherMembers(member, allMembers).associateBy(
                 { it.id },
-                { PlayerToPlayerStatistic(it) }
+                { MemberToMemberSessionStatistic(it) }
             )
         )
 
-        calculateOwnPlayerStatistics(stats, games)
+        calculateOwnMemberStatistics(stats, games)
         calculatePlayerPartnerStatistics(stats, games)
 
         return stats
     }
 
-    fun calculateAllPlayerStatistics(
-        players: List<Player>,
+    fun calculateAllMemberSessionStatistics(
+        members: List<Member>,
         games: List<Game>
-    ): List<PlayerStatistic> {
-        val stats = mutableListOf<PlayerStatistic>()
+    ): List<MemberSessionStatistic> {
+        val stats = mutableListOf<MemberSessionStatistic>()
 
-        players.forEach { player ->
-            stats.add(calculateSinglePlayerStatistics(player, players, games))
+        members.forEach { member ->
+            stats.add(calculateSingleMemberSessionStatistics(member, members, games))
         }
 
         return stats
     }
 
-    private fun getOtherPlayers(player: Player, allPlayers: List<Player>): List<Player> {
-        return allPlayers.filter { p -> p.id != player.id }
+    private fun getOtherMembers(member: Member, allMembers: List<Member>): List<Member> {
+        return allMembers.filter { m -> m.id != member.id }
     }
 
-    private fun calculateOwnPlayerStatistics(stats: PlayerStatistic, games: List<Game>) {
+    private fun calculateOwnMemberStatistics(stats: MemberSessionStatistic, games: List<Game>) {
         games.forEach { g ->
-            val result = GameUtil.getPlayerResult(stats.player, g)
+            val result = GameUtil.getMemberResult(stats.member, g)
 
             when (result.faction) {
                 Faction.RE -> {
                     addGameResult(stats.general, result)
                     addGameResult(stats.re, result)
 
-                    if (GameUtil.isPlayerPlayingSolo(stats.player, g)) {
+                    if (GameUtil.isMemberPlayingSolo(stats.member, g)) {
                         addGameResult(stats.solo, result)
                     }
                 }
@@ -150,38 +150,38 @@ class SessionStatisticsCalculator {
         }
     }
 
-    private fun calculatePlayerPartnerStatistics(stats: PlayerStatistic, games: List<Game>) {
+    private fun calculatePlayerPartnerStatistics(stats: MemberSessionStatistic, games: List<Game>) {
         games.forEach { g ->
-            val result = GameUtil.getPlayerResult(stats.player, g)
+            val result = GameUtil.getMemberResult(stats.member, g)
 
             if (result.faction != Faction.NONE) {
                 val participants =
-                    g.players.filter { paf -> paf.faction != Faction.NONE && paf.player.id != stats.player.id }
+                    g.members.filter { paf -> paf.faction != Faction.NONE && paf.member.id != stats.member.id }
                 addPlayerPartnerStatisticForGame(stats, result, participants)
             }
         }
     }
 
     private fun addPlayerPartnerStatisticForGame(
-        stats: PlayerStatistic,
+        stats: MemberSessionStatistic,
         result: GameResult,
-        participants: List<PlayerAndFaction>
+        participants: List<MemberAndFaction>
     ) {
         participants.forEach { partner ->
             if (partner.faction == result.faction) {
-                addGameResult(stats.partners[partner.player.id]?.general, result)
+                addGameResult(stats.partners[partner.member.id]?.general, result)
                 if (partner.faction == Faction.RE) {
-                    addGameResult(stats.partners[partner.player.id]?.re, result)
+                    addGameResult(stats.partners[partner.member.id]?.re, result)
                 } else if (partner.faction == Faction.CONTRA) {
-                    addGameResult(stats.partners[partner.player.id]?.contra, result)
+                    addGameResult(stats.partners[partner.member.id]?.contra, result)
                 }
             } else {
-                addGameResult(stats.opponents[partner.player.id]?.general, result)
+                addGameResult(stats.opponents[partner.member.id]?.general, result)
                 if (partner.faction == Faction.RE) addGameResult(
-                    stats.opponents[partner.player.id]?.contra, result
+                    stats.opponents[partner.member.id]?.contra, result
                 )
                 else if (partner.faction == Faction.CONTRA) addGameResult(
-                    stats.opponents[partner.player.id]?.re, result
+                    stats.opponents[partner.member.id]?.re, result
                 )
             }
         }

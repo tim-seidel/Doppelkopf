@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import de.timseidel.doppelkopf.databinding.FragmentSessionStatisticBinding
-import de.timseidel.doppelkopf.model.Player
+import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
 import de.timseidel.doppelkopf.model.statistic.session.SessionStatisticsCalculator
-import de.timseidel.doppelkopf.ui.session.PlayerListHeaderAdapter.OnPlayerClickListener
+import de.timseidel.doppelkopf.ui.session.MemberListHeaderAdapter.OnMemberClickListener
 import de.timseidel.doppelkopf.ui.statistic.StatisticListAdapter
 import de.timseidel.doppelkopf.ui.statistic.provider.EmptyStatisticViewProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.IStatisticViewsProvider
@@ -19,10 +19,11 @@ import de.timseidel.doppelkopf.ui.statistic.provider.SessionStatisticViewsProvid
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import java.lang.Integer.max
 import java.lang.Integer.min
+import java.time.LocalDateTime
 
 class SessionStatisticFragment : Fragment() {
 
-    private val defaultSessionStatsPlayerPlaceholderId = "__default_session"
+    private val defaultSessionStatsMemberPlaceholderId = "__default_session"
 
     private var _binding: FragmentSessionStatisticBinding? = null
     private val binding get() = _binding!!
@@ -54,7 +55,8 @@ class SessionStatisticFragment : Fragment() {
 
     private fun setupStatistics() {
         sessionStatistics = SessionStatisticsCalculator().calculateSessionStatistics(
-            DokoShortAccess.getPlayerCtrl().getPlayers(),
+            DokoShortAccess.getSessionCtrl().getSession().id,
+            DokoShortAccess.getSessionCtrl().getSession().members,
             DokoShortAccess.getGameCtrl().getGames()
         )
 
@@ -66,16 +68,16 @@ class SessionStatisticFragment : Fragment() {
     }
 
     private fun setupPlayerSelect() {
-        binding.headerStatisticPlayerSelect.setListener(object : OnPlayerClickListener {
-            override fun onPlayerClicked(player: Player) {
-                if (player.id == defaultSessionStatsPlayerPlaceholderId) {
+        binding.headerStatisticPlayerSelect.setListener(object : OnMemberClickListener {
+            override fun onPlayerClicked(member: Member) {
+                if (member.id == defaultSessionStatsMemberPlaceholderId) {
                     setStatistics(SessionStatisticViewsProvider(sessionStatistics))
                 } else {
-                    val playerStatistic =
-                        sessionStatistics.playerStatistics.firstOrNull { playerStatistic -> playerStatistic.player.id == player.id }
+                    val memberStatistic =
+                        sessionStatistics.memberSessionStatistics.firstOrNull { memberStatistic -> memberStatistic.member.id == member.id }
 
-                    if (playerStatistic != null && playerStatistic.general.total.games > 0) {
-                        setStatistics(PlayerStatisticViewsProvider(playerStatistic))
+                    if (memberStatistic != null && memberStatistic.general.total.games > 0) {
+                        setStatistics(PlayerStatisticViewsProvider(memberStatistic))
                     } else {
                         setStatistics(EmptyStatisticViewProvider())
                     }
@@ -83,13 +85,13 @@ class SessionStatisticFragment : Fragment() {
             }
         })
 
-        val playerDefaultGroupStatisticPlaceholder =
-            Player(defaultSessionStatsPlayerPlaceholderId, "Alle")
-        val players = DokoShortAccess.getPlayerCtrl().getPlayers().toMutableList()
-        players.add(0, playerDefaultGroupStatisticPlaceholder)
+        val memberDefaultGroupStatisticPlaceholder =
+            Member(defaultSessionStatsMemberPlaceholderId, "Alle", LocalDateTime.now())
+        val members = DokoShortAccess.getSessionCtrl().getSession().members
+        members.add(0, memberDefaultGroupStatisticPlaceholder)
 
-        binding.headerStatisticPlayerSelect.setRowSize(max(1, min(4, players.size)))
-        binding.headerStatisticPlayerSelect.setPlayers(players)
+        binding.headerStatisticPlayerSelect.setRowSize(max(1, min(4, members.size)))
+        binding.headerStatisticPlayerSelect.setMembers(members)
     }
 
     private fun setStatistics(provider: IStatisticViewsProvider) {

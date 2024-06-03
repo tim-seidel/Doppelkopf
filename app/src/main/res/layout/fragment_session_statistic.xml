@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <de.timseidel.doppelkopf.ui.session.PlayerListHeaderView
+    <de.timseidel.doppelkopf.ui.session.MemberListHeaderView
         android:id="@+id/header_statistic_player_select"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

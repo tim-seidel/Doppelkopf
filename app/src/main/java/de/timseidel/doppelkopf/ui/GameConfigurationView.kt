@@ -19,14 +19,13 @@ import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.GameTypeHelper
-import de.timseidel.doppelkopf.model.Player
-import de.timseidel.doppelkopf.model.PlayerAndFaction
+import de.timseidel.doppelkopf.model.Member
+import de.timseidel.doppelkopf.model.MemberAndFaction
 import de.timseidel.doppelkopf.ui.session.gamecreation.GameConfiguration
-import de.timseidel.doppelkopf.ui.session.gamecreation.PlayerFactionSelectAdapter
+import de.timseidel.doppelkopf.ui.session.gamecreation.MemberFactionSelectAdapter
 import de.timseidel.doppelkopf.ui.session.gamecreation.TackenCounterView
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
-import de.timseidel.doppelkopf.util.GameUtil
 
 class GameConfigurationView constructor(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
@@ -42,13 +41,13 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
     private lateinit var tvGameFeaturesTitle: TextView
     private lateinit var tvGameTypeErrorMessage: TextView
 
-    private lateinit var playerFactionSelectAdapter: PlayerFactionSelectAdapter
+    private lateinit var memberFactionSelectAdapter: MemberFactionSelectAdapter
     private var gameConfigurationChangeListener: GameConfigurationChangeListener? = null
 
     interface GameConfigurationChangeListener {
         fun onTackenCountChanged(tackenCount: Int)
         fun onWinningFactionChanged(winningFaction: Faction)
-        fun onPlayerFactionChanged(player: Player, faction: Faction)
+        fun onMemberFactionChanged(member: Member, faction: Faction)
         fun onBockrundeChanged(isBockrunde: Boolean)
         fun onGameTypeChanged(gameType: GameType)
     }
@@ -99,7 +98,7 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         setTackenCount(gameConfiguration.tackenCount)
         setIsBockrunde(gameConfiguration.isBockrunde)
         setWinningFaction(gameConfiguration.winningFaction)
-        setPlayerFactionList(gameConfiguration.playerFactionList)
+        setPlayerFactionList(gameConfiguration.memberFactionList)
         setGameType(gameConfiguration.gameType)
     }
 
@@ -112,15 +111,15 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
     }
 
     private fun setupPlayerFactionSelectList() {
-        val playerAndFactions: List<PlayerAndFaction> =
-            DokoShortAccess.getPlayerCtrl().getPlayersAsFaction()
+        val memberAndFactions: List<MemberAndFaction> =
+            DokoShortAccess.getMemberCtrl().getMembersAsFaction()
 
-        playerFactionSelectAdapter = PlayerFactionSelectAdapter(
-            playerAndFactions.toMutableList(),
-            object : PlayerFactionSelectAdapter.PlayerFactionClickListener {
-                override fun onFactionUpdate(player: Player, newFaction: Faction) {
-                    gameConfigurationChangeListener?.onPlayerFactionChanged(
-                        player,
+        memberFactionSelectAdapter = MemberFactionSelectAdapter(
+            memberAndFactions.toMutableList(),
+            object : MemberFactionSelectAdapter.MemberFactionClickListener {
+                override fun onFactionUpdate(member: Member, newFaction: Faction) {
+                    gameConfigurationChangeListener?.onMemberFactionChanged(
+                        member,
                         newFaction
                     )
                 }
@@ -128,7 +127,7 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         )
 
         val dp4 = Converter.convertDpToPixels(4f, rvPlayerFactionSelect.context)
-        rvPlayerFactionSelect.adapter = playerFactionSelectAdapter
+        rvPlayerFactionSelect.adapter = memberFactionSelectAdapter
         rvPlayerFactionSelect.layoutManager = GridLayoutManager(context, 2)
         rvPlayerFactionSelect.addItemDecoration(RecyclerViewMarginDecoration(dp4, dp4))
     }
@@ -231,16 +230,16 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         cbIsBockrunde.isChecked = isBockrunde
     }
 
-    fun setPlayerFaction(player: Player, faction: Faction) {
-        playerFactionSelectAdapter.updatePlayerFaction(player, faction)
+    fun setMemberFaction(member: Member, faction: Faction) {
+        memberFactionSelectAdapter.updatePlayerFaction(member, faction)
     }
 
     fun doPlayerFactionReset() {
-        playerFactionSelectAdapter.resetPlayerFactions()
+        memberFactionSelectAdapter.resetPlayerFactions()
     }
 
-    fun setPlayerFactionList(playerFactionList: List<PlayerAndFaction>) {
-        playerFactionSelectAdapter.updatePlayerFactionList(playerFactionList)
+    fun setPlayerFactionList(memberFactionList: List<MemberAndFaction>) {
+        memberFactionSelectAdapter.updateMemberFactionList(memberFactionList)
     }
 
     fun setGameType(gameType: GameType) {

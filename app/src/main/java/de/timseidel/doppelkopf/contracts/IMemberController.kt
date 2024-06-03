@@ -1,6 +1,7 @@
 package de.timseidel.doppelkopf.contracts
 
 import de.timseidel.doppelkopf.model.Member
+import de.timseidel.doppelkopf.model.MemberAndFaction
 
 interface IMemberController {
 
@@ -19,6 +20,8 @@ interface IMemberController {
     fun getMemberByName(name: String): Member?
 
     fun getMembers(): List<Member>
+
+    fun getMembersAsFaction(): List<MemberAndFaction>
 
     fun validateName(name: String): Boolean
 

@@ -5,7 +5,7 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.GameType
-import de.timseidel.doppelkopf.model.PlayerAndFaction
+import de.timseidel.doppelkopf.model.MemberAndFaction
 import de.timseidel.doppelkopf.util.GameUtil
 import de.timseidel.doppelkopf.util.IdGenerator
 
@@ -14,7 +14,7 @@ class GameController : IGameController {
     private val games = mutableListOf<Game>()
 
     override fun createGame(
-        players: List<PlayerAndFaction>,
+        members: List<MemberAndFaction>,
         winningFaction: Faction,
         winningPoints: Int,
         tacken: Int,
@@ -24,7 +24,7 @@ class GameController : IGameController {
         return Game(
             IdGenerator.generateIdWithTimestamp("game"),
             System.currentTimeMillis(),
-            players,
+            members,
             winningFaction,
             winningPoints,
             tacken,
@@ -41,8 +41,8 @@ class GameController : IGameController {
         val game = games.find { g -> g.id == gameId }
         if (game != null) {
             game.timestamp = updatedGame.timestamp
-            game.players.forEach { p ->
-                val updatedPlayer = updatedGame.players.find { up -> up.player.id == p.player.id }
+            game.members.forEach { p ->
+                val updatedPlayer = updatedGame.members.find { up -> up.member.id == p.member.id }
                 if (updatedPlayer != null) {
                     p.faction = updatedPlayer.faction
                 }
@@ -73,10 +73,10 @@ class GameController : IGameController {
         return games.toList()
     }
 
-    override fun getGameAsPlayerResults(game: Game): List<GameResult> {
+    override fun getGameAsMemberResults(game: Game): List<GameResult> {
         val results = mutableListOf<GameResult>()
 
-        game.players.forEach { p ->
+        game.members.forEach { p ->
             results.add(
                 GameResult(
                     game.id,
@@ -97,18 +97,18 @@ class GameController : IGameController {
         return results
     }
 
-    override fun getGamesAsPlayerResults(): List<List<GameResult>> {
+    override fun getGamesAsMemberResults(): List<List<GameResult>> {
         val results = mutableListOf<List<GameResult>>()
         games.forEach { g ->
-            results.add(getGameAsPlayerResults(g))
+            results.add(getGameAsMemberResults(g))
         }
         return results
     }
 
-    override fun getGamesOfPlayer(playerId: String): List<Game> {
+    override fun getGamesOfMember(memberId: String): List<Game> {
         val pGames = mutableListOf<Game>()
         games.forEach { g ->
-            if (g.players.any { p -> p.player.id == playerId && p.faction != Faction.NONE }) pGames.add(
+            if (g.members.any { p -> p.member.id == memberId && p.faction != Faction.NONE }) pGames.add(
                 g
             )
         }

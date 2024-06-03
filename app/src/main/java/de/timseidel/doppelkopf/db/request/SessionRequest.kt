@@ -5,7 +5,6 @@ import de.timseidel.doppelkopf.controller.SessionController
 import de.timseidel.doppelkopf.db.request.base.BaseReadRequest
 import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Game
-import de.timseidel.doppelkopf.model.Player
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import java.time.ZoneOffset
@@ -27,48 +26,35 @@ class SessionListRequest(private val sessionInfos: List<Session>) :
             val sessionController = SessionController()
             sessionController.set(sessionInfo)
 
-            SessionPlayerRequest(
+            SessionGameRequest(
                 DokoShortAccess.getGroupCtrl().getGroup().id,
-                sessionInfo.id
-            ).execute(object :
-                ReadRequestListener<List<Player>> {
+                sessionInfo.id,
+                DokoShortAccess.getMemberCtrl()
+            ).execute(
+                object : ReadRequestListener<List<Game>> {
+                    override fun onReadComplete(result: List<Game>) {
+                        result.forEach { game ->
+                            sessionController.getGameController().addGame(game)
+                        }
 
-                override fun onReadComplete(result: List<Player>) {
-                    sessionController.getPlayerController().addPlayers(result)
+                        sessions.add(sessionController)
+                        remainingLoadCounter -= 1
 
-                    SessionGameRequest(
-                        DokoShortAccess.getGroupCtrl().getGroup().id,
-                        sessionInfo.id,
-                        sessionController.getPlayerController()
-                    ).execute(
-                        object : ReadRequestListener<List<Game>> {
-                            override fun onReadComplete(result: List<Game>) {
-                                result.forEach { game ->
-                                    sessionController.getGameController().addGame(game)
-                                }
-
-                                sessions.add(sessionController)
-                                remainingLoadCounter -= 1
-
-                                if (remainingLoadCounter == 0) {
-                                    sessions.sortBy { s ->
-                                        s.getSession().date.toInstant(ZoneOffset.UTC).toEpochMilli()
-                                    }
-
-                                    onReadResult(sessions)
-                                }
+                        if (remainingLoadCounter == 0) {
+                            sessions.sortBy { s ->
+                                s.getSession().date.toInstant(ZoneOffset.UTC).toEpochMilli()
                             }
 
-                            override fun onReadFailed() {
-                                this.onReadFailed()
-                            }
-                        })
-                }
+                            onReadResult(sessions)
+                        }
+                    }
 
-                override fun onReadFailed() {
-                    this.onReadFailed()
-                }
-            })
+                    override fun onReadFailed() {
+                        this.onReadFailed()
+                    }
+                })
         }
+
     }
+
 }

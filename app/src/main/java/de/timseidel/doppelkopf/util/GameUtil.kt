@@ -6,15 +6,15 @@ import de.timseidel.doppelkopf.model.GameHistoryColumn
 import de.timseidel.doppelkopf.model.GameHistoryItem
 import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.GameType
-import de.timseidel.doppelkopf.model.Player
-import de.timseidel.doppelkopf.model.PlayerAndFaction
+import de.timseidel.doppelkopf.model.Member
+import de.timseidel.doppelkopf.model.MemberAndFaction
 
 class GameUtil {
     companion object {
 
-        fun isFactionCompositionSolo(players: List<PlayerAndFaction>): Boolean {
-            val reCount = players.count { paf -> paf.faction == Faction.RE }
-            val contraCount = players.count { paf -> paf.faction == Faction.CONTRA }
+        fun isFactionCompositionSolo(members: List<MemberAndFaction>): Boolean {
+            val reCount = members.count { maf -> maf.faction == Faction.RE }
+            val contraCount = members.count { maf -> maf.faction == Faction.CONTRA }
 
             return reCount == 1 && contraCount == 3
         }
@@ -40,10 +40,10 @@ class GameUtil {
 
         fun isGameTypeValid(
             gameType: GameType,
-            playerFactionList: List<PlayerAndFaction>
+            factions: List<MemberAndFaction>
         ): Pair<Boolean, String> {
-            val reCount = playerFactionList.count { paf -> paf.faction == Faction.RE }
-            val contraCount = playerFactionList.count { paf -> paf.faction == Faction.CONTRA }
+            val reCount = factions.count { paf -> paf.faction == Faction.RE }
+            val contraCount = factions.count { paf -> paf.faction == Faction.CONTRA }
 
             when (gameType) {
                 GameType.NORMAL -> {
@@ -91,17 +91,17 @@ class GameUtil {
             return if (result.tacken < 0) -1 * result.tacken else 0
         }
 
-        fun getPlayerResult(player: Player, game: Game): GameResult {
-            val paf = game.players.firstOrNull { paf -> paf.player.id == player.id }
-            return if (paf == null) {
+        fun getMemberResult(member: Member, game: Game): GameResult {
+            val maf = game.members.firstOrNull { maf -> maf.member.id == member.id }
+            return if (maf == null) {
                 GameResult("", Faction.NONE, false, 0, 0, false, GameType.NORMAL)
             } else {
                 GameResult(
                     game.id,
-                    paf.faction,
-                    paf.faction == game.winningFaction,
-                    getFactionTacken(paf.faction, game),
-                    getFactionPoints(paf.faction, game.winningFaction, game.winningPoints),
+                    maf.faction,
+                    maf.faction == game.winningFaction,
+                    getFactionTacken(maf.faction, game),
+                    getFactionPoints(maf.faction, game.winningFaction, game.winningPoints),
                     game.isBockrunde,
                     game.gameType
                 )
@@ -113,14 +113,14 @@ class GameUtil {
             games.forEachIndexed { i, game ->
                 val scores = mutableListOf<GameHistoryColumn>()
 
-                game.players.forEach { paf ->
-                    val result = GameUtil.getPlayerResult(paf.player, game)
+                game.members.forEach { paf ->
+                    val result = GameUtil.getMemberResult(paf.member, game)
                     scores.add(
                         GameHistoryColumn(
                             result.faction,
                             result.tacken,
                             result.isWinner,
-                            isPlayerPlayingSolo(paf.player, game)
+                            isMemberPlayingSolo(paf.member, game)
                         )
                     )
                 }
@@ -139,8 +139,8 @@ class GameUtil {
             return gameHistory
         }
 
-        fun isPlayerPlayingSolo(player: Player, game: Game): Boolean {
-            val result = getPlayerResult(player, game)
+        fun isMemberPlayingSolo(member: Member, game: Game): Boolean {
+            val result = getMemberResult(member, game)
             return game.gameType == GameType.SOLO && result.faction == Faction.RE
         }
     }

@@ -7,10 +7,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import de.timseidel.doppelkopf.R
 
-class SessionHistoryListItemPlayerView constructor(context: Context, attrs: AttributeSet? = null) :
+class SessionHistoryListItemMemberView constructor(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
 
-    private lateinit var tvPlayerName: TextView
+    private lateinit var tvMemberName: TextView
 
     init {
         init(attrs)
@@ -24,22 +24,22 @@ class SessionHistoryListItemPlayerView constructor(context: Context, attrs: Attr
     }
 
     private fun findViews() {
-        tvPlayerName = findViewById(R.id.tv_session_history_item_player_name)
+        tvMemberName = findViewById(R.id.tv_session_history_item_player_name)
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
         val ta = context.obtainStyledAttributes(attrs, R.styleable.SessionHistoryListItemPlayerView)
         try {
-            val playerName = ta.getString(R.styleable.SessionHistoryListItemPlayerView_name) ?: ""
-            setPlayerName(playerName)
+            val memberName = ta.getString(R.styleable.SessionHistoryListItemPlayerView_name) ?: ""
+            setMemberName(memberName)
         } finally {
             ta.recycle()
         }
     }
 
 
-    fun setPlayerName(name: String) {
-        tvPlayerName.text = name
+    fun setMemberName(name: String) {
+        tvMemberName.text = name
     }
 
 }

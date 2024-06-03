@@ -2,25 +2,25 @@ package de.timseidel.doppelkopf.ui.session.gamecreation
 
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameType
-import de.timseidel.doppelkopf.model.PlayerAndFaction
+import de.timseidel.doppelkopf.model.MemberAndFaction
 import de.timseidel.doppelkopf.util.GameUtil
 
 class GameConfiguration {
 
-    var playerFactionList: List<PlayerAndFaction> = mutableListOf()
+    var memberFactionList: List<MemberAndFaction> = mutableListOf()
     var winningFaction: Faction = Faction.NONE
     var tackenCount: Int = 0
     var isBockrunde: Boolean = false
     var gameType: GameType = GameType.NORMAL
 
     fun isFactionAssignmentValid(): Boolean {
-        if (playerFactionList.count() < 4) {
+        if (memberFactionList.count() < 4) {
             return false
         }
 
         var reCount = 0
         var contraCount = 0
-        playerFactionList.forEach { pf ->
+        memberFactionList.forEach { pf ->
             when (pf.faction) {
                 Faction.RE -> reCount += 1
                 Faction.CONTRA -> contraCount += 1
@@ -43,7 +43,7 @@ class GameConfiguration {
             return false
         }
 
-        return GameUtil.isGameTypeValid(gameType, playerFactionList).first
+        return GameUtil.isGameTypeValid(gameType, memberFactionList).first
     }
 
 
@@ -53,13 +53,13 @@ class GameConfiguration {
         isBockrunde = false
         gameType = GameType.NORMAL
 
-        playerFactionList.forEach { paf ->
+        memberFactionList.forEach { paf ->
             paf.faction = Faction.NONE
         }
     }
 
     override fun toString(): String {
-        return "${winningFaction.name} | $tackenCount | $playerFactionList | $isBockrunde"
+        return "${winningFaction.name} | $tackenCount | $memberFactionList | $isBockrunde"
     }
 
 }

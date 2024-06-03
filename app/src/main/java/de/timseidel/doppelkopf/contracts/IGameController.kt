@@ -4,12 +4,12 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.GameType
-import de.timseidel.doppelkopf.model.PlayerAndFaction
+import de.timseidel.doppelkopf.model.MemberAndFaction
 
 interface IGameController {
 
     fun createGame(
-        players: List<PlayerAndFaction>,
+        members: List<MemberAndFaction>,
         winningFaction: Faction,
         winningPoints: Int,
         tacken: Int,
@@ -27,11 +27,11 @@ interface IGameController {
 
     fun getGames(): List<Game>
 
-    fun getGameAsPlayerResults(game: Game): List<GameResult>
+    fun getGameAsMemberResults(game: Game): List<GameResult>
 
-    fun getGamesAsPlayerResults(): List<List<GameResult>>
+    fun getGamesAsMemberResults(): List<List<GameResult>>
 
-    fun getGamesOfPlayer(playerId: String): List<Game>
+    fun getGamesOfMember(memberId: String): List<Game>
 
     fun reset()
 }

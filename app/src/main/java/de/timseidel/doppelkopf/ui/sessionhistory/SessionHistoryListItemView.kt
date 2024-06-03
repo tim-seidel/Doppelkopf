@@ -9,7 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.R
-import de.timseidel.doppelkopf.model.Player
+import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.util.Converter
 import kotlin.math.max
@@ -19,9 +19,9 @@ class SessionHistoryListItemView constructor(context: Context, attrs: AttributeS
 
     private lateinit var tvTitle: TextView
     private lateinit var tvDescription: TextView
-    private lateinit var rvPlayers: RecyclerView
+    private lateinit var rvMembers: RecyclerView
     private lateinit var ibOpenSession: ImageButton
-    private lateinit var playerListAdapter: SessionHistoryListItemPlayerListAdapter
+    private lateinit var memberListAdapter: SessionHistoryListItemMemberListAdapter
     private var sessionOpenListener: OnClickListener? = null
 
     init {
@@ -42,7 +42,7 @@ class SessionHistoryListItemView constructor(context: Context, attrs: AttributeS
         tvTitle = findViewById(R.id.tv_session_title)
         tvDescription = findViewById(R.id.tv_session_description)
         ibOpenSession = findViewById(R.id.ib_open_session)
-        rvPlayers = findViewById(R.id.rv_session_list_players)
+        rvMembers = findViewById(R.id.rv_session_list_players)
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
@@ -60,8 +60,8 @@ class SessionHistoryListItemView constructor(context: Context, attrs: AttributeS
     }
 
     private fun setupRecyclerView() {
-        val dp4 = Converter.convertDpToPixels(4f, rvPlayers.context)
-        rvPlayers.addItemDecoration(RecyclerViewMarginDecoration(dp4, dp4))
+        val dp4 = Converter.convertDpToPixels(4f, rvMembers.context)
+        rvMembers.addItemDecoration(RecyclerViewMarginDecoration(dp4, dp4))
     }
 
     fun setOpenSessionClickListener(listener: OnClickListener) {
@@ -69,10 +69,10 @@ class SessionHistoryListItemView constructor(context: Context, attrs: AttributeS
         ibOpenSession.setOnClickListener(listener)
     }
 
-    fun setPlayers(players: List<Player>) {
-        playerListAdapter = SessionHistoryListItemPlayerListAdapter(players)
-        rvPlayers.adapter = playerListAdapter
-        rvPlayers.layoutManager = GridLayoutManager(rvPlayers.context, max(players.size, 1))
+    fun setMembers(members: List<Member>) {
+        memberListAdapter = SessionHistoryListItemMemberListAdapter(members)
+        rvMembers.adapter = memberListAdapter
+        rvMembers.layoutManager = GridLayoutManager(rvMembers.context, max(members.size, 1))
     }
 
     fun setTitle(title: String) {

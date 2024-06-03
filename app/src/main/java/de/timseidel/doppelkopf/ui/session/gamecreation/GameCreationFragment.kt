@@ -17,7 +17,7 @@ import de.timseidel.doppelkopf.databinding.FragmentGameCreationBinding
 import de.timseidel.doppelkopf.db.DoppelkopfDatabase
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameType
-import de.timseidel.doppelkopf.model.Player
+import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.ui.GameConfigurationView
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.GameUtil
@@ -53,7 +53,7 @@ class GameCreationFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        gameConfiguration.playerFactionList = DokoShortAccess.getPlayerCtrl().getPlayersAsFaction()
+        gameConfiguration.memberFactionList = DokoShortAccess.getMemberCtrl().getMembersAsFaction()
         gameConfiguration.winningFaction = Faction.NONE
         gameConfiguration.tackenCount = 0
         gameConfiguration.isBockrunde = false
@@ -97,9 +97,9 @@ class GameCreationFragment : Fragment() {
                 checkSaveGameButtonEnabled()
             }
 
-            override fun onPlayerFactionChanged(player: Player, faction: Faction) {
-                gameConfiguration.playerFactionList.find { it.player == player }?.faction = faction
-                gameConfigurationView.setPlayerFaction(player, faction)
+            override fun onMemberFactionChanged(member: Member, faction: Faction) {
+                gameConfiguration.memberFactionList.find { maf -> maf.member.id == member.id }?.faction = faction
+                gameConfigurationView.setMemberFaction(member, faction)
 
                 checkAutoSwitchGameType()
                 checkErrorMessage()
@@ -128,7 +128,7 @@ class GameCreationFragment : Fragment() {
         val errorMessage =
             GameUtil.isGameTypeValid(
                 gameConfiguration.gameType,
-                gameConfiguration.playerFactionList
+                gameConfiguration.memberFactionList
             ).second
 
         gameConfigurationView.setGameTypeErrorMessage(if (gameConfiguration.gameType == GameType.SCHWARZVERLOREN) errorMessage else "")
@@ -142,11 +142,11 @@ class GameCreationFragment : Fragment() {
         val gt = gameConfiguration.gameType
         if (gt != GameType.NORMAL && gt != GameType.SOLO) return
 
-        if (GameUtil.isFactionCompositionSolo(gameConfiguration.playerFactionList) && gt == GameType.NORMAL) {
+        if (GameUtil.isFactionCompositionSolo(gameConfiguration.memberFactionList) && gt == GameType.NORMAL) {
             gameConfiguration.gameType = GameType.SOLO
             gameConfigurationView.setGameType(GameType.SOLO)
         }
-        if (!GameUtil.isFactionCompositionSolo(gameConfiguration.playerFactionList) && gt == GameType.SOLO) {
+        if (!GameUtil.isFactionCompositionSolo(gameConfiguration.memberFactionList) && gt == GameType.SOLO) {
             gameConfiguration.gameType = GameType.NORMAL
             gameConfigurationView.setGameType(GameType.NORMAL)
         }
@@ -176,7 +176,7 @@ class GameCreationFragment : Fragment() {
         try {
             val game = DoppelkopfManager.getInstance().getSessionController().getGameController()
                 .createGame(
-                    gameConfiguration.playerFactionList.map { it.copy() },
+                    gameConfiguration.memberFactionList.map { it.copy() },
                     gameConfiguration.winningFaction,
                     0,
                     gameConfiguration.tackenCount,

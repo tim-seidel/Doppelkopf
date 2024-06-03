@@ -14,18 +14,16 @@ class CSVGameHistoryExporter {
         val csv = StringBuilder()
         csv.append("gameId;timestamp")
 
-        val players = games.first().players
-        players.forEach { p ->
-            csv.append(";${p.player.id}_tacken")
-            csv.append(";${p.player.id}_faction")
+        val members = games.first().members
+        members.forEach { p ->
+            csv.append(p.member.name)
+            csv.append(";")
         }
         csv.append(";winningFaction;gameType;soloType;isBockrunde\n")
 
         games.forEach { g ->
-            csv.append("${g.id};")
-            csv.append("${g.timestamp};")
-            g.players.forEach { p ->
-                val result = GameUtil.getPlayerResult(p.player, g)
+            g.members.forEach { p ->
+                val result = GameUtil.getMemberResult(p.member, g)
                 if (result.faction != Faction.NONE) {
                     csv.append(result.tacken.toString())
                 } else {
@@ -53,20 +51,18 @@ class CSVGameHistoryExporter {
         val csv = StringBuilder()
         csv.append("gameId;timestamp")
 
-        val players = games.first().players
-        players.forEach { p ->
-            csv.append(";${p.player.id}_tacken")
-            csv.append(";${p.player.id}_faction")
+        val members = games.first().members
+        members.forEach { p ->
+            csv.append(p.member.name)
+            csv.append(";")
         }
         csv.append(";winningFaction;gameType;soloType;isBockrunde\n")
 
-        val tacken = MutableList(players.size) { 0 }
+        val tacken = MutableList(members.size) { 0 }
 
         games.forEach { g ->
-            csv.append("${g.id};")
-            csv.append("${g.timestamp};")
-            g.players.forEachIndexed { i, p ->
-                val result = GameUtil.getPlayerResult(p.player, g)
+            g.members.forEachIndexed { i, p ->
+                val result = GameUtil.getMemberResult(p.member, g)
                 tacken[i] += result.tacken
                 if (result.faction != Faction.NONE) {
                     csv.append(tacken[i].toString())

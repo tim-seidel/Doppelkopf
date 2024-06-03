@@ -67,11 +67,11 @@ class StatisticUtil {
 
             history.forEach { item ->
                 val accScores = mutableListOf<GameHistoryColumn>()
-                item.scores.forEachIndexed { playerIndex, score ->
+                item.scores.forEachIndexed { memberIndex, score ->
                     accScores.add(
                         GameHistoryColumn(
                             score.faction,
-                            score.score + (if (accumulatedHistory.isNotEmpty()) accumulatedHistory.last().scores[playerIndex].score else 0),
+                            score.score + (if (accumulatedHistory.isNotEmpty()) accumulatedHistory.last().scores[memberIndex].score else 0),
                             score.isWinner,
                             score.isSolo
                         )

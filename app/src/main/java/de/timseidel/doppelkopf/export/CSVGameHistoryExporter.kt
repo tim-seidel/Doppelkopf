@@ -15,13 +15,17 @@ class CSVGameHistoryExporter {
         csv.append("gameId;timestamp")
 
         val members = games.first().members
-        members.forEach { p ->
-            csv.append(p.member.name)
-            csv.append(";")
+        members.forEach { m ->
+            csv.append(";${m.member.id}_tacken")
+            csv.append(";${m.member.id}_faction")
         }
+
         csv.append(";winningFaction;gameType;soloType;isBockrunde\n")
 
         games.forEach { g ->
+            csv.append("${g.id};")
+            csv.append("${g.timestamp};")
+
             g.members.forEach { p ->
                 val result = GameUtil.getMemberResult(p.member, g)
                 if (result.faction != Faction.NONE) {
@@ -52,15 +56,18 @@ class CSVGameHistoryExporter {
         csv.append("gameId;timestamp")
 
         val members = games.first().members
-        members.forEach { p ->
-            csv.append(p.member.name)
-            csv.append(";")
+        members.forEach { m ->
+            csv.append(";${m.member.id}_tacken")
+            csv.append(";${m.member.id}_faction")
         }
         csv.append(";winningFaction;gameType;soloType;isBockrunde\n")
 
         val tacken = MutableList(members.size) { 0 }
 
         games.forEach { g ->
+            csv.append("${g.id};")
+            csv.append("${g.timestamp};")
+
             g.members.forEachIndexed { i, p ->
                 val result = GameUtil.getMemberResult(p.member, g)
                 tacken[i] += result.tacken

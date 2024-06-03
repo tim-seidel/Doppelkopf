@@ -63,6 +63,10 @@ class MemberController : IMemberController {
         return members.map { m -> MemberAndFaction(m, Faction.NONE) }
     }
 
+    override fun getMembersAsFaction(memberList: List<Member>): List<MemberAndFaction> {
+        return memberList.map { m -> MemberAndFaction(m, Faction.NONE) }
+    }
+
     override fun validateName(name: String): Boolean {
         return name.trim().isNotEmpty() && getMemberByName(name) == null
     }

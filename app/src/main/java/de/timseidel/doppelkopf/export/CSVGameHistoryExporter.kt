@@ -12,28 +12,33 @@ class CSVGameHistoryExporter {
         }
 
         val csv = StringBuilder()
+        csv.append("gameId;timestamp")
 
         val players = games.first().players
         players.forEach { p ->
-            csv.append(p.player.name)
-            csv.append(";")
+            csv.append(";${p.player.id}_tacken")
+            csv.append(";${p.player.id}_faction")
         }
-        csv.append("isBockrunde;winningFaction;gameType\n")
+        csv.append(";winningFaction;gameType;soloType;isBockrunde\n")
 
         games.forEach { g ->
+            csv.append("${g.id};")
+            csv.append("${g.timestamp};")
             g.players.forEach { p ->
                 val result = GameUtil.getPlayerResult(p.player, g)
                 if (result.faction != Faction.NONE) {
                     csv.append(result.tacken.toString())
+                } else {
+                    csv.append("0")
                 }
-                csv.append(";")
+
+                csv.append(";${result.faction.name};")
             }
 
-            if (g.isBockrunde) {
-                csv.append("x")
-            }
-            csv.append(";${g.winningFaction.name}")
+            csv.append(g.winningFaction.name)
             csv.append(";${g.gameType.name}")
+            csv.append(";${g.soloType.name}")
+            csv.append(";${g.isBockrunde}")
             csv.append("\n")
         }
 
@@ -46,32 +51,36 @@ class CSVGameHistoryExporter {
         }
 
         val csv = StringBuilder()
+        csv.append("gameId;timestamp")
 
         val players = games.first().players
         players.forEach { p ->
-            csv.append(p.player.name)
-            csv.append(";")
+            csv.append(";${p.player.id}_tacken")
+            csv.append(";${p.player.id}_faction")
         }
-        csv.append("isBockrunde;winningFaction;gameType\n")
+        csv.append(";winningFaction;gameType;soloType;isBockrunde\n")
 
         val tacken = MutableList(players.size) { 0 }
 
         games.forEach { g ->
+            csv.append("${g.id};")
+            csv.append("${g.timestamp};")
             g.players.forEachIndexed { i, p ->
                 val result = GameUtil.getPlayerResult(p.player, g)
                 tacken[i] += result.tacken
                 if (result.faction != Faction.NONE) {
                     csv.append(tacken[i].toString())
+                } else {
+                    csv.append("0")
                 }
 
                 csv.append(";")
             }
 
-            if (g.isBockrunde) {
-                csv.append("x")
-            }
-            csv.append(";${g.winningFaction.name}")
+            csv.append(g.winningFaction.name)
             csv.append(";${g.gameType.name}")
+            csv.append(";${g.soloType.name}")
+            csv.append(";${g.isBockrunde}")
             csv.append("\n")
         }
 

@@ -70,6 +70,7 @@
     <string name="hint_group_code">000000</string>
     <string name="join_group">Gruppe beitreten</string>
     <string name="create_group">Gruppe erstellen</string>
+    <string name="leave_group">Gruppe verlassen</string>
     <string name="nav_clear_default_group">Zur Gruppenauswahl</string>
     <string name="nav_update_group_statistic">Gruppenstatistiken aktualisieren</string>
     <string name="menu_show_group_code">Gruppencode anzeigen</string>
@@ -93,4 +94,5 @@
     <string name="game_features_help">Wähle die weiteren Eigenschaften dieses Spiels aus. Du kannst angeben:\n- Ob ihr ein Normalspiel oder eine besondere Runde wie z.B. eine Hochzeit oder ein Solo gespielt habt.\n- Falls ihr mit Bockrunden spielt, könnt ihr dies ebenfalls markieren. Das System nimmt dann an, dass die Tacken/Wertungszahl von euch verdoppelt wurde.</string>
     <string name="enable_bockrunden">Bockrunden anschalten</string>
     <string name="save_group_settings">Einstellungen speichern</string>
+    <string name="old_player_groups_incompatible_notice">Gruppen, die vor dem 10.06.2024 erstellt wurden sind leider nicht mit dieser Version kompatibel. Bitte erstelle eine neue Gruppe.</string>
 </resources>

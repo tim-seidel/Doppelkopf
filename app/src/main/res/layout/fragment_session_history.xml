@@ -6,6 +6,46 @@
     android:layout_height="match_parent"
     android:backgroundTint="@color/transparent">
 
+    <LinearLayout
+        android:id="@+id/ll_playerGroupsIncompatible_wrapper"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvPlayerGroupsIncompatible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/old_player_groups_incompatible_notice"
+            android:textAlignment="center"
+            android:textColor="@color/neural"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_leave_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/leave_group"
+            android:textColor="@color/white"
+            app:icon="@drawable/ic_baseline_close_24"
+            app:iconTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_sessions"
         android:layout_width="0dp"
@@ -14,7 +54,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_playerGroupsIncompatible_wrapper"
         tools:listitem="@layout/view_session_history_list_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -32,7 +72,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-
     <LinearLayout
         android:id="@+id/ll_no_sessions_text_wrapper"
         android:layout_width="0dp"
@@ -43,7 +82,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/ll_playerGroupsIncompatible_wrapper">
 
         <TextView
             android:id="@+id/tv_no_sessions_title"
@@ -66,7 +105,6 @@
             android:textColor="@color/neural"
             android:textSize="16sp"
             android:textStyle="italic"
-
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

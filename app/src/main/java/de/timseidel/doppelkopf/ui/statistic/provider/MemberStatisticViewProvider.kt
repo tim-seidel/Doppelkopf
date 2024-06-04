@@ -520,7 +520,6 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
                 currentTackenTextStat,
                 totalTackenLossTextStat,
                 tackenLineChartBockEnabled,
-                tackenLineChartBockDisabled,
                 tackenDiffWithBockrundenTextStat,
                 winRateOutsideOfBockTextStat,
                 winRateInBockTextStat,

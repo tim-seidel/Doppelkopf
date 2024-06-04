@@ -10,7 +10,7 @@ import de.timseidel.doppelkopf.databinding.FragmentSessionStatisticBinding
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
 import de.timseidel.doppelkopf.model.statistic.session.SessionStatisticsCalculator
-import de.timseidel.doppelkopf.ui.session.MemberListHeaderAdapter.OnMemberClickListener
+import de.timseidel.doppelkopf.ui.MemberListHeaderAdapter.OnMemberClickListener
 import de.timseidel.doppelkopf.ui.statistic.StatisticListAdapter
 import de.timseidel.doppelkopf.ui.statistic.provider.EmptyStatisticViewProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.IStatisticViewsProvider

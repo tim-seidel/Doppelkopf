@@ -1,4 +1,4 @@
-package de.timseidel.doppelkopf.ui.group.statistic
+package de.timseidel.doppelkopf.ui
 
 import android.content.Context
 import android.util.AttributeSet
@@ -18,18 +18,17 @@ class MemberListHeaderView constructor(context: Context, attrs: AttributeSet? = 
 
     private var memberClickListener: MemberListHeaderAdapter.OnMemberClickListener? = null
 
-
     init {
         init()
     }
 
     private fun init() {
-        View.inflate(context, R.layout.view_member_list_header, this)
+        View.inflate(context, R.layout.view_game_history_list_header, this)
         findViews()
     }
 
     private fun findViews() {
-        rvMembers = findViewById(R.id.rv_member_header)
+        rvMembers = findViewById(R.id.rv_ghl_member_header)
     }
 
     fun setListener(listener: MemberListHeaderAdapter.OnMemberClickListener) {

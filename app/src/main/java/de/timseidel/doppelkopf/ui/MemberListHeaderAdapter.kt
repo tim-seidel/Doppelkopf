@@ -1,4 +1,4 @@
-package de.timseidel.doppelkopf.ui.session
+package de.timseidel.doppelkopf.ui
 
 import android.content.Context
 import android.view.View

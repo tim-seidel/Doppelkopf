@@ -19,6 +19,7 @@ import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionListRequest
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.StatisticStatus
+import de.timseidel.doppelkopf.ui.MemberListHeaderAdapter
 import de.timseidel.doppelkopf.ui.statistic.StatisticListAdapter
 import de.timseidel.doppelkopf.ui.statistic.provider.EmptyStatisticViewProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.GroupStatisticViewProvider

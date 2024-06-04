@@ -1,8 +1,8 @@
 package de.timseidel.doppelkopf.ui.group.settings
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import de.timseidel.doppelkopf.R

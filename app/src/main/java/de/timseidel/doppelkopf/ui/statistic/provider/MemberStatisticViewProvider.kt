@@ -9,7 +9,6 @@ import de.timseidel.doppelkopf.ui.statistic.views.ColumnChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.LineChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.PieChartViewWrapper
-import de.timseidel.doppelkopf.ui.statistic.views.ScatterChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.SimpleTextStatisticViewWrapper
 import de.timseidel.doppelkopf.util.RangeDistribution
 import kotlin.math.abs

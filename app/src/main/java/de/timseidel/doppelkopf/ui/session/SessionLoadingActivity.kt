@@ -9,8 +9,8 @@ import androidx.core.content.ContextCompat
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.databinding.ActivitySessionLoadingBinding
 import de.timseidel.doppelkopf.db.request.SessionGameRequest
-import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionInfoRequest
+import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.util.DokoShortAccess

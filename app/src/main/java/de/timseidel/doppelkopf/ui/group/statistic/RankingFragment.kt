@@ -1,7 +1,6 @@
 package de.timseidel.doppelkopf.ui.group.statistic
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -9,21 +8,21 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.contracts.ISessionController
 import de.timseidel.doppelkopf.databinding.FragmentRankingBinding
-import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionListRequest
+import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Ranking
 import de.timseidel.doppelkopf.model.RankingItem
-import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
 import de.timseidel.doppelkopf.model.statistic.RankingStatisticsProvider
+import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess

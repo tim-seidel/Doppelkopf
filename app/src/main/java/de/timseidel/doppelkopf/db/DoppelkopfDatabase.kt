@@ -1,11 +1,11 @@
 package de.timseidel.doppelkopf.db
 
 import com.google.firebase.firestore.FirebaseFirestore
-import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Group
 import de.timseidel.doppelkopf.model.GroupSettings
 import de.timseidel.doppelkopf.model.Member
+import de.timseidel.doppelkopf.model.Session
 
 class DoppelkopfDatabase {
 

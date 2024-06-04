@@ -20,7 +20,6 @@ import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.databinding.ActivitySessionBinding
 import de.timseidel.doppelkopf.export.CSVGameHistoryExporter
 import de.timseidel.doppelkopf.util.DokoShortAccess
-import de.timseidel.doppelkopf.util.Logging
 
 class SessionActivity : AppCompatActivity() {
 

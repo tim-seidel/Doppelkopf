@@ -2,7 +2,6 @@ package de.timseidel.doppelkopf.db.request.base
 
 import de.timseidel.doppelkopf.ui.util.ThreadingUtil
 import de.timseidel.doppelkopf.util.Logging
-import java.lang.Exception
 
 abstract class BaseReadRequest<R> {
     protected var readRequestListener: ReadRequestListener<R>? = null

@@ -3,7 +3,6 @@ package de.timseidel.doppelkopf.db.request
 import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
-import de.timseidel.doppelkopf.contracts.IMemberController
 import de.timseidel.doppelkopf.db.FirebaseDTO
 import de.timseidel.doppelkopf.db.FirebaseStrings
 import de.timseidel.doppelkopf.db.SessionDto

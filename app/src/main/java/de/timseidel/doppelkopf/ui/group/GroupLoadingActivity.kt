@@ -12,12 +12,12 @@ import de.timseidel.doppelkopf.databinding.ActivityGroupLoadingBinding
 import de.timseidel.doppelkopf.db.request.GroupInfoRequestByCode
 import de.timseidel.doppelkopf.db.request.GroupInfoRequestById
 import de.timseidel.doppelkopf.db.request.GroupMemberRequest
-import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionInfoListRequest
-import de.timseidel.doppelkopf.model.Session
+import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Group
 import de.timseidel.doppelkopf.model.GroupSettings
 import de.timseidel.doppelkopf.model.Member
+import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.Logging
 

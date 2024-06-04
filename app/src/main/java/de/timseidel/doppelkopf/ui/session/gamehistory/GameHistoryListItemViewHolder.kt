@@ -1,9 +1,7 @@
 package de.timseidel.doppelkopf.ui.session.gamehistory
 
 import androidx.recyclerview.widget.RecyclerView
-import de.timseidel.doppelkopf.model.GameHistoryColumn
 import de.timseidel.doppelkopf.model.GameHistoryItem
-import de.timseidel.doppelkopf.model.GameResult
 
 class GameHistoryListItemViewHolder(val gameView: GameHistoryListItemView) :
     RecyclerView.ViewHolder(gameView) {

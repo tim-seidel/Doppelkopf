@@ -15,8 +15,8 @@ import androidx.lifecycle.Lifecycle
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.contracts.ISessionController
 import de.timseidel.doppelkopf.databinding.FragmentGroupStatisticBinding
-import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.db.request.SessionListRequest
+import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.StatisticStatus
 import de.timseidel.doppelkopf.ui.MemberListHeaderAdapter
@@ -27,9 +27,9 @@ import de.timseidel.doppelkopf.ui.statistic.provider.IStatisticViewsProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.MemberStatisticViewProvider
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.Logging
+import java.time.LocalDateTime
 import kotlin.math.max
 import kotlin.math.min
-import java.time.LocalDateTime
 
 class GroupStatisticFragment : Fragment() {
 

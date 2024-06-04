@@ -17,9 +17,9 @@ class GroupController : IGroupController {
     override fun createGroup(groupName: String, groupCode: String): Group {
         return Group(
             IdGenerator.generateIdWithTimestamp("group"),
-            IdGenerator.generateGroupCode(),
+            groupCode,
             LocalDateTime.now(),
-            groupName,
+            groupName
         )
     }
 

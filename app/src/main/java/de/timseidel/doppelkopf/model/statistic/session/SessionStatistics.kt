@@ -13,5 +13,5 @@ data class SessionStatistics(
     val gameResultHistoryWinner: MutableList<GameResult> = mutableListOf(),
     val gameResultHistoryLoser: MutableList<GameResult> = mutableListOf(),
 
-    val memberSessionStatistics: MutableList<MemberSessionStatistic> = mutableListOf()
+    val sessionMemberStatistics: MutableList<SessionMemberStatistic> = mutableListOf()
 )

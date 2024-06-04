@@ -90,7 +90,7 @@ class GroupLoadingActivity : AppCompatActivity() {
             DokoShortAccess.getSettingsCtrl().set(settings)
 
             setTitle(group.name)
-            setMessage(getString(R.string.loading_players))
+            setMessage(getString(R.string.loading_session_members))
 
             GroupMemberRequest(group.id).execute(object :
                 ReadRequestListener<List<Member>> {

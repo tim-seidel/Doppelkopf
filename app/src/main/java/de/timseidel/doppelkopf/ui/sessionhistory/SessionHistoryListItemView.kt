@@ -42,7 +42,7 @@ class SessionHistoryListItemView constructor(context: Context, attrs: AttributeS
         tvTitle = findViewById(R.id.tv_session_title)
         tvDescription = findViewById(R.id.tv_session_description)
         ibOpenSession = findViewById(R.id.ib_open_session)
-        rvMembers = findViewById(R.id.rv_session_list_players)
+        rvMembers = findViewById(R.id.rv_session_list_members)
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {

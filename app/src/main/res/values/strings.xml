@@ -12,8 +12,8 @@
     <string name="navigation_title_finances">Kasse</string>
     <string name="navigation_title_group_statistic">Statistik</string>
     <string name="navigation_title_member_ranking">Ranglisten</string>
-    <string name="session_players">Mitspielende</string>
-    <string name="player">Spieler:in</string>
+    <string name="session_members">Mitspielende</string>
+    <string name="member">Spieler:in</string>
     <string name="add_member">Weitere Mitspieler:in</string>
     <string name="desc_create_session_button">Button to create a new session</string>
     <string name="doko_session">Doppelkopfabend</string>
@@ -32,8 +32,8 @@
     <string name="title_game_edit">Spiel bearbeiten</string>
     <string name="title_group_settings">Gruppeneinstellung erstellen</string>
     <string name="title_session_statistic">Statistik</string>
-    <string name="game_creation_player_assignment">Parteizuordnung</string>
-    <string name="game_creation_player_assignment_factions">(♣ Re, ♦ Contra)</string>
+    <string name="game_creation_member_assignment">Parteizuordnung</string>
+    <string name="game_creation_member_assignment_factions">(♣ Re, ♦ Contra)</string>
     <string name="faction_contra">Contra</string>
     <string name="faction_re">Re</string>
     <string name="faction_select_re_desc">Select re faction</string>
@@ -50,10 +50,10 @@
     <string name="create_group_unable_to_create">Die Doppelkopfgruppe kann nicht erstellt werden. Stell sicher, dass keine Namen doppelt sind und du einen Titel hast.</string>
     <string name="create_group_unable_to_create_groupcode">Die Doppelkopfgruppe kann nicht erstellt werden. Bitte versuche es später erneut.</string>
     <string name="tacken">Tacken</string>
-    <string name="desc_history_item_player_faction_icon">Faction of the player in this game</string>
+    <string name="desc_history_item_member_faction_icon">Faction of the member in this game</string>
     <string name="loading_finished">Fertig</string>
     <string name="loading_games">Lade Spiele…</string>
-    <string name="loading_players">Lade Mitspieler…</string>
+    <string name="loading_session_members">Lade Mitspieler…</string>
     <string name="loading_sessionInfos">Lade Abendübersichten…</string>
     <string name="loading_session">Lade Doppelkopfabend…</string>
     <string name="loading_session_no_success">Der Doppelkopfabend konnte nicht geladen werden.</string>
@@ -86,7 +86,7 @@
     <string name="group_code_access_info">Der Gruppencode kann in der Gruppenübersicht oder einer Doppelkopfrunde über das 3-Punkte-Menü angezeigt werden.</string>
     <string name="session_history_open_session">Doppelkopfabend aufrufen</string>
     <string name="desc_session_creation_member_list_create_member">Neuen Mitspieler erstellen und hinzufügen.</string>
-    <string name="session_select_players_hint">Wähle Mitspieler:innen für diese Doppelkopfrunde aus oder füge neue hinzu.</string>
+    <string name="session_select_members_hint">Wähle Mitspieler:innen für diese Doppelkopfrunde aus oder füge neue hinzu.</string>
     <string name="tv_session_group_name_hint">Lege einen Namen für diese Runde fest.</string>
     <string name="no_sessions_played_yet_title">Misch\' schonmal die Karten!</string>
     <string name="no_sessions_played_yet_desc">Tippe auf den Button unten, um eure erste Doppelkopfrunde zu starten!</string>

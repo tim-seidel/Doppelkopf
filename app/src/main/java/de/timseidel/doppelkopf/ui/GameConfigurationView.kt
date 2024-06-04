@@ -31,7 +31,7 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
     LinearLayout(context, attrs) {
 
 
-    private lateinit var rvPlayerFactionSelect: RecyclerView
+    private lateinit var rvMemberFactionSelect: RecyclerView
     private lateinit var tcTackenCounter: TackenCounterView
     private lateinit var btnWinningFactionRe: Button
     private lateinit var btnWinningFactionContra: Button
@@ -62,7 +62,7 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
 
         applyAttributes(attrs)
 
-        setupPlayerFactionSelectList()
+        setupMemberFactionSelectList()
         setupFactionButtons()
         setupTackenCounter()
         setupBockrundeInput()
@@ -75,7 +75,7 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
     }
 
     private fun findViews() {
-        rvPlayerFactionSelect = findViewById(R.id.rv_game_creation_player_list)
+        rvMemberFactionSelect = findViewById(R.id.rv_game_creation_member_list)
         tcTackenCounter = findViewById(R.id.layout_tacken_counter)
         btnWinningFactionRe = findViewById(R.id.btn_winner_re)
         btnWinningFactionContra = findViewById(R.id.btn_winner_contra)
@@ -98,7 +98,7 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         setTackenCount(gameConfiguration.tackenCount)
         setIsBockrunde(gameConfiguration.isBockrunde)
         setWinningFaction(gameConfiguration.winningFaction)
-        setPlayerFactionList(gameConfiguration.memberFactionList)
+        setMemberFactionList(gameConfiguration.memberFactionList)
         setGameType(gameConfiguration.gameType)
     }
 
@@ -106,11 +106,11 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
         setWinningFaction(Faction.NONE)
         setTackenCount(0)
         setIsBockrunde(false)
-        doPlayerFactionReset()
+        doMemberFactionReset()
         setGameType(GameType.NORMAL)
     }
 
-    private fun setupPlayerFactionSelectList() {
+    private fun setupMemberFactionSelectList() {
         val memberAndFactions: List<MemberAndFaction> = DokoShortAccess.getMemberCtrl()
             .getMembersAsFaction(DokoShortAccess.getSessionCtrl().getSession().members)
 
@@ -126,10 +126,10 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
             }
         )
 
-        val dp4 = Converter.convertDpToPixels(4f, rvPlayerFactionSelect.context)
-        rvPlayerFactionSelect.adapter = memberFactionSelectAdapter
-        rvPlayerFactionSelect.layoutManager = GridLayoutManager(context, 2)
-        rvPlayerFactionSelect.addItemDecoration(RecyclerViewMarginDecoration(dp4, dp4))
+        val dp4 = Converter.convertDpToPixels(4f, rvMemberFactionSelect.context)
+        rvMemberFactionSelect.adapter = memberFactionSelectAdapter
+        rvMemberFactionSelect.layoutManager = GridLayoutManager(context, 2)
+        rvMemberFactionSelect.addItemDecoration(RecyclerViewMarginDecoration(dp4, dp4))
     }
 
     private fun setupFactionButtons() {
@@ -231,14 +231,14 @@ class GameConfigurationView constructor(context: Context, attrs: AttributeSet? =
     }
 
     fun setMemberFaction(member: Member, faction: Faction) {
-        memberFactionSelectAdapter.updatePlayerFaction(member, faction)
+        memberFactionSelectAdapter.updateMemberFaction(member, faction)
     }
 
-    fun doPlayerFactionReset() {
-        memberFactionSelectAdapter.resetPlayerFactions()
+    fun doMemberFactionReset() {
+        memberFactionSelectAdapter.resetMemberFactions()
     }
 
-    fun setPlayerFactionList(memberFactionList: List<MemberAndFaction>) {
+    fun setMemberFactionList(memberFactionList: List<MemberAndFaction>) {
         memberFactionSelectAdapter.updateMemberFactionList(memberFactionList)
     }
 

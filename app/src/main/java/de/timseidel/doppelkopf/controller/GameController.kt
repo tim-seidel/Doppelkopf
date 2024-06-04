@@ -42,9 +42,9 @@ class GameController : IGameController {
         if (game != null) {
             game.timestamp = updatedGame.timestamp
             game.members.forEach { p ->
-                val updatedPlayer = updatedGame.members.find { up -> up.member.id == p.member.id }
-                if (updatedPlayer != null) {
-                    p.faction = updatedPlayer.faction
+                val updatedMember = updatedGame.members.find { up -> up.member.id == p.member.id }
+                if (updatedMember != null) {
+                    p.faction = updatedMember.faction
                 }
             }
             game.winningFaction = updatedGame.winningFaction

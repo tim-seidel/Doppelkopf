@@ -18,7 +18,7 @@ class SessionStatisticsCalculator {
         val memberStatistics = calculateAllMemberSessionStatistics(members, games)
             .sortedBy { memberStatistic -> memberStatistic.member.name }
 
-        stats.memberSessionStatistics.addAll(memberStatistics)
+        stats.sessionMemberStatistics.addAll(memberStatistics)
 
         return stats
     }
@@ -89,8 +89,8 @@ class SessionStatisticsCalculator {
         member: Member,
         allMembers: List<Member>,
         games: List<Game>
-    ): MemberSessionStatistic {
-        val stats = MemberSessionStatistic(
+    ): SessionMemberStatistic {
+        val stats = SessionMemberStatistic(
             member = member,
             partners = getOtherMembers(member, allMembers).associateBy(
                 { it.id },
@@ -102,7 +102,7 @@ class SessionStatisticsCalculator {
         )
 
         calculateOwnMemberStatistics(stats, games)
-        calculatePlayerPartnerStatistics(stats, games)
+        calculateMemberPartnerStatistics(stats, games)
 
         return stats
     }
@@ -110,8 +110,8 @@ class SessionStatisticsCalculator {
     fun calculateAllMemberSessionStatistics(
         members: List<Member>,
         games: List<Game>
-    ): List<MemberSessionStatistic> {
-        val stats = mutableListOf<MemberSessionStatistic>()
+    ): List<SessionMemberStatistic> {
+        val stats = mutableListOf<SessionMemberStatistic>()
 
         members.forEach { member ->
             stats.add(calculateSingleMemberSessionStatistics(member, members, games))
@@ -124,7 +124,7 @@ class SessionStatisticsCalculator {
         return allMembers.filter { m -> m.id != member.id }
     }
 
-    private fun calculateOwnMemberStatistics(stats: MemberSessionStatistic, games: List<Game>) {
+    private fun calculateOwnMemberStatistics(stats: SessionMemberStatistic, games: List<Game>) {
         games.forEach { g ->
             val result = GameUtil.getMemberResult(stats.member, g)
 
@@ -150,20 +150,20 @@ class SessionStatisticsCalculator {
         }
     }
 
-    private fun calculatePlayerPartnerStatistics(stats: MemberSessionStatistic, games: List<Game>) {
+    private fun calculateMemberPartnerStatistics(stats: SessionMemberStatistic, games: List<Game>) {
         games.forEach { g ->
             val result = GameUtil.getMemberResult(stats.member, g)
 
             if (result.faction != Faction.NONE) {
                 val participants =
                     g.members.filter { paf -> paf.faction != Faction.NONE && paf.member.id != stats.member.id }
-                addPlayerPartnerStatisticForGame(stats, result, participants)
+                addMemberPartnerStatisticForGame(stats, result, participants)
             }
         }
     }
 
-    private fun addPlayerPartnerStatisticForGame(
-        stats: MemberSessionStatistic,
+    private fun addMemberPartnerStatisticForGame(
+        stats: SessionMemberStatistic,
         result: GameResult,
         participants: List<MemberAndFaction>
     ) {

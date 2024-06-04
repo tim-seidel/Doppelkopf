@@ -14,9 +14,10 @@ class MemberListHeaderView constructor(context: Context, attrs: AttributeSet? = 
     LinearLayout(context, attrs) {
 
     private lateinit var adapter: MemberListHeaderAdapter
-    private lateinit var rvPlayers: RecyclerView
+    private lateinit var rvMembers: RecyclerView
 
     private var memberClickListener: MemberListHeaderAdapter.OnMemberClickListener? = null
+
 
     init {
         init()
@@ -28,7 +29,7 @@ class MemberListHeaderView constructor(context: Context, attrs: AttributeSet? = 
     }
 
     private fun findViews() {
-        rvPlayers = findViewById(R.id.rv_member_header)
+        rvMembers = findViewById(R.id.rv_member_header)
     }
 
     fun setListener(listener: MemberListHeaderAdapter.OnMemberClickListener) {
@@ -38,10 +39,10 @@ class MemberListHeaderView constructor(context: Context, attrs: AttributeSet? = 
     fun setMembers(members: List<Member>) {
         adapter = MemberListHeaderAdapter(members)
         adapter.memberClickListener = memberClickListener
-        rvPlayers.adapter = adapter
+        rvMembers.adapter = adapter
     }
 
     fun setRowSize(rowSize: Int) {
-        rvPlayers.layoutManager = GridLayoutManager(rvPlayers.context, max(rowSize, 1))
+        rvMembers.layoutManager = GridLayoutManager(rvMembers.context, max(rowSize, 1))
     }
 }

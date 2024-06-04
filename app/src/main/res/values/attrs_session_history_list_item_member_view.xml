@@ -1,5 +1,5 @@
 <resources>
-    <declare-styleable name="SessionHistoryListItemPlayerView">
+    <declare-styleable name="SessionHistoryListItemMemberView">
         <attr name="name" format="string" />
     </declare-styleable>
 </resources>

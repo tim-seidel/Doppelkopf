@@ -18,23 +18,23 @@ class MemberListHeaderAdapter(
     RecyclerView.Adapter<MemberListHeaderAdapter.ViewHolder>() {
 
     interface OnMemberClickListener {
-        fun onPlayerClicked(member: Member)
+        fun onMemberClicked(member: Member)
     }
 
     class ViewHolder(private val memberView: TextView) : RecyclerView.ViewHolder(memberView) {
         fun bind(member: Member, listener: OnMemberClickListener?) {
             memberView.text = member.name
             memberView.setOnClickListener {
-                listener?.onPlayerClicked(member)
+                listener?.onMemberClicked(member)
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(createPlayerNameView(parent.context))
+        return ViewHolder(createMemberNameView(parent.context))
     }
 
-    private fun createPlayerNameView(context: Context): TextView {
+    private fun createMemberNameView(context: Context): TextView {
         val dp2 = Converter.convertDpToPixels(2f, context)
 
         val tv = TextView(context)

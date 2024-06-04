@@ -30,7 +30,7 @@ class MemberListHeaderView constructor(context: Context, attrs: AttributeSet? = 
     }
 
     private fun findViews() {
-        rvMembers = findViewById(R.id.rv_ghl_player_header)
+        rvMembers = findViewById(R.id.rv_ghl_member_header)
     }
 
     fun setListener(listener: MemberListHeaderAdapter.OnMemberClickListener) {

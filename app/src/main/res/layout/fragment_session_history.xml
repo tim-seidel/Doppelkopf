@@ -7,7 +7,7 @@
     android:backgroundTint="@color/transparent">
 
     <LinearLayout
-        android:id="@+id/ll_playerGroupsIncompatible_wrapper"
+        android:id="@+id/ll_memberGroupsIncompatible_wrapper"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tvPlayerGroupsIncompatible"
+            android:id="@+id/tvMemberGroupsIncompatible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/old_player_groups_incompatible_notice"
@@ -54,7 +54,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ll_playerGroupsIncompatible_wrapper"
+        app:layout_constraintTop_toBottomOf="@id/ll_memberGroupsIncompatible_wrapper"
         tools:listitem="@layout/view_session_history_list_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -82,7 +82,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ll_playerGroupsIncompatible_wrapper">
+        app:layout_constraintTop_toBottomOf="@id/ll_memberGroupsIncompatible_wrapper">
 
         <TextView
             android:id="@+id/tv_no_sessions_title"

@@ -16,13 +16,13 @@
         android:paddingVertical="2dp"
         android:textColor="@color/neural"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_game_history_item_player_tacken_list"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_game_history_item_member_tacken_list"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rv_game_history_item_player_tacken_list"
+        app:layout_constraintTop_toTopOf="@+id/rv_game_history_item_member_tacken_list"
         tools:text="01" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_game_history_item_player_tacken_list"
+        android:id="@+id/rv_game_history_item_member_tacken_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"

@@ -4,7 +4,7 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.statistic.SimpleStatisticsCalculator
 import de.timseidel.doppelkopf.model.statistic.StatisticUtil
-import de.timseidel.doppelkopf.model.statistic.session.MemberSessionStatistic
+import de.timseidel.doppelkopf.model.statistic.session.SessionMemberStatistic
 import de.timseidel.doppelkopf.ui.statistic.views.ColumnChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.LineChartViewWrapper
@@ -15,7 +15,7 @@ import de.timseidel.doppelkopf.util.RangeDistribution
 import kotlin.math.abs
 import kotlin.math.round
 
-class PlayerStatisticViewsProvider(private var stats: MemberSessionStatistic) : IStatisticViewsProvider {
+class SessionMemberStatisticViewsProvider(private var stats: SessionMemberStatistic) : IStatisticViewsProvider {
     override fun getStatisticItems(isBockrundeEnabled: Boolean): List<IStatisticViewWrapper> {
         val tackenDistribution = StatisticUtil.getTackenDistribution(
             stats.gameResultHistory.filter { r -> r.faction != Faction.NONE },
@@ -348,7 +348,7 @@ class PlayerStatisticViewsProvider(private var stats: MemberSessionStatistic) : 
             stats.solo.total.tacken.toString()
         )
 
-        val memberWithPlayerGamesBarchart = ColumnChartViewWrapper(
+        val memberWithMemberGamesBarchart = ColumnChartViewWrapper(
             ColumnChartViewWrapper.ColumnChartData(
                 "Spiele mit ...", "", "Spiele",
                 listOf(
@@ -387,7 +387,7 @@ class PlayerStatisticViewsProvider(private var stats: MemberSessionStatistic) : 
             )
         )
 
-        val memberWithPlayerTackenBarchart = ColumnChartViewWrapper(
+        val memberWithMemberTackenBarchart = ColumnChartViewWrapper(
             ColumnChartViewWrapper.ColumnChartData(
                 "Tacken mit ...", "", "Tacken",
                 listOf(
@@ -426,7 +426,7 @@ class PlayerStatisticViewsProvider(private var stats: MemberSessionStatistic) : 
             )
         )
 
-        val memberVsPlayerGamesBarchart = ColumnChartViewWrapper(
+        val memberVsMemberGamesBarchart = ColumnChartViewWrapper(
             ColumnChartViewWrapper.ColumnChartData(
                 "Spiele gegen ...", "", "Spiele",
                 listOf(
@@ -465,7 +465,7 @@ class PlayerStatisticViewsProvider(private var stats: MemberSessionStatistic) : 
             )
         )
 
-        val memberVsPlayerTackenBarchart = ColumnChartViewWrapper(
+        val memberVsMemberTackenBarchart = ColumnChartViewWrapper(
             ColumnChartViewWrapper.ColumnChartData(
                 "Tacken gegen ...", "", "Tacken",
                 listOf(
@@ -569,10 +569,10 @@ class PlayerStatisticViewsProvider(private var stats: MemberSessionStatistic) : 
                 averageLossTackenTextStat,
                 tackenDistributionBarchart,
                 memberSoloTextStat,
-                memberWithPlayerGamesBarchart,
-                memberWithPlayerTackenBarchart,
-                memberVsPlayerGamesBarchart,
-                memberVsPlayerTackenBarchart,
+                memberWithMemberGamesBarchart,
+                memberWithMemberTackenBarchart,
+                memberVsMemberGamesBarchart,
+                memberVsMemberTackenBarchart,
                 gameWinLossScatter,
                 longestWinStreakTextStat,
                 longestLossStreakTextStat,
@@ -591,10 +591,10 @@ class PlayerStatisticViewsProvider(private var stats: MemberSessionStatistic) : 
                 averageLossTackenTextStat,
                 tackenDistributionBarchart,
                 memberSoloTextStat,
-                memberWithPlayerGamesBarchart,
-                memberWithPlayerTackenBarchart,
-                memberVsPlayerGamesBarchart,
-                memberVsPlayerTackenBarchart,
+                memberWithMemberGamesBarchart,
+                memberWithMemberTackenBarchart,
+                memberVsMemberGamesBarchart,
+                memberVsMemberTackenBarchart,
                 gameWinLossScatter,
                 longestWinStreakTextStat,
                 longestLossStreakTextStat,

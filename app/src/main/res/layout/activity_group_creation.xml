@@ -119,12 +119,12 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/tv_group_players"
+                android:id="@+id/tv_group_members"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/session_players"
+                android:text="@string/session_members"
                 android:textColor="@color/primary_dark"
                 android:textSize="22sp" />
 

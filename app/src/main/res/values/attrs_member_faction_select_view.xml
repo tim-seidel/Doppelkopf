@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="MemberFactionSelectView">
+        <attr name="factionSelectMemberName" format="string" />
+    </declare-styleable>
+</resources>

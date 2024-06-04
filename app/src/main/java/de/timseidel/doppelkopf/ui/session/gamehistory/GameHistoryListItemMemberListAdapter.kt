@@ -4,18 +4,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.model.GameHistoryColumn
 
-class GameHistoryListItemPlayerListAdapter(
+class GameHistoryListItemMemberListAdapter(
     private val scores: MutableList<GameHistoryColumn> = mutableListOf(),
 ) :
-    RecyclerView.Adapter<GameHistoryListItemPlayerListAdapter.ViewHolder>() {
+    RecyclerView.Adapter<GameHistoryListItemMemberListAdapter.ViewHolder>() {
 
-    class ViewHolder(private val memberView: GameHistoryListItemPlayerView) :
+    class ViewHolder(private val memberView: GameHistoryListItemMemberView) :
         RecyclerView.ViewHolder(memberView) {
         fun bind(score: GameHistoryColumn) {
             val faction = score.faction
 
-            memberView.setPlayerTacken(score.score)
-            memberView.setPlayerResult(
+            memberView.setMemberTacken(score.score)
+            memberView.setMemberResult(
                 faction,
                 score.isWinner,
                 score.isSolo
@@ -24,7 +24,7 @@ class GameHistoryListItemPlayerListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(GameHistoryListItemPlayerView(parent.context))
+        return ViewHolder(GameHistoryListItemMemberView(parent.context))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

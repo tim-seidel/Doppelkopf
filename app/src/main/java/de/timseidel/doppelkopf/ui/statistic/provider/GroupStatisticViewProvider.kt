@@ -4,7 +4,7 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.statistic.StatisticUtil
 import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
-import de.timseidel.doppelkopf.model.statistic.session.MemberSessionStatistic
+import de.timseidel.doppelkopf.model.statistic.session.SessionMemberStatistic
 import de.timseidel.doppelkopf.ui.statistic.views.ColumnChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.LineChartViewWrapper
@@ -141,9 +141,9 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
         val percentReWin =
             if (groupStatistics.general.total.games > 0) round(groupStatistics.re.wins.games / groupStatistics.general.total.games.toFloat() * 100).toInt() else 0
 
-        var maxTackenResult: MemberSessionStatistic? = null
+        var maxTackenResult: SessionMemberStatistic? = null
         groupStatistics.sessionStatistics.forEach { ss ->
-            val maxSessionTacken = ss.memberSessionStatistics.maxByOrNull { ps -> ps.general.total.tacken }
+            val maxSessionTacken = ss.sessionMemberStatistics.maxByOrNull { ps -> ps.general.total.tacken }
             if (maxSessionTacken != null) {
                 if (maxTackenResult == null || maxSessionTacken.general.total.tacken > maxTackenResult!!.general.total.tacken) {
                     maxTackenResult = maxSessionTacken
@@ -151,9 +151,9 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
             }
         }
 
-        var minTackenResult: MemberSessionStatistic? = null
+        var minTackenResult: SessionMemberStatistic? = null
         groupStatistics.sessionStatistics.forEach { ss ->
-            val minSessionTacken = ss.memberSessionStatistics.minByOrNull { ps -> ps.general.total.tacken }
+            val minSessionTacken = ss.sessionMemberStatistics.minByOrNull { ps -> ps.general.total.tacken }
             if (minSessionTacken != null) {
                 if (minTackenResult == null || minSessionTacken.general.total.tacken < minTackenResult!!.general.total.tacken) {
                     minTackenResult = minSessionTacken
@@ -217,7 +217,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
             totalNegativeTacken.toString()
         )
 
-        val winLossPlayerBarChart = ColumnChartViewWrapper(
+        val winLossMemberBarChart = ColumnChartViewWrapper(
             ColumnChartViewWrapper.ColumnChartData(
                 "Siege/Niederlagen", "", "Spiele",
                 listOf(
@@ -262,7 +262,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
             "%.2f".format(groupStatistics.general.total.getTackenPerGame())
         )
 
-        val tackenWinLossPlayerBarChart = ColumnChartViewWrapper(
+        val tackenWinLossMemberBarChart = ColumnChartViewWrapper(
             ColumnChartViewWrapper.ColumnChartData(
                 "Tacken bei S/N", "", "Tacken",
                 listOf(
@@ -379,7 +379,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
             groupStatistics.solo.total.games.toString()
         )
 
-        val soloPlayerBarChart = ColumnChartViewWrapper(
+        val soloMemberBarChart = ColumnChartViewWrapper(
             ColumnChartViewWrapper.ColumnChartData(
                 "Solostatistiken",
                 "",
@@ -431,13 +431,13 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                 tackenIgnoringBockLineChart,
                 maxTackenResultTextStat,
                 minTackenResultTextStat,
-                winLossPlayerBarChart,
+                winLossMemberBarChart,
                 averageTackenPerGameTextStat,
-                tackenWinLossPlayerBarChart,
+                tackenWinLossMemberBarChart,
                 totalStraftackenTextStat,
                 tackenBarChartBockEnabled,
                 soloTextStat,
-                soloPlayerBarChart
+                soloMemberBarChart
             )
         } else {
             return listOf(
@@ -446,13 +446,13 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                 tackenLineChart,
                 maxTackenResultTextStat,
                 minTackenResultTextStat,
-                winLossPlayerBarChart,
+                winLossMemberBarChart,
                 averageTackenPerGameTextStat,
-                tackenWinLossPlayerBarChart,
+                tackenWinLossMemberBarChart,
                 totalStraftackenTextStat,
                 tackenBarChartBockDisabled,
                 soloTextStat,
-                soloPlayerBarChart
+                soloMemberBarChart
             )
         }
     }

@@ -56,7 +56,7 @@ class GameHistoryFragment : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.title =
             DokoShortAccess.getSessionCtrl().getSession().name
 
-        setupPlayerHeader()
+        setupMemberHeader()
         setupGameHistoryList()
         setupEditResultLauncher()
 
@@ -92,7 +92,7 @@ class GameHistoryFragment : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
-    private fun setupPlayerHeader() {
+    private fun setupMemberHeader() {
         val members = DokoShortAccess.getSessionCtrl().getSession().members
         binding.headerGameHistoryList.setRowSize(max(1, members.size))
         binding.headerGameHistoryList.setMembers(members)

@@ -72,7 +72,7 @@ class MemberFactionSelectAdapter(
         return members.size
     }
 
-    fun resetPlayerFactions() {
+    fun resetMemberFactions() {
         if (members.isEmpty()) {
             return
         }
@@ -83,7 +83,7 @@ class MemberFactionSelectAdapter(
         notifyItemRangeChanged(0, members.size)
     }
 
-    fun updatePlayerFaction(member: Member, faction: Faction) {
+    fun updateMemberFaction(member: Member, faction: Faction) {
         val memberIndex = members.indexOfFirst { it.member.id == member.id }
         if (memberIndex == -1) {
             return

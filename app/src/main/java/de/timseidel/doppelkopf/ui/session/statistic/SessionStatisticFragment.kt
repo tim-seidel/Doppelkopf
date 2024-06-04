@@ -14,7 +14,7 @@ import de.timseidel.doppelkopf.ui.session.MemberListHeaderAdapter.OnMemberClickL
 import de.timseidel.doppelkopf.ui.statistic.StatisticListAdapter
 import de.timseidel.doppelkopf.ui.statistic.provider.EmptyStatisticViewProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.IStatisticViewsProvider
-import de.timseidel.doppelkopf.ui.statistic.provider.PlayerStatisticViewsProvider
+import de.timseidel.doppelkopf.ui.statistic.provider.SessionMemberStatisticViewsProvider
 import de.timseidel.doppelkopf.ui.statistic.provider.SessionStatisticViewsProvider
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import java.lang.Integer.max
@@ -40,7 +40,7 @@ class SessionStatisticFragment : Fragment() {
 
         setupToolbar()
         setupStatistics()
-        setupPlayerSelect()
+        setupMemberSelect()
 
         return binding.root
     }
@@ -67,17 +67,17 @@ class SessionStatisticFragment : Fragment() {
         }
     }
 
-    private fun setupPlayerSelect() {
-        binding.headerStatisticPlayerSelect.setListener(object : OnMemberClickListener {
-            override fun onPlayerClicked(member: Member) {
+    private fun setupMemberSelect() {
+        binding.headerStatisticMemberSelect.setListener(object : OnMemberClickListener {
+            override fun onMemberClicked(member: Member) {
                 if (member.id == defaultSessionStatsMemberPlaceholderId) {
                     setStatistics(SessionStatisticViewsProvider(sessionStatistics))
                 } else {
                     val memberStatistic =
-                        sessionStatistics.memberSessionStatistics.firstOrNull { memberStatistic -> memberStatistic.member.id == member.id }
+                        sessionStatistics.sessionMemberStatistics.firstOrNull { memberStatistic -> memberStatistic.member.id == member.id }
 
                     if (memberStatistic != null && memberStatistic.general.total.games > 0) {
-                        setStatistics(PlayerStatisticViewsProvider(memberStatistic))
+                        setStatistics(SessionMemberStatisticViewsProvider(memberStatistic))
                     } else {
                         setStatistics(EmptyStatisticViewProvider())
                     }
@@ -90,8 +90,8 @@ class SessionStatisticFragment : Fragment() {
         val members = DokoShortAccess.getSessionCtrl().getSession().members
         members.add(0, memberDefaultGroupStatisticPlaceholder)
 
-        binding.headerStatisticPlayerSelect.setRowSize(max(1, min(4, members.size)))
-        binding.headerStatisticPlayerSelect.setMembers(members)
+        binding.headerStatisticMemberSelect.setRowSize(max(1, min(4, members.size)))
+        binding.headerStatisticMemberSelect.setMembers(members)
     }
 
     private fun setStatistics(provider: IStatisticViewsProvider) {

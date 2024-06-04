@@ -22,22 +22,22 @@ class MemberFactionSelectView constructor(context: Context, attrs: AttributeSet?
     }
 
     private fun init(attrs: AttributeSet?) {
-        View.inflate(context, R.layout.view_player_faction_select, this)
+        View.inflate(context, R.layout.view_member_faction_select, this)
         findViews()
 
         applyAttributes(attrs)
     }
 
     private fun findViews() {
-        tvMemberName = findViewById(R.id.tv_player_faction_select_name)
+        tvMemberName = findViewById(R.id.tv_member_faction_select_name)
         btnSelectRe = findViewById(R.id.btn_faction_re)
         btnSelectContra = findViewById(R.id.btn_faction_contra)
     }
 
     private fun applyAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.PlayerFactionSelectView)
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.MemberFactionSelectView)
         try {
-            val memberName = ta.getString(R.styleable.PlayerFactionSelectView_playerName) ?: ""
+            val memberName = ta.getString(R.styleable.MemberFactionSelectView_factionSelectMemberName) ?: ""
             setMemberName(memberName)
         } finally {
             ta.recycle()

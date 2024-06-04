@@ -17,20 +17,20 @@ class SessionHistoryListItemMemberView constructor(context: Context, attrs: Attr
     }
 
     private fun init(attrs: AttributeSet?) {
-        View.inflate(context, R.layout.view_session_history_list_item_player, this)
+        View.inflate(context, R.layout.view_session_history_list_item_member, this)
 
         findViews()
         parseAttributes(attrs)
     }
 
     private fun findViews() {
-        tvMemberName = findViewById(R.id.tv_session_history_item_player_name)
+        tvMemberName = findViewById(R.id.tv_session_history_item_member_name)
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.SessionHistoryListItemPlayerView)
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.SessionHistoryListItemMemberView)
         try {
-            val memberName = ta.getString(R.styleable.SessionHistoryListItemPlayerView_name) ?: ""
+            val memberName = ta.getString(R.styleable.SessionHistoryListItemMemberView_name) ?: ""
             setMemberName(memberName)
         } finally {
             ta.recycle()

@@ -4,7 +4,7 @@ import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.statistic.StatisticEntry
 
-data class MemberSessionStatistic(
+data class SessionMemberStatistic(
     val member: Member,
     val general: StatisticEntry = StatisticEntry(),
     val re: StatisticEntry = StatisticEntry(),

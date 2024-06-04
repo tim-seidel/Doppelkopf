@@ -10,11 +10,11 @@ import androidx.core.content.ContextCompat
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Faction
 
-class GameHistoryListItemPlayerView constructor(context: Context, attrs: AttributeSet? = null) :
+class GameHistoryListItemMemberView constructor(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
 
-    private lateinit var tvPlayerTacken: TextView
-    private lateinit var ivPlayerFaction: ImageView
+    private lateinit var tvMemberTacken: TextView
+    private lateinit var ivMemberFaction: ImageView
     private lateinit var clRoot: ConstraintLayout
 
     init {
@@ -22,63 +22,63 @@ class GameHistoryListItemPlayerView constructor(context: Context, attrs: Attribu
     }
 
     private fun init(attrs: AttributeSet?) {
-        View.inflate(context, R.layout.view_game_history_list_item_player, this)
+        View.inflate(context, R.layout.view_game_history_list_item_member, this)
         findViews()
 
         applyAttributes(attrs)
     }
 
     private fun findViews() {
-        tvPlayerTacken = findViewById(R.id.tv_ghli_player_tacken)
-        ivPlayerFaction = findViewById(R.id.iv_ghli_player_faction)
-        clRoot = findViewById(R.id.root_game_history_list_item_player)
+        tvMemberTacken = findViewById(R.id.tv_ghli_member_tacken)
+        ivMemberFaction = findViewById(R.id.iv_ghli_member_faction)
+        clRoot = findViewById(R.id.root_game_history_list_item_member)
     }
 
     private fun applyAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.GameHistoryListItemPlayerView)
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.GameHistoryListItemMemberView)
         try {
             val memberTacken =
-                ta.getInteger(R.styleable.GameHistoryListItemPlayerView_playerTacken, 0)
-            setPlayerTacken(memberTacken)
+                ta.getInteger(R.styleable.GameHistoryListItemMemberView_memberTacken, 0)
+            setMemberTacken(memberTacken)
         } finally {
             ta.recycle()
         }
     }
 
-    fun setPlayerTacken(tacken: Int) {
-        tvPlayerTacken.text = tacken.toString()
+    fun setMemberTacken(tacken: Int) {
+        tvMemberTacken.text = tacken.toString()
     }
 
-    fun setPlayerResult(faction: Faction, isWinner: Boolean, isSolo: Boolean) {
+    fun setMemberResult(faction: Faction, isWinner: Boolean, isSolo: Boolean) {
         when (faction) {
             Faction.RE -> {
-                ivPlayerFaction.setImageResource(R.drawable.ic_card_clubs_24)
-                ivPlayerFaction.setColorFilter(
+                ivMemberFaction.setImageResource(R.drawable.ic_card_clubs_24)
+                ivMemberFaction.setColorFilter(
                     ContextCompat.getColor(
                         context,
                         if (isWinner) R.color.primary else R.color.gray_400
                     )
                 )
-                tvPlayerTacken.visibility = VISIBLE
+                tvMemberTacken.visibility = VISIBLE
             }
 
             Faction.CONTRA -> {
-                ivPlayerFaction.setImageResource(R.drawable.ic_card_diamonds_24)
-                ivPlayerFaction.setColorFilter(
+                ivMemberFaction.setImageResource(R.drawable.ic_card_diamonds_24)
+                ivMemberFaction.setColorFilter(
                     ContextCompat.getColor(
                         context,
                         if (isWinner) R.color.secondary else R.color.gray_400
                     )
                 )
-                tvPlayerTacken.visibility = VISIBLE
+                tvMemberTacken.visibility = VISIBLE
             }
 
             Faction.NONE -> {
-                ivPlayerFaction.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24)
-                ivPlayerFaction.setColorFilter(ContextCompat.getColor(context, R.color.gray_400))
-                tvPlayerTacken.visibility = INVISIBLE
-                tvPlayerTacken.text = "0"
-                tvPlayerTacken.setTextColor(ContextCompat.getColor(context, R.color.black))
+                ivMemberFaction.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24)
+                ivMemberFaction.setColorFilter(ContextCompat.getColor(context, R.color.gray_400))
+                tvMemberTacken.visibility = INVISIBLE
+                tvMemberTacken.text = "0"
+                tvMemberTacken.setTextColor(ContextCompat.getColor(context, R.color.black))
             }
         }
 

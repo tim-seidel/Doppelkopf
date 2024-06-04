@@ -14,7 +14,7 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
     IStatisticViewsProvider {
 
     override fun getStatisticItems(isBockrundeEnabled: Boolean): List<IStatisticViewWrapper> {
-        val memberSessionStats = sessionStatistics.memberSessionStatistics
+        val memberSessionStats = sessionStatistics.sessionMemberStatistics
 
         val memberTackenHistories = mutableListOf<LineChartViewWrapper.ChartLineData>()
         memberSessionStats.forEach { p ->
@@ -215,7 +215,7 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
             )
         )
 
-        val winLossPlayerBarChart = ColumnChartViewWrapper(
+        val winLossMemberBarChart = ColumnChartViewWrapper(
             ColumnChartViewWrapper.ColumnChartData(
                 "Siege/Niederlagen", "", "Spiele",
                 listOf(
@@ -254,7 +254,7 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
             )
         )
 
-        val tackenWinLossPlayerBarChart = ColumnChartViewWrapper(
+        val tackenWinLossMemberBarChart = ColumnChartViewWrapper(
             ColumnChartViewWrapper.ColumnChartData(
                 "Tacken bei S/N", "", "Tacken",
                 listOf(
@@ -371,7 +371,7 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
             sessionStatistics.solo.total.games.toString()
         )
 
-        val soloPlayerBarChart = ColumnChartViewWrapper(
+        val soloMemberBarChart = ColumnChartViewWrapper(
             ColumnChartViewWrapper.ColumnChartData(
                 "Solostatistiken",
                 "",
@@ -411,12 +411,12 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
                 tackenIgnoringBockLineChart,
                 totalStraftackenTextStat,
                 straftackenLineChart,
-                winLossPlayerBarChart,
+                winLossMemberBarChart,
                 averageTackenPerGameTextStat,
-                tackenWinLossPlayerBarChart,
+                tackenWinLossMemberBarChart,
                 tackenBarChartBockEnabled,
                 soloTextStat,
-                soloPlayerBarChart
+                soloMemberBarChart
             )
         } else {
             return listOf(
@@ -425,12 +425,12 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
                 tackenLineChart,
                 totalStraftackenTextStat,
                 straftackenLineChart,
-                winLossPlayerBarChart,
+                winLossMemberBarChart,
                 averageTackenPerGameTextStat,
-                tackenWinLossPlayerBarChart,
+                tackenWinLossMemberBarChart,
                 tackenBarChartBockDisabled,
                 soloTextStat,
-                soloPlayerBarChart
+                soloMemberBarChart
             )
         }
     }

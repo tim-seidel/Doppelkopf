@@ -1,5 +1,0 @@
-<resources>
-    <declare-styleable name="PlayerFactionSelectView">
-        <attr name="playerName" format="string" />
-    </declare-styleable>
-</resources>

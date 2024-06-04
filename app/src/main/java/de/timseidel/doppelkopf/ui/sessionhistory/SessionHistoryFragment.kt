@@ -75,10 +75,10 @@ class SessionHistoryFragment : Fragment() {
 
         sessionHistoryListAdapter.setSessionInfos(sessionInfos.sortedByDescending { it.date })
         setNoSessionsPlaceholderVisibility(sessionInfos.isEmpty())
-        checkOldPlayerGroupsIncompatibility()
+        checkOldMemberGroupsIncompatibility()
     }
 
-    private fun checkOldPlayerGroupsIncompatibility() {
+    private fun checkOldMemberGroupsIncompatibility() {
         val sessions = DokoShortAccess.getSessionInfoCtrl().getSessionInfos()
         var hasConvertedSessions = sessions.isNotEmpty()
         for (session in sessions) {
@@ -98,7 +98,7 @@ class SessionHistoryFragment : Fragment() {
     }
 
     private fun setGroupIncompatibilityVisibility(isIncompatible: Boolean) {
-        binding.llPlayerGroupsIncompatibleWrapper.visibility =
+        binding.llMemberGroupsIncompatibleWrapper.visibility =
             if (isIncompatible) View.VISIBLE else View.GONE
         binding.fabAddSession.visibility = if (isIncompatible) View.GONE else View.VISIBLE
 

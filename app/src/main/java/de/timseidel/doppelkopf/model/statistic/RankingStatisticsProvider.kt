@@ -4,7 +4,7 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Ranking
 import de.timseidel.doppelkopf.model.RankingItem
 import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
-import de.timseidel.doppelkopf.model.statistic.session.MemberSessionStatistic
+import de.timseidel.doppelkopf.model.statistic.session.SessionMemberStatistic
 
 class RankingStatisticsProvider {
 
@@ -276,7 +276,7 @@ class RankingStatisticsProvider {
         return ranking
     }
 
-    private fun getHighestSessionEndTacken(sessionStatistics: List<MemberSessionStatistic>): Int {
+    private fun getHighestSessionEndTacken(sessionStatistics: List<SessionMemberStatistic>): Int {
         val session = sessionStatistics.maxByOrNull { it.general.total.tacken }
         if (session != null) {
             return session.general.total.tacken
@@ -284,7 +284,7 @@ class RankingStatisticsProvider {
         return 0
     }
 
-    private fun getLowestSessionEndTacken(sessionStatistics: List<MemberSessionStatistic>): Int {
+    private fun getLowestSessionEndTacken(sessionStatistics: List<SessionMemberStatistic>): Int {
         val session = sessionStatistics.minByOrNull { it.general.total.tacken }
         if (session != null) {
             return session.general.total.tacken
@@ -292,7 +292,7 @@ class RankingStatisticsProvider {
         return 0
     }
 
-    private fun getHighestSessionTacken(sessionStatistics: List<MemberSessionStatistic>): Int {
+    private fun getHighestSessionTacken(sessionStatistics: List<SessionMemberStatistic>): Int {
         var maxTacken = 0
         sessionStatistics.forEach { memberStatistic ->
             val accumulated =
@@ -308,7 +308,7 @@ class RankingStatisticsProvider {
         return maxTacken
     }
 
-    private fun getLowestSessionTacken(sessionStatistics: List<MemberSessionStatistic>): Int {
+    private fun getLowestSessionTacken(sessionStatistics: List<SessionMemberStatistic>): Int {
         var minTacken = 0
         sessionStatistics.forEach { memberStatistic ->
             val accumulated =

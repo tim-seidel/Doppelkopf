@@ -2,14 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root_player_faction_select"
+    android:id="@+id/root_member_faction_select"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="2dp"
     android:background="@drawable/border_background">
 
     <TextView
-        android:id="@+id/tv_player_faction_select_name"
+        android:id="@+id/tv_member_faction_select_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="2dp"

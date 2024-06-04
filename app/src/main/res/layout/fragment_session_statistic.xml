@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <de.timseidel.doppelkopf.ui.session.MemberListHeaderView
-        android:id="@+id/header_statistic_player_select"
+        android:id="@+id/header_statistic_member_select"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="2dp"
@@ -24,7 +24,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_statistic_player_select"
+        app:layout_constraintTop_toBottomOf="@+id/header_statistic_member_select"
         tools:listitem="@layout/view_simple_text_statistic" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

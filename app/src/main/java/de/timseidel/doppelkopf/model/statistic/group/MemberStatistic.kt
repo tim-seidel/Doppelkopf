@@ -3,7 +3,7 @@ package de.timseidel.doppelkopf.model.statistic.group
 import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.statistic.StatisticEntry
-import de.timseidel.doppelkopf.model.statistic.session.MemberSessionStatistic
+import de.timseidel.doppelkopf.model.statistic.session.SessionMemberStatistic
 
 data class MemberStatistic(
     val member: Member,
@@ -17,5 +17,5 @@ data class MemberStatistic(
 
     val gameResultHistory: MutableList<GameResult> = mutableListOf(),
 
-    val sessionStatistics: MutableList<MemberSessionStatistic> = mutableListOf()
+    val sessionStatistics: MutableList<SessionMemberStatistic> = mutableListOf()
 )

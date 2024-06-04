@@ -25,8 +25,8 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
     }
 
     private lateinit var tvGameNumber: TextView
-    private lateinit var rvPlayerTacken: RecyclerView
-    private lateinit var memberTackenAdapter: GameHistoryListItemPlayerListAdapter
+    private lateinit var rvMemberTacken: RecyclerView
+    private lateinit var memberTackenAdapter: GameHistoryListItemMemberListAdapter
     private lateinit var gameId: String
     private var gameEditListener: GameHistoryListItemEditListener? = null
 
@@ -43,15 +43,15 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
 
     private fun findViews() {
         tvGameNumber = findViewById(R.id.tv_game_history_number)
-        rvPlayerTacken = findViewById(R.id.rv_game_history_item_player_tacken_list)
+        rvMemberTacken = findViewById(R.id.rv_game_history_item_member_tacken_list)
     }
 
     private fun setupRecyclerView() {
-        val dp4 = Converter.convertDpToPixels(2f, rvPlayerTacken.context)
-        rvPlayerTacken.addItemDecoration(RecyclerViewMarginDecoration(dp4, dp4))
+        val dp4 = Converter.convertDpToPixels(2f, rvMemberTacken.context)
+        rvMemberTacken.addItemDecoration(RecyclerViewMarginDecoration(dp4, dp4))
 
-        memberTackenAdapter = GameHistoryListItemPlayerListAdapter()
-        rvPlayerTacken.adapter = memberTackenAdapter
+        memberTackenAdapter = GameHistoryListItemMemberListAdapter()
+        rvMemberTacken.adapter = memberTackenAdapter
     }
 
     fun setGameEditListener(gameEditListener: GameHistoryListItemEditListener?) {
@@ -86,8 +86,8 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
     }
 
     fun setScores(scores: List<GameHistoryColumn>) {
-        rvPlayerTacken.apply {
-            layoutManager = GridLayoutManager(rvPlayerTacken.context, max(scores.size, 1))
+        rvMemberTacken.apply {
+            layoutManager = GridLayoutManager(rvMemberTacken.context, max(scores.size, 1))
         }
         memberTackenAdapter.updateScores(scores)
     }

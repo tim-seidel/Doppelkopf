@@ -6,7 +6,7 @@ import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.statistic.SimpleStatisticEntry
 import de.timseidel.doppelkopf.model.statistic.StatisticEntry
-import de.timseidel.doppelkopf.model.statistic.session.MemberSessionStatistic
+import de.timseidel.doppelkopf.model.statistic.session.SessionMemberStatistic
 import de.timseidel.doppelkopf.model.statistic.session.SessionStatistics
 
 class GroupStatisticsCalculator {
@@ -80,9 +80,9 @@ class GroupStatisticsCalculator {
         sessionStatistics.forEach { sessionStat ->
             memberStatistics.forEach { memberStat ->
                 val memberSessionStats =
-                    sessionStat.memberSessionStatistics.firstOrNull { p -> p.member.name == memberStat.member.name }
+                    sessionStat.sessionMemberStatistics.firstOrNull { p -> p.member.name == memberStat.member.name }
                 if (memberSessionStats != null) {
-                    addSessionPlayerStatisticsToMemberStatistics(memberStat, memberSessionStats)
+                    addSessionMemberStatisticsToMemberStatistics(memberStat, memberSessionStats)
                 } else {
                     // Add filler games to history
                     for (i in 1..sessionStat.general.total.games) {
@@ -97,39 +97,39 @@ class GroupStatisticsCalculator {
         return memberStatistics
     }
 
-    private fun addSessionPlayerStatisticsToMemberStatistics(
+    private fun addSessionMemberStatisticsToMemberStatistics(
         memberStatistic: MemberStatistic,
-        memberSessionStatistic: MemberSessionStatistic
+        sessionMemberStatistic: SessionMemberStatistic
     ) {
-        addStatisticEntry(memberStatistic.general, memberSessionStatistic.general)
-        addStatisticEntry(memberStatistic.re, memberSessionStatistic.re)
-        addStatisticEntry(memberStatistic.contra, memberSessionStatistic.contra)
-        addStatisticEntry(memberStatistic.solo, memberSessionStatistic.solo)
+        addStatisticEntry(memberStatistic.general, sessionMemberStatistic.general)
+        addStatisticEntry(memberStatistic.re, sessionMemberStatistic.re)
+        addStatisticEntry(memberStatistic.contra, sessionMemberStatistic.contra)
+        addStatisticEntry(memberStatistic.solo, sessionMemberStatistic.solo)
 
-        memberSessionStatistic.partners.forEach { partner ->
-            val partnerPlayerStat = partner.value
+        sessionMemberStatistic.partners.forEach { partner ->
+            val partnerSessionMemberStat = partner.value
             val partnerMemberStat = memberStatistic.partners[partner.value.member.name]
 
             if (partnerMemberStat != null) {
-                addStatisticEntry(partnerMemberStat.general, partnerPlayerStat.general)
-                addStatisticEntry(partnerMemberStat.re, partnerPlayerStat.re)
-                addStatisticEntry(partnerMemberStat.contra, partnerPlayerStat.contra)
+                addStatisticEntry(partnerMemberStat.general, partnerSessionMemberStat.general)
+                addStatisticEntry(partnerMemberStat.re, partnerSessionMemberStat.re)
+                addStatisticEntry(partnerMemberStat.contra, partnerSessionMemberStat.contra)
             }
         }
 
-        memberSessionStatistic.opponents.forEach { opponent ->
-            val opponentPlayerStat = opponent.value
+        sessionMemberStatistic.opponents.forEach { opponent ->
+            val opponentSessionMemberStat = opponent.value
             val opponentMemberStat = memberStatistic.opponents[opponent.value.member.name]
 
             if (opponentMemberStat != null) {
-                addStatisticEntry(opponentMemberStat.general, opponentPlayerStat.general)
-                addStatisticEntry(opponentMemberStat.re, opponentPlayerStat.re)
-                addStatisticEntry(opponentMemberStat.contra, opponentPlayerStat.contra)
+                addStatisticEntry(opponentMemberStat.general, opponentSessionMemberStat.general)
+                addStatisticEntry(opponentMemberStat.re, opponentSessionMemberStat.re)
+                addStatisticEntry(opponentMemberStat.contra, opponentSessionMemberStat.contra)
             }
         }
 
-        memberStatistic.gameResultHistory.addAll(memberSessionStatistic.gameResultHistory)
-        memberStatistic.sessionStatistics.add(memberSessionStatistic)
+        memberStatistic.gameResultHistory.addAll(sessionMemberStatistic.gameResultHistory)
+        memberStatistic.sessionStatistics.add(sessionMemberStatistic)
     }
 
     private fun getOtherMembers(member: Member, allMembers: List<Member>): List<Member> {

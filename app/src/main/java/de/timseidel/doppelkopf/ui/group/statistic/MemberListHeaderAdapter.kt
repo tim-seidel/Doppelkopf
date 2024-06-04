@@ -31,12 +31,12 @@ class MemberListHeaderAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = createPlayerNameView(parent.context)
+        val view = createMemberNameView(parent.context)
 
         return ViewHolder(view)
     }
 
-    private fun createPlayerNameView(context: Context): TextView {
+    private fun createMemberNameView(context: Context): TextView {
         val dp2 = Converter.convertDpToPixels(2f, context)
 
         val tv = TextView(context)

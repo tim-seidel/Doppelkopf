@@ -63,11 +63,11 @@
                 android:layout_marginTop="24dp">
 
                 <TextView
-                    android:id="@+id/tv_session_players"
+                    android:id="@+id/tv_session_members"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="@string/session_players"
+                    android:text="@string/session_members"
                     android:textColor="@color/primary_dark"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toStartOf="@+id/ib_session_add_member"
@@ -75,17 +75,17 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_session_players_hint"
+                    android:id="@+id/tv_session_members_hint"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginTop="2dp"
-                    android:text="@string/session_select_players_hint"
+                    android:text="@string/session_select_members_hint"
                     android:textSize="14sp"
                     android:textStyle="italic"
                     app:layout_constraintEnd_toStartOf="@+id/ib_session_add_member"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_session_players" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_session_members" />
 
                 <ImageButton
                     android:id="@+id/ib_session_add_member"

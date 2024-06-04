@@ -15,46 +15,46 @@
         android:backgroundTint="@color/neural_dark">
 
         <TextView
-            android:id="@+id/tv_game_creation_title_player"
+            android:id="@+id/tv_game_creation_title_member"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingVertical="4dp"
-            android:text="@string/game_creation_player_assignment"
+            android:text="@string/game_creation_member_assignment"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/white"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/tv_game_creation_title_player_factions"
+            app:layout_constraintEnd_toStartOf="@+id/tv_game_creation_title_member_factions"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_game_creation_title_player_factions"
+            android:id="@+id/tv_game_creation_title_member_factions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/game_creation_player_assignment_factions"
+            android:text="@string/game_creation_member_assignment_factions"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/white"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_game_creation_title_player"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_game_creation_title_member"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_game_creation_title_player"
+            app:layout_constraintStart_toEndOf="@id/tv_game_creation_title_member"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_game_creation_player_list"
+        android:id="@+id/rv_game_creation_member_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="4dp"
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_game_creation_title_player" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_game_creation_title_member" />
 
     <TextView
         android:id="@+id/tv_game_creation_title_result"
@@ -74,7 +74,7 @@
         app:drawableTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_game_creation_player_list" />
+        app:layout_constraintTop_toBottomOf="@id/rv_game_creation_member_list" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_winning_faction_select"
@@ -147,7 +147,7 @@
         app:drawableTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_game_creation_player_list" />
+        app:layout_constraintTop_toBottomOf="@id/rv_game_creation_member_list" />
 
     <TextView
         android:id="@+id/tv_game_creation_gametype_error_message"

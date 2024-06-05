@@ -111,6 +111,7 @@
                     android:layout_height="0dp"
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/border_background"
+                    android:contentDescription="@string/desc_button_bockrunden_info"
                     android:foreground="@drawable/ic_outline_help_24"
                     android:foregroundTint="@color/primary"
                     app:layout_constraintBottom_toBottomOf="@id/cb_group_bockrunden_enable"

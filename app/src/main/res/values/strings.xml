@@ -9,7 +9,6 @@
     <string name="shared_preferences_group_id_key">current_group_id</string>
     <string name="app_name">Doppelkopf</string>
     <string name="navigation_title_session_history">Runden</string>
-    <string name="navigation_title_finances">Kasse</string>
     <string name="navigation_title_group_statistic">Statistik</string>
     <string name="navigation_title_member_ranking">Ranglisten</string>
     <string name="session_members">Mitspielende</string>
@@ -21,10 +20,8 @@
     <string name="group_name_hint">Lege einen Namen für eure Doppelkopfgruppe fest.</string>
     <string name="group_toggle_bockrunden_hint_short">Lege fest, ob ihr Spiele als Bockrunden kennzeichnen könnt.</string>
     <string name="group_toggle_bockrunden_hint">Lege fest, ob ihr Spiele als Bockrunden kennzeichnen könnt. Die App nimmt an, dass deren Wertung von euch verdoppelt wurde. Für Bockrunden werden zusätzliche Statistiken erzeugt. Ihr könnt diese Einstellung später noch ändern.</string>
-    <string name="date_hint">Datum</string>
     <string name="session_general_data">Allgemein</string>
     <string name="group_general_data_heading">Allgemein</string>
-    <string name="start_session">Starten</string>
     <string name="title_welcome">Los geht\'s!</string>
     <string name="title_session_creation">Doppelkopfrunde erstellen</string>
     <string name="title_game_creation">Spiel erstellen</string>
@@ -40,12 +37,8 @@
     <string name="faction_select_contra_desc">Select contra faction</string>
     <string name="game_result">Spielergebnis</string>
     <string name="game_features">Spieleigenschaften</string>
-    <string name="points_winner">Siegerpunkte</string>
-    <string name="points_re">Punkte Re</string>
     <string name="desc_button_decrease_tacken">Decrease tacken</string>
     <string name="desc_button_increase_tacken">Increase tacken</string>
-    <string name="option_confirm_create_session">Erstellen</string>
-    <string name="option_confirm_create_game">Erstellen</string>
     <string name="create_session_unable_to_create">Doppelkopfabend kann nicht erstellt werden. Stell sicher, dass es mindestens 4 Spieler:innen und einen Namen gibt.</string>
     <string name="create_group_unable_to_create">Die Doppelkopfgruppe kann nicht erstellt werden. Stell sicher, dass keine Namen doppelt sind und du einen Titel hast.</string>
     <string name="create_group_unable_to_create_groupcode">Die Doppelkopfgruppe kann nicht erstellt werden. Bitte versuche es später erneut.</string>
@@ -59,7 +52,6 @@
     <string name="loading_session_no_success">Der Doppelkopfabend konnte nicht geladen werden.</string>
     <string name="loading_group">Lade Doppelkopfgruppe…</string>
     <string name="loading_group_no_success">Die Gruppe konnte nicht geladen werden.</string>
-    <string name="loading_sessions">Lade Doppelkopfabende…</string>
     <string name="save">Speichern</string>
     <string name="game_saved">Spiel gespeichert!</string>
     <string name="game_updated">Spiel aktualisiert!</string>
@@ -79,10 +71,7 @@
     <string name="session_creation_create_new_member">Neuen Mitspieler hinzufügen</string>
     <string name="session_member_creation_unique_name">Bitte einen eindeutigen Namen anlegen</string>
     <string name="menu_game_history_change_tacken_mode">Tackenanzeige ändern</string>
-    <string name="dialog_refresh_statistics_title">Statistikupdate</string>
-    <string name="dialog_refresh_statistics_changes_tabs_to_apply">Die Statistiken werden geupdated, sobald du einen Tab wechselst (und zurück).</string>
     <string name="group_member_creation_short_name_advice">Kurze Namen oder Spitznamen werden empfohlen, damit die Statistiken und Tabellen übersichtlicher sind. Gib mindestens 4 an. Leere Namen werden übersprungen.</string>
-    <string name="default_tacken_input_score">00</string>
     <string name="group_code_access_info">Der Gruppencode kann in der Gruppenübersicht oder einer Doppelkopfrunde über das 3-Punkte-Menü angezeigt werden.</string>
     <string name="session_history_open_session">Doppelkopfabend aufrufen</string>
     <string name="desc_session_creation_member_list_create_member">Neuen Mitspieler erstellen und hinzufügen.</string>
@@ -95,4 +84,11 @@
     <string name="enable_bockrunden">Bockrunden anschalten</string>
     <string name="save_group_settings">Einstellungen speichern</string>
     <string name="old_player_groups_incompatible_notice">Gruppen, die vor dem 10.06.2024 erstellt wurden sind leider nicht mit dieser Version kompatibel. Bitte erstelle eine neue Gruppe.</string>
+    <string name="member_name_hint">Name</string>
+    <string name="desc_loading_group_icon">Loading group icon</string>
+    <string name="desc_loading_session_icon">Loading session icon</string>
+    <string name="desc_button_bockrunden_info">Button Bockrunden-Info</string>
+    <string name="desc_doppelkopf_app_icon">Doppelkopf App Icon</string>
+    <string name="desc_ranglisten_pokal_icon">Ranglisten Pokal-Icon</string>
+    <string name="desc_textstatistik_icon">Textstatistik-Icon</string>
 </resources>

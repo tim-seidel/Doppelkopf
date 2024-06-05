@@ -79,10 +79,6 @@ class TackenCounterView constructor(context: Context, attrs: AttributeSet? = nul
         }
     }
 
-    fun getTackenCount(): Int {
-        return tackenCount
-    }
-
     fun setTackenCount(value: Int) {
         tackenCount = value
         update()

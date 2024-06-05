@@ -61,19 +61,23 @@ class GroupActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_item_clear_default_group) {
-            clearCurrentGroupId()
-            resetActivities()
-            return true
-        } else if (item.itemId == R.id.menu_item_group_show_group_code) {
-            showGroupCode()
-            return true
-        }else if (item.itemId == R.id.menu_item_group_group_settings) {
-            val intent = Intent(this, GroupSettingsActivity::class.java)
-            startSettingsForResult.launch(intent)
-            return true
+        when (item.itemId) {
+            R.id.menu_item_clear_default_group -> {
+                clearCurrentGroupId()
+                resetActivities()
+                return true
+            }
+            R.id.menu_item_group_show_group_code -> {
+                showGroupCode()
+                return true
+            }
+            R.id.menu_item_group_group_settings -> {
+                val intent = Intent(this, GroupSettingsActivity::class.java)
+                startSettingsForResult.launch(intent)
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun clearCurrentGroupId() {

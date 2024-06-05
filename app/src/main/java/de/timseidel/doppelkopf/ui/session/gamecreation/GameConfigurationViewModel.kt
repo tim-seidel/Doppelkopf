@@ -28,11 +28,7 @@ class GameConfiguration {
             }
         }
 
-        if ((reCount == 2 && contraCount == 2) || (reCount == 1 && contraCount == 3)) {
-            return true
-        }
-
-        return false
+        return (reCount == 2 && contraCount == 2) || (reCount == 1 && contraCount == 3)
     }
 
     fun isValid(): Boolean {

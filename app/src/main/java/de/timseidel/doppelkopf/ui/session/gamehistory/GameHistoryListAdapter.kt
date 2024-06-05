@@ -36,12 +36,6 @@ class GameHistoryListAdapter(
         })
     }
 
-    fun updateScores(newRows: List<GameHistoryItem>) {
-        rows.clear()
-        rows.addAll(newRows)
-        this.notifyDataSetChanged()
-    }
-
     override fun getItemCount(): Int {
         return rows.size
     }

@@ -114,7 +114,7 @@ class GameUtil {
                 val scores = mutableListOf<GameHistoryColumn>()
 
                 game.members.forEach { paf ->
-                    val result = GameUtil.getMemberResult(paf.member, game)
+                    val result = getMemberResult(paf.member, game)
                     scores.add(
                         GameHistoryColumn(
                             result.faction,

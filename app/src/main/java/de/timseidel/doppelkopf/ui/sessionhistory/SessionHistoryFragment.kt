@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.databinding.FragmentSessionHistoryBinding
 import de.timseidel.doppelkopf.db.request.SessionCountRequest
-import de.timseidel.doppelkopf.db.request.SessionInfoListRequest
 import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
@@ -155,19 +154,6 @@ class SessionHistoryFragment : Fragment() {
 
             override fun onReadFailed() {
                 Logging.e("SessionHistoryFragment", "Failed to check for new sessions")
-            }
-        })
-    }
-
-    private fun downloadSessionHistory() {
-        SessionInfoListRequest(DokoShortAccess.getGroupCtrl().getGroup().id).execute(object :
-            ReadRequestListener<List<Session>> {
-            override fun onReadComplete(result: List<Session>) {
-
-            }
-
-            override fun onReadFailed() {
-                Logging.e("SessionHistoryFragment", "Failed to download session history")
             }
         })
     }

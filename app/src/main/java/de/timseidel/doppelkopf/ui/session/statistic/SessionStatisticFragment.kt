@@ -23,7 +23,7 @@ import java.time.LocalDateTime
 
 class SessionStatisticFragment : Fragment() {
 
-    private val defaultSessionStatsMemberPlaceholderId = "__default_session"
+    private val defaultSessionStatsMemberPlaceholderId = "__session_stats_all_placeholder_id"
 
     private var _binding: FragmentSessionStatisticBinding? = null
     private val binding get() = _binding!!
@@ -85,10 +85,10 @@ class SessionStatisticFragment : Fragment() {
             }
         })
 
-        val memberDefaultGroupStatisticPlaceholder =
+        val memberDefaultSessionStatisticPlaceholder =
             Member(defaultSessionStatsMemberPlaceholderId, "Alle", LocalDateTime.now())
         val members = DokoShortAccess.getSessionCtrl().getSession().members
-        members.add(0, memberDefaultGroupStatisticPlaceholder)
+        members.add(0, memberDefaultSessionStatisticPlaceholder)
 
         binding.headerStatisticMemberSelect.setRowSize(max(1, min(4, members.size)))
         binding.headerStatisticMemberSelect.setMembers(members)

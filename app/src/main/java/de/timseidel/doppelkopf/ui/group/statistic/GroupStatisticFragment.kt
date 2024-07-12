@@ -33,7 +33,7 @@ import kotlin.math.min
 
 class GroupStatisticFragment : Fragment() {
 
-    private val placeholderIdGroupStatistics = "__default_group"
+    private val placeholderIdGroupStatistics = "__group_stats_all_placeholder_id"
 
     private var _binding: FragmentGroupStatisticBinding? = null
 

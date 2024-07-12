@@ -87,7 +87,7 @@ class SessionStatisticFragment : Fragment() {
 
         val memberDefaultSessionStatisticPlaceholder =
             Member(defaultSessionStatsMemberPlaceholderId, "Alle", LocalDateTime.now())
-        val members = DokoShortAccess.getSessionCtrl().getSession().members
+        val members = DokoShortAccess.getSessionCtrl().getSession().members.toMutableList()
         members.add(0, memberDefaultSessionStatisticPlaceholder)
 
         binding.headerStatisticMemberSelect.setRowSize(max(1, min(4, members.size)))

@@ -70,7 +70,7 @@ class SessionStatisticsCalculator {
                     addGame(stats.re.loss, loserResult)
                 }
 
-                if (g.gameType == GameType.SOLO) {
+                if (GameUtil.isGameTypeSoloType(g.gameType)) {
                     if (g.winningFaction == Faction.RE) {
                         addGame(stats.solo.wins, winnerResult)
                         addGame(stats.solo.total, winnerResult)
@@ -133,7 +133,7 @@ class SessionStatisticsCalculator {
                     addGameResult(stats.general, result)
                     addGameResult(stats.re, result)
 
-                    if (GameUtil.isMemberPlayingSolo(stats.member, g)) {
+                    if (GameUtil.isMemberPlayingSoloType(stats.member, g)) {
                         addGameResult(stats.solo, result)
                     }
                 }

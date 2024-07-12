@@ -25,7 +25,7 @@ class GameUtil {
             }
 
             val isWinner = faction == game.winningFaction
-            val isSoloFaction = game.gameType == GameType.SOLO && faction == Faction.RE
+            val isSoloFaction = isGameTypeSoloType(game.gameType) && faction == Faction.RE
 
             var tacken = game.tacken
             if (!isWinner) {
@@ -142,6 +142,15 @@ class GameUtil {
         fun isMemberPlayingSolo(member: Member, game: Game): Boolean {
             val result = getMemberResult(member, game)
             return game.gameType == GameType.SOLO && result.faction == Faction.RE
+        }
+
+        fun isMemberPlayingSoloType(member: Member, game: Game): Boolean {
+            val result = getMemberResult(member, game)
+            return isGameTypeSoloType(game.gameType) && result.faction == Faction.RE
+        }
+
+        fun isGameTypeSoloType(gameType: GameType): Boolean {
+            return gameType == GameType.SOLO || gameType == GameType.SCHWARZVERLOREN
         }
     }
 }

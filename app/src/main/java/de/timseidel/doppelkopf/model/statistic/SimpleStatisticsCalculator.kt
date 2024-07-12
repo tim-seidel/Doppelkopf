@@ -45,6 +45,9 @@ class SimpleStatisticsCalculator {
         if (currentWinStreak > longestWinStreak) longestWinStreak = currentWinStreak
         if (currentLossStreak > longestLossStreak) longestLossStreak = currentLossStreak
 
+        if (currentWinStreak > 0) streakHistory.add(currentWinStreak)
+        else if (currentLossStreak > 0) streakHistory.add(-1 * currentLossStreak)
+
         return StreakStatistics(longestLossStreak, longestWinStreak, streakHistory)
     }
 }

@@ -10,10 +10,12 @@ import de.timseidel.doppelkopf.ui.statistic.views.IStatisticViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.LineChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.PieChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.SimpleTextStatisticViewWrapper
+import de.timseidel.doppelkopf.util.GameUtil
 import kotlin.math.round
 
 class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
     IStatisticViewsProvider {
+
     override fun getStatisticItems(isBockrundeEnabled: Boolean): List<IStatisticViewWrapper> {
 
         val memberTackenHistories = mutableListOf<LineChartViewWrapper.ChartLineData>()
@@ -143,7 +145,8 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
 
         var maxTackenResult: SessionMemberStatistic? = null
         groupStatistics.sessionStatistics.forEach { ss ->
-            val maxSessionTacken = ss.sessionMemberStatistics.maxByOrNull { ps -> ps.general.total.tacken }
+            val maxSessionTacken =
+                ss.sessionMemberStatistics.maxByOrNull { ps -> ps.general.total.tacken }
             if (maxSessionTacken != null) {
                 if (maxTackenResult == null || maxSessionTacken.general.total.tacken > maxTackenResult!!.general.total.tacken) {
                     maxTackenResult = maxSessionTacken
@@ -151,9 +154,32 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
             }
         }
 
+        val gamesRePercentage = mutableListOf<Float>()
+        val gamesContraPercentage = mutableListOf<Float>()
+        val gamesReSoloPercentage = mutableListOf<Float>()
+        val gamesContraSoloPercentage = mutableListOf<Float>()
+        groupStatistics.memberStatistics.forEach { ms ->
+
+            val soloReGames = ms.gameResultHistory.filter { gr ->
+                gr.faction == Faction.RE && GameUtil.isGameTypeSoloType(gr.gameType)
+            }.size
+            val soloContraGames = ms.gameResultHistory.filter { gr ->
+                gr.faction == Faction.CONTRA && GameUtil.isGameTypeSoloType(gr.gameType)
+            }.size
+            val gamesRe = ms.re.total.games - soloReGames
+            val gamesContra = ms.contra.total.games - soloContraGames
+            val totalGames = ms.general.total.games
+
+            gamesRePercentage.add(GameUtil.roundWithDecimalPlaces(gamesRe.toFloat() / totalGames * 100, 1))
+            gamesContraPercentage.add(GameUtil.roundWithDecimalPlaces(gamesContra.toFloat() / totalGames * 100, 1))
+            gamesReSoloPercentage.add(GameUtil.roundWithDecimalPlaces(soloReGames.toFloat() / totalGames * 100, 1))
+            gamesContraSoloPercentage.add(GameUtil.roundWithDecimalPlaces(soloContraGames.toFloat() / totalGames * 100, 1))
+        }
+
         var minTackenResult: SessionMemberStatistic? = null
         groupStatistics.sessionStatistics.forEach { ss ->
-            val minSessionTacken = ss.sessionMemberStatistics.minByOrNull { ps -> ps.general.total.tacken }
+            val minSessionTacken =
+                ss.sessionMemberStatistics.minByOrNull { ps -> ps.general.total.tacken }
             if (minSessionTacken != null) {
                 if (minTackenResult == null || minSessionTacken.general.total.tacken < minTackenResult!!.general.total.tacken) {
                     minTackenResult = minSessionTacken
@@ -248,6 +274,40 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                                 "Ndl Contra",
                                 IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT,
                                 memberLossContra
+                            )
+                        )
+                    )
+                ),
+                memberNames
+            )
+        )
+
+        val factionDistributionBarChart = ColumnChartViewWrapper(
+            ColumnChartViewWrapper.ColumnChartData(
+                "Re/Contra-Verteilung", "", "Prozent der Spiele",
+                listOf(
+                    ColumnChartViewWrapper.ColumnSeriesData(
+                        "Siege",
+                        listOf(
+                            ColumnChartViewWrapper.ColumnSeriesStackData(
+                                "Re Solo",
+                                IStatisticViewWrapper.COLOR_POSITIVE_DARK,
+                                gamesReSoloPercentage
+                            ),
+                            ColumnChartViewWrapper.ColumnSeriesStackData(
+                                "Re Normal",
+                                IStatisticViewWrapper.COLOR_POSITIVE_LIGHT,
+                                gamesRePercentage
+                            ),
+                            ColumnChartViewWrapper.ColumnSeriesStackData(
+                                "Contra Solo",
+                                IStatisticViewWrapper.COLOR_NEGATIVE_DARK,
+                                gamesContraSoloPercentage
+                            ),
+                            ColumnChartViewWrapper.ColumnSeriesStackData(
+                                "Contra Normal",
+                                IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT,
+                                gamesContraPercentage
                             )
                         )
                     )
@@ -432,6 +492,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                 maxTackenResultTextStat,
                 minTackenResultTextStat,
                 winLossMemberBarChart,
+                factionDistributionBarChart,
                 averageTackenPerGameTextStat,
                 tackenWinLossMemberBarChart,
                 totalStraftackenTextStat,
@@ -447,6 +508,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                 maxTackenResultTextStat,
                 minTackenResultTextStat,
                 winLossMemberBarChart,
+                factionDistributionBarChart,
                 averageTackenPerGameTextStat,
                 tackenWinLossMemberBarChart,
                 totalStraftackenTextStat,

@@ -1,6 +1,7 @@
 package de.timseidel.doppelkopf.model.statistic
 
 import de.timseidel.doppelkopf.model.Faction
+import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.Ranking
 import de.timseidel.doppelkopf.model.RankingItem
 import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
@@ -16,6 +17,7 @@ class RankingStatisticsProvider {
             getMostTackenAtLossRanking(groupStatistics),
             getHighestReWinPercentageRanking(groupStatistics),
             getHighestContraWinPercentageRanking(groupStatistics),
+            getHighestRePercentageRanking(groupStatistics),
             getMostPlayedSoliRanking(groupStatistics),
             getMostGamesRanking(groupStatistics),
             getLongestWinStreakRanking(groupStatistics),
@@ -124,6 +126,23 @@ class RankingStatisticsProvider {
                 RankingItem(
                     memberStatistic.member.name,
                     (if (memberStatistic.contra.total.games > 0) ((memberStatistic.contra.wins.games / (memberStatistic.contra.total.games * 1f)) * 100).toInt() else 0).toString()
+                )
+            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+
+        ranking.items.forEach { rankingItem ->
+            rankingItem.value = "${rankingItem.value}%"
+        }
+
+        return ranking
+    }
+
+    private fun getHighestRePercentageRanking(groupStatistics: GroupStatistics): Ranking {
+        val ranking = Ranking(
+            "Höchste Requote (ohne Soli)",
+            groupStatistics.memberStatistics.map { memberStatistic ->
+                RankingItem(
+                    memberStatistic.member.name,
+                    (if (memberStatistic.general.total.games - memberStatistic.solo.total.games > 0) (((memberStatistic.re.total.games - memberStatistic.gameResultHistory.filter { gr -> gr.faction == Faction.RE && gr.gameType == GameType.SOLO }.size) / ((memberStatistic.general.total.games - memberStatistic.solo.total.games) * 1f)) * 100).toInt() else 0).toString()
                 )
             }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
 

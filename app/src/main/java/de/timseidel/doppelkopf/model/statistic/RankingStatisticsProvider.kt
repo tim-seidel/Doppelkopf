@@ -19,6 +19,7 @@ class RankingStatisticsProvider {
             getHighestContraWinPercentageRanking(groupStatistics),
             getHighestRePercentageRanking(groupStatistics),
             getMostPlayedSoliRanking(groupStatistics),
+            getHighestSoliTackenGainRanking(groupStatistics),
             getMostGamesRanking(groupStatistics),
             getLongestWinStreakRanking(groupStatistics),
             getLongestLossStreakRanking(groupStatistics),
@@ -160,6 +161,19 @@ class RankingStatisticsProvider {
                 RankingItem(
                     memberStatistic.member.name,
                     memberStatistic.solo.total.games.toString()
+                )
+            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+
+        return ranking
+    }
+
+    private fun getHighestSoliTackenGainRanking(groupStatistics: GroupStatistics): Ranking {
+        val ranking = Ranking(
+            "Höchster Gesamtgewinn durch Soli",
+            groupStatistics.memberStatistics.map { memberStatistic ->
+                RankingItem(
+                    memberStatistic.member.name,
+                    memberStatistic.solo.total.tacken.toString()
                 )
             }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
 

@@ -8,6 +8,7 @@ import de.timseidel.doppelkopf.model.GameResult
 import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.MemberAndFaction
+import kotlin.math.pow
 
 class GameUtil {
     companion object {
@@ -151,6 +152,11 @@ class GameUtil {
 
         fun isGameTypeSoloType(gameType: GameType): Boolean {
             return gameType == GameType.SOLO || gameType == GameType.SCHWARZVERLOREN
+        }
+
+        fun roundWithDecimalPlaces(value: Float, places: Int): Float {
+            val placesMultiplier = 10.0.pow(places.toDouble())
+            return (Math.round(value * placesMultiplier.toInt()) / placesMultiplier).toFloat()
         }
     }
 }

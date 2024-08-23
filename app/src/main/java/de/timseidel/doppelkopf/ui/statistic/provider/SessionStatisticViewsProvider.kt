@@ -209,14 +209,14 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
 
         val tackenLineChart = LineChartViewWrapper(
             LineChartViewWrapper.LineChartData(
-                "Tackenverlauf", "Tacken", memberTackenHistories,
+                "Tackenverlauf", "Spiele", "Tacken", memberTackenHistories,
                 height = 400f
             )
         )
 
         val tackenIgnoringBockLineChart = LineChartViewWrapper(
             LineChartViewWrapper.LineChartData(
-                "Tackenverlauf ohne Bockrunden", "Tacken", memberTackenHistoriesWithoutBock,
+                "Tackenverlauf ohne Bockrunden", "Spiele", "Tacken", memberTackenHistoriesWithoutBock,
                 height = 400f
             )
         )
@@ -235,7 +235,7 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
 
         val straftackenLineChart = LineChartViewWrapper(
             LineChartViewWrapper.LineChartData(
-                "Straftackensammlung", "Straftacken", memberTackenLosses, 400f
+                "Straftackensammlung", "Spiele", "Straftacken", memberTackenLosses, 400f
             )
         )
 

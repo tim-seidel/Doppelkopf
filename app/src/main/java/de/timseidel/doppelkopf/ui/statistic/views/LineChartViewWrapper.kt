@@ -10,6 +10,7 @@ import com.highsoft.highcharts.common.hichartsclasses.HILegend
 import com.highsoft.highcharts.common.hichartsclasses.HILine
 import com.highsoft.highcharts.common.hichartsclasses.HIOptions
 import com.highsoft.highcharts.common.hichartsclasses.HITitle
+import com.highsoft.highcharts.common.hichartsclasses.HIXAxis
 import com.highsoft.highcharts.common.hichartsclasses.HIYAxis
 import com.highsoft.highcharts.core.HIChartView
 import de.timseidel.doppelkopf.ui.util.Converter
@@ -18,6 +19,7 @@ class LineChartViewWrapper(private val chartData: LineChartData) : IStatisticVie
 
     data class LineChartData(
         val title: String,
+        val xAxisName: String,
         val yAxisName: String,
         val lineData: List<ChartLineData>,
         val height: Float = 500f
@@ -42,6 +44,11 @@ class LineChartViewWrapper(private val chartData: LineChartData) : IStatisticVie
         val title = HITitle()
         title.text = chartData.title
         options.title = title
+
+        val xAxis = HIXAxis()
+        xAxis.title = HITitle()
+        xAxis.title.text = chartData.xAxisName
+        options.xAxis = arrayListOf(xAxis)
 
         val yAxis = HIYAxis()
         yAxis.title = HITitle()

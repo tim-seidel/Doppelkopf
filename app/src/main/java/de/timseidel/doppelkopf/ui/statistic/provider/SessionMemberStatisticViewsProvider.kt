@@ -231,7 +231,7 @@ class SessionMemberStatisticViewsProvider(private var stats: SessionMemberStatis
 
         val tackenLineChartBockEnabled = LineChartViewWrapper(
             LineChartViewWrapper.LineChartData(
-                "Tackenverlauf", "Tacken", listOf(
+                "Tackenverlauf", "Spiele","Tacken", listOf(
                     LineChartViewWrapper.ChartLineData(
                         "Mit Bockrunden (${stats.general.total.tacken})",
                         StatisticUtil.getAccumulatedTackenHistory(stats.gameResultHistory)
@@ -247,7 +247,7 @@ class SessionMemberStatisticViewsProvider(private var stats: SessionMemberStatis
 
         val tackenLineChartBockDisabled = LineChartViewWrapper(
             LineChartViewWrapper.LineChartData(
-                "Tackenverlauf", "Tacken", listOf(
+                "Tackenverlauf", "Spiele", "Tacken", listOf(
                     LineChartViewWrapper.ChartLineData(
                         "Tacken ($currentTackenWithoutBock)",
                         StatisticUtil.getAccumulatedTackenHistoryWithoutBock(stats.gameResultHistory)

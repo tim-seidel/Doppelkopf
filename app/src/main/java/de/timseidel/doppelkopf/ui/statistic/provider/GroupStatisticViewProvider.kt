@@ -225,14 +225,14 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
 
         val tackenLineChart = LineChartViewWrapper(
             LineChartViewWrapper.LineChartData(
-                "Tackenverlauf", "Tacken", memberTackenHistories,
+                "Tackenverlauf", "Spiele", "Tacken", memberTackenHistories,
                 height = 400f
             )
         )
 
         val tackenIgnoringBockLineChart = LineChartViewWrapper(
             LineChartViewWrapper.LineChartData(
-                "Tackenverlauf ohne Bockrunden", "Tacken", memberTackenHistoriesWithoutBock,
+                "Tackenverlauf ohne Bockrunden", "Spiele", "Tacken", memberTackenHistoriesWithoutBock,
                 height = 400f
             )
         )

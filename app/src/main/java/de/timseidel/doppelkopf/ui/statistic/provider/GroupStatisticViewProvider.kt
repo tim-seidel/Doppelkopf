@@ -187,6 +187,11 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
             }
         }
 
+        val gamesPerSessionList = mutableListOf<Int>()
+        groupStatistics.sessionStatistics.forEach { ss ->
+            gamesPerSessionList.add(ss.general.total.games)
+        }
+
         val totalGamesTextStat = SimpleTextStatisticViewWrapper(
             "Allgemeine Statistik",
             "Hier siehst du die Statistiken eurer Doppelkopfgruppe. An allen Abenden zusammen habt ihr so viele Spiele gespielt:",
@@ -483,6 +488,18 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
             "${minTackenResult?.general?.total?.tacken}"
         )
 
+        val gamesPerSessionLineChart = LineChartViewWrapper(
+            LineChartViewWrapper.LineChartData(
+                "Sessionlängen", "Abendnummer","Spiele", listOf(
+                    LineChartViewWrapper.ChartLineData(
+                        "Spiele pro Abend",
+                        gamesPerSessionList
+                    )
+                ),
+                height = 300f
+            )
+        )
+
         if (isBockrundeEnabled) {
             return listOf(
                 totalGamesTextStat,
@@ -498,7 +515,8 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                 totalStraftackenTextStat,
                 tackenBarChartBockEnabled,
                 soloTextStat,
-                soloMemberBarChart
+                soloMemberBarChart,
+                gamesPerSessionLineChart
             )
         } else {
             return listOf(
@@ -514,7 +532,8 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                 totalStraftackenTextStat,
                 tackenBarChartBockDisabled,
                 soloTextStat,
-                soloMemberBarChart
+                soloMemberBarChart,
+                gamesPerSessionLineChart
             )
         }
     }

@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId "de.timseidel.doppelkopf"
         minSdk 29
-        targetSdk 33
+        targetSdk 34
         versionCode 141
         versionName "0.14.1"
 

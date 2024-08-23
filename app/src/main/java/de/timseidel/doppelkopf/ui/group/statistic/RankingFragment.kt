@@ -73,7 +73,7 @@ class RankingFragment : Fragment() {
     }
 
     private fun setupRankingTitle() {
-        setRankingTitle("Nicht ausgewählt")
+        setRankingTitle("Hier werden gleich die Rankings angezeigt :)")
     }
 
     private fun setupButtons() {

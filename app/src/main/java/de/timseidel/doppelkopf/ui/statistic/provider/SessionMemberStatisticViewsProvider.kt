@@ -234,11 +234,13 @@ class SessionMemberStatisticViewsProvider(private var stats: SessionMemberStatis
                 "Tackenverlauf", "Spiele","Tacken", listOf(
                     LineChartViewWrapper.ChartLineData(
                         "Mit Bockrunden (${stats.general.total.tacken})",
-                        StatisticUtil.getAccumulatedTackenHistory(stats.gameResultHistory)
+                        StatisticUtil.getAccumulatedTackenHistory(stats.gameResultHistory),
+                        IStatisticViewWrapper.COLOR_NEGATIVE_DARK
                     ),
                     LineChartViewWrapper.ChartLineData(
                         "Ohne Bockrunden($currentTackenWithoutBock)",
-                        StatisticUtil.getAccumulatedTackenHistoryWithoutBock(stats.gameResultHistory)
+                        StatisticUtil.getAccumulatedTackenHistoryWithoutBock(stats.gameResultHistory),
+                        "000000"
                     )
                 ),
                 350f

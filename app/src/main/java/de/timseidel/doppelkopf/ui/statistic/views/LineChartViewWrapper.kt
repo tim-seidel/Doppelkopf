@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
+import com.highsoft.highcharts.common.HIColor
 import com.highsoft.highcharts.common.hichartsclasses.HICredits
 import com.highsoft.highcharts.common.hichartsclasses.HIExporting
 import com.highsoft.highcharts.common.hichartsclasses.HILegend
@@ -25,7 +26,7 @@ class LineChartViewWrapper(private val chartData: LineChartData) : IStatisticVie
         val height: Float = 500f
     )
 
-    data class ChartLineData(val name: String, val values: List<Number>)
+    data class ChartLineData(val name: String, val values: List<Number>, val colorCode: String = "")
 
     override fun getItemType(): Int {
         return IStatisticViewWrapper.ITEM_TYPE_CHART_LINE
@@ -74,6 +75,9 @@ class LineChartViewWrapper(private val chartData: LineChartData) : IStatisticVie
             val line = HILine()
             line.name = ld.name
             line.data = ArrayList(ld.values)
+            if (ld.colorCode.isNotEmpty()) {
+                line.color = HIColor.initWithHexValue(ld.colorCode)
+            }
             lines.add(line)
         }
 

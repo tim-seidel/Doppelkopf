@@ -98,10 +98,20 @@ class RankingFragment : Fragment() {
     private fun setRanking(ranking: Ranking) {
         setRankingTitle(ranking.title)
         setRankingList(ranking.items)
+        setRankingDescription(ranking.description)
     }
 
     private fun setRankingTitle(title: String) {
         binding.tvRankingTitle.text = title
+    }
+
+    private fun setRankingDescription(description: String) {
+        binding.tvRankingDescription.text = description
+        if (description.trim().isEmpty()) {
+            binding.tvRankingDescription.visibility = View.GONE
+        } else {
+            binding.tvRankingDescription.visibility = View.VISIBLE
+        }
     }
 
     private fun setRankingList(rankings: List<RankingItem>) {
@@ -182,7 +192,13 @@ class RankingFragment : Fragment() {
         if (rankings.isNotEmpty()) {
             setRanking(rankings.first())
         } else {
-            setRanking(Ranking("Keine Statistiken vorhanden", listOf()))
+            setRanking(
+                Ranking(
+                    "Keine Statistiken vorhanden",
+                    "Sobald Spiele vorhanden und Statistiken berechnet wurden, werden sie hier angezeigt.",
+                    listOf()
+                )
+            )
         }
     }
 

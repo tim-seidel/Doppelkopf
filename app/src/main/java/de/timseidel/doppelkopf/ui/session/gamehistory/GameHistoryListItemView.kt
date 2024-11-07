@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -24,8 +25,9 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
         fun onGameEditClicked()
     }
 
-    private lateinit var tvGameNumber: TextView
+    private lateinit var ivBockIndicator: ImageView
     private lateinit var rvMemberTacken: RecyclerView
+    private lateinit var tvGameNumber: TextView
     private lateinit var memberTackenAdapter: GameHistoryListItemMemberListAdapter
     private lateinit var gameId: String
     private var gameEditListener: GameHistoryListItemEditListener? = null
@@ -42,8 +44,9 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
     }
 
     private fun findViews() {
-        tvGameNumber = findViewById(R.id.tv_game_history_number)
+        ivBockIndicator = findViewById(R.id.iv_game_bock_indicator)
         rvMemberTacken = findViewById(R.id.rv_game_history_item_member_tacken_list)
+        tvGameNumber = findViewById(R.id.tv_game_history_number)
     }
 
     private fun setupRecyclerView() {
@@ -69,6 +72,7 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
             } else {
                 number.toString()
             }
+
             GameType.SCHWARZVERLOREN -> tvGameNumber.text = " V "
             GameType.HOCHZEIT -> tvGameNumber.text = " H "
             GameType.SOLO -> tvGameNumber.text = " S "
@@ -96,10 +100,19 @@ class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet?
         val bockEnabled = DokoShortAccess.getSettingsCtrl().getSettings().isBockrundeEnabled
         if (isBockrunde && bockEnabled) {
             tvGameNumber.setTextColor(ContextCompat.getColor(context, R.color.error))
-            tvGameNumber.setTypeface(null, Typeface.ITALIC)
+            ivBockIndicator.visibility = VISIBLE
+            ivBockIndicator.setColorFilter(
+                ContextCompat.getColor(
+                    context,
+                    R.color.error
+                )
+            )
         } else {
             tvGameNumber.setTextColor(ContextCompat.getColor(context, R.color.neural))
-            tvGameNumber.setTypeface(null, Typeface.NORMAL)
+            ivBockIndicator.visibility = GONE
+            ivBockIndicator.setColorFilter(
+                ContextCompat.getColor(context, R.color.neural)
+            )
         }
     }
 }

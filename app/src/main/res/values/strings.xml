@@ -91,4 +91,5 @@
     <string name="desc_doppelkopf_app_icon">Doppelkopf App Icon</string>
     <string name="desc_ranglisten_pokal_icon">Ranglisten Pokal-Icon</string>
     <string name="desc_textstatistik_icon">Textstatistik-Icon</string>
+    <string name="bockrunde">Bockrunde</string>
 </resources>

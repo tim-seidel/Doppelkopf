@@ -1,7 +1,6 @@
 package de.timseidel.doppelkopf.ui.session.gamehistory
 
 import android.content.Context
-import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
@@ -18,7 +17,7 @@ import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import kotlin.math.max
 
-class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet? = null) :
+class GameHistoryListItemView(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
 
     interface GameHistoryListItemEditListener {

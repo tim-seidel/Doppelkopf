@@ -18,7 +18,7 @@ class GroupInfoRequestById(private val groupId: String) :
 
         val db = FirebaseFirestore.getInstance()
 
-        db.collection(FirebaseStrings.collectionGroups)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
             .get()
             .addOnSuccessListener { doc ->
@@ -52,7 +52,7 @@ class GroupInfoRequestByCode(private val groupCode: String) :
         readRequestListener = listener
 
         val db = FirebaseFirestore.getInstance()
-        db.collection(FirebaseStrings.collectionGroups)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
             .whereEqualTo("code", groupCode)
             .get()
             .addOnSuccessListener { doc ->
@@ -81,7 +81,7 @@ class GroupCodeExistsRequest(private val groupCode: String) : BaseReadRequest<Bo
         readRequestListener = listener
 
         val db = FirebaseFirestore.getInstance()
-        db.collection(FirebaseStrings.collectionGroups)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
             .whereEqualTo("code", groupCode)
             .get()
             .addOnSuccessListener { doc ->

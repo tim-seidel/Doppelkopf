@@ -27,6 +27,7 @@
         android:layout_height="12dp"
         android:layout_marginEnd="2dp"
         android:layout_marginBottom="2dp"
+        android:contentDescription="@string/bockrunde"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/tv_game_history_number"
         app:layout_constraintEnd_toEndOf="@+id/tv_game_history_number"

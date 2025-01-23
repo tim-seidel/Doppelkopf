@@ -3,7 +3,6 @@ package de.timseidel.doppelkopf.model.statistic.session
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.GameResult
-import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.MemberAndFaction
 import de.timseidel.doppelkopf.model.statistic.SimpleStatisticEntry

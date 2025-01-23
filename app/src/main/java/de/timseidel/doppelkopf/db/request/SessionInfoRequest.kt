@@ -20,9 +20,9 @@ class SessionInfoRequest(private val groupId: String, private val sessionId: Str
         readRequestListener = listener
 
         val db = FirebaseFirestore.getInstance()
-        db.collection(FirebaseStrings.collectionGroups)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
-            .collection(FirebaseStrings.collectionSessions)
+            .collection(FirebaseStrings.COLLECTION_SESSIONS)
             .document(sessionId)
             .get()
             .addOnSuccessListener { doc ->
@@ -54,9 +54,9 @@ class SessionInfoListRequest(private val groupId: String) : BaseReadRequest<List
 
         val db = FirebaseFirestore.getInstance()
 
-        db.collection(FirebaseStrings.collectionGroups)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
-            .collection(FirebaseStrings.collectionSessions)
+            .collection(FirebaseStrings.COLLECTION_SESSIONS)
             .get()
             .addOnSuccessListener { docs ->
                 val sessions = mutableListOf<Session>()
@@ -90,9 +90,9 @@ class SessionCountRequest(private val groupId: String) : BaseReadRequest<Int>() 
 
         val db = FirebaseFirestore.getInstance()
 
-        db.collection(FirebaseStrings.collectionGroups)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
-            .collection(FirebaseStrings.collectionSessions)
+            .collection(FirebaseStrings.COLLECTION_SESSIONS)
             .count()
             .get(AggregateSource.SERVER)
             .addOnSuccessListener { response ->

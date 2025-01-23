@@ -18,13 +18,13 @@ class DoppelkopfDatabase {
     fun storeGroup(group: Group, groupSettings: GroupSettings) {
         val groupDto = FirebaseDTO.fromGroupToGroupDTO(group, groupSettings)
 
-        db.collection(FirebaseStrings.collectionGroups)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(group.id)
             .set(groupDto)
     }
 
     fun storeGroupSettings(group: Group, groupSettings: GroupSettings) {
-        db.collection(FirebaseStrings.collectionGroups)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(group.id)
             .update("settingIsBockrundeEnabled", groupSettings.isBockrundeEnabled)
     }
@@ -32,9 +32,9 @@ class DoppelkopfDatabase {
     fun storeMember(member: Member, group: Group) {
         val memberDto = FirebaseDTO.fromMemberToMemberDTO(member)
 
-        db.collection(FirebaseStrings.collectionGroups)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(group.id)
-            .collection(FirebaseStrings.collectionMembers)
+            .collection(FirebaseStrings.COLLECTION_MEMBERS)
             .document(member.id)
             .set(memberDto)
     }
@@ -45,9 +45,9 @@ class DoppelkopfDatabase {
         members.forEach { m ->
             val memberDto = FirebaseDTO.fromMemberToMemberDTO(m)
             batch.set(
-                db.collection(FirebaseStrings.collectionGroups)
+                db.collection(FirebaseStrings.COLLECTION_GROUPS)
                     .document(group.id)
-                    .collection(FirebaseStrings.collectionMembers)
+                    .collection(FirebaseStrings.COLLECTION_MEMBERS)
                     .document(m.id),
                 memberDto
             )
@@ -59,20 +59,20 @@ class DoppelkopfDatabase {
     fun storeSession(session: Session, group: Group) {
         val sessionDTO = FirebaseDTO.fromSessionToSessionDTO(session)
 
-        db.collection(FirebaseStrings.collectionGroups)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(group.id)
-            .collection(FirebaseStrings.collectionSessions)
+            .collection(FirebaseStrings.COLLECTION_SESSIONS)
             .document(session.id)
             .set(sessionDTO)
     }
 
     fun storeGameInSession(game: Game, session: Session, group: Group) {
         val gameDTO = FirebaseDTO.fromGameToGameDTO(game)
-        db.collection(FirebaseStrings.collectionGroups)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(group.id)
-            .collection(FirebaseStrings.collectionSessions)
+            .collection(FirebaseStrings.COLLECTION_SESSIONS)
             .document(session.id)
-            .collection(FirebaseStrings.collectionGames)
+            .collection(FirebaseStrings.COLLECTION_GAMES)
             .document(game.id)
             .set(gameDTO)
     }
@@ -83,11 +83,11 @@ class DoppelkopfDatabase {
         games.forEach { g ->
             val gameDTO = FirebaseDTO.fromGameToGameDTO(g)
             batch.set(
-                db.collection(FirebaseStrings.collectionGroups)
+                db.collection(FirebaseStrings.COLLECTION_GROUPS)
                     .document(group.id)
-                    .collection(FirebaseStrings.collectionSessions)
+                    .collection(FirebaseStrings.COLLECTION_SESSIONS)
                     .document(session.id)
-                    .collection(FirebaseStrings.collectionGames)
+                    .collection(FirebaseStrings.COLLECTION_GAMES)
                     .document(g.id),
                 gameDTO
             )
@@ -98,20 +98,20 @@ class DoppelkopfDatabase {
 
     fun updateGameInSession(updatedGame: Game, session: Session, group: Group) {
         val gameDTO = FirebaseDTO.fromGameToGameDTO(updatedGame)
-        db.collection(FirebaseStrings.collectionGroups)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(group.id)
-            .collection(FirebaseStrings.collectionSessions)
+            .collection(FirebaseStrings.COLLECTION_SESSIONS)
             .document(session.id)
-            .collection(FirebaseStrings.collectionGames)
+            .collection(FirebaseStrings.COLLECTION_GAMES)
             .document(updatedGame.id)
             .set(gameDTO)
     }
 
     fun updateSessionMembers(session: Session, group: Group) {
         val sessionDto = FirebaseDTO.fromSessionToSessionDTO(session)
-        db.collection(FirebaseStrings.collectionGroups)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(group.id)
-            .collection(FirebaseStrings.collectionSessions)
+            .collection(FirebaseStrings.COLLECTION_SESSIONS)
             .document(session.id)
             .update("memberIds", sessionDto.memberIds)
     }

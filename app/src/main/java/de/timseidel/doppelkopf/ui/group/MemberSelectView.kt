@@ -9,7 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import de.timseidel.doppelkopf.R
 
 
-class MemberSelectView constructor(context: Context, attrs: AttributeSet? = null) :
+class MemberSelectView(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
 
     private lateinit var cbMemberSelect: CheckBox

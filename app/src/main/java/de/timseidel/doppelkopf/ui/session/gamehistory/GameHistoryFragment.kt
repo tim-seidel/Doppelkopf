@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.databinding.FragmentGameHistoryBinding
+import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.statistic.StatisticUtil
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.session.gameedit.GameEditActivity
@@ -40,10 +42,20 @@ class GameHistoryFragment : Fragment() {
 
     private val gameEditClickListener = object : GameEditClickListener {
         override fun onGameEditClicked(gameId: String) {
-            val intent = Intent(context, GameEditActivity::class.java)
-            intent.putExtra(GameEditActivity.KEY_GAME_EDIT_ID, gameId)
-            activityResultLauncher.launch(intent)
+            val game = DokoShortAccess.getGameCtrl().getGame(gameId) ?: return
+
+            if(GameUtil.isGameEditEnabled(game)){
+                launchGameEditActivity(gameId)
+            }else{
+                Toast.makeText(context, R.string.game_edit_disabled_message, Toast.LENGTH_LONG).show()
+            }
         }
+    }
+
+    private fun launchGameEditActivity(gameId: String) {
+        val intent = Intent(context, GameEditActivity::class.java)
+        intent.putExtra(GameEditActivity.KEY_GAME_EDIT_ID, gameId)
+        activityResultLauncher.launch(intent)
     }
 
     override fun onCreateView(

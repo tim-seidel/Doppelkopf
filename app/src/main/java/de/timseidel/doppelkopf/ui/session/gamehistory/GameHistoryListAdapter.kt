@@ -26,12 +26,12 @@ class GameHistoryListAdapter(
 
     override fun onBindViewHolder(holder: GameHistoryListItemViewHolder, position: Int) {
         val row = rows[position]
-        holder.bind(row, row.game.timestamp > (System.currentTimeMillis() - 1000 * 60 * 60 * 24))
+        holder.bind(row)
 
         holder.gameView.setGameEditListener(object :
             GameHistoryListItemView.GameHistoryListItemEditListener {
             override fun onGameEditClicked() {
-                listener?.onGameEditClicked(row.game.id) //TODO: Maybe better Listener
+                listener?.onGameEditClicked(row.game.id)
             }
         })
     }

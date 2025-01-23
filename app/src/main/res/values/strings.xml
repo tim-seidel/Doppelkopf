@@ -57,6 +57,7 @@
     <string name="game_updated">Spiel aktualisiert!</string>
     <string name="game_creation_error">Das Spiel wird nicht erstellt, da die Einstellungen nicht gültig sind.</string>
     <string name="game_edit_error">Das Spiel wird nicht aktualisiert, da die Einstellungen nicht gültig sind.</string>
+    <string name="game_edit_disabled_message">Das Ändern dieses Spiels ist leider nur möglich, wenn es innerhalb der letzten 24 Stunden gespielt wurde.</string>
     <string name="check_is_bockrunde">Ist Bockrunde</string>
     <string name="enter_group_code">Gruppencode eingeben</string>
     <string name="hint_group_code">000000</string>

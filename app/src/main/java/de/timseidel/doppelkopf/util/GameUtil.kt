@@ -158,5 +158,9 @@ class GameUtil {
             val placesMultiplier = 10.0.pow(places.toDouble())
             return (Math.round(value * placesMultiplier.toInt()) / placesMultiplier).toFloat()
         }
+
+        fun isGameEditEnabled(game: Game): Boolean {
+            return game.timestamp > (System.currentTimeMillis() - 1000 * 60 * 60 * 24)
+        }
     }
 }

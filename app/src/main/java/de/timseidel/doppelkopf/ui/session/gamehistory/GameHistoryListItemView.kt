@@ -1,7 +1,6 @@
 package de.timseidel.doppelkopf.ui.session.gamehistory
 
 import android.content.Context
-import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView

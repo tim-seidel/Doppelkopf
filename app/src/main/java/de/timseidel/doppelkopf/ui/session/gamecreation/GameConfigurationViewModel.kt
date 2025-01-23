@@ -13,7 +13,7 @@ class GameConfiguration {
     var isBockrunde: Boolean = false
     var gameType: GameType = GameType.NORMAL
 
-    fun isFactionAssignmentValid(): Boolean {
+    private fun isFactionAssignmentValid(): Boolean {
         if (memberFactionList.count() < 4) {
             return false
         }

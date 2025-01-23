@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import de.timseidel.doppelkopf.R
 
-class TackenCounterView constructor(context: Context, attrs: AttributeSet? = null) :
+class TackenCounterView(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
 
     private var tackenCount = 0

@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import de.timseidel.doppelkopf.R
 
-class SimpleTextStatisticView constructor(context: Context, attrs: AttributeSet? = null) :
+class SimpleTextStatisticView(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
 
     init {

@@ -27,7 +27,7 @@ import de.timseidel.doppelkopf.ui.session.gamecreation.TackenCounterView
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
 
-class GameConfigurationView constructor(context: Context, attrs: AttributeSet? = null) :
+class GameConfigurationView(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
 
 

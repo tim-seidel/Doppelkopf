@@ -9,7 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import de.timseidel.doppelkopf.R
 
 
-class RankingItemView constructor(context: Context, attrs: AttributeSet? = null) :
+class RankingItemView(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
 
     init {

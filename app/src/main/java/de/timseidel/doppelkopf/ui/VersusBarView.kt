@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import de.timseidel.doppelkopf.R
 
-class VersusBarView constructor(context: Context, attrs: AttributeSet? = null) :
+class VersusBarView(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
 
     private lateinit var tvLeft: TextView

@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import de.timseidel.doppelkopf.R
 
-class SessionHistoryListItemMemberView constructor(context: Context, attrs: AttributeSet? = null) :
+class SessionHistoryListItemMemberView(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
 
     private lateinit var tvMemberName: TextView

@@ -10,7 +10,7 @@ import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Member
 import kotlin.math.max
 
-class MemberListHeaderView constructor(context: Context, attrs: AttributeSet? = null) :
+class MemberListHeaderView(context: Context, attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
 
     private lateinit var adapter: MemberListHeaderAdapter

@@ -14,7 +14,7 @@ import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.util.Converter
 import kotlin.math.max
 
-class SessionHistoryListItemView constructor(context: Context, attrs: AttributeSet? = null) :
+class SessionHistoryListItemView(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
 
     private lateinit var tvTitle: TextView

@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.model.Faction
 
-class MemberFactionSelectView constructor(context: Context, attrs: AttributeSet? = null) :
+class MemberFactionSelectView(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
 
     private lateinit var tvMemberName: TextView

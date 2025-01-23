@@ -17,7 +17,7 @@ import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import kotlin.math.max
 
-class GameHistoryListItemView constructor(context: Context, attrs: AttributeSet? = null) :
+class GameHistoryListItemView(context: Context, attrs: AttributeSet? = null) :
     ConstraintLayout(context, attrs) {
 
     interface GameHistoryListItemEditListener {

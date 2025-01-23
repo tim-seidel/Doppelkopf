@@ -24,11 +24,11 @@ class SessionGameRequest(
 
         val db = FirebaseFirestore.getInstance()
 
-        db.collection(FirebaseStrings.collectionGroups)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
-            .collection(FirebaseStrings.collectionSessions)
+            .collection(FirebaseStrings.COLLECTION_SESSIONS)
             .document(sessionId)
-            .collection(FirebaseStrings.collectionGames).get()
+            .collection(FirebaseStrings.COLLECTION_GAMES).get()
             .addOnSuccessListener { docs ->
                 val games = mutableListOf<Game>()
                 for (doc in docs) {
@@ -66,11 +66,11 @@ class SessionGameCountRequest(
 
         val db = FirebaseFirestore.getInstance()
 
-        db.collection(FirebaseStrings.collectionGroups)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
-            .collection(FirebaseStrings.collectionSessions)
+            .collection(FirebaseStrings.COLLECTION_SESSIONS)
             .document(sessionId)
-            .collection(FirebaseStrings.collectionGames)
+            .collection(FirebaseStrings.COLLECTION_GAMES)
             .count()
             .get(AggregateSource.SERVER)
             .addOnSuccessListener { response ->

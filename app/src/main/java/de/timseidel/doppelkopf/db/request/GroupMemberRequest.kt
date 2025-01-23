@@ -15,9 +15,9 @@ class GroupMemberRequest(private val groupId: String) : BaseReadRequest<List<Mem
         readRequestListener = listener
 
         val db = FirebaseFirestore.getInstance()
-        db.collection(FirebaseStrings.collectionGroups)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
-            .collection(FirebaseStrings.collectionMembers)
+            .collection(FirebaseStrings.COLLECTION_MEMBERS)
             .get()
             .addOnSuccessListener { docs ->
                 val members = mutableListOf<Member>()

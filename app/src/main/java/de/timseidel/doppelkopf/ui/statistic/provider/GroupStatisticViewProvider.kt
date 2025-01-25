@@ -488,6 +488,12 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
             "${minTackenResult?.general?.total?.tacken}"
         )
 
+        val gamesPerSessionAverageTextStat = SimpleTextStatisticViewWrapper(
+            "Durchschnittliche Spiele pro Abend",
+            "Im Schnitt wurden so viele Spiele pro Abend gespielt:",
+            if (groupStatistics.sessionStatistics.size > 0) (groupStatistics.general.total.games / groupStatistics.sessionStatistics.size).toString() else "0"
+        )
+
         val gamesPerSessionLineChart = LineChartViewWrapper(
             LineChartViewWrapper.LineChartData(
                 "Sessionlängen", "Abendnummer","Spiele", listOf(
@@ -516,6 +522,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                 tackenBarChartBockEnabled,
                 soloTextStat,
                 soloMemberBarChart,
+                gamesPerSessionAverageTextStat,
                 gamesPerSessionLineChart
             )
         } else {
@@ -533,6 +540,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                 tackenBarChartBockDisabled,
                 soloTextStat,
                 soloMemberBarChart,
+                gamesPerSessionAverageTextStat,
                 gamesPerSessionLineChart
             )
         }

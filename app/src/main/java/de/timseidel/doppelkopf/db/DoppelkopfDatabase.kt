@@ -115,4 +115,30 @@ class DoppelkopfDatabase {
             .document(session.id)
             .update("memberIds", sessionDto.memberIds)
     }
+
+    fun updateMember(member: Member, group: Group) {
+        val memberDto = FirebaseDTO.fromMemberToMemberDTO(member)
+        db.collection(FirebaseStrings.COLLECTION_GROUPS)
+            .document(group.id)
+            .collection(FirebaseStrings.COLLECTION_MEMBERS)
+            .document(member.id)
+            .set(memberDto)
+    }
+
+    fun updateMembers(members: List<Member>, group: Group) {
+        val batch = db.batch()
+
+        members.forEach { m ->
+            val memberDto = FirebaseDTO.fromMemberToMemberDTO(m)
+            batch.set(
+                db.collection(FirebaseStrings.COLLECTION_GROUPS)
+                    .document(group.id)
+                    .collection(FirebaseStrings.COLLECTION_MEMBERS)
+                    .document(m.id),
+                memberDto
+            )
+        }
+
+        batch.commit()
+    }
 }

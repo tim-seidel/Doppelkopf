@@ -162,5 +162,9 @@ class GameUtil {
         fun isGameEditEnabled(game: Game): Boolean {
             return game.timestamp > (System.currentTimeMillis() - 1000 * 60 * 60 * 24)
         }
+
+        fun isGameContainingInactiveMembers(game: Game): Boolean {
+            return game.members.any { maf -> !maf.member.isActive }
+        }
     }
 }

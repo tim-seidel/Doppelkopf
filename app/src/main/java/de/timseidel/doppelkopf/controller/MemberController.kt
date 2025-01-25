@@ -18,7 +18,8 @@ class MemberController : IMemberController {
         return Member(
             IdGenerator.generateIdWithTimestamp("member") + "_$correctedName",
             correctedName,
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            true
         )
     }
 
@@ -59,12 +60,24 @@ class MemberController : IMemberController {
         return members.toList()
     }
 
+    override fun getActiveMembers(): List<Member> {
+        return members.filter { m -> m.isActive }.toList()
+    }
+
     override fun getMembersAsFaction(): List<MemberAndFaction> {
         return members.map { m -> MemberAndFaction(m, Faction.NONE) }
     }
 
     override fun getMembersAsFaction(memberList: List<Member>): List<MemberAndFaction> {
         return memberList.map { m -> MemberAndFaction(m, Faction.NONE) }
+    }
+
+    override fun updateMember(memberId: String, updatedMember: Member) {
+        val member = members.find { m -> m.id == memberId }
+        if (member != null) {
+            //member.name = updatedMember.name Not yet supported
+            member.isActive = updatedMember.isActive
+        }
     }
 
     override fun validateName(name: String): Boolean {

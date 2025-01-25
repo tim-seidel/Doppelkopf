@@ -21,9 +21,13 @@ interface IMemberController {
 
     fun getMembers(): List<Member>
 
+    fun getActiveMembers(): List<Member>
+
     fun getMembersAsFaction(): List<MemberAndFaction>
 
     fun getMembersAsFaction(memberList: List<Member>): List<MemberAndFaction>
+
+    fun updateMember(memberId: String, updatedMember: Member)
 
     fun validateName(name: String): Boolean
 

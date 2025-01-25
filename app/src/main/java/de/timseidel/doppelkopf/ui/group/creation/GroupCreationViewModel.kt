@@ -3,7 +3,7 @@ package de.timseidel.doppelkopf.ui.group.creation
 class GroupCreationViewModel {
 
     var groupName = ""
-    var memberNames = mutableListOf("")
+    var memberNames = mutableListOf("", "", "", "")
     var isBockrundeEnabled = false
 
     fun isValid(): Boolean {

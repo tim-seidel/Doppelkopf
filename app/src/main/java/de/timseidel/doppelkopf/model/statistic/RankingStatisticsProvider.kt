@@ -46,7 +46,7 @@ class RankingStatisticsProvider {
     private fun getMostGamesRanking(memberStatistics: List<MemberStatistic>): Ranking {
         val ranking = Ranking(
             "Meiste Spiele",
-            "Die Anzahl der insgesamt gespielten Spiele über alle Abende verteilt.",
+            "Die Anzahl der insgesamt gespielten Spiele.",
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
@@ -60,7 +60,7 @@ class RankingStatisticsProvider {
     private fun getMostTackenRanking(memberStatistics: List<MemberStatistic>): Ranking {
         val ranking = Ranking(
             "Aktuelle Tackenanzahl",
-            "Die Tackenbilanz, die über die Aneinanderreihung der Spiele aller Sessions gebildet wird.",
+            "Die Tackenbilanz, die über die Aneinanderreihung aller Sessions und Spiele gebildet wird.",
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
@@ -87,7 +87,7 @@ class RankingStatisticsProvider {
 
     private fun getMostTackenAtWinsRanking(memberStatistics: List<MemberStatistic>): Ranking {
         val ranking = Ranking(
-            "Meiste Tacken bei Siegen",
+            "Tacken bei Siegen",
             "Die durchschnittliche Anzahl an Tacken bei einem Sieg.",
             memberStatistics.map { memberStatistic ->
                 RankingItem(
@@ -101,7 +101,7 @@ class RankingStatisticsProvider {
 
     private fun getMostTackenAtLossRanking(memberStatistics: List<MemberStatistic>): Ranking {
         val ranking = Ranking(
-            "Niedrigste Straftacken bei Niederlagen",
+            "Tacken bei Niederlagen",
             "Die durchschnittliche Anzahl an Tacken bei einer Niederlage.",
             memberStatistics.map { memberStatistic ->
                 RankingItem(
@@ -116,7 +116,7 @@ class RankingStatisticsProvider {
     private fun getHighestReWinPercentageRanking(memberStatistics: List<MemberStatistic>): Ranking {
         val ranking = Ranking(
             "Höchste Siegesquote | Re",
-            "",
+            "Die Siegesquote in Prozent in allen Spielen als Re-Partei (inkl. Soli und Hochzeiten)",
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
@@ -134,7 +134,7 @@ class RankingStatisticsProvider {
     private fun getHighestContraWinPercentageRanking(memberStatistics: List<MemberStatistic>): Ranking {
         val ranking = Ranking(
             "Höchste Siegesquote | Contra",
-            "",
+            "Die Siegesquote in Prozent in allen Spielen als Contra-Partei (inkl. Soli und Hochzeiten).",
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
@@ -152,7 +152,7 @@ class RankingStatisticsProvider {
     private fun getHighestRePercentageRanking(memberStatistics: List<MemberStatistic>): Ranking {
         val ranking = Ranking(
             "Höchste Requote (ohne Soli)",
-            "Die Prozentzahl aller Spiele als Re-Partei.",
+            "Die Prozentzahl aller Spiele als Re-Partei in Normalspielen.",
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
@@ -183,8 +183,8 @@ class RankingStatisticsProvider {
 
     private fun getHighestSoliTackenGainRanking(memberStatistics: List<MemberStatistic>): Ranking {
         val ranking = Ranking(
-            "Höchster Gesamtgewinn durch Soli",
-            "Die Gesamtanzahl der Tacken, die durch eigene Soli gewonnen/verloren wurden.",
+            "Tackengewinn durch Soli",
+            "Die Summierte Zahl der Tacken, die durch eigene Soli gewonnen/verloren wurden.",
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
@@ -246,7 +246,7 @@ class RankingStatisticsProvider {
     private fun getMaxTackenWin(memberStatistics: List<MemberStatistic>): Ranking {
         val ranking = Ranking(
             "Höchster Tackengewinn",
-            "Der höchste Tackengewinn in einem Spiel.",
+            "Der höchste Tackengewinn bezogen auf ein einziges Spiel.",
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
@@ -261,7 +261,7 @@ class RankingStatisticsProvider {
     private fun getMaxTackenLoss(memberStatistics: List<MemberStatistic>): Ranking {
         val ranking = Ranking(
             "Höchster Tackenverlust",
-            "Der höchste Tackenverlust in einem Spiel.",
+            "Der höchste Tackenverlust bezogen auf ein einziges Spiel.",
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
@@ -276,7 +276,7 @@ class RankingStatisticsProvider {
     private fun getHighestSessionTackenGainRanking(memberStatistics: List<MemberStatistic>): Ranking {
 
         val ranking = Ranking(
-            "Höchstes Sessionergebnis",
+            "Bestes Sessionergebnis",
             "Der höchste Tackenstand am Ende einer Session.",
             memberStatistics.map { memberStatistic ->
                 RankingItem(
@@ -291,7 +291,7 @@ class RankingStatisticsProvider {
     private fun getLowestSessionTackenGainRanking(memberStatistics: List<MemberStatistic>): Ranking {
 
         val ranking = Ranking(
-            "Niederigstes Sessionergebnis",
+            "Schlechtestes Sessionergebnis",
             "Der niedrigste Tackenstand am Ende einer Session.",
             memberStatistics.map { memberStatistic ->
                 RankingItem(
@@ -306,8 +306,8 @@ class RankingStatisticsProvider {
     private fun getHighestSessionTackenRanking(memberStatistics: List<MemberStatistic>): Ranking {
 
         val ranking = Ranking(
-            "Höchster Tackenstand",
-            "Der höchste Tackenstand innerhalb einer Session.",
+            "Bester Zwischenstand",
+            "Der höchste Tackenstand insgesamt innerhalb einer Session.",
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
@@ -321,8 +321,8 @@ class RankingStatisticsProvider {
     private fun getLowestSessionTackenRanking(memberStatistics: List<MemberStatistic>): Ranking {
 
         val ranking = Ranking(
-            "Niedrigster Tackenstand",
-            "Der niedrigste Tackenstand innerhalb einer Session.",
+            "Schlechtester Zwischenstand",
+            "Der niedrigste Tackenstand insgesamt innerhalb einer Session.",
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,

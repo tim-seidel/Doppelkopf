@@ -138,7 +138,7 @@ class GroupStatisticFragment : Fragment() {
 
         val memberDefaultGroupStatisticPlaceholder =
             Member(placeholderIdGroupStatistics, "Alle", LocalDateTime.now())
-        val members = DokoShortAccess.getMemberCtrl().getMembers().toMutableList()
+        val members = DokoShortAccess.getMemberCtrl().getActiveMembers().toMutableList()
         members.add(0, memberDefaultGroupStatisticPlaceholder)
 
         binding.headerStatisticMemberSelect.setRowSize(max(1, min(members.size, 4)))

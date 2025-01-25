@@ -31,7 +31,9 @@ class RankingStatisticsProvider {
             getHighestSessionTackenGainRanking(activeMemberStatistics),
             getLowestSessionTackenGainRanking(activeMemberStatistics),
             getHighestSessionTackenRanking(activeMemberStatistics),
-            getLowestSessionTackenRanking(activeMemberStatistics)
+            getLowestSessionTackenRanking(activeMemberStatistics),
+            getHighestOverallTacken(activeMemberStatistics),
+            getLowestOverallTacken(activeMemberStatistics)
         )
 
         if (isBockrundeEnabled) {
@@ -325,6 +327,34 @@ class RankingStatisticsProvider {
                 RankingItem(
                     memberStatistic.member.name,
                     getLowestSessionTacken(memberStatistic.sessionStatistics).toString()
+                )
+            }.sortedBy { rankingItem -> rankingItem.value.toInt() })
+
+        return ranking
+    }
+
+    private fun getHighestOverallTacken(memberStatistics: List<MemberStatistic>): Ranking{
+        val ranking = Ranking(
+            "Positivrekord",
+            "Der höchste Tackenstand, der insgesamt jemals erreicht wurde.",
+            memberStatistics.map { memberStatistic ->
+                RankingItem(
+                    memberStatistic.member.name,
+                    StatisticUtil.getAccumulatedTackenHistory(memberStatistic.gameResultHistory).maxOrNull().toString()
+                )
+            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+
+        return ranking
+    }
+
+    private fun getLowestOverallTacken(memberStatistics: List<MemberStatistic>): Ranking{
+        val ranking = Ranking(
+            "Negativrekord",
+            "Der niedrigste Tackenstand, der insgesamt jemals erreicht wurde.",
+            memberStatistics.map { memberStatistic ->
+                RankingItem(
+                    memberStatistic.member.name,
+                    StatisticUtil.getAccumulatedTackenHistory(memberStatistic.gameResultHistory).minOrNull().toString()
                 )
             }.sortedBy { rankingItem -> rankingItem.value.toInt() })
 

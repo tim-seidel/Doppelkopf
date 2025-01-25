@@ -96,4 +96,6 @@
     <string name="bockrunde">Bockrunde</string>
     <string name="group_settings_deactivate_members_description">Hier könnt ihr Spieler:innen als aktiv/inaktiv markieren. Sie werden in Ranglisten und neuen Runden nicht angezeigt.</string>
     <string name="groups_settings_deactivate_members_title">Aktive Mitspieler:innen</string>
+    <string name="share_code_dialog_title">Euer ShareCode ist:</string>
+    <string name="dialog_share_code_description">Mit diesem Code können andere Spieler:innen dieser Gruppe beitreten. Der Code kann jederzeit über das 3-Punkte-Menü in der Gruppenübersicht angezeigt werden.</string>
 </resources>

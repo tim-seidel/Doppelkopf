@@ -26,6 +26,11 @@ import de.timseidel.doppelkopf.util.Logging
 
 class GroupCreationActivity : AppCompatActivity() {
 
+    companion object {
+        const val KEY_GROUP_NEWLY_CREATED_FLAG = "GROUP_NEWLY_CREATED_FLAG"
+    }
+
+
     private lateinit var binding: ActivityGroupCreationBinding
 
     private val groupCreationViewModel = GroupCreationViewModel()
@@ -182,6 +187,8 @@ class GroupCreationActivity : AppCompatActivity() {
     private fun finishGroupCreation() {
         val intent = Intent(this, GroupActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        intent.putExtra(KEY_GROUP_NEWLY_CREATED_FLAG, true)
+
         startActivity(intent)
         finish()
     }

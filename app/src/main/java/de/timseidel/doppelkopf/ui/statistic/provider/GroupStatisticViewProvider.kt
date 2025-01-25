@@ -17,11 +17,13 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
     IStatisticViewsProvider {
 
     override fun getStatisticItems(isBockrundeEnabled: Boolean): List<IStatisticViewWrapper> {
+        val memberStatistics = groupStatistics.memberStatistics.filter { m -> m.member.isActive }
 
         val memberTackenHistories = mutableListOf<LineChartViewWrapper.ChartLineData>()
-        groupStatistics.memberStatistics.forEach { ms ->
+        memberStatistics.forEach { ms ->
             val history = StatisticUtil.getAccumulatedTackenHistory(ms.gameResultHistory)
             val last = if (history.isNotEmpty()) history.last() else 0
+
             memberTackenHistories.add(
                 LineChartViewWrapper.ChartLineData(
                     "${ms.member.name} ($last)",
@@ -31,9 +33,10 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
         }
 
         val memberTackenHistoriesWithoutBock = mutableListOf<LineChartViewWrapper.ChartLineData>()
-        groupStatistics.memberStatistics.forEach { ms ->
+        memberStatistics.forEach { ms ->
             val history = StatisticUtil.getAccumulatedTackenHistoryWithoutBock(ms.gameResultHistory)
             val last = if (history.isNotEmpty()) history.last() else 0
+
             memberTackenHistoriesWithoutBock.add(
                 LineChartViewWrapper.ChartLineData(
                     "${ms.member.name} ($last)",
@@ -47,7 +50,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
             totalNegativeTacken += 2 * (ss.gameResultHistoryLoser.sumOf { gr -> if (gr.tacken < 0) -1 * gr.tacken else 0 } + ss.gameResultHistoryWinner.sumOf { gr -> if (gr.tacken < 0) -1 * gr.tacken else 0 })
         }
 
-        val memberNames = groupStatistics.memberStatistics.map { m -> m.member.name }
+        val memberActiveNames = memberStatistics.filter { m -> m.member.isActive }.map { m -> m.member.name }
 
         val memberWinsRe = mutableListOf<Int>()
         val memberWinsContra = mutableListOf<Int>()
@@ -61,7 +64,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
         val memberTackenLossRe = mutableListOf<Int>()
         val memberTackenLossContra = mutableListOf<Int>()
 
-        groupStatistics.memberStatistics.forEach { ms ->
+        memberStatistics.forEach { ms ->
             memberWinsRe.add(ms.re.wins.games)
             memberWinsContra.add(ms.contra.wins.games)
             memberLossRe.add(ms.re.loss.games)
@@ -147,7 +150,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
         groupStatistics.sessionStatistics.forEach { ss ->
             val maxSessionTacken =
                 ss.sessionMemberStatistics.maxByOrNull { ps -> ps.general.total.tacken }
-            if (maxSessionTacken != null) {
+            if (maxSessionTacken != null && maxSessionTacken.member.isActive) {
                 if (maxTackenResult == null || maxSessionTacken.general.total.tacken > maxTackenResult!!.general.total.tacken) {
                     maxTackenResult = maxSessionTacken
                 }
@@ -158,8 +161,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
         val gamesContraPercentage = mutableListOf<Float>()
         val gamesReSoloPercentage = mutableListOf<Float>()
         val gamesContraSoloPercentage = mutableListOf<Float>()
-        groupStatistics.memberStatistics.forEach { ms ->
-
+        memberStatistics.forEach { ms ->
             val soloReGames = ms.gameResultHistory.filter { gr ->
                 gr.faction == Faction.RE && GameUtil.isGameTypeSoloType(gr.gameType)
             }.size
@@ -180,7 +182,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
         groupStatistics.sessionStatistics.forEach { ss ->
             val minSessionTacken =
                 ss.sessionMemberStatistics.minByOrNull { ps -> ps.general.total.tacken }
-            if (minSessionTacken != null) {
+            if (minSessionTacken != null && minSessionTacken.member.isActive) {
                 if (minTackenResult == null || minSessionTacken.general.total.tacken < minTackenResult!!.general.total.tacken) {
                     minTackenResult = minSessionTacken
                 }
@@ -283,7 +285,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                         )
                     )
                 ),
-                memberNames
+                memberActiveNames
             )
         )
 
@@ -317,7 +319,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                         )
                     )
                 ),
-                memberNames
+                memberActiveNames
             )
         )
 
@@ -362,7 +364,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                         )
                     )
                 ),
-                memberNames
+                memberActiveNames
             )
         )
 
@@ -471,7 +473,7 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                         )
                     )
                 ),
-                memberNames,
+                memberActiveNames,
                 height = 250f
             )
         )

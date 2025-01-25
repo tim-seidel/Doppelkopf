@@ -1,16 +1,22 @@
 package de.timseidel.doppelkopf.ui.session
 
+import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -19,6 +25,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.databinding.ActivitySessionBinding
 import de.timseidel.doppelkopf.export.CSVGameHistoryExporter
+import de.timseidel.doppelkopf.ui.group.settings.GroupSettingsActivity
 import de.timseidel.doppelkopf.util.DokoShortAccess
 
 class SessionActivity : AppCompatActivity() {
@@ -62,16 +69,19 @@ class SessionActivity : AppCompatActivity() {
             }
 
             override fun onMenuItemSelected(item: MenuItem): Boolean {
-                if (item.itemId == R.id.menu_item_session_show_group_code) {
-                    showGroupCode()
-                    return true
-                } else if (item.itemId == R.id.menu_session_export_csv) {
-                    exportSessionToCSV()
-                    return true
+                when (item.itemId) {
+                    R.id.menu_item_session_show_group_code -> {
+                        shareShareCode()
+                        return true
+                    }
+                    R.id.menu_session_export_csv -> {
+                        exportSessionToCSV()
+                        return true
+                    }
+                    else -> return false
                 }
-                return false
             }
-        })
+        }, this, Lifecycle.State.RESUMED)
     }
 
     private fun setupBottomNavigation() {
@@ -105,14 +115,16 @@ class SessionActivity : AppCompatActivity() {
         ).show()
     }
 
-    private fun showGroupCode() {
+    private fun shareShareCode() {
         val groupCode = DokoShortAccess.getGroupCtrl().getGroup().code
-        AlertDialog.Builder(this)
-            .setTitle("Gruppencode")
-            .setMessage("Der Gruppencode ist: $groupCode")
-            .setPositiveButton("Okay") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TITLE, "Gruppencode")
+            putExtra(Intent.EXTRA_TEXT, groupCode)
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, "Gruppencode teilen")
+        startActivity(shareIntent)
     }
 }

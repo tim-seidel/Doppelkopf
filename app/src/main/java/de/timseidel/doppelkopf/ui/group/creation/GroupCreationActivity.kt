@@ -1,5 +1,6 @@
 package de.timseidel.doppelkopf.ui.group.creation
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -156,8 +157,20 @@ class GroupCreationActivity : AppCompatActivity() {
             firebase.storeMembers(members, group)
         }
 
+        storeCurrentGroupId(group.id)
+
         finishGroupCreation()
     }
+
+    private fun storeCurrentGroupId(groupId: String) {
+        val sharedPreferences = getSharedPreferences(
+            getString(R.string.shared_preferences_file_key),
+            Context.MODE_PRIVATE
+        )
+        sharedPreferences.edit()
+            .putString(getString(R.string.shared_preferences_group_id_key), groupId).apply()
+
+   }
 
     private fun onCreateGroupClicked() {
         if (!groupCreationViewModel.isValid()) {

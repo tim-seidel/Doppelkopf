@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_item_group_group_settings"
+        android:icon="@drawable/ic_settings_24px"
+        android:title="@string/menu_edit_group_settings"
+        app:showAsAction="always" />
     <item
         android:id="@+id/menu_item_group_show_group_code"
         android:icon="@drawable/ic_outline_pin_24"
         android:title="@string/menu_show_group_code" />
-
-    <item
-        android:id="@+id/menu_item_group_group_settings"
-        android:icon="@drawable/ic_baseline_edit_24"
-        android:title="@string/menu_edit_group_settings" />
 
     <item
         android:id="@+id/menu_item_clear_default_group"

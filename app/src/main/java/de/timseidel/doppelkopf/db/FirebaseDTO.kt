@@ -28,9 +28,10 @@ data class GroupDto(
 data class MemberDto(
     var id: String,
     var name: String,
-    var timeCreated: Long
+    var timeCreated: Long,
+    var isActive: Boolean
 ) {
-    constructor() : this("", "", 0)
+    constructor() : this("", "", 0, true)
 }
 
 data class SessionDto(
@@ -95,7 +96,8 @@ class FirebaseDTO {
             return MemberDto(
                 member.id,
                 member.name,
-                member.creationTime.toInstant(ZoneOffset.UTC).toEpochMilli()
+                member.creationTime.toInstant(ZoneOffset.UTC).toEpochMilli(),
+                member.isActive
             )
         }
 
@@ -106,7 +108,8 @@ class FirebaseDTO {
                 LocalDateTime.ofInstant(
                     Instant.ofEpochMilli(dto.timeCreated),
                     ZoneId.systemDefault()
-                )
+                ),
+                dto.isActive
             )
         }
 

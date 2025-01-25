@@ -20,6 +20,7 @@
     <string name="group_name_hint">Lege einen Namen für eure Doppelkopfgruppe fest.</string>
     <string name="group_toggle_bockrunden_hint_short">Lege fest, ob ihr Spiele als Bockrunden kennzeichnen könnt.</string>
     <string name="group_toggle_bockrunden_hint">Lege fest, ob ihr Spiele als Bockrunden kennzeichnen könnt. Die App nimmt an, dass deren Wertung von euch verdoppelt wurde. Für Bockrunden werden zusätzliche Statistiken erzeugt. Ihr könnt diese Einstellung später noch ändern.</string>
+    <string name="group_settings_bockrunden_hint">Lege fest, ob ihr Spiele als Bockrunden kennzeichnen könnt. Die App nimmt an, dass deren Wertung von euch verdoppelt wurde. Für Bockrunden werden zusätzliche Statistiken erzeugt.</string>
     <string name="session_general_data">Allgemein</string>
     <string name="group_general_data_heading">Allgemein</string>
     <string name="title_welcome">Los geht\'s!</string>
@@ -27,7 +28,7 @@
     <string name="title_game_creation">Spiel erstellen</string>
     <string name="title_game_history">Spielverlauf</string>
     <string name="title_game_edit">Spiel bearbeiten</string>
-    <string name="title_group_settings">Gruppeneinstellung erstellen</string>
+    <string name="title_group_settings">Gruppeneinstellung anpassen</string>
     <string name="title_session_statistic">Statistik</string>
     <string name="game_creation_member_assignment">Parteizuordnung</string>
     <string name="game_creation_member_assignment_factions">(♣ Re, ♦ Contra)</string>
@@ -93,4 +94,8 @@
     <string name="desc_ranglisten_pokal_icon">Ranglisten Pokal-Icon</string>
     <string name="desc_textstatistik_icon">Textstatistik-Icon</string>
     <string name="bockrunde">Bockrunde</string>
+    <string name="group_settings_deactivate_members_description">Hier könnt ihr Spieler:innen als aktiv/inaktiv markieren. Sie werden in Ranglisten und neuen Runden nicht angezeigt.</string>
+    <string name="groups_settings_deactivate_members_title">Aktive Mitspieler:innen</string>
+    <string name="share_code_dialog_title">Euer ShareCode ist:</string>
+    <string name="dialog_share_code_description">Mit diesem Code können andere Spieler:innen dieser Gruppe beitreten. Der Code kann jederzeit über das 3-Punkte-Menü in der Gruppenübersicht angezeigt werden.</string>
 </resources>

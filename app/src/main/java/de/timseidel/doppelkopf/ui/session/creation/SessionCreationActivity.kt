@@ -102,7 +102,7 @@ class SessionCreationActivity : AppCompatActivity() {
     }
 
     private fun setupMemberSelectList() {
-        val members = DokoShortAccess.getMemberCtrl().getMembers()
+        val members = DokoShortAccess.getMemberCtrl().getActiveMembers()
         members.forEach { m ->
             viewModel.memberSelections.add(
                 MemberSelection(

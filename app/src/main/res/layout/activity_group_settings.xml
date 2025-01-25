@@ -22,46 +22,85 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/ll_group_settings_wrapper"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
+    <ScrollView
+        android:id="@+id/sv_group_settings_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toTopOf="@id/btn_save_group_settings"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_group_settings_general"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/group_general_data_heading"
-            android:textColor="@color/primary_dark"
-            android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tv_group_settings_bockrunde_enable_info"
+        <LinearLayout
+            android:id="@+id/ll_group_settings_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="4dp"
-            android:text="@string/group_toggle_bockrunden_hint"
-            android:textColor="@color/neural"
-            android:textSize="14sp"
-            android:textStyle="italic" />
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical">
 
-        <CheckBox
-            android:id="@+id/cb_group_settings_bockrunden_enable"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:text="@string/enable_bockrunden"
-            android:textColor="@color/neural"
-            android:textSize="16sp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_group_settings_general"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/group_general_data_heading"
+                android:textColor="@color/primary_dark"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_group_settings_bockrunde_enable_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/group_settings_bockrunden_hint"
+                android:textColor="@color/neural"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cb_group_settings_bockrunden_enable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:text="@string/enable_bockrunden"
+                android:textColor="@color/neural"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_group_settings_section_members"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/groups_settings_deactivate_members_title"
+                android:textColor="@color/primary_dark"
+                android:textSize="20sp" />
+
+
+            <TextView
+                android:id="@+id/tv_group_settings_deactivate_member_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/group_settings_deactivate_members_description"
+                android:textColor="@color/neural"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_group_settings_active_member_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="4dp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

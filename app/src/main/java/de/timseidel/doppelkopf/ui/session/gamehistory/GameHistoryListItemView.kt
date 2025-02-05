@@ -25,6 +25,7 @@ class GameHistoryListItemView(context: Context, attrs: AttributeSet? = null) :
     }
 
     private lateinit var ivBockIndicator: ImageView
+    private lateinit var ivEditIndicator: ImageView
     private lateinit var rvMemberTacken: RecyclerView
     private lateinit var tvGameNumber: TextView
     private lateinit var memberTackenAdapter: GameHistoryListItemMemberListAdapter
@@ -39,13 +40,21 @@ class GameHistoryListItemView(context: Context, attrs: AttributeSet? = null) :
         View.inflate(context, R.layout.view_game_history_list_item, this)
 
         findViews()
+        setupGameEdit()
         setupRecyclerView()
     }
 
     private fun findViews() {
-        ivBockIndicator = findViewById(R.id.iv_game_bock_indicator)
         rvMemberTacken = findViewById(R.id.rv_game_history_item_member_tacken_list)
         tvGameNumber = findViewById(R.id.tv_game_history_number)
+        ivBockIndicator = findViewById(R.id.iv_game_bock_indicator)
+        ivEditIndicator = findViewById(R.id.iv_game_edit_indicator)
+    }
+
+    private fun setupGameEdit() {
+        tvGameNumber.setOnClickListener {
+            gameEditListener?.onGameEditClicked()
+        }
     }
 
     private fun setupRecyclerView() {
@@ -79,12 +88,10 @@ class GameHistoryListItemView(context: Context, attrs: AttributeSet? = null) :
     }
 
     fun setIsEditable(isEditable: Boolean) {
-        if (isEditable) {
-            tvGameNumber.setOnClickListener {
-                gameEditListener?.onGameEditClicked()
-            }
+        ivEditIndicator.visibility = if (isEditable) {
+            VISIBLE
         } else {
-            tvGameNumber.setOnClickListener(null)
+            GONE
         }
     }
 

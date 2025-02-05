@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/tv_game_history_number"
-        android:layout_width="36dp"
+        android:layout_width="40dp"
         android:layout_height="48dp"
         android:background="@drawable/border_background"
         android:gravity="center"
@@ -22,13 +22,25 @@
         tools:text="01" />
 
     <ImageView
+        android:id="@+id/iv_game_edit_indicator"
+        android:layout_width="14dp"
+        android:layout_height="12dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:contentDescription="@string/bockrunde"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/tv_game_history_number"
+        app:layout_constraintTop_toTopOf="@+id/tv_game_history_number"
+        app:srcCompat="@drawable/ic_baseline_edit_24" />
+
+    <ImageView
         android:id="@+id/iv_game_bock_indicator"
         android:layout_width="12dp"
         android:layout_height="12dp"
         android:layout_marginEnd="2dp"
         android:layout_marginBottom="2dp"
         android:contentDescription="@string/bockrunde"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/tv_game_history_number"
         app:layout_constraintEnd_toEndOf="@+id/tv_game_history_number"
         app:srcCompat="@drawable/ic_cards_heart" />

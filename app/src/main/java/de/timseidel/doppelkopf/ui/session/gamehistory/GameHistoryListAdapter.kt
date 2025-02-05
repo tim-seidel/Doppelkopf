@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import de.timseidel.doppelkopf.model.GameHistoryItem
 import de.timseidel.doppelkopf.ui.session.gameedit.GameEditClickListener
+import de.timseidel.doppelkopf.util.GameUtil
 
 class GameHistoryListAdapter(
     private var rows: MutableList<GameHistoryItem>,
@@ -26,7 +27,7 @@ class GameHistoryListAdapter(
 
     override fun onBindViewHolder(holder: GameHistoryListItemViewHolder, position: Int) {
         val row = rows[position]
-        holder.bind(row)
+        holder.bind(row, GameUtil.isGameEditEnabled(row.game))
 
         holder.gameView.setGameEditListener(object :
             GameHistoryListItemView.GameHistoryListItemEditListener {

@@ -98,4 +98,6 @@
     <string name="groups_settings_deactivate_members_title">Aktive Mitspieler:innen</string>
     <string name="share_code_dialog_title">Euer ShareCode ist:</string>
     <string name="dialog_share_code_description">Mit diesem Code können andere Spieler:innen dieser Gruppe beitreten. Der Code kann jederzeit über das 3-Punkte-Menü in der Gruppenübersicht angezeigt werden.</string>
+    <string name="game_edit_time_limit_description">Spiele können 24 Stunden nach Erstellung bearbeitet werden.</string>
+    <string name="desc_game_edit_info">Information zum Spiele-Bearbeiten</string>
 </resources>

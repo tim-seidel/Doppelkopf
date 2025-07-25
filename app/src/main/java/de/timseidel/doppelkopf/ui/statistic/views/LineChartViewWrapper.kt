@@ -10,6 +10,8 @@ import com.highsoft.highcharts.common.hichartsclasses.HIExporting
 import com.highsoft.highcharts.common.hichartsclasses.HILegend
 import com.highsoft.highcharts.common.hichartsclasses.HILine
 import com.highsoft.highcharts.common.hichartsclasses.HIOptions
+import com.highsoft.highcharts.common.hichartsclasses.HIPlotOptions
+import com.highsoft.highcharts.common.hichartsclasses.HISeries
 import com.highsoft.highcharts.common.hichartsclasses.HITitle
 import com.highsoft.highcharts.common.hichartsclasses.HIXAxis
 import com.highsoft.highcharts.common.hichartsclasses.HIYAxis
@@ -23,7 +25,8 @@ class LineChartViewWrapper(private val chartData: LineChartData) : IStatisticVie
         val xAxisName: String,
         val yAxisName: String,
         val lineData: List<ChartLineData>,
-        val height: Float = 500f
+        val height: Float = 500f,
+        val withStep: Boolean = false
     )
 
     data class ChartLineData(val name: String, val values: List<Number>, val colorCode: String = "")
@@ -82,7 +85,19 @@ class LineChartViewWrapper(private val chartData: LineChartData) : IStatisticVie
         }
 
         options.series = ArrayList(lines)
+
+        if (chartData.withStep) {
+            val plotOptions = HIPlotOptions()
+
+            val plotOptionSeries = HISeries()
+            plotOptionSeries.step = "left"
+
+            plotOptions.series = plotOptionSeries
+            options.plotOptions = plotOptions
+        }
+
         lineChart.options = options
+
 
         return lineChart
     }

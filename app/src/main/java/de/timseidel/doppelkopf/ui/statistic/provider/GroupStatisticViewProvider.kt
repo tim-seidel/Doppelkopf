@@ -504,7 +504,8 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                         gamesPerSessionList
                     )
                 ),
-                height = 300f
+                height = 300f,
+                true
             )
         )
 

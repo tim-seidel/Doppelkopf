@@ -20,7 +20,7 @@ class CSVGameHistoryExporter {
             csv.append(";${m.member.id}_faction")
         }
 
-        csv.append(";winningFaction;gameType;soloType;isBockrunde\n")
+        csv.append(";tacken;winningFaction;gameType;soloType;isBockrunde\n")
 
         games.forEach { g ->
             csv.append("${g.id};")
@@ -37,7 +37,8 @@ class CSVGameHistoryExporter {
                 csv.append(";${result.faction.name};")
             }
 
-            csv.append(g.winningFaction.name)
+            csv.append(g.tacken)
+            csv.append(";${g.winningFaction.name}")
             csv.append(";${g.gameType.name}")
             csv.append(";${g.soloType.name}")
             csv.append(";${g.isBockrunde}")

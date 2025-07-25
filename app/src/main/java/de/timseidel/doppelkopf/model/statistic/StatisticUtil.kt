@@ -4,6 +4,8 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameHistoryColumn
 import de.timseidel.doppelkopf.model.GameHistoryItem
 import de.timseidel.doppelkopf.model.GameResult
+import de.timseidel.doppelkopf.model.Member
+import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
 import de.timseidel.doppelkopf.util.GameUtil
 import de.timseidel.doppelkopf.util.RangeDistribution
 
@@ -88,6 +90,30 @@ class StatisticUtil {
             }
 
             return accumulatedHistory
+        }
+
+        fun getWinsOfMember(groupStatistics: GroupStatistics, member: Member): Int{
+            var wins = 0
+            groupStatistics.sessionStatistics.forEach { ss ->
+                val winner = ss.sessionMemberStatistics.maxByOrNull { ms -> ms.general.total.tacken }
+                if (winner != null && winner.member.id == member.id) {
+                    wins++
+                }
+            }
+
+            return wins
+        }
+
+        fun getLossesOfMember(groupStatistics: GroupStatistics, member: Member): Int{
+            var losses = 0
+            groupStatistics.sessionStatistics.forEach { sessionStatistics ->
+                val loser = sessionStatistics.sessionMemberStatistics.minByOrNull { ms -> ms.general.total.tacken }
+                if (loser != null && loser.member.id == member.id) {
+                    losses++
+                }
+            }
+
+            return losses
         }
     }
 }

@@ -12,6 +12,7 @@ import de.timseidel.doppelkopf.ui.statistic.views.PieChartViewWrapper
 import de.timseidel.doppelkopf.ui.statistic.views.SimpleTextStatisticViewWrapper
 import de.timseidel.doppelkopf.util.RangeDistribution
 import kotlin.math.abs
+import kotlin.math.max
 import kotlin.math.round
 
 class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatisticViewsProvider {
@@ -107,6 +108,16 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
         )
         streakStatistics.streakHistory.forEach { streak ->
             streakDistribution.increase(streak, 1)
+        }
+
+        val sessionEndPositionDistribution = RangeDistribution(
+            1,
+            max(stats.sessionEndPosition.maxOrNull() ?: 0, 1)
+        )
+        stats.sessionEndPosition.forEach { pos ->
+            if(pos > 0) {
+                sessionEndPositionDistribution.increase(pos, 1)
+            }
         }
 
         var gamesBockrunde = 0
@@ -510,6 +521,26 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
             )
         )
 
+        val sessionEndPositionBarChart = ColumnChartViewWrapper(
+            ColumnChartViewWrapper.ColumnChartData(
+                "Endposition", "Position am Ende einer Session", "Endpositionshäufigkeit",
+                listOf(
+                    ColumnChartViewWrapper.ColumnSeriesData(
+                        "Endposition",
+                        listOf(
+                            ColumnChartViewWrapper.ColumnSeriesStackData(
+                                "Endpositionshäufigkeit",
+                                IStatisticViewWrapper.COLOR_NEURAL.replace("#", ""),
+                                sessionEndPositionDistribution.values()
+                            )
+                        )
+                    )
+                ),
+                sessionEndPositionDistribution.indices().map { i -> i.toString() },
+                height = 250f
+            )
+        )
+
         if(isBockrundeEnabled){
             return listOf(
                 totalSessionsTextStat,
@@ -530,7 +561,8 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
                 memberVsMemberTackenBarChart,
                 longestWinStreakTextStat,
                 longestLossStreakTextStat,
-                streakBarChart
+                streakBarChart,
+                sessionEndPositionBarChart
             )
         }else{
             return listOf(
@@ -549,7 +581,8 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
                 memberVsMemberTackenBarChart,
                 longestWinStreakTextStat,
                 longestLossStreakTextStat,
-                streakBarChart
+                streakBarChart,
+                sessionEndPositionBarChart
             )
         }
     }

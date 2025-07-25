@@ -194,6 +194,16 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
             gamesPerSessionList.add(ss.general.total.games)
         }
 
+        val memberSessionWinDistribution = mutableListOf<Int>()
+        memberStatistics.forEach { ms ->
+            memberSessionWinDistribution.add(StatisticUtil.getWinsOfMember(groupStatistics, ms.member))
+        }
+
+        val memberSessionLossDistribution = mutableListOf<Int>()
+        memberStatistics.forEach { ms ->
+            memberSessionLossDistribution.add(StatisticUtil.getLossesOfMember(groupStatistics, ms.member))
+        }
+
         val totalGamesTextStat = SimpleTextStatisticViewWrapper(
             "Allgemeine Statistik",
             "Hier siehst du die Statistiken eurer Doppelkopfgruppe. An allen Abenden zusammen habt ihr so viele Spiele gespielt:",
@@ -315,6 +325,44 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                                 "Contra Normal",
                                 IStatisticViewWrapper.COLOR_NEGATIVE_LIGHT,
                                 gamesContraPercentage
+                            )
+                        )
+                    )
+                ),
+                memberActiveNames
+            )
+        )
+
+        val sessionWinnerBarChart = ColumnChartViewWrapper(
+            data = ColumnChartViewWrapper.ColumnChartData(
+                "Sessionsiege", "", "Anzahl der Abende",
+                listOf(
+                    ColumnChartViewWrapper.ColumnSeriesData(
+                        "Siege",
+                        listOf(
+                            ColumnChartViewWrapper.ColumnSeriesStackData(
+                                "Sessionsiege",
+                                IStatisticViewWrapper.COLOR_POSITIVE_DARK,
+                                memberSessionWinDistribution
+                            )
+                        )
+                    )
+                ),
+                memberActiveNames
+            )
+        )
+
+        val sessionLoserBarChart = ColumnChartViewWrapper(
+            data = ColumnChartViewWrapper.ColumnChartData(
+                "Sessionniederlagen", "", "Anzahl der Abende",
+                listOf(
+                    ColumnChartViewWrapper.ColumnSeriesData(
+                        "Niederlagen",
+                        listOf(
+                            ColumnChartViewWrapper.ColumnSeriesStackData(
+                                "Sessionniederlagen",
+                                IStatisticViewWrapper.COLOR_NEGATIVE_DARK,
+                                memberSessionLossDistribution
                             )
                         )
                     )
@@ -525,6 +573,8 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                 tackenBarChartBockEnabled,
                 soloTextStat,
                 soloMemberBarChart,
+                sessionWinnerBarChart,
+                sessionLoserBarChart,
                 gamesPerSessionAverageTextStat,
                 gamesPerSessionLineChart
             )
@@ -543,6 +593,8 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
                 tackenBarChartBockDisabled,
                 soloTextStat,
                 soloMemberBarChart,
+                sessionWinnerBarChart,
+                sessionLoserBarChart,
                 gamesPerSessionAverageTextStat,
                 gamesPerSessionLineChart
             )

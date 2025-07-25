@@ -344,7 +344,7 @@ class RankingStatisticsProvider {
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
-                    StatisticUtil.getAccumulatedTackenHistory(memberStatistic.gameResultHistory).maxOrNull().toString()
+                    StatisticUtil.getAccumulatedTackenHistory(memberStatistic.gameResultHistory).maxOrNull()?.toString() ?: "0"
                 )
             }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
 
@@ -358,7 +358,7 @@ class RankingStatisticsProvider {
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
-                    StatisticUtil.getAccumulatedTackenHistory(memberStatistic.gameResultHistory).minOrNull().toString()
+                    StatisticUtil.getAccumulatedTackenHistory(memberStatistic.gameResultHistory).minOrNull()?.toString() ?: "0"
                 )
             }.sortedBy { rankingItem -> rankingItem.value.toInt() })
 

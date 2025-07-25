@@ -225,7 +225,7 @@ class RankingStatisticsProvider {
                 RankingItem(
                     memberStatistic.member.name,
                     (if (memberStatistic.gameResultHistory.isNotEmpty())
-                        SimpleStatisticsCalculator().calculateStreakStatistics(memberStatistic.gameResultHistory).longestWinStreak.toString() else 0).toString()
+                        StatisticUtil.calculateStreakStatistics(memberStatistic.gameResultHistory).longestWinStreak.toString() else 0).toString()
                 )
             }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
 
@@ -240,7 +240,7 @@ class RankingStatisticsProvider {
                 RankingItem(
                     memberStatistic.member.name,
                     (if (memberStatistic.gameResultHistory.isNotEmpty())
-                        SimpleStatisticsCalculator().calculateStreakStatistics(memberStatistic.gameResultHistory).longestLossStreak.toString() else 0).toString()
+                        StatisticUtil.calculateStreakStatistics(memberStatistic.gameResultHistory).longestLossStreak.toString() else 0).toString()
                 )
             }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
 

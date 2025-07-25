@@ -2,7 +2,6 @@ package de.timseidel.doppelkopf.ui.statistic.provider
 
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameType
-import de.timseidel.doppelkopf.model.statistic.SimpleStatisticsCalculator
 import de.timseidel.doppelkopf.model.statistic.StatisticUtil
 import de.timseidel.doppelkopf.model.statistic.session.SessionMemberStatistic
 import de.timseidel.doppelkopf.ui.statistic.views.ColumnChartViewWrapper
@@ -66,7 +65,7 @@ class SessionMemberStatisticViewsProvider(private var stats: SessionMemberStatis
         }
 
         val streakStatistics =
-            SimpleStatisticsCalculator().calculateStreakStatistics(stats.gameResultHistory)
+            StatisticUtil.calculateStreakStatistics(stats.gameResultHistory)
         val streakHistoryWinLossMarker = mutableListOf<String>()
         streakStatistics.streakHistory.forEach { streak ->
             streakHistoryWinLossMarker.add(

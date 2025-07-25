@@ -143,7 +143,7 @@ class SessionCreationActivity : AppCompatActivity() {
         })
 
         AlertDialog.Builder(this).setTitle(getString(R.string.session_creation_create_new_member))
-            .setMessage(getString(R.string.group_member_creation_short_name_advice))
+            .setMessage(getString(R.string.session_member_creation_short_name_advice))
             .setPositiveButton(getString(R.string.okay)) { _, _ -> createMember(etMemberName.text.toString()) }
             .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
             .setView(inputLayout).show()

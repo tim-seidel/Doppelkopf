@@ -70,27 +70,51 @@
                 android:textColor="@color/neural"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/tv_group_settings_section_members"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/groups_settings_deactivate_members_title"
-                android:textColor="@color/primary_dark"
-                android:textSize="20sp" />
+                android:id="@+id/cl_group_settings_member_title_and_add"
+                android:layout_marginTop="8dp">
 
+                <TextView
+                    android:id="@+id/tv_group_settings_section_members"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/groups_settings_deactivate_members_title"
 
-            <TextView
-                android:id="@+id/tv_group_settings_deactivate_member_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="4dp"
-                android:text="@string/group_settings_deactivate_members_description"
-                android:textColor="@color/neural"
-                android:textSize="14sp"
-                android:textStyle="italic" />
+                    android:textColor="@color/primary_dark"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toStartOf="@+id/ib_group_settings_add_member"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_group_settings_deactivate_member_info"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/group_settings_deactivate_members_description"
+                    android:textSize="14sp"
+                    android:textStyle="italic"
+                    app:layout_constraintEnd_toStartOf="@+id/ib_group_settings_add_member"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_group_settings_section_members" />
+
+                <ImageButton
+                    android:id="@+id/ib_group_settings_add_member"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="4dp"
+                    android:backgroundTint="@color/primary"
+                    android:contentDescription="@string/desc_session_creation_member_list_create_member"
+                    android:src="@drawable/baseline_person_add_alt_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_group_settings_active_member_list"

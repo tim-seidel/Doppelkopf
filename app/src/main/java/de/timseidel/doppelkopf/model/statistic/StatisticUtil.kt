@@ -4,8 +4,10 @@ import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameHistoryColumn
 import de.timseidel.doppelkopf.model.GameHistoryItem
 import de.timseidel.doppelkopf.model.GameResult
+import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
+import de.timseidel.doppelkopf.model.statistic.group.MemberStatistic
 import de.timseidel.doppelkopf.util.GameUtil
 import de.timseidel.doppelkopf.util.RangeDistribution
 
@@ -114,6 +116,17 @@ class StatisticUtil {
             }
 
             return losses
+        }
+
+        fun getSchwarzVerlorenCount(memberStatistic: MemberStatistic): Int {
+            var schwarzVerlorenCount = 0
+            memberStatistic.gameResultHistory.forEach { gameResult ->
+                if (gameResult.gameType == GameType.SCHWARZVERLOREN && gameResult.faction == Faction.RE){
+                    schwarzVerlorenCount++
+                }
+            }
+
+            return schwarzVerlorenCount
         }
     }
 }

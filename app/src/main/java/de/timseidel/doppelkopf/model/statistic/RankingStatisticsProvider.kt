@@ -2,7 +2,6 @@ package de.timseidel.doppelkopf.model.statistic
 
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.GameType
-import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.Ranking
 import de.timseidel.doppelkopf.model.RankingItem
 import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
@@ -24,6 +23,7 @@ class RankingStatisticsProvider {
             getHighestRePercentageRanking(activeMemberStatistics),
             getMostPlayedSoliRanking(activeMemberStatistics),
             getHighestSoliTackenGainRanking(activeMemberStatistics),
+            getSchwarzVerlorenRanking(activeMemberStatistics),
             getMostGamesRanking(activeMemberStatistics),
             getLongestWinStreakRanking(activeMemberStatistics),
             getLongestLossStreakRanking(activeMemberStatistics),
@@ -388,6 +388,22 @@ class RankingStatisticsProvider {
                 RankingItem(
                     memberStatistic.member.name,
                     StatisticUtil.getLossesOfMember(groupStatistics, memberStatistic.member)
+                        .toString()
+                )
+            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() }
+        )
+
+        return ranking
+    }
+
+    private fun getSchwarzVerlorenRanking(memberStatistics: List<MemberStatistic>): Ranking {
+        val ranking = Ranking(
+            "Meiste Runden \"schwarz verloren\"",
+            "Die Anzahl der Runden, die jemand schwarz verloren hat.",
+            memberStatistics.map { memberStatistic ->
+                RankingItem(
+                    memberStatistic.member.name,
+                    StatisticUtil.getSchwarzVerlorenCount(memberStatistic)
                         .toString()
                 )
             }.sortedByDescending { rankingItem -> rankingItem.value.toInt() }

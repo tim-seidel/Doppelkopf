@@ -521,6 +521,12 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
             )
         )
 
+        val schwarzVerlorenTestStats = SimpleTextStatisticViewWrapper(
+            "Ups!",
+            "Anzahl der Spiele in denen ${stats.member.name} schwarz verloren hat:",
+            StatisticUtil.getSchwarzVerlorenCount(stats).toString()
+        )
+
         val sessionEndPositionBarChart = ColumnChartViewWrapper(
             ColumnChartViewWrapper.ColumnChartData(
                 "Endposition", "Position am Ende einer Session", "Endpositionshäufigkeit",
@@ -562,6 +568,7 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
                 longestWinStreakTextStat,
                 longestLossStreakTextStat,
                 streakBarChart,
+                schwarzVerlorenTestStats,
                 sessionEndPositionBarChart
             )
         }else{
@@ -582,6 +589,7 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
                 longestWinStreakTextStat,
                 longestLossStreakTextStat,
                 streakBarChart,
+                schwarzVerlorenTestStats,
                 sessionEndPositionBarChart
             )
         }

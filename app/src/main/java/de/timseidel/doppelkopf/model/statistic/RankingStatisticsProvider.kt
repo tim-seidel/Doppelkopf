@@ -23,6 +23,7 @@ class RankingStatisticsProvider {
             getHighestRePercentageRanking(activeMemberStatistics),
             getMostPlayedSoliRanking(activeMemberStatistics),
             getHighestSoliTackenGainRanking(activeMemberStatistics),
+            getSoliWinPercentageRanking(activeMemberStatistics),
             getSchwarzVerlorenRanking(activeMemberStatistics),
             getMostGamesRanking(activeMemberStatistics),
             getLongestWinStreakRanking(activeMemberStatistics),
@@ -162,6 +163,25 @@ class RankingStatisticsProvider {
                     String.format("%.1f", if (memberStatistic.general.total.games - memberStatistic.solo.total.games > 0) (((memberStatistic.re.total.games - memberStatistic.gameResultHistory.filter { gr -> gr.faction == Faction.RE && gr.gameType == GameType.SOLO }.size) / ((memberStatistic.general.total.games - memberStatistic.gameResultHistory.filter { gr -> gr.faction != Faction.NONE && gr.gameType == GameType.SOLO }.size) * 1f)) * 100) else 0f)
                     //(if (memberStatistic.general.total.games - memberStatistic.solo.total.games > 0) (((memberStatistic.re.total.games - memberStatistic.gameResultHistory.filter { gr -> gr.faction == Faction.RE && gr.gameType == GameType.SOLO }.size) / ((memberStatistic.general.total.games - memberStatistic.solo.total.games) * 1f)) * 100).toInt() else 0).toString()
                 )
+            }.sortedByDescending { rankingItem -> rankingItem.value.toFloat() })
+
+        ranking.items.forEach { rankingItem ->
+            rankingItem.value = "${rankingItem.value}%"
+        }
+
+        return ranking
+    }
+
+    private fun getSoliWinPercentageRanking(memberStatistics: List<MemberStatistic>): Ranking {
+        val ranking = Ranking(
+            "Soli Siegesquote",
+            "Die Siegesquote in Prozent in eigenen Soli.",
+            memberStatistics.map { memberStatistic ->
+                RankingItem(
+                    memberStatistic.member.name,
+                    String.format("%.1f", if (memberStatistic.solo.total.games > 0) ((memberStatistic.solo.wins.games / (memberStatistic.solo.total.games * 1f)) * 100) else 0f)
+                )
+
             }.sortedByDescending { rankingItem -> rankingItem.value.toFloat() })
 
         ranking.items.forEach { rankingItem ->

@@ -94,7 +94,7 @@ class GroupStatisticsCalculator {
 
                 val memberStatsCopy = sessionStat.sessionMemberStatistics.toMutableList()
                 memberStatsCopy.sortByDescending { sms -> sms.general.total.tacken }
-                memberStat.sessionEndPosition.add(memberStatsCopy.indexOfFirst { sms -> sms.member.id == memberSessionStats?.member?.id } + 1)
+                memberStat.sessionEndPositions.add(memberStatsCopy.indexOfFirst { sms -> sms.member.id == memberSessionStats?.member?.id } + 1)
             }
         }
 

@@ -106,6 +106,7 @@ class SessionStatisticsCalculator {
         return stats
     }
 
+    // TODO: Ob das auslagern wirklich sinnvoll ist...
     fun calculateAllMemberSessionStatistics(
         members: List<Member>,
         games: List<Game>

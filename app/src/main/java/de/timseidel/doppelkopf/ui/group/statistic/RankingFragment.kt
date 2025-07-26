@@ -21,7 +21,7 @@ import de.timseidel.doppelkopf.db.request.SessionListRequest
 import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Ranking
 import de.timseidel.doppelkopf.model.RankingItem
-import de.timseidel.doppelkopf.model.statistic.RankingStatisticsProvider
+import de.timseidel.doppelkopf.model.statistic.RankingStatisticsCalculator
 import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.util.Converter
@@ -186,7 +186,7 @@ class RankingFragment : Fragment() {
 
     private fun calculateRankings(groupStatistics: GroupStatistics) {
         val withBockSettings = DokoShortAccess.getSettingsCtrl().getSettings().isBockrundeEnabled
-        rankings = RankingStatisticsProvider().getRankings(groupStatistics, withBockSettings)
+        rankings = RankingStatisticsCalculator().getRankings(groupStatistics, withBockSettings)
             .toMutableList()
 
         if (rankings.isNotEmpty()) {

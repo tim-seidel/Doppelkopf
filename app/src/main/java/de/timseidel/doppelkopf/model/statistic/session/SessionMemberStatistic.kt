@@ -10,7 +10,7 @@ data class SessionMemberStatistic(
     val re: StatisticEntry = StatisticEntry(),
     val contra: StatisticEntry = StatisticEntry(),
     val solo: StatisticEntry = StatisticEntry(),
-    val bock: StatisticEntry = StatisticEntry(),
+    val bock: StatisticEntry = StatisticEntry(), // TODO: Not used right now
 
     val gameResultHistory: MutableList<GameResult> = mutableListOf(),
 

@@ -8,7 +8,7 @@ import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
 import de.timseidel.doppelkopf.model.statistic.group.MemberStatistic
 import de.timseidel.doppelkopf.model.statistic.session.SessionMemberStatistic
 
-class RankingStatisticsProvider {
+class RankingStatisticsCalculator {
 
     fun getRankings(groupStatistics: GroupStatistics, isBockrundeEnabled: Boolean): List<Ranking> {
         val activeMemberStatistics = groupStatistics.memberStatistics.filter { it.member.isActive }

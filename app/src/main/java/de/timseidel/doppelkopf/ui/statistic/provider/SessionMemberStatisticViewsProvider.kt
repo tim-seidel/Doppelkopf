@@ -21,6 +21,7 @@ class SessionMemberStatisticViewsProvider(private var stats: SessionMemberStatis
             null
         )
 
+        // All statistic lists are implicitly ordered my member name
         val partnerNames = mutableListOf<String>()
         val partnerNamesWithTacken = mutableListOf<String>()
         val partnerNamesWithGames = mutableListOf<String>()

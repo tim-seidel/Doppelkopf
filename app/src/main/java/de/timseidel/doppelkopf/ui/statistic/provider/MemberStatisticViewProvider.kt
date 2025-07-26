@@ -111,9 +111,9 @@ class MemberStatisticViewProvider(private val stats: MemberStatistic) : IStatist
 
         val sessionEndPositionDistribution = RangeDistribution(
             1,
-            max(stats.sessionEndPosition.maxOrNull() ?: 0, 1)
+            max(stats.sessionEndPositions.maxOrNull() ?: 0, 1)
         )
-        stats.sessionEndPosition.forEach { pos ->
+        stats.sessionEndPositions.forEach { pos ->
             if(pos > 0) {
                 sessionEndPositionDistribution.increase(pos, 1)
             }

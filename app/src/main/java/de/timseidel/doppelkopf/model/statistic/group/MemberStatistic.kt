@@ -16,7 +16,7 @@ data class MemberStatistic(
     val opponents: Map<String, MemberToMemberStatistic>,
 
     val gameResultHistory: MutableList<GameResult> = mutableListOf(),
-    val sessionEndPosition: MutableList<Int> = mutableListOf(),
 
+    val sessionEndPositions: MutableList<Int> = mutableListOf(), //TODO: Vllt. in Session verschieben
     val sessionStatistics: MutableList<SessionMemberStatistic> = mutableListOf()
 )

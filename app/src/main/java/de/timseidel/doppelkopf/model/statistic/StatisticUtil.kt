@@ -13,6 +13,7 @@ import de.timseidel.doppelkopf.util.RangeDistribution
 
 class StatisticUtil {
     companion object {
+        // TODO: Called multiple times, maybe calculate it once in StatisticsCalculators
         fun getAccumulatedTackenHistory(gameResults: List<GameResult>): List<Int> {
             val tackenHistory = mutableListOf(0)
             gameResults.forEach { gr ->

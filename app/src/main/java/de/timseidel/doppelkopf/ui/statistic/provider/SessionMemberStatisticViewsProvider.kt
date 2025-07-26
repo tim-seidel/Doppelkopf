@@ -67,13 +67,6 @@ class SessionMemberStatisticViewsProvider(private var stats: SessionMemberStatis
 
         val streakStatistics =
             StatisticUtil.calculateStreakStatistics(stats.gameResultHistory)
-        val streakHistoryWinLossMarker = mutableListOf<String>()
-        streakStatistics.streakHistory.forEach { streak ->
-            streakHistoryWinLossMarker.add(
-                if (streak > 0) "#".plus(IStatisticViewWrapper.COLOR_POSITIVE_DARK)
-                else "#".plus(IStatisticViewWrapper.COLOR_NEGATIVE_DARK)
-            )
-        }
 
         val streakDistribution = RangeDistribution(
             -1 * streakStatistics.longestLossStreak,

@@ -96,6 +96,11 @@ class RankingFragment : Fragment() {
     }
 
     private fun setRanking(ranking: Ranking) {
+        // Loading of data might took so long that the binding is already null
+        if(_binding == null){
+            return
+        }
+
         setRankingTitle(ranking.title)
         setRankingList(ranking.items)
         setRankingDescription(ranking.description)

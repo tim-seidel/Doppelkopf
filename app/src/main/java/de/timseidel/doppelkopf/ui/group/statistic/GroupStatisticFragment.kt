@@ -146,7 +146,10 @@ class GroupStatisticFragment : Fragment() {
     }
 
     private fun setStatistics(provider: IStatisticViewsProvider) {
-        val lvStatistic = binding.lvGroupStatistic
+        // Loading of data might took so long that the binding is already null
+        if(_binding == null){
+            return
+        }
 
         val withBockSettings = DokoShortAccess.getSettingsCtrl().getSettings().isBockrundeEnabled
         val statisticItems = provider.getStatisticItems(withBockSettings)
@@ -154,7 +157,7 @@ class GroupStatisticFragment : Fragment() {
             requireContext(),
             statisticItems
         )
-        lvStatistic.adapter = adapter
+        binding.lvGroupStatistic.adapter = adapter
     }
 
     private fun showSessionLoadingStart() {

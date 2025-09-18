@@ -9,6 +9,7 @@ import de.timseidel.doppelkopf.model.GameType
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.MemberAndFaction
 import kotlin.math.pow
+import kotlin.math.round
 
 class GameUtil {
     companion object {
@@ -155,8 +156,8 @@ class GameUtil {
         }
 
         fun roundWithDecimalPlaces(value: Float, places: Int): Float {
-            val placesMultiplier = 10.0.pow(places.toDouble())
-            return (Math.round(value * placesMultiplier.toInt()) / placesMultiplier).toFloat()
+            val placesMultiplier = 10f.pow(places)
+            return round(value * placesMultiplier) / placesMultiplier
         }
 
         fun isGameEditEnabled(game: Game): Boolean {

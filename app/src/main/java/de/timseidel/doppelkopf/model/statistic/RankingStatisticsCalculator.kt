@@ -7,6 +7,7 @@ import de.timseidel.doppelkopf.model.RankingItem
 import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
 import de.timseidel.doppelkopf.model.statistic.group.MemberStatistic
 import de.timseidel.doppelkopf.model.statistic.session.SessionMemberStatistic
+import de.timseidel.doppelkopf.util.GameUtil
 
 class RankingStatisticsCalculator {
 
@@ -160,8 +161,7 @@ class RankingStatisticsCalculator {
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
-                    String.format("%.1f", if (memberStatistic.general.total.games - memberStatistic.solo.total.games > 0) (((memberStatistic.re.total.games - memberStatistic.gameResultHistory.filter { gr -> gr.faction == Faction.RE && gr.gameType == GameType.SOLO }.size) / ((memberStatistic.general.total.games - memberStatistic.gameResultHistory.filter { gr -> gr.faction != Faction.NONE && gr.gameType == GameType.SOLO }.size) * 1f)) * 100) else 0f)
-                    //(if (memberStatistic.general.total.games - memberStatistic.solo.total.games > 0) (((memberStatistic.re.total.games - memberStatistic.gameResultHistory.filter { gr -> gr.faction == Faction.RE && gr.gameType == GameType.SOLO }.size) / ((memberStatistic.general.total.games - memberStatistic.solo.total.games) * 1f)) * 100).toInt() else 0).toString()
+                    GameUtil.roundWithDecimalPlaces(getRePercentage(memberStatistic), 1).toString()
                 )
             }.sortedByDescending { rankingItem -> rankingItem.value.toFloat() })
 
@@ -172,6 +172,24 @@ class RankingStatisticsCalculator {
         return ranking
     }
 
+    private fun getRePercentage(memberStatistic: MemberStatistic): Float {
+        val gameCount = memberStatistic.general.total.games
+        val reGameCount = memberStatistic.re.total.games
+        // Hier nicht .solo.total.games, weil diese nur eigene Soli betreffen
+        // TODO: Irgendwie ist der Wert aber bugged. solo.total games ist nicht == den Werten unten
+        val soloGameCount = memberStatistic.gameResultHistory.filter { gr -> gr.gameType == GameType.SOLO && gr.faction != Faction.NONE }.size
+        val soloReGameCount = memberStatistic.gameResultHistory.filter { gr -> gr.gameType == GameType.SOLO && gr.faction == Faction.RE }.size
+
+        val reGameWithoutSoloCount = reGameCount - soloReGameCount
+        val gameWithoutSoloCount = gameCount - soloGameCount
+
+        if (gameWithoutSoloCount > 0) {
+            return (reGameWithoutSoloCount / (gameWithoutSoloCount * 1f)) * 100
+        }
+
+        return 0f
+    }
+
     private fun getSoliWinPercentageRanking(memberStatistics: List<MemberStatistic>): Ranking {
         val ranking = Ranking(
             "Soli Siegesquote",
@@ -179,7 +197,7 @@ class RankingStatisticsCalculator {
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
-                    String.format("%.1f", if (memberStatistic.solo.total.games > 0) ((memberStatistic.solo.wins.games / (memberStatistic.solo.total.games * 1f)) * 100) else 0f)
+                    GameUtil.roundWithDecimalPlaces(getSoliWinPercentage(memberStatistic), 1).toString()
                 )
 
             }.sortedByDescending { rankingItem -> rankingItem.value.toFloat() })
@@ -189,6 +207,13 @@ class RankingStatisticsCalculator {
         }
 
         return ranking
+    }
+
+    private fun getSoliWinPercentage(memberStatistic: MemberStatistic): Float {
+        if (memberStatistic.solo.total.games > 0) {
+            return (memberStatistic.solo.wins.games / (memberStatistic.solo.total.games * 1f)) * 100
+        }
+        return 0f
     }
 
     private fun getMostPlayedSoliRanking(memberStatistics: List<MemberStatistic>): Ranking {

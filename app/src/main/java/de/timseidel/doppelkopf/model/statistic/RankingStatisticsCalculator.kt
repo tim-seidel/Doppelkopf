@@ -9,6 +9,7 @@ import de.timseidel.doppelkopf.model.statistic.group.MemberStatistic
 import de.timseidel.doppelkopf.model.statistic.session.SessionMemberStatistic
 import de.timseidel.doppelkopf.util.GameUtil
 
+// TODO: Value und Darstellung vllt. trennen, um Konvertierungen zu vermeiden
 class RankingStatisticsCalculator {
 
     fun getRankings(groupStatistics: GroupStatistics, isBockrundeEnabled: Boolean): List<Ranking> {
@@ -125,15 +126,22 @@ class RankingStatisticsCalculator {
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
-                    (if (memberStatistic.re.total.games > 0) ((memberStatistic.re.wins.games / (memberStatistic.re.total.games * 1f)) * 100).toInt() else 0).toString()
+                    GameUtil.roundWithDecimalPlaces(getReWinPercentage(memberStatistic), 1).toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+            }.sortedByDescending { rankingItem -> rankingItem.value.toFloat() })
 
         ranking.items.forEach { rankingItem ->
             rankingItem.value = "${rankingItem.value}%"
         }
 
         return ranking
+    }
+
+    private fun getReWinPercentage(memberStatistic: MemberStatistic): Float {
+        if (memberStatistic.re.total.games > 0) {
+            return (memberStatistic.re.wins.games / (memberStatistic.re.total.games * 1f)) * 100
+        }
+        return 0f
     }
 
     private fun getHighestContraWinPercentageRanking(memberStatistics: List<MemberStatistic>): Ranking {
@@ -143,15 +151,22 @@ class RankingStatisticsCalculator {
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
-                    (if (memberStatistic.contra.total.games > 0) ((memberStatistic.contra.wins.games / (memberStatistic.contra.total.games * 1f)) * 100).toInt() else 0).toString()
+                    GameUtil.roundWithDecimalPlaces(getContraWinPercentage(memberStatistic), 1).toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+            }.sortedByDescending { rankingItem -> rankingItem.value.toFloat() })
 
         ranking.items.forEach { rankingItem ->
             rankingItem.value = "${rankingItem.value}%"
         }
 
         return ranking
+    }
+
+    private fun getContraWinPercentage(memberStatistic: MemberStatistic): Float {
+        if (memberStatistic.contra.total.games > 0) {
+            return (memberStatistic.contra.wins.games / (memberStatistic.contra.total.games * 1f)) * 100
+        }
+        return 0f
     }
 
     private fun getHighestRePercentageRanking(memberStatistics: List<MemberStatistic>): Ranking {

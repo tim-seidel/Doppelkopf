@@ -9,7 +9,6 @@ import de.timseidel.doppelkopf.model.statistic.group.MemberStatistic
 import de.timseidel.doppelkopf.model.statistic.session.SessionMemberStatistic
 import de.timseidel.doppelkopf.util.GameUtil
 
-// TODO: Value und Darstellung vllt. trennen, um Konvertierungen zu vermeiden
 class RankingStatisticsCalculator {
 
     fun getRankings(groupStatistics: GroupStatistics, isBockrundeEnabled: Boolean): List<Ranking> {
@@ -56,9 +55,10 @@ class RankingStatisticsCalculator {
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
+                    memberStatistic.general.total.games,
                     memberStatistic.general.total.games.toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -70,9 +70,10 @@ class RankingStatisticsCalculator {
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
+                    memberStatistic.general.total.tacken,
                     memberStatistic.general.total.tacken.toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -82,11 +83,13 @@ class RankingStatisticsCalculator {
             "Meiste Straftacken",
             "Die Gesamtzahl aller verlorenen Tacken.",
             memberStatistics.map { memberStatistic ->
+                val totalStrafTacken = StatisticUtil.getTotalStrafTacken(memberStatistic.gameResultHistory)
                 RankingItem(
                     memberStatistic.member.name,
-                    StatisticUtil.getTotalStrafTacken(memberStatistic.gameResultHistory).toString()
+                    totalStrafTacken,
+                    totalStrafTacken.toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -98,9 +101,10 @@ class RankingStatisticsCalculator {
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
+                    memberStatistic.general.wins.getTackenPerGame(),
                     memberStatistic.general.wins.getTackenPerGame().toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toFloat() })
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -112,9 +116,10 @@ class RankingStatisticsCalculator {
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
+                    memberStatistic.general.loss.getTackenPerGame(),
                     memberStatistic.general.loss.getTackenPerGame().toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toFloat() })
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -124,15 +129,13 @@ class RankingStatisticsCalculator {
             "Höchste Siegesquote | Re",
             "Die Siegesquote in Prozent in allen Spielen als Re-Partei (inkl. Soli und Hochzeiten)",
             memberStatistics.map { memberStatistic ->
+                val reWinPercentage = GameUtil.roundWithDecimalPlaces(getReWinPercentage(memberStatistic), 1)
                 RankingItem(
                     memberStatistic.member.name,
-                    GameUtil.roundWithDecimalPlaces(getReWinPercentage(memberStatistic), 1).toString()
+                    reWinPercentage,
+                    "${reWinPercentage}%"
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toFloat() })
-
-        ranking.items.forEach { rankingItem ->
-            rankingItem.value = "${rankingItem.value}%"
-        }
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -149,15 +152,13 @@ class RankingStatisticsCalculator {
             "Höchste Siegesquote | Contra",
             "Die Siegesquote in Prozent in allen Spielen als Contra-Partei (inkl. Soli und Hochzeiten).",
             memberStatistics.map { memberStatistic ->
+                val contraWinPercentage = GameUtil.roundWithDecimalPlaces(getContraWinPercentage(memberStatistic), 1)
                 RankingItem(
                     memberStatistic.member.name,
-                    GameUtil.roundWithDecimalPlaces(getContraWinPercentage(memberStatistic), 1).toString()
+                    contraWinPercentage,
+                    "${contraWinPercentage}%"
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toFloat() })
-
-        ranking.items.forEach { rankingItem ->
-            rankingItem.value = "${rankingItem.value}%"
-        }
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -174,15 +175,13 @@ class RankingStatisticsCalculator {
             "Höchste Requote (ohne Soli)",
             "Die Prozentzahl aller Spiele als Re-Partei in Normalspielen.",
             memberStatistics.map { memberStatistic ->
+                val rePercentage = GameUtil.roundWithDecimalPlaces(getRePercentage(memberStatistic), 1)
                 RankingItem(
                     memberStatistic.member.name,
-                    GameUtil.roundWithDecimalPlaces(getRePercentage(memberStatistic), 1).toString()
+                    rePercentage,
+                    "${rePercentage}%"
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toFloat() })
-
-        ranking.items.forEach { rankingItem ->
-            rankingItem.value = "${rankingItem.value}%"
-        }
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -210,16 +209,14 @@ class RankingStatisticsCalculator {
             "Soli Siegesquote",
             "Die Siegesquote in Prozent in eigenen Soli.",
             memberStatistics.map { memberStatistic ->
+                val soliWinPercentage = GameUtil.roundWithDecimalPlaces(getSoliWinPercentage(memberStatistic), 1)
                 RankingItem(
                     memberStatistic.member.name,
-                    GameUtil.roundWithDecimalPlaces(getSoliWinPercentage(memberStatistic), 1).toString()
+                    soliWinPercentage,
+                    "${soliWinPercentage}%"
                 )
 
-            }.sortedByDescending { rankingItem -> rankingItem.value.toFloat() })
-
-        ranking.items.forEach { rankingItem ->
-            rankingItem.value = "${rankingItem.value}%"
-        }
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -238,9 +235,10 @@ class RankingStatisticsCalculator {
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
+                    memberStatistic.solo.total.games,
                     memberStatistic.solo.total.games.toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -252,9 +250,10 @@ class RankingStatisticsCalculator {
             memberStatistics.map { memberStatistic ->
                 RankingItem(
                     memberStatistic.member.name,
+                    memberStatistic.solo.total.tacken,
                     memberStatistic.solo.total.tacken.toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -264,15 +263,17 @@ class RankingStatisticsCalculator {
             "Größter Tackengewinn durch Bockrunden",
             "Die Gesamtanzahl der Tacken, die durch Bockrunden zusätzlich gewonnen/verloren wurde.",
             memberStatistics.map { memberStatistic ->
+                val tackenGain = (if (memberStatistic.gameResultHistory.isNotEmpty())
+                    (StatisticUtil.getAccumulatedTackenHistory(memberStatistic.gameResultHistory)
+                        .last() - StatisticUtil.getAccumulatedTackenHistoryWithoutBock(
+                        memberStatistic.gameResultHistory
+                    ).last()) else 0)
                 RankingItem(
                     memberStatistic.member.name,
-                    (if (memberStatistic.gameResultHistory.isNotEmpty())
-                        (StatisticUtil.getAccumulatedTackenHistory(memberStatistic.gameResultHistory)
-                            .last() - StatisticUtil.getAccumulatedTackenHistoryWithoutBock(
-                            memberStatistic.gameResultHistory
-                        ).last()) else 0).toString()
+                    tackenGain,
+                    tackenGain.toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -282,12 +283,14 @@ class RankingStatisticsCalculator {
             "Längste Siegesserie",
             "",
             memberStatistics.map { memberStatistic ->
+                val streak = (if (memberStatistic.gameResultHistory.isNotEmpty())
+                    StatisticUtil.calculateStreakStatistics(memberStatistic.gameResultHistory).longestWinStreak else 0)
                 RankingItem(
                     memberStatistic.member.name,
-                    (if (memberStatistic.gameResultHistory.isNotEmpty())
-                        StatisticUtil.calculateStreakStatistics(memberStatistic.gameResultHistory).longestWinStreak.toString() else 0).toString()
+                    streak,
+                    streak.toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -297,12 +300,14 @@ class RankingStatisticsCalculator {
             "Längste Niederlagenserie",
             "",
             memberStatistics.map { memberStatistic ->
+                val streak = if (memberStatistic.gameResultHistory.isNotEmpty())
+                    StatisticUtil.calculateStreakStatistics(memberStatistic.gameResultHistory).longestLossStreak else 0
                 RankingItem(
                     memberStatistic.member.name,
-                    (if (memberStatistic.gameResultHistory.isNotEmpty())
-                        StatisticUtil.calculateStreakStatistics(memberStatistic.gameResultHistory).longestLossStreak.toString() else 0).toString()
+                    streak,
+                    streak.toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -312,12 +317,14 @@ class RankingStatisticsCalculator {
             "Höchster Tackengewinn",
             "Der höchste Tackengewinn bezogen auf ein einziges Spiel.",
             memberStatistics.map { memberStatistic ->
+                val tackenWin = memberStatistic.gameResultHistory.filter { gr -> gr.isWinner && gr.faction != Faction.NONE }
+                    .maxOfOrNull { it.tacken } ?: 0
                 RankingItem(
                     memberStatistic.member.name,
-                    (memberStatistic.gameResultHistory.filter { gr -> gr.isWinner && gr.faction != Faction.NONE }
-                        .maxOfOrNull { it.tacken } ?: 0).toString()
+                    tackenWin,
+                    tackenWin.toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -327,12 +334,14 @@ class RankingStatisticsCalculator {
             "Höchster Tackenverlust",
             "Der höchste Tackenverlust bezogen auf ein einziges Spiel.",
             memberStatistics.map { memberStatistic ->
+                val tackenLoss = memberStatistic.gameResultHistory.filter { gr -> !gr.isWinner && gr.faction != Faction.NONE }
+                    .minOfOrNull { it.tacken } ?: 0
                 RankingItem(
                     memberStatistic.member.name,
-                    (memberStatistic.gameResultHistory.filter { gr -> !gr.isWinner && gr.faction != Faction.NONE }
-                        .minOfOrNull { it.tacken } ?: 0).toString()
+                    tackenLoss,
+                    tackenLoss.toString()
                 )
-            }.sortedBy { rankingItem -> rankingItem.value.toInt() })
+            }.sortedBy { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -343,11 +352,13 @@ class RankingStatisticsCalculator {
             "Bestes Sessionergebnis",
             "Der höchste Tackenstand am Ende einer Session.",
             memberStatistics.map { memberStatistic ->
+                val tacken = getHighestSessionEndTacken(memberStatistic.sessionStatistics)
                 RankingItem(
                     memberStatistic.member.name,
-                    getHighestSessionEndTacken(memberStatistic.sessionStatistics).toString()
+                    tacken,
+                    tacken.toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -358,11 +369,13 @@ class RankingStatisticsCalculator {
             "Schlechtestes Sessionergebnis",
             "Der niedrigste Tackenstand am Ende einer Session.",
             memberStatistics.map { memberStatistic ->
+                val tacken = getLowestSessionEndTacken(memberStatistic.sessionStatistics)
                 RankingItem(
                     memberStatistic.member.name,
-                    getLowestSessionEndTacken(memberStatistic.sessionStatistics).toString()
+                    tacken,
+                    tacken.toString()
                 )
-            }.sortedBy { rankingItem -> rankingItem.value.toInt() })
+            }.sortedBy { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -373,11 +386,13 @@ class RankingStatisticsCalculator {
             "Bester Zwischenstand",
             "Der höchste Tackenstand insgesamt innerhalb einer Session.",
             memberStatistics.map { memberStatistic ->
+                val tacken = getHighestSessionTacken(memberStatistic.sessionStatistics)
                 RankingItem(
                     memberStatistic.member.name,
-                    getHighestSessionTacken(memberStatistic.sessionStatistics).toString()
+                    tacken,
+                    tacken.toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -388,11 +403,13 @@ class RankingStatisticsCalculator {
             "Schlechtester Zwischenstand",
             "Der niedrigste Tackenstand insgesamt innerhalb einer Session.",
             memberStatistics.map { memberStatistic ->
+                val tacken = getLowestSessionTacken(memberStatistic.sessionStatistics)
                 RankingItem(
                     memberStatistic.member.name,
-                    getLowestSessionTacken(memberStatistic.sessionStatistics).toString()
+                    tacken,
+                    tacken.toString()
                 )
-            }.sortedBy { rankingItem -> rankingItem.value.toInt() })
+            }.sortedBy { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -402,11 +419,13 @@ class RankingStatisticsCalculator {
             "Positivrekord",
             "Der höchste Tackenstand, der insgesamt jemals erreicht wurde.",
             memberStatistics.map { memberStatistic ->
+                val tacken  = StatisticUtil.getAccumulatedTackenHistory(memberStatistic.gameResultHistory).maxOrNull() ?: 0
                 RankingItem(
                     memberStatistic.member.name,
-                    StatisticUtil.getAccumulatedTackenHistory(memberStatistic.gameResultHistory).maxOrNull()?.toString() ?: "0"
+                    tacken,
+                    tacken.toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() })
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -416,11 +435,13 @@ class RankingStatisticsCalculator {
             "Negativrekord",
             "Der niedrigste Tackenstand, der insgesamt jemals erreicht wurde.",
             memberStatistics.map { memberStatistic ->
+                val tacken = StatisticUtil.getAccumulatedTackenHistory(memberStatistic.gameResultHistory).minOrNull() ?: 0
                 RankingItem(
                     memberStatistic.member.name,
-                    StatisticUtil.getAccumulatedTackenHistory(memberStatistic.gameResultHistory).minOrNull()?.toString() ?: "0"
+                    tacken,
+                    tacken.toString()
                 )
-            }.sortedBy { rankingItem -> rankingItem.value.toInt() })
+            }.sortedBy { rankingItem -> rankingItem.value.toDouble() })
 
         return ranking
     }
@@ -430,11 +451,13 @@ class RankingStatisticsCalculator {
             "Meiste gewonnene Abende",
             "Die Anzahl der Abende an denen jemand am Ende die höchsten Tacken hatte.",
             memberStatistics.map { memberStatistic ->
+                val wins = StatisticUtil.getWinsOfMember(groupStatistics, memberStatistic.member)
                 RankingItem(
                     memberStatistic.member.name,
-                    StatisticUtil.getWinsOfMember(groupStatistics, memberStatistic.member).toString()
+                    wins,
+                    wins.toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() }
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() }
         )
 
         return ranking
@@ -445,12 +468,13 @@ class RankingStatisticsCalculator {
             "Meiste verlorenene Abende",
             "Die Anzahl der Abende an denen jemand am Ende die niedrigsten Tacken hatte.",
             memberStatistics.map { memberStatistic ->
+                val losses = StatisticUtil.getLossesOfMember(groupStatistics, memberStatistic.member)
                 RankingItem(
                     memberStatistic.member.name,
-                    StatisticUtil.getLossesOfMember(groupStatistics, memberStatistic.member)
-                        .toString()
+                    losses,
+                    losses.toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() }
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() }
         )
 
         return ranking
@@ -461,12 +485,13 @@ class RankingStatisticsCalculator {
             "Meiste Runden \"schwarz verloren\"",
             "Die Anzahl der Runden, die jemand schwarz verloren hat.",
             memberStatistics.map { memberStatistic ->
+                val schwarzVerlorenCount = StatisticUtil.getSchwarzVerlorenCount(memberStatistic)
                 RankingItem(
                     memberStatistic.member.name,
-                    StatisticUtil.getSchwarzVerlorenCount(memberStatistic)
-                        .toString()
+                    schwarzVerlorenCount,
+                    schwarzVerlorenCount.toString()
                 )
-            }.sortedByDescending { rankingItem -> rankingItem.value.toInt() }
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() }
         )
 
         return ranking

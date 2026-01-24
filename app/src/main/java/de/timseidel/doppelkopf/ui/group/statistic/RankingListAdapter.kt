@@ -12,7 +12,7 @@ class RankingListAdapter(private val rankingData: MutableList<RankingItem>) :
     class ViewHolder(val view: RankingItemView) : RecyclerView.ViewHolder(view) {
         fun bind(item: RankingItem, position: Int) {
             view.setName(item.name)
-            view.setValue(item.value)
+            view.setValue(item.displayText)
             view.setBackGroundColor(
                 ContextCompat.getColor(
                     view.context,

@@ -13,6 +13,7 @@ import kotlin.math.round
 
 class GameUtil {
     companion object {
+        const val MAX_GAME_EDIT_TIME_SECONDS = 60 * 60 * 24 // 24 hours
 
         fun isFactionCompositionSolo(members: List<MemberAndFaction>): Boolean {
             val reCount = members.count { maf -> maf.faction == Faction.RE }
@@ -161,7 +162,7 @@ class GameUtil {
         }
 
         fun isGameEditEnabled(game: Game): Boolean {
-            return game.timestamp > (System.currentTimeMillis() - 1000 * 60 * 60 * 24)
+            return game.timestamp > (System.currentTimeMillis() - 1000 * MAX_GAME_EDIT_TIME_SECONDS)
         }
 
         fun isGameContainingInactiveMembers(game: Game): Boolean {

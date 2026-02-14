@@ -35,18 +35,10 @@ import kotlin.math.max
 import kotlin.math.min
 
 class GroupStatisticFragment : Fragment() {
-
-    private enum class StatisticUiState {
-        IDLE,
-        LOADING_SESSIONS,
-        CALCULATING,
-        ERROR
-    }
-
     private val placeholderIdGroupStatistics = "__group_stats_all_placeholder_id"
 
     private var _binding: FragmentGroupStatisticBinding? = null
-    private var currentUiState: StatisticUiState = StatisticUiState.IDLE
+    private var loadingOverlayController: StatisticLoadingOverlayController? = null
 
     private val binding get() = _binding!!
 
@@ -57,6 +49,15 @@ class GroupStatisticFragment : Fragment() {
     ): View {
 
         _binding = FragmentGroupStatisticBinding.inflate(inflater, container, false)
+        loadingOverlayController = StatisticLoadingOverlayController(
+            overlay = binding.layoutGroupStatisticStateOverlay,
+            progress = binding.pbGroupStatisticLoading,
+            messageView = binding.tvGroupStatisticStateMessage,
+            loadingMessage = getString(R.string.group_statistic_loading_sessions),
+            calculatingMessage = getString(R.string.group_statistic_calculating),
+            defaultErrorMessage = getString(R.string.group_statistic_loading_error),
+            busyViews = listOf(binding.headerStatisticMemberSelect, binding.lvGroupStatistic)
+        )
 
         setupStatistics()
         setupMemberSelect()
@@ -92,7 +93,7 @@ class GroupStatisticFragment : Fragment() {
                     DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
                 )
             )
-            renderState(StatisticUiState.IDLE)
+            renderState(StatisticLoadingState.IDLE)
         } else {
             Logging.d(
                 "GroupStatisticFragment | initStatistics",
@@ -103,10 +104,10 @@ class GroupStatisticFragment : Fragment() {
     }
 
     private fun loadDataForStatistics() {
-        if (currentUiState == StatisticUiState.LOADING_SESSIONS || currentUiState == StatisticUiState.CALCULATING) {
+        if (loadingOverlayController?.isBusy() == true) {
             return
         }
-        renderState(StatisticUiState.LOADING_SESSIONS)
+        renderState(StatisticLoadingState.LOADING_SESSIONS)
 
         StatisticUpdateRequest(DokoShortAccess.getGroupCtrl().getGroup().id, DokoShortAccess.getStatsCtrl().getSessionControllers()).execute(object :
             ReadRequestListener<List<ISessionController>> {
@@ -116,7 +117,7 @@ class GroupStatisticFragment : Fragment() {
             }
 
             override fun onReadFailed() {
-                renderState(StatisticUiState.ERROR, getString(R.string.group_statistic_loading_error))
+                renderState(StatisticLoadingState.ERROR, getString(R.string.group_statistic_loading_error))
             }
         })
     }
@@ -127,7 +128,7 @@ class GroupStatisticFragment : Fragment() {
     ) {
         val shouldCalculate = forceRecalculation || !DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()
         if (shouldCalculate) {
-            renderState(StatisticUiState.CALCULATING)
+            renderState(StatisticLoadingState.CALCULATING)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -149,7 +150,7 @@ class GroupStatisticFragment : Fragment() {
                     DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
                 )
             )
-            renderState(StatisticUiState.IDLE)
+            renderState(StatisticLoadingState.IDLE)
         }
     }
 
@@ -202,50 +203,15 @@ class GroupStatisticFragment : Fragment() {
         binding.lvGroupStatistic.adapter = adapter
     }
 
-    private fun renderState(state: StatisticUiState, errorMessage: String? = null) {
-        if (_binding == null) {
-            return
-        }
-        currentUiState = state
-
-        val isBusy = state == StatisticUiState.LOADING_SESSIONS || state == StatisticUiState.CALCULATING
-        binding.headerStatisticMemberSelect.isEnabled = !isBusy
-        binding.lvGroupStatistic.isEnabled = !isBusy
-
-        when (state) {
-            StatisticUiState.IDLE -> {
-                binding.layoutGroupStatisticStateOverlay.visibility = View.GONE
-                binding.pbGroupStatisticLoading.visibility = View.GONE
-            }
-
-            StatisticUiState.LOADING_SESSIONS -> {
-                binding.layoutGroupStatisticStateOverlay.visibility = View.VISIBLE
-                binding.pbGroupStatisticLoading.visibility = View.VISIBLE
-                binding.tvGroupStatisticStateMessage.text =
-                    getString(R.string.group_statistic_loading_sessions)
-            }
-
-            StatisticUiState.CALCULATING -> {
-                binding.layoutGroupStatisticStateOverlay.visibility = View.VISIBLE
-                binding.pbGroupStatisticLoading.visibility = View.VISIBLE
-                binding.tvGroupStatisticStateMessage.text =
-                    getString(R.string.group_statistic_calculating)
-            }
-
-            StatisticUiState.ERROR -> {
-                binding.layoutGroupStatisticStateOverlay.visibility = View.VISIBLE
-                binding.pbGroupStatisticLoading.visibility = View.GONE
-                binding.tvGroupStatisticStateMessage.text =
-                    errorMessage ?: getString(R.string.group_statistic_loading_error)
-            }
-        }
+    private fun renderState(state: StatisticLoadingState, errorMessage: String? = null) {
+        loadingOverlayController?.render(state, errorMessage)
     }
 
     override fun onResume() {
         super.onResume()
         Logging.d("GroupStatisticFragment | onResume", "Resuming")
 
-        if (currentUiState == StatisticUiState.LOADING_SESSIONS || currentUiState == StatisticUiState.CALCULATING) {
+        if (loadingOverlayController?.isBusy() == true) {
             return
         }
 
@@ -255,7 +221,7 @@ class GroupStatisticFragment : Fragment() {
                     DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
                 )
             )
-            renderState(StatisticUiState.IDLE)
+            renderState(StatisticLoadingState.IDLE)
         } else {
             loadDataForStatistics()
         }
@@ -264,6 +230,7 @@ class GroupStatisticFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        loadingOverlayController = null
         _binding = null
     }
 }

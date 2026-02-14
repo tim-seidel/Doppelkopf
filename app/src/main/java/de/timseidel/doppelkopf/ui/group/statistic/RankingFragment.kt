@@ -32,16 +32,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class RankingFragment : Fragment() {
-
-    private enum class RankingUiState {
-        IDLE,
-        LOADING_SESSIONS,
-        CALCULATING,
-        ERROR
-    }
-
     private var _binding: FragmentRankingBinding? = null
-    private var currentUiState: RankingUiState = RankingUiState.IDLE
+    private var loadingOverlayController: StatisticLoadingOverlayController? = null
     private val binding get() = _binding!!
 
     private val rankingListAdapter: RankingListAdapter = RankingListAdapter(mutableListOf())
@@ -52,6 +44,15 @@ class RankingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRankingBinding.inflate(inflater, container, false)
+        loadingOverlayController = StatisticLoadingOverlayController(
+            overlay = binding.layoutRankingStateOverlay,
+            progress = binding.pbRankingLoading,
+            messageView = binding.tvRankingStateMessage,
+            loadingMessage = getString(R.string.group_statistic_loading_sessions),
+            calculatingMessage = getString(R.string.group_statistic_calculating),
+            defaultErrorMessage = getString(R.string.group_statistic_loading_error),
+            busyViews = listOf(binding.rvRanking, binding.btnRankingNext, binding.btnRankingPrevious)
+        )
 
         setupRankingTitle()
         setupButtons()
@@ -153,7 +154,7 @@ class RankingFragment : Fragment() {
     private fun setupStatistics() {
         if (DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
             calculateAndSetRankings(DokoShortAccess.getStatsCtrl().getCachedGroupStatistics())
-            renderState(RankingUiState.IDLE)
+            renderState(StatisticLoadingState.IDLE)
         } else {
             Logging.d(
                 "RankingFragment | setupStatistics",
@@ -164,10 +165,10 @@ class RankingFragment : Fragment() {
     }
 
     private fun loadDataForStatistics() {
-        if (currentUiState == RankingUiState.LOADING_SESSIONS || currentUiState == RankingUiState.CALCULATING) {
+        if (loadingOverlayController?.isBusy() == true) {
             return
         }
-        renderState(RankingUiState.LOADING_SESSIONS)
+        renderState(StatisticLoadingState.LOADING_SESSIONS)
 
         StatisticUpdateRequest(DokoShortAccess.getGroupCtrl().getGroup().id, DokoShortAccess.getStatsCtrl().getSessionControllers()).execute(object :
             ReadRequestListener<List<ISessionController>> {
@@ -176,7 +177,7 @@ class RankingFragment : Fragment() {
             }
 
             override fun onReadFailed() {
-                renderState(RankingUiState.ERROR, getString(R.string.group_statistic_loading_error))
+                renderState(StatisticLoadingState.ERROR, getString(R.string.group_statistic_loading_error))
             }
         })
     }
@@ -187,7 +188,7 @@ class RankingFragment : Fragment() {
     ) {
         val shouldCalculate = forceRecalculation || !DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()
         if (shouldCalculate) {
-            renderState(RankingUiState.CALCULATING)
+            renderState(StatisticLoadingState.CALCULATING)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -205,7 +206,7 @@ class RankingFragment : Fragment() {
             }
 
             calculateAndSetRankings(DokoShortAccess.getStatsCtrl().getCachedGroupStatistics())
-            renderState(RankingUiState.IDLE)
+            renderState(StatisticLoadingState.IDLE)
         }
     }
 
@@ -227,57 +228,21 @@ class RankingFragment : Fragment() {
         }
     }
 
-    private fun renderState(state: RankingUiState, errorMessage: String? = null) {
-        if (_binding == null) {
-            return
-        }
-        currentUiState = state
-
-        val isBusy = state == RankingUiState.LOADING_SESSIONS || state == RankingUiState.CALCULATING
-        binding.rvRanking.isEnabled = !isBusy
-        binding.btnRankingNext.isEnabled = !isBusy
-        binding.btnRankingPrevious.isEnabled = !isBusy
-
-        when (state) {
-            RankingUiState.IDLE -> {
-                binding.layoutRankingStateOverlay.visibility = View.GONE
-                binding.pbRankingLoading.visibility = View.GONE
-            }
-
-            RankingUiState.LOADING_SESSIONS -> {
-                binding.layoutRankingStateOverlay.visibility = View.VISIBLE
-                binding.pbRankingLoading.visibility = View.VISIBLE
-                binding.tvRankingStateMessage.text =
-                    getString(R.string.group_statistic_loading_sessions)
-            }
-
-            RankingUiState.CALCULATING -> {
-                binding.layoutRankingStateOverlay.visibility = View.VISIBLE
-                binding.pbRankingLoading.visibility = View.VISIBLE
-                binding.tvRankingStateMessage.text =
-                    getString(R.string.group_statistic_calculating)
-            }
-
-            RankingUiState.ERROR -> {
-                binding.layoutRankingStateOverlay.visibility = View.VISIBLE
-                binding.pbRankingLoading.visibility = View.GONE
-                binding.tvRankingStateMessage.text =
-                    errorMessage ?: getString(R.string.group_statistic_loading_error)
-            }
-        }
+    private fun renderState(state: StatisticLoadingState, errorMessage: String? = null) {
+        loadingOverlayController?.render(state, errorMessage)
     }
 
     override fun onResume() {
         super.onResume()
         Logging.d("RankingFragment | onResume", "Resuming")
 
-        if (currentUiState == RankingUiState.LOADING_SESSIONS || currentUiState == RankingUiState.CALCULATING) {
+        if (loadingOverlayController?.isBusy() == true) {
             return
         }
 
         if (DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
             calculateAndSetRankings(DokoShortAccess.getStatsCtrl().getCachedGroupStatistics())
-            renderState(RankingUiState.IDLE)
+            renderState(StatisticLoadingState.IDLE)
         } else {
             loadDataForStatistics()
         }
@@ -287,7 +252,7 @@ class RankingFragment : Fragment() {
         super.onDestroyView()
         binding.btnRankingNext.setOnClickListener(null)
         binding.btnRankingPrevious.setOnClickListener(null)
-        currentUiState = RankingUiState.IDLE
+        loadingOverlayController = null
         _binding = null
     }
 }

@@ -8,159 +8,137 @@ import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.Logging
-import kotlin.collections.forEach
 
 
 class StatisticUpdateRequest(
     private val groupId: String,
     private val currentSessions: List<ISessionController>
 ) : BaseReadRequest<List<ISessionController>>() {
+
     override fun execute(listener: ReadRequestListener<List<ISessionController>>) {
         readRequestListener = listener
 
         SessionInfoListRequest(groupId).execute(object : ReadRequestListener<List<Session>> {
-            override fun onReadComplete(sessinInfoListResult: List<Session>) {
-                val newSessions = sessinInfoListResult.filter { session ->
+            override fun onReadComplete(sessionInfoListResult: List<Session>) {
+                val newSessions = sessionInfoListResult.filter { session ->
                     currentSessions.none { it.getSession().id == session.id }
                 }
-                Logging.d("StatisticUpdateRequest", "Current sessions: ${currentSessions.count()}. New sessions: ${newSessions.count()}")
+                Logging.d(
+                    "StatisticUpdateRequest",
+                    "Current sessions: ${currentSessions.count()}. New sessions: ${newSessions.count()}"
+                )
 
-                val newSessionControllers = mutableListOf<ISessionController>()
-                var remainingLoadCounter = newSessions.count()
+                val latestSession = sessionInfoListResult.maxByOrNull { session -> session.date }
+                val needsLatestSessionRefresh = latestSession != null &&
+                    currentSessions.any { it.getSession().id == latestSession.id }
 
-                if( newSessions.count() == 0) {
-                    if (currentSessions.count() > 0) {
-                        val latestSession =
-                            sessinInfoListResult.maxBy { session -> session.date }
-                        val updatedSessionController = SessionController()
-                        updatedSessionController.set(latestSession)
-
-                        SessionGameRequest(
-                            DokoShortAccess.getGroupCtrl().getGroup().id,
-                            latestSession.id,
-                            DokoShortAccess.getMemberCtrl()
-                        ).execute(
-                            object : ReadRequestListener<List<Game>> {
-                                override fun onReadComplete(
-                                    latestSessionGameRequestResult: List<Game>
-                                ) {
-                                    Logging.d(
-                                        "StatisticUpdateRequest",
-                                        "Loading games for latest session ${latestSession.id} for update"
-                                    )
-
-                                    latestSessionGameRequestResult.forEach { game ->
-                                        updatedSessionController.getGameController()
-                                            .addGame(game)
-                                    }
-
-                                    val allSessions =
-                                        mutableListOf<ISessionController>()
-                                    currentSessions.forEach { currentSessions ->
-                                        if (currentSessions.getSession().id != latestSession.id) {
-                                            allSessions.add(currentSessions)
-                                        } else {
-                                            allSessions.add(
-                                                updatedSessionController
-                                            )
-                                        }
-                                    }
-                                    onReadResult(allSessions)
-                                }
-
-                                override fun onReadFailed() {
-                                    this.onReadFailed()
-                                }
-                            })
-                    }
-                    else{
-                        onReadResult(currentSessions)
-                    }
-                }else{
-                    for (newSession in newSessions) {
-                        val newSessionController = SessionController()
-                        newSessionController.set(newSession)
-
-                        SessionGameRequest(
-                            groupId,
-                            newSession.id,
-                            DokoShortAccess.getMemberCtrl()
-                        ).execute(
-                            object : ReadRequestListener<List<Game>> {
-                                override fun onReadComplete(sessionGameRequestResult: List<Game>) {
-                                    Logging.d(
-                                        "StatisticUpdateRequest",
-                                        "Loaded games for new session ${newSession.id}: ${sessionGameRequestResult.count()} games"
-                                    )
-                                    sessionGameRequestResult.forEach { game ->
-                                        newSessionController.getGameController().addGame(game)
-                                    }
-                                    newSessionControllers.add(newSessionController)
-                                    remainingLoadCounter -= 1
-
-                                    if (remainingLoadCounter == 0) {
-                                        if (currentSessions.count() > 0) {
-                                            val latestSession =
-                                                sessinInfoListResult.maxBy { session -> session.date }
-                                            val updatedSessionController = SessionController()
-                                            updatedSessionController.set(latestSession)
-
-                                            SessionGameRequest(
-                                                DokoShortAccess.getGroupCtrl().getGroup().id,
-                                                latestSession.id,
-                                                DokoShortAccess.getMemberCtrl()
-                                            ).execute(
-                                                object : ReadRequestListener<List<Game>> {
-                                                    override fun onReadComplete(
-                                                        latestSessionGameRequestResult: List<Game>
-                                                    ) {
-                                                        Logging.d(
-                                                            "StatisticUpdateRequest",
-                                                            "Loading games for latest session ${latestSession.id} for update"
-                                                        )
-
-                                                        latestSessionGameRequestResult.forEach { game ->
-                                                            updatedSessionController.getGameController()
-                                                                .addGame(game)
-                                                        }
-
-                                                        val allSessions =
-                                                            mutableListOf<ISessionController>()
-                                                        currentSessions.forEach { currentSessions ->
-                                                            if (currentSessions.getSession().id != latestSession.id) {
-                                                                allSessions.add(currentSessions)
-                                                            } else {
-                                                                allSessions.add(
-                                                                    updatedSessionController
-                                                                )
-                                                            }
-                                                        }
-                                                        allSessions.addAll(newSessionControllers)
-
-                                                        onReadResult(allSessions)
-                                                    }
-
-                                                    override fun onReadFailed() {
-                                                        this.onReadFailed()
-                                                    }
-                                                })
-                                        } else {
-                                            onReadResult(newSessionControllers)
-                                        }
-                                    }
-                                }
-
-                                override fun onReadFailed() {
-                                    this.onReadFailed()
-                                }
-                            })
-                    }
+                val sessionsToLoad = mutableListOf<Session>()
+                sessionsToLoad.addAll(newSessions)
+                if (needsLatestSessionRefresh && latestSession != null) {
+                    sessionsToLoad.add(latestSession)
                 }
+
+                if (sessionsToLoad.isEmpty()) {
+                    onReadResult(currentSessions)
+                    return
+                }
+
+                loadSessionControllers(sessionsToLoad, object : ReadRequestListener<Map<String, ISessionController>> {
+                    override fun onReadComplete(loadedSessionsById: Map<String, ISessionController>) {
+                        val currentSessionsById = currentSessions.associateBy { it.getSession().id }
+                        val allSessions = mutableListOf<ISessionController>()
+                        sessionInfoListResult.forEach { sessionInfo ->
+                            val sessionController =
+                                loadedSessionsById[sessionInfo.id] ?: currentSessionsById[sessionInfo.id]
+
+                            if (sessionController != null) {
+                                allSessions.add(sessionController)
+                            } else {
+                                failWithLog("StatisticUpdateRequest: Missing session controller for session ${sessionInfo.id}")
+                                return
+                            }
+                        }
+
+                        onReadResult(allSessions)
+                    }
+
+                    override fun onReadFailed() {
+                        this@StatisticUpdateRequest.onReadFailed()
+                    }
+                })
             }
 
             override fun onReadFailed() {
-                this.onReadFailed()
+                this@StatisticUpdateRequest.onReadFailed()
             }
         })
+    }
+
+    private fun loadSessionControllers(
+        sessions: List<Session>,
+        listener: ReadRequestListener<Map<String, ISessionController>>
+    ) {
+        if (sessions.isEmpty()) {
+            listener.onReadComplete(emptyMap())
+            return
+        }
+
+        val loadedSessionControllersById = mutableMapOf<String, ISessionController>()
+        var remainingSessionsToLoad = sessions.count()
+        var hasFailed = false
+
+        sessions.forEach { session ->
+            loadSessionController(session, object : ReadRequestListener<ISessionController> {
+                override fun onReadComplete(sessionController: ISessionController) {
+                    if (hasFailed) return
+
+                    loadedSessionControllersById[sessionController.getSession().id] = sessionController
+                    remainingSessionsToLoad -= 1
+                    if (remainingSessionsToLoad == 0) {
+                        listener.onReadComplete(loadedSessionControllersById)
+                    }
+                }
+
+                override fun onReadFailed() {
+                    if (hasFailed) return
+                    hasFailed = true
+                    listener.onReadFailed()
+                }
+            }
+            )
+        }
+    }
+
+    private fun loadSessionController(
+        session: Session,
+        listener: ReadRequestListener<ISessionController>
+    ) {
+        val sessionController = SessionController()
+        sessionController.set(session)
+
+        SessionGameRequest(
+            groupId,
+            session.id,
+            DokoShortAccess.getMemberCtrl()
+        ).execute(
+            object : ReadRequestListener<List<Game>> {
+                override fun onReadComplete(sessionGames: List<Game>) {
+                    Logging.d(
+                        "StatisticUpdateRequest",
+                        "Loaded games for session ${session.id}: ${sessionGames.count()} games"
+                    )
+
+                    sessionGames.forEach { game ->
+                        sessionController.getGameController().addGame(game)
+                    }
+
+                    listener.onReadComplete(sessionController)
+                }
+
+                override fun onReadFailed() {
+                    listener.onReadFailed()
+                }
+            }
+        )
     }
 }

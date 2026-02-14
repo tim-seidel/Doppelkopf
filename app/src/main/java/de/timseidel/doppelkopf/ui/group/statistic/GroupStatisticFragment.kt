@@ -16,6 +16,7 @@ import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.contracts.ISessionController
 import de.timseidel.doppelkopf.databinding.FragmentGroupStatisticBinding
 import de.timseidel.doppelkopf.db.request.SessionListRequest
+import de.timseidel.doppelkopf.db.request.StatisticUpdateRequest
 import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Member
 import de.timseidel.doppelkopf.model.StatisticStatus
@@ -90,11 +91,9 @@ class GroupStatisticFragment : Fragment() {
     }
 
     private fun loadAndSetupStatistics() {
-        val sessionInfos = DokoShortAccess.getSessionInfoCtrl().getSessionInfos()
-
         showSessionLoadingStart()
 
-        SessionListRequest(sessionInfos).execute(object :
+        StatisticUpdateRequest(DokoShortAccess.getGroupCtrl().getGroup().id, DokoShortAccess.getStatsCtrl().getSessionControllers()).execute(object :
             ReadRequestListener<List<ISessionController>> {
             override fun onReadComplete(result: List<ISessionController>) {
                 Logging.d("GroupStatisticFragment | loadAndSetupStatistics", "Sessions loaded")
@@ -187,9 +186,16 @@ class GroupStatisticFragment : Fragment() {
                 "GroupStatisticFragment | checkAndTriggerStatisticsCalculation",
                 "Calculating statistics"
             )
+
+            val startTime = System.currentTimeMillis()
             DokoShortAccess.getStatsCtrl().calculateGroupStatistics(
                 DokoShortAccess.getMemberCtrl().getMembers(),
                 sessions
+            )
+            val endTime = System.currentTimeMillis()
+            Logging.d(
+                "GroupStatisticFragment | checkAndTriggerStatisticsCalculation",
+                "Statistics calculated in ${endTime - startTime} ms"
             )
         }
     }

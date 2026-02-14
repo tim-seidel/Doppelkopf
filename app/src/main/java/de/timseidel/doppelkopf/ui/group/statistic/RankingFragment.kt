@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.contracts.ISessionController
 import de.timseidel.doppelkopf.databinding.FragmentRankingBinding
-import de.timseidel.doppelkopf.db.request.SessionListRequest
+import de.timseidel.doppelkopf.db.request.StatisticUpdateRequest
 import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Ranking
 import de.timseidel.doppelkopf.model.RankingItem
@@ -147,11 +147,9 @@ class RankingFragment : Fragment() {
     }
 
     private fun loadDataForStatistics() {
-        val sessionInfos = DokoShortAccess.getSessionInfoCtrl().getSessionInfos()
-
         showSessionLoadingStart()
 
-        SessionListRequest(sessionInfos).execute(object :
+        StatisticUpdateRequest(DokoShortAccess.getGroupCtrl().getGroup().id, DokoShortAccess.getStatsCtrl().getSessionControllers()).execute(object :
             ReadRequestListener<List<ISessionController>> {
             override fun onReadComplete(result: List<ISessionController>) {
                 calculateAndApplyGroupStatistics(result)

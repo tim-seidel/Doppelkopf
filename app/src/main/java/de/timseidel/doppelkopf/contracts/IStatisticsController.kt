@@ -8,6 +8,8 @@ interface IStatisticsController {
 
     fun getCachedGroupStatistics(): GroupStatistics
 
+    fun getSessionControllers(): List<ISessionController>
+
     fun calculateGroupStatistics(members: List<Member>, sessions: List<ISessionController>): GroupStatistics
 
     fun reset()

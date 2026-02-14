@@ -13,9 +13,14 @@ class StatisticsController : IStatisticsController {
 
     private var groupStatistics: GroupStatistics = GroupStatistics()
     private var status: StatisticStatus = StatisticStatus.EMPTY
+    private val sessionControllers = mutableListOf<ISessionController>()
 
     override fun getCachedGroupStatistics(): GroupStatistics {
         return groupStatistics
+    }
+
+    override fun getSessionControllers(): List<ISessionController> {
+        return sessionControllers
     }
 
     override fun calculateGroupStatistics(
@@ -23,6 +28,8 @@ class StatisticsController : IStatisticsController {
         sessions: List<ISessionController>
     ): GroupStatistics {
         val sessionStatistics = mutableListOf<SessionStatistics>()
+        sessionControllers.clear()
+        sessionControllers.addAll(sessions)
 
         sessions.forEach { session ->
             val singleSessionStatistics =

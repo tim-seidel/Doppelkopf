@@ -82,4 +82,39 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btn_ranking_previous" />
+
+    <LinearLayout
+        android:id="@+id/layout_ranking_state_overlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#CCFFFFFF"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:id="@+id/pb_ranking_loading"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="260dp"
+            android:layout_height="10dp"
+            android:layout_marginBottom="12dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/primary"
+            android:progressTint="@color/primary" />
+
+        <TextView
+            android:id="@+id/tv_ranking_state_message"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/group_statistic_loading_sessions"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textSize="15sp"
+            tools:text="Lade Sessions fuer Statistiken..." />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

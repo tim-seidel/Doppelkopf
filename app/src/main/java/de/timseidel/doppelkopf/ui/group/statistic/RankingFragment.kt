@@ -7,17 +7,17 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.contracts.ISessionController
 import de.timseidel.doppelkopf.databinding.FragmentRankingBinding
-import de.timseidel.doppelkopf.db.request.SessionListRequest
+import de.timseidel.doppelkopf.db.request.StatisticUpdateRequest
 import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Ranking
 import de.timseidel.doppelkopf.model.RankingItem
@@ -26,10 +26,14 @@ import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
+import de.timseidel.doppelkopf.util.Logging
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RankingFragment : Fragment() {
-
     private var _binding: FragmentRankingBinding? = null
+    private var loadingOverlayController: StatisticLoadingOverlayController? = null
     private val binding get() = _binding!!
 
     private val rankingListAdapter: RankingListAdapter = RankingListAdapter(mutableListOf())
@@ -40,6 +44,15 @@ class RankingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRankingBinding.inflate(inflater, container, false)
+        loadingOverlayController = StatisticLoadingOverlayController(
+            overlay = binding.layoutRankingStateOverlay,
+            progress = binding.pbRankingLoading,
+            messageView = binding.tvRankingStateMessage,
+            loadingMessage = getString(R.string.group_statistic_loading_sessions),
+            calculatingMessage = getString(R.string.group_statistic_calculating),
+            defaultErrorMessage = getString(R.string.group_statistic_loading_error),
+            busyViews = listOf(binding.rvRanking, binding.btnRankingNext, binding.btnRankingPrevious)
+        )
 
         setupRankingTitle()
         setupButtons()
@@ -140,56 +153,64 @@ class RankingFragment : Fragment() {
 
     private fun setupStatistics() {
         if (DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
-            calculateRankings(DokoShortAccess.getStatsCtrl().getCachedGroupStatistics())
+            calculateAndSetRankings(DokoShortAccess.getStatsCtrl().getCachedGroupStatistics())
+            renderState(StatisticLoadingState.IDLE)
         } else {
+            Logging.d(
+                "RankingFragment | setupStatistics",
+                "Cached statistics not available. Loading..."
+            )
             loadDataForStatistics()
         }
     }
 
     private fun loadDataForStatistics() {
-        val sessionInfos = DokoShortAccess.getSessionInfoCtrl().getSessionInfos()
+        if (loadingOverlayController?.isBusy() == true) {
+            return
+        }
+        renderState(StatisticLoadingState.LOADING_SESSIONS)
 
-        showSessionLoadingStart()
-
-        SessionListRequest(sessionInfos).execute(object :
+        StatisticUpdateRequest(DokoShortAccess.getGroupCtrl().getGroup().id, DokoShortAccess.getStatsCtrl().getSessionControllers()).execute(object :
             ReadRequestListener<List<ISessionController>> {
             override fun onReadComplete(result: List<ISessionController>) {
-                calculateAndApplyGroupStatistics(result)
+                calculateAndApplyGroupStatistics(result, forceRecalculation = true)
             }
 
             override fun onReadFailed() {
-                showSessionLoadingError()
+                renderState(StatisticLoadingState.ERROR, getString(R.string.group_statistic_loading_error))
             }
         })
     }
 
-    private fun showSessionLoadingStart() {
-        Toast.makeText(
-            requireContext(),
-            "Alle Sessions werden zur Statistikberechnung geladen...",
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
-    private fun showSessionLoadingError() {
-        Toast.makeText(
-            requireContext(),
-            "Fehler beim Laden der Sessions",
-            Toast.LENGTH_LONG
-        ).show()
-    }
-
-    private fun calculateAndApplyGroupStatistics(sessions: List<ISessionController>) {
-        if (!DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
-            DokoShortAccess.getStatsCtrl().calculateGroupStatistics(
-                DokoShortAccess.getMemberCtrl().getMembers(),
-                sessions
-            )
+    private fun calculateAndApplyGroupStatistics(
+        sessions: List<ISessionController>,
+        forceRecalculation: Boolean = false
+    ) {
+        val shouldCalculate = forceRecalculation || !DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()
+        if (shouldCalculate) {
+            renderState(StatisticLoadingState.CALCULATING)
         }
-        calculateRankings(DokoShortAccess.getStatsCtrl().getCachedGroupStatistics())
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            withContext(Dispatchers.Default) {
+                if (shouldCalculate) {
+                    DokoShortAccess.getStatsCtrl().calculateGroupStatistics(
+                        DokoShortAccess.getMemberCtrl().getMembers(),
+                        sessions
+                    )
+                }
+            }
+
+            if (_binding == null) {
+                return@launch
+            }
+
+            calculateAndSetRankings(DokoShortAccess.getStatsCtrl().getCachedGroupStatistics())
+            renderState(StatisticLoadingState.IDLE)
+        }
     }
 
-    private fun calculateRankings(groupStatistics: GroupStatistics) {
+    private fun calculateAndSetRankings(groupStatistics: GroupStatistics) {
         val withBockSettings = DokoShortAccess.getSettingsCtrl().getSettings().isBockrundeEnabled
         rankings = RankingStatisticsCalculator().getRankings(groupStatistics, withBockSettings)
             .toMutableList()
@@ -207,10 +228,31 @@ class RankingFragment : Fragment() {
         }
     }
 
+    private fun renderState(state: StatisticLoadingState, errorMessage: String? = null) {
+        loadingOverlayController?.render(state, errorMessage)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Logging.d("RankingFragment | onResume", "Resuming")
+
+        if (loadingOverlayController?.isBusy() == true) {
+            return
+        }
+
+        if (DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
+            calculateAndSetRankings(DokoShortAccess.getStatsCtrl().getCachedGroupStatistics())
+            renderState(StatisticLoadingState.IDLE)
+        } else {
+            loadDataForStatistics()
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding.btnRankingNext.setOnClickListener(null)
         binding.btnRankingPrevious.setOnClickListener(null)
+        loadingOverlayController = null
         _binding = null
     }
 }

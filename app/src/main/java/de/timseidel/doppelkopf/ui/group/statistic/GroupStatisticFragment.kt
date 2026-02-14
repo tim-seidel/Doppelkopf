@@ -18,7 +18,6 @@ import de.timseidel.doppelkopf.databinding.FragmentGroupStatisticBinding
 import de.timseidel.doppelkopf.db.request.StatisticUpdateRequest
 import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Member
-import de.timseidel.doppelkopf.model.StatisticStatus
 import de.timseidel.doppelkopf.ui.MemberListHeaderAdapter
 import de.timseidel.doppelkopf.ui.statistic.StatisticListAdapter
 import de.timseidel.doppelkopf.ui.statistic.provider.EmptyStatisticViewProvider
@@ -36,6 +35,7 @@ import kotlin.math.min
 
 class GroupStatisticFragment : Fragment() {
     private val placeholderIdGroupStatistics = "__group_stats_all_placeholder_id"
+    private var selectedMemberId: String = placeholderIdGroupStatistics
 
     private var _binding: FragmentGroupStatisticBinding? = null
     private var loadingOverlayController: StatisticLoadingOverlayController? = null
@@ -88,11 +88,7 @@ class GroupStatisticFragment : Fragment() {
 
     private fun setupStatistics() {
         if (DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
-            setStatistics(
-                GroupStatisticViewProvider(
-                    DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
-                )
-            )
+            renderSelectedMemberStatistics()
             renderState(StatisticLoadingState.IDLE)
         } else {
             Logging.d(
@@ -145,11 +141,7 @@ class GroupStatisticFragment : Fragment() {
                 return@launch
             }
 
-            setStatistics(
-                GroupStatisticViewProvider(
-                    DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
-                )
-            )
+            renderSelectedMemberStatistics()
             renderState(StatisticLoadingState.IDLE)
         }
     }
@@ -159,23 +151,13 @@ class GroupStatisticFragment : Fragment() {
             MemberListHeaderAdapter.OnMemberClickListener {
 
             override fun onMemberClicked(member: Member) {
-                if (DokoShortAccess.getStatsCtrl().getStatus() == StatisticStatus.EMPTY) {
-                    setStatistics(EmptyStatisticViewProvider())
-                } else {
-                    val stats = DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
-                    if (member.id == placeholderIdGroupStatistics) {
-                        setStatistics(GroupStatisticViewProvider(stats))
-                    } else {
-                        val memberStatistic =
-                            stats.memberStatistics.firstOrNull { memberStatistic -> memberStatistic.member.id == member.id }
+                selectedMemberId = member.id
 
-                        if (memberStatistic != null && memberStatistic.general.total.games > 0) {
-                            setStatistics(MemberStatisticViewProvider(memberStatistic))
-                        } else {
-                            setStatistics(EmptyStatisticViewProvider())
-                        }
-                    }
+                if (loadingOverlayController?.isBusy() == true) {
+                    return
                 }
+
+                renderSelectedMemberStatistics()
             }
         })
 
@@ -203,6 +185,28 @@ class GroupStatisticFragment : Fragment() {
         binding.lvGroupStatistic.adapter = adapter
     }
 
+    private fun renderSelectedMemberStatistics() {
+        if (!DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
+            setStatistics(EmptyStatisticViewProvider())
+            return
+        }
+
+        val stats = DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
+        if (selectedMemberId == placeholderIdGroupStatistics) {
+            setStatistics(GroupStatisticViewProvider(stats))
+            return
+        }
+
+        val memberStatistic =
+            stats.memberStatistics.firstOrNull { memberStatistic -> memberStatistic.member.id == selectedMemberId }
+
+        if (memberStatistic != null && memberStatistic.general.total.games > 0) {
+            setStatistics(MemberStatisticViewProvider(memberStatistic))
+        } else {
+            setStatistics(EmptyStatisticViewProvider())
+        }
+    }
+
     private fun renderState(state: StatisticLoadingState, errorMessage: String? = null) {
         loadingOverlayController?.render(state, errorMessage)
     }
@@ -216,11 +220,7 @@ class GroupStatisticFragment : Fragment() {
         }
 
         if (DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
-            setStatistics(
-                GroupStatisticViewProvider(
-                    DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
-                )
-            )
+            renderSelectedMemberStatistics()
             renderState(StatisticLoadingState.IDLE)
         } else {
             loadDataForStatistics()

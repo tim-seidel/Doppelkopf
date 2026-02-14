@@ -102,4 +102,7 @@
     <string name="dialog_share_code_description">Mit diesem Code können andere Spieler:innen dieser Gruppe beitreten. Der Code kann jederzeit über das 3-Punkte-Menü in der Gruppenübersicht angezeigt werden.</string>
     <string name="game_edit_time_limit_description">Spiele können 24 Stunden nach Erstellung bearbeitet werden.</string>
     <string name="desc_game_edit_info">Information zum Spiele-Bearbeiten</string>
+    <string name="group_statistic_loading_sessions">Lade Abende für Statistik...</string>
+    <string name="group_statistic_calculating">Berechne Statistik...</string>
+    <string name="group_statistic_loading_error">Fehler beim Laden der Statistikdaten.</string>
 </resources>

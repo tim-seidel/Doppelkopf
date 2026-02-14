@@ -7,11 +7,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import de.timseidel.doppelkopf.R
 import de.timseidel.doppelkopf.contracts.ISessionController
 import de.timseidel.doppelkopf.databinding.FragmentGroupStatisticBinding
@@ -28,14 +28,25 @@ import de.timseidel.doppelkopf.ui.statistic.provider.MemberStatisticViewProvider
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.Logging
 import java.time.LocalDateTime
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.max
 import kotlin.math.min
 
 class GroupStatisticFragment : Fragment() {
 
+    private enum class StatisticUiState {
+        IDLE,
+        LOADING_SESSIONS,
+        CALCULATING,
+        ERROR
+    }
+
     private val placeholderIdGroupStatistics = "__group_stats_all_placeholder_id"
 
     private var _binding: FragmentGroupStatisticBinding? = null
+    private var currentUiState: StatisticUiState = StatisticUiState.IDLE
 
     private val binding get() = _binding!!
 
@@ -81,6 +92,7 @@ class GroupStatisticFragment : Fragment() {
                     DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
                 )
             )
+            renderState(StatisticUiState.IDLE)
         } else {
             Logging.d(
                 "GroupStatisticFragment | initStatistics",
@@ -91,33 +103,54 @@ class GroupStatisticFragment : Fragment() {
     }
 
     private fun loadDataForStatistics() {
-        showSessionLoadingStart()
+        if (currentUiState == StatisticUiState.LOADING_SESSIONS || currentUiState == StatisticUiState.CALCULATING) {
+            return
+        }
+        renderState(StatisticUiState.LOADING_SESSIONS)
 
         StatisticUpdateRequest(DokoShortAccess.getGroupCtrl().getGroup().id, DokoShortAccess.getStatsCtrl().getSessionControllers()).execute(object :
             ReadRequestListener<List<ISessionController>> {
             override fun onReadComplete(result: List<ISessionController>) {
                 Logging.d("GroupStatisticFragment | loadDataForStatistics", "Sessions loaded")
-                calculateAndApplyGroupStatistics(result)
+                calculateAndApplyGroupStatistics(result, forceRecalculation = true)
             }
 
             override fun onReadFailed() {
-                showSessionLoadingError()
+                renderState(StatisticUiState.ERROR, getString(R.string.group_statistic_loading_error))
             }
         })
     }
 
-    private fun calculateAndApplyGroupStatistics(sessions: List<ISessionController>) {
-        if (!DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
-            DokoShortAccess.getStatsCtrl().calculateGroupStatistics(
-                DokoShortAccess.getMemberCtrl().getMembers(),
-                sessions
-            )
+    private fun calculateAndApplyGroupStatistics(
+        sessions: List<ISessionController>,
+        forceRecalculation: Boolean = false
+    ) {
+        val shouldCalculate = forceRecalculation || !DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()
+        if (shouldCalculate) {
+            renderState(StatisticUiState.CALCULATING)
         }
-        setStatistics(
-            GroupStatisticViewProvider(
-                DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            withContext(Dispatchers.Default) {
+                if (shouldCalculate) {
+                    DokoShortAccess.getStatsCtrl().calculateGroupStatistics(
+                        DokoShortAccess.getMemberCtrl().getMembers(),
+                        sessions
+                    )
+                }
+            }
+
+            if (_binding == null) {
+                return@launch
+            }
+
+            setStatistics(
+                GroupStatisticViewProvider(
+                    DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
+                )
             )
-        )
+            renderState(StatisticUiState.IDLE)
+        }
     }
 
     private fun setupMemberSelect() {
@@ -169,29 +202,63 @@ class GroupStatisticFragment : Fragment() {
         binding.lvGroupStatistic.adapter = adapter
     }
 
-    private fun showSessionLoadingStart() {
-        Toast.makeText(
-            requireContext(),
-            "Alle Sessions werden zur Statistikberechnung geladen...",
-            Toast.LENGTH_SHORT
-        ).show()
-    }
+    private fun renderState(state: StatisticUiState, errorMessage: String? = null) {
+        if (_binding == null) {
+            return
+        }
+        currentUiState = state
 
-    private fun showSessionLoadingError() {
-        Toast.makeText(
-            requireContext(),
-            "Fehler beim Laden der Sessions",
-            Toast.LENGTH_LONG
-        ).show()
+        val isBusy = state == StatisticUiState.LOADING_SESSIONS || state == StatisticUiState.CALCULATING
+        binding.headerStatisticMemberSelect.isEnabled = !isBusy
+        binding.lvGroupStatistic.isEnabled = !isBusy
+
+        when (state) {
+            StatisticUiState.IDLE -> {
+                binding.layoutGroupStatisticStateOverlay.visibility = View.GONE
+                binding.pbGroupStatisticLoading.visibility = View.GONE
+            }
+
+            StatisticUiState.LOADING_SESSIONS -> {
+                binding.layoutGroupStatisticStateOverlay.visibility = View.VISIBLE
+                binding.pbGroupStatisticLoading.visibility = View.VISIBLE
+                binding.tvGroupStatisticStateMessage.text =
+                    getString(R.string.group_statistic_loading_sessions)
+            }
+
+            StatisticUiState.CALCULATING -> {
+                binding.layoutGroupStatisticStateOverlay.visibility = View.VISIBLE
+                binding.pbGroupStatisticLoading.visibility = View.VISIBLE
+                binding.tvGroupStatisticStateMessage.text =
+                    getString(R.string.group_statistic_calculating)
+            }
+
+            StatisticUiState.ERROR -> {
+                binding.layoutGroupStatisticStateOverlay.visibility = View.VISIBLE
+                binding.pbGroupStatisticLoading.visibility = View.GONE
+                binding.tvGroupStatisticStateMessage.text =
+                    errorMessage ?: getString(R.string.group_statistic_loading_error)
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
         Logging.d("GroupStatisticFragment | onResume", "Resuming")
 
-        calculateAndApplyGroupStatistics(
-            DokoShortAccess.getStatsCtrl().getSessionControllers()
-        )
+        if (currentUiState == StatisticUiState.LOADING_SESSIONS || currentUiState == StatisticUiState.CALCULATING) {
+            return
+        }
+
+        if (DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
+            setStatistics(
+                GroupStatisticViewProvider(
+                    DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
+                )
+            )
+            renderState(StatisticUiState.IDLE)
+        } else {
+            loadDataForStatistics()
+        }
 
     }
 

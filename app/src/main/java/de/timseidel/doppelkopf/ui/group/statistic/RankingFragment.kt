@@ -26,6 +26,7 @@ import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
 import de.timseidel.doppelkopf.ui.RecyclerViewMarginDecoration
 import de.timseidel.doppelkopf.ui.util.Converter
 import de.timseidel.doppelkopf.util.DokoShortAccess
+import de.timseidel.doppelkopf.util.Logging
 
 class RankingFragment : Fragment() {
 
@@ -140,8 +141,12 @@ class RankingFragment : Fragment() {
 
     private fun setupStatistics() {
         if (DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
-            calculateRankings(DokoShortAccess.getStatsCtrl().getCachedGroupStatistics())
+            calculateAndSetRankings(DokoShortAccess.getStatsCtrl().getCachedGroupStatistics())
         } else {
+            Logging.d(
+                "RankingFragment | setupStatistics",
+                "Cached statistics not available. Loading..."
+            )
             loadDataForStatistics()
         }
     }
@@ -184,10 +189,10 @@ class RankingFragment : Fragment() {
                 sessions
             )
         }
-        calculateRankings(DokoShortAccess.getStatsCtrl().getCachedGroupStatistics())
+        calculateAndSetRankings(DokoShortAccess.getStatsCtrl().getCachedGroupStatistics())
     }
 
-    private fun calculateRankings(groupStatistics: GroupStatistics) {
+    private fun calculateAndSetRankings(groupStatistics: GroupStatistics) {
         val withBockSettings = DokoShortAccess.getSettingsCtrl().getSettings().isBockrundeEnabled
         rankings = RankingStatisticsCalculator().getRankings(groupStatistics, withBockSettings)
             .toMutableList()

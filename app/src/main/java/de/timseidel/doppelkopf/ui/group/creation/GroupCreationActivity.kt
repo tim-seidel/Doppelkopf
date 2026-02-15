@@ -62,7 +62,7 @@ class GroupCreationActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        setTitle(R.string.title_session_creation)
+        setTitle(R.string.title_group_creation)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
     }

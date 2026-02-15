@@ -12,11 +12,17 @@ class StatisticListAdapter(
 ) : ArrayAdapter<IStatisticViewWrapper>(context, 0, objects) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return getItem(position)!!.getView(parent.context)
+        val item = requireNotNull(getItem(position)) {
+            "Statistic item at position $position is missing."
+        }
+        return item.getView(parent.context)
     }
 
     override fun getItemViewType(position: Int): Int {
-        return getItem(position)!!.getItemType()
+        val item = requireNotNull(getItem(position)) {
+            "Statistic item type at position $position is missing."
+        }
+        return item.getItemType()
     }
 
     override fun getViewTypeCount(): Int {

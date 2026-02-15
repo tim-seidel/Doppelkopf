@@ -51,6 +51,8 @@ class GameEditActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Kein gültiges Spiel zum Ändern gefunden.", Toast.LENGTH_LONG)
                 .show()
+            finish()
+            return
         }
 
         checkSaveGameButtonEnabled()

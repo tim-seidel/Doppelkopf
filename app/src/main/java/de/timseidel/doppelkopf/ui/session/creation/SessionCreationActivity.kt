@@ -164,6 +164,7 @@ class SessionCreationActivity : AppCompatActivity() {
         viewModel.memberSelections.add(MemberSelection(member, true))
         viewModel.memberInputName = ""
         memberSelectAdapter.notifyItemInserted(viewModel.memberSelections.size - 1)
+        checkSessionIsValid()
     }
 
     private fun onCreateSessionClicked() {

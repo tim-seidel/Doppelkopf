@@ -150,7 +150,7 @@ class SessionHistoryFragment : Fragment() {
                 if (_binding == null) {
                     return
                 }
-                if (result > sessionHistoryListAdapter.itemCount) {
+                if (result != sessionHistoryListAdapter.itemCount) {
                     updateSessionHistory()
                 }
             }

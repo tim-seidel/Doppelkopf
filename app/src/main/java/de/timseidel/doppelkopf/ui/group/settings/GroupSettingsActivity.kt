@@ -165,8 +165,9 @@ class GroupSettingsActivity : AppCompatActivity() {
         DokoShortAccess.getMemberCtrl().getMembers().forEach { m ->
             val selectedMember = viewModel.memberActiveList.find { ma -> ma.member.id == m.id }
             if(selectedMember != null && selectedMember.isSelected != m.isActive) {
-                DokoShortAccess.getMemberCtrl().updateMember(m.id, m.copy(isActive = selectedMember.isSelected))
-                membersToUpdate.add(m)
+                val updatedMember = m.copy(isActive = selectedMember.isSelected)
+                DokoShortAccess.getMemberCtrl().updateMember(m.id, updatedMember)
+                membersToUpdate.add(updatedMember)
             }
         }
 

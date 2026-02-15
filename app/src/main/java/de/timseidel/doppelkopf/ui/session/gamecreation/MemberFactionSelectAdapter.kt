@@ -47,15 +47,24 @@ class MemberFactionSelectAdapter(
             holder.memberFactionSelectView.findViewById(R.id.btn_faction_contra)
 
         btnRe.setOnClickListener {
-            val newFaction = getNewFaction(members[position].faction, Faction.RE)
-            listener?.onFactionUpdate(members[position].member, newFaction)
-            members[position].faction = newFaction
+            val pos = holder.adapterPosition
+            if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
+
+            val item = members[pos]
+            val newFaction = getNewFaction(item.faction, Faction.RE)
+            listener?.onFactionUpdate(item.member, newFaction)
+            item.faction = newFaction
             holder.setFaction(newFaction)
         }
+
         btnContra.setOnClickListener {
-            val newFaction = getNewFaction(members[position].faction, Faction.CONTRA)
-            listener?.onFactionUpdate(members[position].member, newFaction)
-            members[position].faction = newFaction
+            val pos = holder.adapterPosition
+            if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
+
+            val item = members[pos]
+            val newFaction = getNewFaction(item.faction, Faction.CONTRA)
+            listener?.onFactionUpdate(item.member, newFaction)
+            item.faction = newFaction
             holder.setFaction(newFaction)
         }
     }

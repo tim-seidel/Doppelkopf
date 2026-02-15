@@ -15,7 +15,7 @@ class Logging {
         }
 
         fun e(msg: String) {
-            Log.d(LOG_TAG, msg)
+            Log.e(LOG_TAG, msg)
         }
 
         fun d(className: String, msg: String) {

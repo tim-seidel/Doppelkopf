@@ -32,6 +32,7 @@ class GroupMemberRequest(private val groupId: String) : BaseReadRequest<List<Mem
                         "GroupMemberRequest: Member conversation of ${docs.size()} members failed with ",
                         e
                     )
+                    return@addOnSuccessListener
                 }
 
                 onReadResult(members)

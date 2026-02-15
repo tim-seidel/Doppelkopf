@@ -41,7 +41,7 @@ class VersusBarView(context: Context, attrs: AttributeSet? = null) :
             setMax(max)
             setProgress(ta.getInteger(R.styleable.VersusBarView_progress, 0))
             setLeftText(ta.getString(R.styleable.VersusBarView_leftText) ?: min.toString())
-            setRightText(ta.getString(R.styleable.VersusBarView_leftText) ?: max.toString())
+            setRightText(ta.getString(R.styleable.VersusBarView_rightText) ?: max.toString())
         } finally {
             ta.recycle()
         }

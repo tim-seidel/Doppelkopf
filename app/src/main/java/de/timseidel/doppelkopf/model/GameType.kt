@@ -33,7 +33,7 @@ class GameTypeHelper {
         }
 
         fun getGameTypeList(): List<GameType> {
-            return listOf(GameType.NORMAL, GameType.SCHWARZVERLOREN, GameType.HOCHZEIT, GameType.SOLO)
+            return listOf(GameType.NORMAL,GameType.HOCHZEIT, GameType.SCHWARZVERLOREN, GameType.SOLO)
         }
     }
 }

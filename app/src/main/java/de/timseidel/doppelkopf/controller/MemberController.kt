@@ -85,7 +85,7 @@ class MemberController : IMemberController {
     }
 
     override fun validateNames(names: List<String>): Boolean {
-        if (names.size != names.distinct().count()) {
+        if (names.size != names.map { it.trim() }.toSet().size) {
             return false
         }
 

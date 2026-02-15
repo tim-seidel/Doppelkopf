@@ -11,7 +11,7 @@ interface IStatisticViewWrapper {
         const val ITEM_TYPE_STAT_TEXT = 0
         const val ITEM_TYPE_CHART_LINE = 1
         const val ITEM_TYPE_CHART_PIE = 2
-        const val ITEM_TYPE_CHART_COLUMN = 2
+        const val ITEM_TYPE_CHART_COLUMN = 3
 
         const val COLOR_POSITIVE_DARK = "26a69a"    //Primary
         const val COLOR_POSITIVE_LIGHT = "4db6ac"   //Accent

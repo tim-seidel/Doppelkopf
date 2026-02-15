@@ -35,8 +35,12 @@ class GroupCreationMemberListAdapter(
         }
 
         fun bind(name: String, position: Int) {
-            view.setText(name)
+            view.removeTextChangedListener(textWatcher)
+
             textWatcher.position = position
+            view.setText(name)
+
+            view.addTextChangedListener(textWatcher)
         }
     }
 

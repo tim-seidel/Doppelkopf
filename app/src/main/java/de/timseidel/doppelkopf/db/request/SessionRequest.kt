@@ -50,7 +50,7 @@ class SessionListRequest(private val sessionInfos: List<Session>) :
                     }
 
                     override fun onReadFailed() {
-                        this.onReadFailed()
+                        this@SessionListRequest.onReadFailed()
                     }
                 })
         }

@@ -302,7 +302,7 @@ class SessionMemberStatisticViewsProvider(private var stats: SessionMemberStatis
         val totalTackenLossTextStat = SimpleTextStatisticViewWrapper(
             "Schuldschein",
             "${stats.member.name} muss so viele verlorene Tacken bezahlen:",
-            StatisticUtil.getAccumulatedStraftackenHistory(stats.gameResultHistory).last()
+            (StatisticUtil.getAccumulatedStraftackenHistory(stats.gameResultHistory).lastOrNull() ?: 0)
                 .toString()
         )
 

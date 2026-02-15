@@ -17,8 +17,11 @@ class MemberSelectAdapter(
     class ViewHolder(val view: MemberSelectView, var listener: MemberSelectListener?) :
         RecyclerView.ViewHolder(view) {
         fun bind(member: MemberSelection) {
+            view.setIsCheckedListener { _, _ -> }
+
             view.setName(member.member.name)
             view.setChecked(member.isSelected)
+
             view.setIsCheckedListener { _, _ -> listener?.onMemberSelected(member) }
         }
     }

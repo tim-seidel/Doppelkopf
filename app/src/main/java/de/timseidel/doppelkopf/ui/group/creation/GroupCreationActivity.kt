@@ -175,6 +175,7 @@ class GroupCreationActivity : AppCompatActivity() {
     private fun onCreateGroupClicked() {
         if (!groupCreationViewModel.isValid()) {
             showGroupCreationError(getString(R.string.create_group_unable_to_create))
+            return
         }
 
         try {
@@ -199,7 +200,7 @@ class GroupCreationActivity : AppCompatActivity() {
 
     private fun finishGroupCreation() {
         val intent = Intent(this, GroupActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.putExtra(KEY_GROUP_NEWLY_CREATED_FLAG, true)
 
         startActivity(intent)

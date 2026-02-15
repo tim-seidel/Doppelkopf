@@ -111,7 +111,7 @@ class SessionHistoryFragment : Fragment() {
     }
 
     private fun applyIncompatibilitySettings(isIncompatible: Boolean) {
-        DokoShortAccess.getSettingsCtrl().getSettings().isGameEditEnabled = !isIncompatible
+        DokoShortAccess.getSettingsCtrl().getSettings().isGameCreationEnabled = !isIncompatible
         DokoShortAccess.getSettingsCtrl().getSettings().isGameEditEnabled = !isIncompatible
     }
 

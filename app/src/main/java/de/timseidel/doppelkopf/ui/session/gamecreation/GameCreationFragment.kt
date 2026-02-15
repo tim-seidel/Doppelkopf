@@ -159,13 +159,23 @@ class GameCreationFragment : Fragment() {
     }
 
     private fun checkSaveGameButtonEnabled() {
-        val isValid = gameConfiguration.isValid()
+        val isValid =
+            gameConfiguration.isValid() && DokoShortAccess.getSettingsCtrl().getSettings().isGameCreationEnabled
 
         btnSaveGame.isEnabled = isValid
         setButtonColor(btnSaveGame, if (isValid) R.color.neural else R.color.neural_light)
     }
 
     private fun onCreateGameClicked() {
+        if (!DokoShortAccess.getSettingsCtrl().getSettings().isGameCreationEnabled) {
+            Toast.makeText(
+                context,
+                getString(R.string.game_creation_disabled_message),
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
+
         if (!gameConfiguration.isValid()) {
             Toast.makeText(
                 context,

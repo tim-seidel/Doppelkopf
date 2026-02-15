@@ -65,7 +65,7 @@ class GameHistoryFragment : Fragment() {
     ): View {
         _binding = FragmentGameHistoryBinding.inflate(inflater, container, false)
 
-        (activity as AppCompatActivity).supportActionBar?.title =
+        (activity as? AppCompatActivity)?.supportActionBar?.title =
             DokoShortAccess.getSessionCtrl().getSession().name
 
         setupMemberHeader()
@@ -80,7 +80,7 @@ class GameHistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val menuHost = requireHost() as MenuHost
+        val menuHost = activity as? MenuHost ?: return
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_game_history, menu)
@@ -100,8 +100,8 @@ class GameHistoryFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
+        (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as? AppCompatActivity)?.supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
     private fun setupMemberHeader() {
@@ -144,6 +144,9 @@ class GameHistoryFragment : Fragment() {
     private fun setupEditResultLauncher() {
         activityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (_binding == null) {
+                    return@registerForActivityResult
+                }
                 if (result.resultCode == Activity.RESULT_OK) {
                     setGameHistory(isGameHistoryAccumulated)
                 }

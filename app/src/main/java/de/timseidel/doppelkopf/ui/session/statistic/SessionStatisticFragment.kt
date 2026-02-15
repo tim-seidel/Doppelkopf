@@ -46,11 +46,11 @@ class SessionStatisticFragment : Fragment() {
     }
 
     private fun setupToolbar(){
-        (activity as AppCompatActivity).supportActionBar?.title =
+        (activity as? AppCompatActivity)?.supportActionBar?.title =
             DokoShortAccess.getSessionCtrl().getSession().name
 
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
+        (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as? AppCompatActivity)?.supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
     private fun setupStatistics() {

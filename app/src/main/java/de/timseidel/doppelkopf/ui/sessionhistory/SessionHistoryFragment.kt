@@ -147,6 +147,9 @@ class SessionHistoryFragment : Fragment() {
         SessionCountRequest(DokoShortAccess.getGroupCtrl().getGroup().id).execute(object :
             ReadRequestListener<Int> {
             override fun onReadComplete(result: Int) {
+                if (_binding == null) {
+                    return
+                }
                 if (result > sessionHistoryListAdapter.itemCount) {
                     updateSessionHistory()
                 }

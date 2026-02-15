@@ -68,7 +68,7 @@ class GroupStatisticFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val menuHost = requireHost() as MenuHost
+        val menuHost = activity as? MenuHost ?: return
 
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

@@ -42,6 +42,9 @@ class GroupInfoRequestById(private val groupId: String) :
                     listener.onReadFailed()
                 }
             }
+            .addOnFailureListener { e ->
+                failWithLog("GroupInfoRequestById failed", e)
+            }
     }
 }
 
@@ -73,6 +76,9 @@ class GroupInfoRequestByCode(private val groupCode: String) :
                     failWithLog("No Group with code [$groupCode] found.")
                 }
             }
+            .addOnFailureListener { e ->
+                failWithLog("GroupInfoRequestByCode failed", e)
+            }
     }
 }
 
@@ -86,6 +92,9 @@ class GroupCodeExistsRequest(private val groupCode: String) : BaseReadRequest<Bo
             .get()
             .addOnSuccessListener { doc ->
                 listener.onReadComplete(!doc.isEmpty)
+            }
+            .addOnFailureListener { e ->
+                failWithLog("GroupCodeExistsRequest failed", e)
             }
     }
 }

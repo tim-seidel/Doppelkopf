@@ -133,7 +133,7 @@ class RankingStatisticsCalculator {
                 RankingItem(
                     memberStatistic.member.name,
                     reWinPercentage,
-                    "${reWinPercentage}%"
+                    "${StatisticUtil.numberToStringRemoveTrailingZeroDecimalPlaces(reWinPercentage)}%"
                 )
             }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
@@ -156,7 +156,7 @@ class RankingStatisticsCalculator {
                 RankingItem(
                     memberStatistic.member.name,
                     contraWinPercentage,
-                    "${contraWinPercentage}%"
+                    "${StatisticUtil.numberToStringRemoveTrailingZeroDecimalPlaces(contraWinPercentage)}%"
                 )
             }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
@@ -179,7 +179,7 @@ class RankingStatisticsCalculator {
                 RankingItem(
                     memberStatistic.member.name,
                     rePercentage,
-                    "${rePercentage}%"
+                    "${StatisticUtil.numberToStringRemoveTrailingZeroDecimalPlaces(rePercentage)}%"
                 )
             }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })
 
@@ -213,7 +213,7 @@ class RankingStatisticsCalculator {
                 RankingItem(
                     memberStatistic.member.name,
                     soliWinPercentage,
-                    "${soliWinPercentage}%"
+                    "${StatisticUtil.numberToStringRemoveTrailingZeroDecimalPlaces(soliWinPercentage)}%"
                 )
 
             }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() })

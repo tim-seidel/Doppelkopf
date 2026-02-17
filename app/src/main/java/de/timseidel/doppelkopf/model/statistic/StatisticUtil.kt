@@ -10,6 +10,7 @@ import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
 import de.timseidel.doppelkopf.model.statistic.group.MemberStatistic
 import de.timseidel.doppelkopf.util.GameUtil
 import de.timseidel.doppelkopf.util.RangeDistribution
+import java.math.BigDecimal
 import kotlin.math.pow
 import kotlin.math.round
 
@@ -175,6 +176,14 @@ class StatisticUtil {
         fun roundWithDecimalPlaces(value: Float, places: Int): Float {
             val placesMultiplier = 10f.pow(places)
             return round(value * placesMultiplier) / placesMultiplier
+        }
+
+        // Rounds the number to the specified decimal places and removes trailing zeros
+        // Sample: 1.234567 with 2 places -> "1.23", 1.2000 with 2 places -> "1.2", 1.0000 with 2 places -> "1"
+        fun numberToStringRemoveTrailingZeroDecimalPlaces(value: Float): String {
+            return BigDecimal(value.toString())
+                .stripTrailingZeros()
+                .toPlainString()
         }
 
         fun toPercentage(value: Float, places: Int): Float {

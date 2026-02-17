@@ -31,7 +31,7 @@ class MemberListHeaderView(context: Context, attrs: AttributeSet? = null) :
         rvMembers = findViewById(R.id.rv_ghl_member_header)
     }
 
-    fun setListener(listener: MemberListHeaderAdapter.OnMemberClickListener) {
+    fun setListener(listener: MemberListHeaderAdapter.OnMemberClickListener?) {
         memberClickListener = listener
     }
 

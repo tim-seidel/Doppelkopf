@@ -194,7 +194,7 @@ class GroupStatisticFragment : Fragment() {
         val withBockSettings = DokoShortAccess.getSettingsCtrl().getSettings().isBockrundeEnabled
         val statisticItems = provider.getStatisticItems(withBockSettings)
         val adapter = StatisticListAdapter(
-            requireContext(),
+            binding.root.context,
             statisticItems
         )
         binding.lvGroupStatistic.adapter = adapter
@@ -205,6 +205,8 @@ class GroupStatisticFragment : Fragment() {
             setStatistics(EmptyStatisticViewProvider())
             return
         }
+
+        ensureSelectedMemberStillExists()
 
         val stats = DokoShortAccess.getStatsCtrl().getCachedGroupStatistics()
         if (selectedMemberId == placeholderIdGroupStatistics) {
@@ -222,6 +224,13 @@ class GroupStatisticFragment : Fragment() {
         }
     }
 
+    private fun ensureSelectedMemberStillExists() {
+        val selectedMemberExists = DokoShortAccess.getMemberCtrl().getMembers().any { member -> member.id == selectedMemberId }
+        if (!selectedMemberExists) {
+            selectedMemberId = placeholderIdGroupStatistics
+        }
+    }
+
     private fun renderState(state: StatisticLoadingState, errorMessage: String? = null) {
         loadingOverlayController?.render(state, errorMessage)
     }
@@ -234,6 +243,7 @@ class GroupStatisticFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.headerStatisticMemberSelect.setListener(null)
         loadingOverlayController = null
         _binding = null
     }

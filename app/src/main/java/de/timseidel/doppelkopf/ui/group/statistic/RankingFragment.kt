@@ -214,6 +214,7 @@ class RankingFragment : Fragment() {
         val withBockSettings = DokoShortAccess.getSettingsCtrl().getSettings().isBockrundeEnabled
         rankings = RankingStatisticsCalculator().getRankings(groupStatistics, withBockSettings)
             .toMutableList()
+        currentRankingIndex = 0
 
         if (rankings.isNotEmpty()) {
             setRanking(rankings.first())
@@ -252,6 +253,7 @@ class RankingFragment : Fragment() {
         super.onDestroyView()
         binding.btnRankingNext.setOnClickListener(null)
         binding.btnRankingPrevious.setOnClickListener(null)
+        binding.rvRanking.adapter = null
         loadingOverlayController = null
         _binding = null
     }

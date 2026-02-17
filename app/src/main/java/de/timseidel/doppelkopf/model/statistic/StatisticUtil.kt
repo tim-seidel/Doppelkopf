@@ -10,6 +10,8 @@ import de.timseidel.doppelkopf.model.statistic.group.GroupStatistics
 import de.timseidel.doppelkopf.model.statistic.group.MemberStatistic
 import de.timseidel.doppelkopf.util.GameUtil
 import de.timseidel.doppelkopf.util.RangeDistribution
+import kotlin.math.pow
+import kotlin.math.round
 
 class StatisticUtil {
     companion object {
@@ -168,6 +170,15 @@ class StatisticUtil {
             else if (currentLossStreak > 0) streakHistory.add(-1 * currentLossStreak)
 
             return StreakStatistics(longestLossStreak, longestWinStreak, streakHistory)
+        }
+
+        fun roundWithDecimalPlaces(value: Float, places: Int): Float {
+            val placesMultiplier = 10f.pow(places)
+            return round(value * placesMultiplier) / placesMultiplier
+        }
+
+        fun toPercentage(value: Float, places: Int): Float {
+            return roundWithDecimalPlaces(value * 100, places)
         }
     }
 }

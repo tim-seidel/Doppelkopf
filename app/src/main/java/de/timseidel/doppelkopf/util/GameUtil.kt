@@ -156,11 +156,6 @@ class GameUtil {
             return gameType == GameType.SOLO || gameType == GameType.SCHWARZVERLOREN
         }
 
-        fun roundWithDecimalPlaces(value: Float, places: Int): Float {
-            val placesMultiplier = 10f.pow(places)
-            return round(value * placesMultiplier) / placesMultiplier
-        }
-
         fun isGameEditEnabled(game: Game): Boolean {
             return game.timestamp > (System.currentTimeMillis() - 1000 * MAX_GAME_EDIT_TIME_SECONDS)
         }

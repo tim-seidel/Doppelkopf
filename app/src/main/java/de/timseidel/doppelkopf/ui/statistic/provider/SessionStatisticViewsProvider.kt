@@ -162,10 +162,10 @@ class SessionStatisticViewsProvider(private val sessionStatistics: SessionStatis
             val gamesContra = ms.contra.total.games - soloContraGames
             val totalGames = ms.general.total.games
 
-            gamesRePercentage.add(GameUtil.roundWithDecimalPlaces(gamesRe.toFloat() / totalGames * 100, 1))
-            gamesContraPercentage.add(GameUtil.roundWithDecimalPlaces(gamesContra.toFloat() / totalGames * 100, 1))
-            gamesReSoloPercentage.add(GameUtil.roundWithDecimalPlaces(soloReGames.toFloat() / totalGames * 100, 1))
-            gamesContraSoloPercentage.add(GameUtil.roundWithDecimalPlaces(soloContraGames.toFloat() / totalGames * 100, 1))
+            gamesRePercentage.add(if (totalGames > 0) StatisticUtil.toPercentage(gamesRe.toFloat() / totalGames, 1) else 0f)
+            gamesContraPercentage.add(if (totalGames > 0) StatisticUtil.toPercentage(gamesContra.toFloat() / totalGames, 1) else 0f)
+            gamesReSoloPercentage.add(if (totalGames > 0) StatisticUtil.toPercentage(soloReGames.toFloat() / totalGames, 1) else 0f)
+            gamesContraSoloPercentage.add(if (totalGames > 0) StatisticUtil.toPercentage( soloContraGames.toFloat() / totalGames, 1)  else 0f)
         }
 
         val percentReWin =

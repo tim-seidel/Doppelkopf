@@ -129,7 +129,7 @@ class RankingStatisticsCalculator {
             "Höchste Siegesquote | Re",
             "Die Siegesquote in Prozent in allen Spielen als Re-Partei (inkl. Soli und Hochzeiten)",
             memberStatistics.map { memberStatistic ->
-                val reWinPercentage = GameUtil.roundWithDecimalPlaces(getReWinPercentage(memberStatistic), 1)
+                val reWinPercentage = StatisticUtil.roundWithDecimalPlaces(getReWinPercentage(memberStatistic), 1)
                 RankingItem(
                     memberStatistic.member.name,
                     reWinPercentage,
@@ -152,7 +152,7 @@ class RankingStatisticsCalculator {
             "Höchste Siegesquote | Contra",
             "Die Siegesquote in Prozent in allen Spielen als Contra-Partei (inkl. Soli und Hochzeiten).",
             memberStatistics.map { memberStatistic ->
-                val contraWinPercentage = GameUtil.roundWithDecimalPlaces(getContraWinPercentage(memberStatistic), 1)
+                val contraWinPercentage = StatisticUtil.roundWithDecimalPlaces(getContraWinPercentage(memberStatistic), 1)
                 RankingItem(
                     memberStatistic.member.name,
                     contraWinPercentage,
@@ -175,7 +175,7 @@ class RankingStatisticsCalculator {
             "Höchste Requote (ohne Soli)",
             "Die Prozentzahl aller Spiele als Re-Partei in Normalspielen.",
             memberStatistics.map { memberStatistic ->
-                val rePercentage = GameUtil.roundWithDecimalPlaces(getRePercentage(memberStatistic), 1)
+                val rePercentage = StatisticUtil.roundWithDecimalPlaces(getRePercentage(memberStatistic), 1)
                 RankingItem(
                     memberStatistic.member.name,
                     rePercentage,
@@ -209,7 +209,7 @@ class RankingStatisticsCalculator {
             "Soli Siegesquote",
             "Die Siegesquote in Prozent in eigenen Soli.",
             memberStatistics.map { memberStatistic ->
-                val soliWinPercentage = GameUtil.roundWithDecimalPlaces(getSoliWinPercentage(memberStatistic), 1)
+                val soliWinPercentage = StatisticUtil.roundWithDecimalPlaces(getSoliWinPercentage(memberStatistic), 1)
                 RankingItem(
                     memberStatistic.member.name,
                     soliWinPercentage,

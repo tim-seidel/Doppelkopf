@@ -21,19 +21,19 @@ class CreateUniqueGroupCodeRequest(private val maxTry: Int) : BaseReadRequest<St
             override fun onReadComplete(result: Boolean) {
                 if (!result) {
                     Logging.d("CreateUniqueGroupCodeRequest", "Group code [$groupCode] is unique.")
-                    readRequestListener?.onReadComplete(groupCode)
+                    onReadResult(groupCode)
                 } else {
                     Logging.d("CreateUniqueGroupCodeRequest", "Group code [$groupCode] already exists.")
                     if ((currentTry + 1) < maxTry) {
                         createAndCheckGroupCode(currentTry + 1)
                     } else {
-                        readRequestListener?.onReadFailed()
+                        failWithLog("Unable to create unique group code after [$maxTry] tries.")
                     }
                 }
             }
 
             override fun onReadFailed() {
-                readRequestListener?.onReadFailed()
+                failWithLog("CreateUniqueGroupCodeRequest failed while checking group code [$groupCode].")
             }
         })
     }

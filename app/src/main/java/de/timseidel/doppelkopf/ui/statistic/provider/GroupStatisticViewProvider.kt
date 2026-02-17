@@ -146,16 +146,15 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
         val percentReWin =
             if (groupStatistics.general.total.games > 0) round(groupStatistics.re.wins.games / groupStatistics.general.total.games.toFloat() * 100).toInt() else 0
 
-        var maxTackenResult: SessionMemberStatistic? = null
-        groupStatistics.sessionStatistics.forEach { ss ->
-            val maxSessionTacken =
-                ss.sessionMemberStatistics.maxByOrNull { ps -> ps.general.total.tacken }
-            if (maxSessionTacken != null && maxSessionTacken.member.isActive) {
-                if (maxTackenResult == null || maxSessionTacken.general.total.tacken > maxTackenResult!!.general.total.tacken) {
-                    maxTackenResult = maxSessionTacken
-                }
+        val maxTackenResult = groupStatistics.sessionStatistics
+            .asSequence()
+            .mapNotNull { ss ->
+                ss.sessionMemberStatistics
+                    .asSequence()
+                    .filter { it.member.isActive }
+                    .maxByOrNull { it.general.total.tacken }
             }
-        }
+            .maxByOrNull { it.general.total.tacken }
 
         val gamesRePercentage = mutableListOf<Float>()
         val gamesContraPercentage = mutableListOf<Float>()
@@ -178,16 +177,16 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
             gamesContraSoloPercentage.add(if (totalGames > 0) StatisticUtil.toPercentage( soloContraGames.toFloat() / totalGames, 1)  else 0f)
         }
 
-        var minTackenResult: SessionMemberStatistic? = null
-        groupStatistics.sessionStatistics.forEach { ss ->
-            val minSessionTacken =
-                ss.sessionMemberStatistics.minByOrNull { ps -> ps.general.total.tacken }
-            if (minSessionTacken != null && minSessionTacken.member.isActive) {
-                if (minTackenResult == null || minSessionTacken.general.total.tacken < minTackenResult!!.general.total.tacken) {
-                    minTackenResult = minSessionTacken
+        val minTackenResult: SessionMemberStatistic? =
+            groupStatistics.sessionStatistics
+                .asSequence()
+                .mapNotNull { ss ->
+                    ss.sessionMemberStatistics
+                        .asSequence()
+                        .filter { it.member.isActive }
+                        .minByOrNull { it.general.total.tacken }
                 }
-            }
-        }
+                .minByOrNull { it.general.total.tacken }
 
         val gamesPerSessionList = mutableListOf<Int>()
         groupStatistics.sessionStatistics.forEach { ss ->
@@ -541,7 +540,11 @@ class GroupStatisticViewProvider(private val groupStatistics: GroupStatistics) :
         val gamesPerSessionAverageTextStat = SimpleTextStatisticViewWrapper(
             "Durchschnittliche Spiele pro Abend",
             "Im Schnitt wurden so viele Spiele pro Abend gespielt:",
-            if (groupStatistics.sessionStatistics.size > 0) (groupStatistics.general.total.games / groupStatistics.sessionStatistics.size).toString() else "0"
+            if (groupStatistics.sessionStatistics.isNotEmpty()) {
+                (groupStatistics.general.total.games / groupStatistics.sessionStatistics.size).toString()
+            } else {
+                "0"
+            }
         )
 
         val gamesPerSessionLineChart = LineChartViewWrapper(

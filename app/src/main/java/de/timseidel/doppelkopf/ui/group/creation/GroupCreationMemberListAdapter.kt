@@ -57,7 +57,7 @@ class GroupCreationMemberListAdapter(
         )
         et.layoutParams = layoutParams
         et.hint = parent.context.resources.getString(R.string.member)
-        et.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+        et.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PERSON_NAME
         et.minHeight = Converter.convertDpToPixels(48f, parent.context)
         et.isSingleLine = true
         et.setCompoundDrawablesWithIntrinsicBounds(

@@ -41,10 +41,8 @@ class MemberFactionSelectAdapter(
     //TODO: Not consistent with the rest of the game creation model handling. This adapter controls the new faction assignment instead of the parent view and model.
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(members[position])
-
         val btnRe: ImageButton = holder.memberFactionSelectView.findViewById(R.id.btn_faction_re)
-        val btnContra: ImageButton =
-            holder.memberFactionSelectView.findViewById(R.id.btn_faction_contra)
+        val btnContra: ImageButton = holder.memberFactionSelectView.findViewById(R.id.btn_faction_contra)
 
         btnRe.setOnClickListener {
             val pos = holder.adapterPosition
@@ -105,6 +103,6 @@ class MemberFactionSelectAdapter(
     fun updateMemberFactionList(updatedMembers: List<MemberAndFaction>) {
         members.clear()
         members.addAll(updatedMembers)
-        notifyItemRangeChanged(0, members.size)
+        notifyDataSetChanged()
     }
 }

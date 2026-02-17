@@ -53,14 +53,12 @@ class GameConfigurationView(context: Context, attrs: AttributeSet? = null) :
     }
 
     init {
-        init(attrs)
+        init()
     }
 
-    private fun init(attrs: AttributeSet?) {
+    private fun init() {
         View.inflate(context, R.layout.view_game_configuration, this)
         findViews()
-
-        applyAttributes(attrs)
 
         setupMemberFactionSelectList()
         setupFactionButtons()
@@ -84,14 +82,6 @@ class GameConfigurationView(context: Context, attrs: AttributeSet? = null) :
         tvGameResultTitle = findViewById(R.id.tv_game_creation_title_result)
         tvGameFeaturesTitle = findViewById(R.id.tv_game_creation_title_features)
         tvGameTypeErrorMessage = findViewById(R.id.tv_game_creation_gametype_error_message)
-    }
-
-    private fun applyAttributes(attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.GameConfigurationView)
-        try {
-        } finally {
-            ta.recycle()
-        }
     }
 
     fun setGameConfiguration(gameConfiguration: GameConfiguration) {

@@ -6,8 +6,10 @@ import kotlinx.coroutines.Runnable
 
 class ThreadingUtil {
     companion object {
-        fun runOnUIThread(r: Runnable) {
-            Handler(Looper.getMainLooper()).post(r)
+        private val mainHandler = Handler(Looper.getMainLooper())
+
+        fun runOnUIThread(action: () -> Unit) {
+            mainHandler.post(action)
         }
     }
 }

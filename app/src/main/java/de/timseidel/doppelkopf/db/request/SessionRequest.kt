@@ -8,9 +8,11 @@ import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import java.time.ZoneOffset
-
+import java.util.Collections
+import java.util.concurrent.atomic.AtomicInteger
 class SessionListRequest(private val sessionInfos: List<Session>) :
     BaseReadRequest<List<ISessionController>>() {
+
     override fun execute(listener: ReadRequestListener<List<ISessionController>>) {
         readRequestListener = listener
 
@@ -19,8 +21,8 @@ class SessionListRequest(private val sessionInfos: List<Session>) :
             return
         }
 
-        val sessions = mutableListOf<ISessionController>()
-        var remainingLoadCounter = sessionInfos.size
+        val sessions = Collections.synchronizedList(mutableListOf<ISessionController>())
+        val remainingLoadCounter = AtomicInteger(sessionInfos.size)
 
         for (sessionInfo in sessionInfos) {
             val sessionController = SessionController()
@@ -36,15 +38,12 @@ class SessionListRequest(private val sessionInfos: List<Session>) :
                         result.forEach { game ->
                             sessionController.getGameController().addGame(game)
                         }
-
                         sessions.add(sessionController)
-                        remainingLoadCounter -= 1
 
-                        if (remainingLoadCounter == 0) {
-                            sessions.sortBy { s ->
+                        if (remainingLoadCounter.decrementAndGet() == 0) {
+                            sessions.sortWith(compareBy { s ->
                                 s.getSession().date.toInstant(ZoneOffset.UTC).toEpochMilli()
-                            }
-
+                            })
                             onReadResult(sessions)
                         }
                     }
@@ -54,7 +53,5 @@ class SessionListRequest(private val sessionInfos: List<Session>) :
                     }
                 })
         }
-
     }
-
 }

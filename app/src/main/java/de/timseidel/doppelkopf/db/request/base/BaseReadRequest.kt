@@ -21,7 +21,7 @@ abstract class BaseReadRequest<R> {
         onReadFailed()
     }
 
-    protected fun failWithLog(message: String, exception: Exception) {
+    protected fun failWithLog(message: String, exception: Throwable) {
         Logging.e(message, exception)
         onReadFailed()
     }

@@ -26,11 +26,11 @@ class Logging {
             Log.e(LOG_TAG, "[$className]: $msg")
         }
 
-        fun e(msg: String, e: Exception) {
+        fun e(msg: String, e: Throwable) {
             Log.e(LOG_TAG, "$msg || $e")
         }
 
-        fun e(className: String, msg: String, e: Exception) {
+        fun e(className: String, msg: String, e: Throwable) {
             Log.e(LOG_TAG, "[$className]: $msg || $e")
         }
     }

@@ -2,7 +2,6 @@ package de.timseidel.doppelkopf.db.request
 
 import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 import de.timseidel.doppelkopf.db.FirebaseDTO
 import de.timseidel.doppelkopf.db.FirebaseStrings
 import de.timseidel.doppelkopf.db.SessionDto
@@ -18,32 +17,32 @@ class SessionInfoRequest(private val groupId: String, private val sessionId: Str
 
     override fun execute(listener: ReadRequestListener<Session>) {
         readRequestListener = listener
+        val firestore = FirebaseFirestore.getInstance()
 
-        val db = FirebaseFirestore.getInstance()
-        db.collection(FirebaseStrings.COLLECTION_GROUPS)
+        firestore.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
             .collection(FirebaseStrings.COLLECTION_SESSIONS)
             .document(sessionId)
             .get()
             .addOnSuccessListener { doc ->
-                if (doc != null) {
-                    val sessionDto = doc.toObject<SessionDto>()
-                    if (sessionDto != null) {
-                        try {
-                            val session = FirebaseDTO.fromSessionDTOtoSession(sessionDto, DokoShortAccess.getMemberCtrl())
-                            listener.onReadComplete(session)
-                        } catch (e: Exception) {
-                            failWithLog("Unable to convert ${doc.data} to SessionDTO", e)
-                        }
-                    } else {
-                        failWithLog("Unable to convert ${doc.data} to SessionDTO")
-                    }
+                if (!doc.exists()) {
+                    failWithLog("No session with id [$sessionId] found for groupId=$groupId.")
+                    return@addOnSuccessListener
+                }
+
+                val sessionDto = doc.toObject(SessionDto::class.java)
+                val session = sessionDto?.toSession()
+                if (session != null) {
+                    onReadResult(session)
                 } else {
-                    failWithLog("No Session with id [$sessionId] found.")
+                    failWithLog("Unable to convert session data for groupId=$groupId, sessionId=$sessionId.")
                 }
             }
             .addOnFailureListener { e ->
-                failWithLog("SessionInfoRequest failed with ", e)
+                failWithLog(
+                    "SessionInfoRequest failed for groupId=$groupId, sessionId=$sessionId",
+                    e
+                )
             }
     }
 }
@@ -51,35 +50,31 @@ class SessionInfoRequest(private val groupId: String, private val sessionId: Str
 class SessionInfoListRequest(private val groupId: String) : BaseReadRequest<List<Session>>() {
     override fun execute(listener: ReadRequestListener<List<Session>>) {
         readRequestListener = listener
+        val firestore = FirebaseFirestore.getInstance()
 
-        val db = FirebaseFirestore.getInstance()
-
-        db.collection(FirebaseStrings.COLLECTION_GROUPS)
+        firestore.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
             .collection(FirebaseStrings.COLLECTION_SESSIONS)
             .get()
-            .addOnSuccessListener { docs ->
-                val sessions = mutableListOf<Session>()
-                for (doc in docs) {
-                    try {
-                        val sessionDto = doc.toObject<SessionDto>()
-                        val session = FirebaseDTO.fromSessionDTOtoSession(sessionDto, DokoShortAccess.getMemberCtrl())
-                        sessions.add(session)
-                    } catch (e: Exception) {
-                        //Skipping this session and continue with the next others, does not return failure
+            .addOnSuccessListener { snapshot ->
+                val sessions = snapshot.documents.asSequence().mapNotNull { doc ->
+                    runCatching {
+                        val sessionDto = doc.toObject(SessionDto::class.java) ?: return@runCatching null
+                        FirebaseDTO.fromSessionDTOtoSession(sessionDto, DokoShortAccess.getMemberCtrl())
+                    }.getOrElse { e ->
+                        // Skip malformed session docs and continue returning valid sessions.
                         Logging.e(
-                            "SessionInfoListRequest: SessionInfo conversation of ${doc.data} failed with ",
+                            "SessionInfoListRequest: Session parse failed for groupId=$groupId, docId=${doc.id}",
                             e
                         )
+                        null
                     }
-                }
-
-                sessions.sortBy { s -> s.date.toInstant(ZoneOffset.UTC).toEpochMilli() }
+                }.sortedBy { it.date.toInstant(ZoneOffset.UTC).toEpochMilli() }.toList()
 
                 onReadResult(sessions)
             }
             .addOnFailureListener { e ->
-                failWithLog("SessionInfoListRequest failed with ", e)
+                failWithLog("SessionInfoListRequest failed for groupId=$groupId", e)
             }
     }
 }
@@ -87,10 +82,9 @@ class SessionInfoListRequest(private val groupId: String) : BaseReadRequest<List
 class SessionCountRequest(private val groupId: String) : BaseReadRequest<Int>() {
     override fun execute(listener: ReadRequestListener<Int>) {
         readRequestListener = listener
+        val firestore = FirebaseFirestore.getInstance()
 
-        val db = FirebaseFirestore.getInstance()
-
-        db.collection(FirebaseStrings.COLLECTION_GROUPS)
+        firestore.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
             .collection(FirebaseStrings.COLLECTION_SESSIONS)
             .count()
@@ -98,7 +92,16 @@ class SessionCountRequest(private val groupId: String) : BaseReadRequest<Int>() 
             .addOnSuccessListener { response ->
                 onReadResult(response.count.toInt())
             }.addOnFailureListener { e ->
-                failWithLog("SessionGameCountRequest failed with ", e)
+                failWithLog("SessionCountRequest failed for groupId=$groupId", e)
             }
+    }
+}
+
+private fun SessionDto.toSession(): Session? {
+    return runCatching {
+        FirebaseDTO.fromSessionDTOtoSession(this, DokoShortAccess.getMemberCtrl())
+    }.getOrElse { e ->
+        Logging.e("Unable to convert SessionDto to Session", e)
+        null
     }
 }

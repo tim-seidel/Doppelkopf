@@ -2,7 +2,6 @@ package de.timseidel.doppelkopf.db.request
 
 import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 import de.timseidel.doppelkopf.contracts.IMemberController
 import de.timseidel.doppelkopf.db.FirebaseDTO
 import de.timseidel.doppelkopf.db.FirebaseStrings
@@ -21,36 +20,33 @@ class SessionGameRequest(
 
     override fun execute(listener: ReadRequestListener<List<Game>>) {
         readRequestListener = listener
+        val firestore = FirebaseFirestore.getInstance()
 
-        val db = FirebaseFirestore.getInstance()
-
-        db.collection(FirebaseStrings.COLLECTION_GROUPS)
+        firestore.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
             .collection(FirebaseStrings.COLLECTION_SESSIONS)
             .document(sessionId)
-            .collection(FirebaseStrings.COLLECTION_GAMES).get()
-            .addOnSuccessListener { docs ->
-                val games = mutableListOf<Game>()
-                for (doc in docs) {
-                    try {
-                        val gameDto = doc.toObject<GameDto>()
-                        val game = FirebaseDTO.fromGameDTOtoGame(gameDto, memberController)
-                        games.add(game)
-                    } catch (e: Exception) {
-                        //Skipping this game and continue with the next others, does not return failure
+            .collection(FirebaseStrings.COLLECTION_GAMES)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val games = snapshot.documents.asSequence().mapNotNull { doc ->
+                    runCatching {
+                        val gameDto = doc.toObject(GameDto::class.java) ?: return@runCatching null
+                        FirebaseDTO.fromGameDTOtoGame(gameDto, memberController)
+                    }.getOrElse { e ->
+                        // Skip malformed game docs and continue returning valid games.
                         Logging.e(
-                            "SessionGameRequest: (Skipping) Game conversation of ${doc.data} failed with ",
+                            "SessionGameRequest: Game parse failed for groupId=$groupId, sessionId=$sessionId, docId=${doc.id}",
                             e
                         )
+                        null
                     }
-                }
-
-                games.sortBy { g -> g.timestamp }
+                }.sortedBy { it.timestamp }.toList()
 
                 onReadResult(games)
             }
             .addOnFailureListener { e ->
-                failWithLog("SessionGameRequest failed with ", e)
+                failWithLog("SessionGameRequest failed for groupId=$groupId, sessionId=$sessionId", e)
             }
     }
 }
@@ -63,10 +59,9 @@ class SessionGameCountRequest(
 
     override fun execute(listener: ReadRequestListener<Int>) {
         readRequestListener = listener
+        val firestore = FirebaseFirestore.getInstance()
 
-        val db = FirebaseFirestore.getInstance()
-
-        db.collection(FirebaseStrings.COLLECTION_GROUPS)
+        firestore.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
             .collection(FirebaseStrings.COLLECTION_SESSIONS)
             .document(sessionId)
@@ -76,7 +71,10 @@ class SessionGameCountRequest(
             .addOnSuccessListener { response ->
                 onReadResult(response.count.toInt())
             }.addOnFailureListener { e ->
-                failWithLog("SessionGameCountRequest failed with ", e)
+                failWithLog(
+                    "SessionGameCountRequest failed for groupId=$groupId, sessionId=$sessionId",
+                    e
+                )
             }
     }
 }

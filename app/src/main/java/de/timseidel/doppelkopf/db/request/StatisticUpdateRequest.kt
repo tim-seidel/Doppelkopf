@@ -17,7 +17,6 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-
 class StatisticUpdateRequest(
     private val groupId: String,
     private val currentSessions: List<ISessionController>
@@ -29,50 +28,42 @@ class StatisticUpdateRequest(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val sessionInfoListResult = readSessionInfoList()
-                val newSessions = sessionInfoListResult.filter { session ->
-                    currentSessions.none { it.getSession().id == session.id }
-                }
+                val currentSessionIds = currentSessions.asSequence().map { it.getSession().id }.toHashSet()
+                val newSessions = sessionInfoListResult.filter { it.id !in currentSessionIds }
                 Logging.d(
                     "StatisticUpdateRequest",
-                    "Current sessions: ${currentSessions.count()}. New sessions: ${newSessions.count()}"
+                    "Current sessions: ${currentSessions.size}. New sessions: ${newSessions.size}"
                 )
 
-                val latestSession = sessionInfoListResult.maxByOrNull { session -> session.date }
-                val needsLatestSessionRefresh = latestSession != null &&
-                    currentSessions.any { it.getSession().id == latestSession.id }
+                val latestSession = sessionInfoListResult.maxByOrNull { it.date }
+                val needsLatestSessionRefresh = latestSession != null && latestSession.id in currentSessionIds
 
-                val sessionsToLoad = mutableListOf<Session>()
-                sessionsToLoad.addAll(newSessions)
-                if (needsLatestSessionRefresh && latestSession != null) {
-                    sessionsToLoad.add(latestSession)
+                val sessionsToLoad = buildList {
+                    addAll(newSessions)
+                    if (needsLatestSessionRefresh && latestSession != null) {
+                        add(latestSession)
+                    }
                 }
 
                 val loadedSessionsById = sessionsToLoad
                     .distinctBy { it.id }
                     .map { session ->
-                        async {
-                            session.id to loadSessionController(session)
-                        }
+                        async { session.id to loadSessionController(session) }
                     }
                     .awaitAll()
                     .toMap()
 
                 val currentSessionsById = currentSessions.associateBy { it.getSession().id }
-                val allSessions = mutableListOf<ISessionController>()
-                sessionInfoListResult.forEach { sessionInfo ->
-                    val sessionController =
-                        loadedSessionsById[sessionInfo.id] ?: currentSessionsById[sessionInfo.id]
-
-                    if (sessionController != null) {
-                        allSessions.add(sessionController)
-                    } else {
-                        throw IllegalStateException("Missing session controller for session ${sessionInfo.id}")
-                    }
+                val allSessions = sessionInfoListResult.map { sessionInfo ->
+                    loadedSessionsById[sessionInfo.id] ?: currentSessionsById[sessionInfo.id]
+                    ?: throw IllegalStateException(
+                        "Missing session controller for session ${sessionInfo.id}"
+                    )
                 }
 
                 onReadResult(allSessions)
             } catch (e: Exception) {
-                failWithLog("StatisticUpdateRequest failed with ", e)
+                failWithLog("StatisticUpdateRequest failed for groupId=$groupId", e)
             }
         }
     }
@@ -88,7 +79,11 @@ class StatisticUpdateRequest(
 
                 override fun onReadFailed() {
                     if (continuation.isActive) {
-                        continuation.resumeWithException(IllegalStateException("SessionInfoListRequest failed"))
+                        continuation.resumeWithException(
+                            IllegalStateException(
+                                "SessionInfoListRequest failed for groupId=$groupId"
+                            )
+                        )
                     }
                 }
             })
@@ -98,10 +93,23 @@ class StatisticUpdateRequest(
         val sessionController = SessionController()
         sessionController.set(session)
 
-        val sessionGames = suspendCancellableCoroutine<List<Game>> { continuation ->
+        val sessionGames = readSessionGames(session.id)
+        Logging.d(
+            "StatisticUpdateRequest",
+            "Loaded games for session ${session.id}: ${sessionGames.size} games"
+        )
+
+        sessionGames.forEach { game ->
+            sessionController.getGameController().addGame(game)
+        }
+        return sessionController
+    }
+
+    private suspend fun readSessionGames(sessionId: String): List<Game> =
+        suspendCancellableCoroutine { continuation ->
             SessionGameRequest(
                 groupId,
-                session.id,
+                sessionId,
                 DokoShortAccess.getMemberCtrl()
             ).execute(
                 object : ReadRequestListener<List<Game>> {
@@ -114,22 +122,13 @@ class StatisticUpdateRequest(
                     override fun onReadFailed() {
                         if (continuation.isActive) {
                             continuation.resumeWithException(
-                                IllegalStateException("SessionGameRequest failed for session ${session.id}")
+                                IllegalStateException(
+                                    "SessionGameRequest failed for groupId=$groupId, sessionId=$sessionId"
+                                )
                             )
                         }
                     }
                 }
             )
         }
-
-        Logging.d(
-            "StatisticUpdateRequest",
-            "Loaded games for session ${session.id}: ${sessionGames.count()} games"
-        )
-
-        sessionGames.forEach { game ->
-            sessionController.getGameController().addGame(game)
-        }
-        return sessionController
-    }
 }

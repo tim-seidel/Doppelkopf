@@ -8,8 +8,9 @@ import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import java.time.ZoneOffset
-import java.util.Collections
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
+
 class SessionListRequest(private val sessionInfos: List<Session>) :
     BaseReadRequest<List<ISessionController>>() {
 
@@ -17,12 +18,13 @@ class SessionListRequest(private val sessionInfos: List<Session>) :
         readRequestListener = listener
 
         if (sessionInfos.isEmpty()) {
-            onReadResult(mutableListOf())
+            onReadResult(emptyList())
             return
         }
 
-        val sessions = Collections.synchronizedList(mutableListOf<ISessionController>())
+        val sessions = mutableListOf<ISessionController>()
         val remainingLoadCounter = AtomicInteger(sessionInfos.size)
+        val isCompleted = AtomicBoolean(false)
 
         for (sessionInfo in sessionInfos) {
             val sessionController = SessionController()
@@ -35,12 +37,20 @@ class SessionListRequest(private val sessionInfos: List<Session>) :
             ).execute(
                 object : ReadRequestListener<List<Game>> {
                     override fun onReadComplete(result: List<Game>) {
+                        if (isCompleted.get()) {
+                            return
+                        }
+
                         result.forEach { game ->
                             sessionController.getGameController().addGame(game)
                         }
                         sessions.add(sessionController)
 
-                        if (remainingLoadCounter.decrementAndGet() == 0) {
+                        if (remainingLoadCounter.decrementAndGet() == 0 && isCompleted.compareAndSet(
+                                false,
+                                true
+                            )
+                        ) {
                             sessions.sortWith(compareBy { s ->
                                 s.getSession().date.toInstant(ZoneOffset.UTC).toEpochMilli()
                             })
@@ -49,7 +59,9 @@ class SessionListRequest(private val sessionInfos: List<Session>) :
                     }
 
                     override fun onReadFailed() {
-                        this@SessionListRequest.onReadFailed()
+                        if (isCompleted.compareAndSet(false, true)) {
+                            this@SessionListRequest.onReadFailed()
+                        }
                     }
                 })
         }

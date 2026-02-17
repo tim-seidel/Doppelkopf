@@ -1,7 +1,6 @@
 package de.timseidel.doppelkopf.db.request
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 import de.timseidel.doppelkopf.db.FirebaseDTO
 import de.timseidel.doppelkopf.db.FirebaseStrings
 import de.timseidel.doppelkopf.db.GroupDto
@@ -15,35 +14,27 @@ class GroupInfoRequestById(private val groupId: String) :
     BaseReadRequest<Pair<Group, GroupSettings>>() {
     override fun execute(listener: ReadRequestListener<Pair<Group, GroupSettings>>) {
         readRequestListener = listener
+        val firestore = FirebaseFirestore.getInstance()
 
-        val db = FirebaseFirestore.getInstance()
-
-        db.collection(FirebaseStrings.COLLECTION_GROUPS)
+        firestore.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
             .get()
             .addOnSuccessListener { doc ->
-                if (doc != null) {
-                    val groupDto = doc.toObject<GroupDto>()
-                    if (groupDto != null) {
-                        try {
-                            val group = FirebaseDTO.fromGroupDTOtoGroup(groupDto)
-                            val settings = FirebaseDTO.fromGroupDTOtoGroupSettings(groupDto)
-                            listener.onReadComplete(Pair(group, settings))
-                        } catch (e: Exception) {
-                            Logging.e("Unable to convert ${doc.data} to GroupDTO")
-                            listener.onReadFailed()
-                        }
-                    } else {
-                        Logging.e("Unable to convert ${doc.data} to GroupDTO")
-                        listener.onReadFailed()
-                    }
+                if (!doc.exists()) {
+                    failWithLog("No group with id [$groupId] found.")
+                    return@addOnSuccessListener
+                }
+
+                val groupDto = doc.toObject(GroupDto::class.java)
+                val groupAndSettings = groupDto?.toGroupAndSettings()
+                if (groupAndSettings != null) {
+                    onReadResult(groupAndSettings)
                 } else {
-                    Logging.e("No Group with code [$groupId] found.")
-                    listener.onReadFailed()
+                    failWithLog("Unable to convert group data for id [$groupId].")
                 }
             }
             .addOnFailureListener { e ->
-                failWithLog("GroupInfoRequestById failed", e)
+                failWithLog("GroupInfoRequestById failed for groupId=$groupId", e)
             }
     }
 }
@@ -53,31 +44,23 @@ class GroupInfoRequestByCode(private val groupCode: String) :
 
     override fun execute(listener: ReadRequestListener<Pair<Group, GroupSettings>>) {
         readRequestListener = listener
+        val firestore = FirebaseFirestore.getInstance()
 
-        val db = FirebaseFirestore.getInstance()
-        db.collection(FirebaseStrings.COLLECTION_GROUPS)
+        firestore.collection(FirebaseStrings.COLLECTION_GROUPS)
             .whereEqualTo("code", groupCode)
+            .limit(1)
             .get()
-            .addOnSuccessListener { doc ->
-                if (!doc.isEmpty) {
-                    val groupDto = doc.firstOrNull()?.toObject<GroupDto>()
-                    if (groupDto != null) {
-                        try {
-                            val group = FirebaseDTO.fromGroupDTOtoGroup(groupDto)
-                            val settings = FirebaseDTO.fromGroupDTOtoGroupSettings(groupDto)
-                            listener.onReadComplete(Pair(group, settings))
-                        } catch (e: Exception) {
-                            failWithLog("Unable to convert data to GroupDTO", e)
-                        }
-                    } else {
-                        failWithLog("Unable to convert data to GroupDTO")
-                    }
+            .addOnSuccessListener { snapshot ->
+                val groupDto = snapshot.documents.firstOrNull()?.toObject(GroupDto::class.java)
+                val groupAndSettings = groupDto?.toGroupAndSettings()
+                if (groupAndSettings != null) {
+                    onReadResult(groupAndSettings)
                 } else {
-                    failWithLog("No Group with code [$groupCode] found.")
+                    failWithLog("No group with code [$groupCode] found or conversion failed.")
                 }
             }
             .addOnFailureListener { e ->
-                failWithLog("GroupInfoRequestByCode failed", e)
+                failWithLog("GroupInfoRequestByCode failed for groupCode=$groupCode", e)
             }
     }
 }
@@ -85,16 +68,28 @@ class GroupInfoRequestByCode(private val groupCode: String) :
 class GroupCodeExistsRequest(private val groupCode: String) : BaseReadRequest<Boolean>() {
     override fun execute(listener: ReadRequestListener<Boolean>) {
         readRequestListener = listener
+        val firestore = FirebaseFirestore.getInstance()
 
-        val db = FirebaseFirestore.getInstance()
-        db.collection(FirebaseStrings.COLLECTION_GROUPS)
+        firestore.collection(FirebaseStrings.COLLECTION_GROUPS)
             .whereEqualTo("code", groupCode)
+            .limit(1)
             .get()
-            .addOnSuccessListener { doc ->
-                listener.onReadComplete(!doc.isEmpty)
+            .addOnSuccessListener { snapshot ->
+                onReadResult(!snapshot.isEmpty)
             }
             .addOnFailureListener { e ->
-                failWithLog("GroupCodeExistsRequest failed", e)
+                failWithLog("GroupCodeExistsRequest failed for groupCode=$groupCode", e)
             }
+    }
+}
+
+private fun GroupDto.toGroupAndSettings(): Pair<Group, GroupSettings>? {
+    return runCatching {
+        val group = FirebaseDTO.fromGroupDTOtoGroup(this)
+        val settings = FirebaseDTO.fromGroupDTOtoGroupSettings(this)
+        Pair(group, settings)
+    }.getOrElse { e ->
+        Logging.e("Unable to convert GroupDto to Group/GroupSettings", e)
+        null
     }
 }

@@ -59,10 +59,19 @@ class GroupStatisticFragment : Fragment() {
             busyViews = listOf(binding.headerStatisticMemberSelect, binding.lvGroupStatistic)
         )
 
+        savedInstanceState?.getString(KEY_SELECTED_MEMBER_ID)?.let { id ->
+            selectedMemberId = id
+        }
+
         setupStatistics()
         setupMemberSelect()
 
         return binding.root
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(KEY_SELECTED_MEMBER_ID, selectedMemberId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -87,12 +96,18 @@ class GroupStatisticFragment : Fragment() {
     }
 
     private fun setupStatistics() {
+        refreshStatisticsIfNeeded()
+    }
+
+    private fun refreshStatisticsIfNeeded() {
+        if (loadingOverlayController?.isBusy() == true) return
+
         if (DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
             renderSelectedMemberStatistics()
             renderState(StatisticLoadingState.IDLE)
         } else {
             Logging.d(
-                "GroupStatisticFragment | initStatistics",
+                "GroupStatisticFragment | refreshStatisticsIfNeeded",
                 "Cached statistics not available. Loading..."
             )
             loadDataForStatistics()
@@ -198,7 +213,7 @@ class GroupStatisticFragment : Fragment() {
         }
 
         val memberStatistic =
-            stats.memberStatistics.firstOrNull { memberStatistic -> memberStatistic.member.id == selectedMemberId }
+            stats.memberStatistics.firstOrNull { ms -> ms.member.id == selectedMemberId }
 
         if (memberStatistic != null && memberStatistic.general.total.games > 0) {
             setStatistics(MemberStatisticViewProvider(memberStatistic))
@@ -214,23 +229,16 @@ class GroupStatisticFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Logging.d("GroupStatisticFragment | onResume", "Resuming")
-
-        if (loadingOverlayController?.isBusy() == true) {
-            return
-        }
-
-        if (DokoShortAccess.getStatsCtrl().isCachedStatisticsAvailable()) {
-            renderSelectedMemberStatistics()
-            renderState(StatisticLoadingState.IDLE)
-        } else {
-            loadDataForStatistics()
-        }
-
+        refreshStatisticsIfNeeded()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         loadingOverlayController = null
         _binding = null
+    }
+
+    companion object {
+        private const val KEY_SELECTED_MEMBER_ID = "selected_member_id"
     }
 }

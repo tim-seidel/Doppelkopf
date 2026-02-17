@@ -3,7 +3,6 @@ package de.timseidel.doppelkopf.db.request
 import de.timseidel.doppelkopf.contracts.ISessionController
 import de.timseidel.doppelkopf.controller.SessionController
 import de.timseidel.doppelkopf.db.request.base.BaseReadRequest
-import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.util.DokoShortAccess
@@ -13,21 +12,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 class StatisticUpdateRequest(
     private val groupId: String,
     private val currentSessions: List<ISessionController>
 ) : BaseReadRequest<List<ISessionController>>() {
 
-    override fun execute(listener: ReadRequestListener<List<ISessionController>>) {
-        readRequestListener = listener
-
+    override fun doExecute() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val sessionInfoListResult = readSessionInfoList()
+                val sessionInfoListResult = SessionInfoListRequest(groupId).await()
                 val currentSessionIds = currentSessions.asSequence().map { it.getSession().id }.toHashSet()
                 val newSessions = sessionInfoListResult.filter { it.id !in currentSessionIds }
                 Logging.d(
@@ -68,32 +62,16 @@ class StatisticUpdateRequest(
         }
     }
 
-    private suspend fun readSessionInfoList(): List<Session> =
-        suspendCancellableCoroutine { continuation ->
-            SessionInfoListRequest(groupId).execute(object : ReadRequestListener<List<Session>> {
-                override fun onReadComplete(result: List<Session>) {
-                    if (continuation.isActive) {
-                        continuation.resume(result)
-                    }
-                }
-
-                override fun onReadFailed() {
-                    if (continuation.isActive) {
-                        continuation.resumeWithException(
-                            IllegalStateException(
-                                "SessionInfoListRequest failed for groupId=$groupId"
-                            )
-                        )
-                    }
-                }
-            })
-        }
-
     private suspend fun loadSessionController(session: Session): ISessionController {
         val sessionController = SessionController()
         sessionController.set(session)
 
-        val sessionGames = readSessionGames(session.id)
+        val sessionGames = SessionGameRequest(
+            groupId,
+            session.id,
+            DokoShortAccess.getMemberCtrl()
+        ).await()
+
         Logging.d(
             "StatisticUpdateRequest",
             "Loaded games for session ${session.id}: ${sessionGames.size} games"
@@ -104,31 +82,4 @@ class StatisticUpdateRequest(
         }
         return sessionController
     }
-
-    private suspend fun readSessionGames(sessionId: String): List<Game> =
-        suspendCancellableCoroutine { continuation ->
-            SessionGameRequest(
-                groupId,
-                sessionId,
-                DokoShortAccess.getMemberCtrl()
-            ).execute(
-                object : ReadRequestListener<List<Game>> {
-                    override fun onReadComplete(result: List<Game>) {
-                        if (continuation.isActive) {
-                            continuation.resume(result)
-                        }
-                    }
-
-                    override fun onReadFailed() {
-                        if (continuation.isActive) {
-                            continuation.resumeWithException(
-                                IllegalStateException(
-                                    "SessionGameRequest failed for groupId=$groupId, sessionId=$sessionId"
-                                )
-                            )
-                        }
-                    }
-                }
-            )
-        }
 }

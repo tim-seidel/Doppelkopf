@@ -14,9 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger
 class SessionListRequest(private val sessionInfos: List<Session>) :
     BaseReadRequest<List<ISessionController>>() {
 
-    override fun execute(listener: ReadRequestListener<List<ISessionController>>) {
-        readRequestListener = listener
-
+    override fun doExecute() {
         if (sessionInfos.isEmpty()) {
             onReadResult(emptyList())
             return

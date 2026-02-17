@@ -1,12 +1,10 @@
 package de.timseidel.doppelkopf.db.request
 
 import com.google.firebase.firestore.AggregateSource
-import com.google.firebase.firestore.FirebaseFirestore
 import de.timseidel.doppelkopf.db.FirebaseDTO
 import de.timseidel.doppelkopf.db.FirebaseStrings
 import de.timseidel.doppelkopf.db.SessionDto
 import de.timseidel.doppelkopf.db.request.base.BaseReadRequest
-import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.util.DokoShortAccess
 import de.timseidel.doppelkopf.util.Logging
@@ -15,10 +13,7 @@ import java.time.ZoneOffset
 class SessionInfoRequest(private val groupId: String, private val sessionId: String) :
     BaseReadRequest<Session>() {
 
-    override fun execute(listener: ReadRequestListener<Session>) {
-        readRequestListener = listener
-        val firestore = FirebaseFirestore.getInstance()
-
+    override fun doExecute() {
         firestore.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
             .collection(FirebaseStrings.COLLECTION_SESSIONS)
@@ -48,10 +43,7 @@ class SessionInfoRequest(private val groupId: String, private val sessionId: Str
 }
 
 class SessionInfoListRequest(private val groupId: String) : BaseReadRequest<List<Session>>() {
-    override fun execute(listener: ReadRequestListener<List<Session>>) {
-        readRequestListener = listener
-        val firestore = FirebaseFirestore.getInstance()
-
+    override fun doExecute() {
         firestore.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
             .collection(FirebaseStrings.COLLECTION_SESSIONS)
@@ -62,7 +54,6 @@ class SessionInfoListRequest(private val groupId: String) : BaseReadRequest<List
                         val sessionDto = doc.toObject(SessionDto::class.java) ?: return@runCatching null
                         FirebaseDTO.fromSessionDTOtoSession(sessionDto, DokoShortAccess.getMemberCtrl())
                     }.getOrElse { e ->
-                        // Skip malformed session docs and continue returning valid sessions.
                         Logging.e(
                             "SessionInfoListRequest: Session parse failed for groupId=$groupId, docId=${doc.id}",
                             e
@@ -80,10 +71,7 @@ class SessionInfoListRequest(private val groupId: String) : BaseReadRequest<List
 }
 
 class SessionCountRequest(private val groupId: String) : BaseReadRequest<Int>() {
-    override fun execute(listener: ReadRequestListener<Int>) {
-        readRequestListener = listener
-        val firestore = FirebaseFirestore.getInstance()
-
+    override fun doExecute() {
         firestore.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
             .collection(FirebaseStrings.COLLECTION_SESSIONS)

@@ -1,21 +1,16 @@
 package de.timseidel.doppelkopf.db.request
 
-import com.google.firebase.firestore.FirebaseFirestore
 import de.timseidel.doppelkopf.db.FirebaseDTO
 import de.timseidel.doppelkopf.db.FirebaseStrings
 import de.timseidel.doppelkopf.db.GroupDto
 import de.timseidel.doppelkopf.db.request.base.BaseReadRequest
-import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Group
 import de.timseidel.doppelkopf.model.GroupSettings
 import de.timseidel.doppelkopf.util.Logging
 
 class GroupInfoRequestById(private val groupId: String) :
     BaseReadRequest<Pair<Group, GroupSettings>>() {
-    override fun execute(listener: ReadRequestListener<Pair<Group, GroupSettings>>) {
-        readRequestListener = listener
-        val firestore = FirebaseFirestore.getInstance()
-
+    override fun doExecute() {
         firestore.collection(FirebaseStrings.COLLECTION_GROUPS)
             .document(groupId)
             .get()
@@ -42,10 +37,7 @@ class GroupInfoRequestById(private val groupId: String) :
 class GroupInfoRequestByCode(private val groupCode: String) :
     BaseReadRequest<Pair<Group, GroupSettings>>() {
 
-    override fun execute(listener: ReadRequestListener<Pair<Group, GroupSettings>>) {
-        readRequestListener = listener
-        val firestore = FirebaseFirestore.getInstance()
-
+    override fun doExecute() {
         firestore.collection(FirebaseStrings.COLLECTION_GROUPS)
             .whereEqualTo("code", groupCode)
             .limit(1)
@@ -66,10 +58,7 @@ class GroupInfoRequestByCode(private val groupCode: String) :
 }
 
 class GroupCodeExistsRequest(private val groupCode: String) : BaseReadRequest<Boolean>() {
-    override fun execute(listener: ReadRequestListener<Boolean>) {
-        readRequestListener = listener
-        val firestore = FirebaseFirestore.getInstance()
-
+    override fun doExecute() {
         firestore.collection(FirebaseStrings.COLLECTION_GROUPS)
             .whereEqualTo("code", groupCode)
             .limit(1)

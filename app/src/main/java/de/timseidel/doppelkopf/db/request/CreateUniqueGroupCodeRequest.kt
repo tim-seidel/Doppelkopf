@@ -6,9 +6,7 @@ import de.timseidel.doppelkopf.util.IdGenerator
 import de.timseidel.doppelkopf.util.Logging
 
 class CreateUniqueGroupCodeRequest(private val maxTry: Int) : BaseReadRequest<String>() {
-    override fun execute(listener: ReadRequestListener<String>) {
-        readRequestListener = listener
-
+    override fun doExecute() {
         createAndCheckGroupCode(0)
     }
 

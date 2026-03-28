@@ -25,6 +25,7 @@ class RankingStatisticsCalculator {
             getMostPlayedSoliRanking(activeMemberStatistics),
             getHighestSoliTackenGainRanking(activeMemberStatistics),
             getSoliWinPercentageRanking(activeMemberStatistics),
+            getMaxSoliInSessionCount(activeMemberStatistics),
             getSchwarzVerlorenRanking(activeMemberStatistics),
             getMostGamesRanking(activeMemberStatistics),
             getLongestWinStreakRanking(activeMemberStatistics),
@@ -490,6 +491,23 @@ class RankingStatisticsCalculator {
                     memberStatistic.member.name,
                     schwarzVerlorenCount,
                     schwarzVerlorenCount.toString()
+                )
+            }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() }
+        )
+
+        return ranking
+    }
+
+    private fun getMaxSoliInSessionCount(memberStatistic: List<MemberStatistic>): Ranking {
+        val ranking = Ranking(
+            "Meiste Soli in einer Session",
+            "Die höchste Anzahl an gespielten Soli innerhalb einer Session.",
+            memberStatistic.map { memberStatistic ->
+                val maxSoliInSession = memberStatistic.sessionStatistics.maxOfOrNull { it.solo.total.games } ?: 0
+                RankingItem(
+                    memberStatistic.member.name,
+                    maxSoliInSession,
+                    maxSoliInSession.toString()
                 )
             }.sortedByDescending { rankingItem -> rankingItem.value.toDouble() }
         )

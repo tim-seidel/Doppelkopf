@@ -71,6 +71,7 @@ class LineChartViewWrapper(private val chartData: LineChartData) : IStatisticVie
         legend.layout = "horizontal"
         legend.align = "center"
         legend.verticalAlign = "top"
+        legend.enabled = chartData.lineData.size > 1
         options.legend = legend
 
         val lines = arrayListOf<HILine>()

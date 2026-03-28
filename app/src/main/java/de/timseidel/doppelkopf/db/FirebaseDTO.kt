@@ -1,5 +1,6 @@
 package de.timseidel.doppelkopf.db
 
+import androidx.annotation.Keep
 import de.timseidel.doppelkopf.contracts.IMemberController
 import de.timseidel.doppelkopf.model.Faction
 import de.timseidel.doppelkopf.model.Game
@@ -15,6 +16,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 
+@Keep
 data class GroupDto(
     var id: String,
     var code: String,
@@ -25,6 +27,7 @@ data class GroupDto(
     constructor() : this("", "", "", 0, true)
 }
 
+@Keep
 data class MemberDto(
     var id: String,
     var name: String,
@@ -34,6 +37,7 @@ data class MemberDto(
     constructor() : this("", "", 0, true)
 }
 
+@Keep
 data class SessionDto(
     var id: String,
     var name: String,
@@ -44,6 +48,7 @@ data class SessionDto(
     constructor() : this("", "", 0, 0.0, emptyList())
 }
 
+@Keep
 data class MemberAndFactionDto(
     var memberId: String,
     var faction: Faction
@@ -51,6 +56,7 @@ data class MemberAndFactionDto(
     constructor() : this("", Faction.NONE)
 }
 
+@Keep
 data class GameDto(
     var id: String,
     var timestamp: Long,

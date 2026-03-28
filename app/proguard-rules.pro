@@ -19,3 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Firestore uses reflection for DTO mapping via DocumentSnapshot.toObject(...).
+# Keep DTO types, constructors and members to prevent release-only crashes.
+-keep class de.timseidel.doppelkopf.db.**Dto { *; }

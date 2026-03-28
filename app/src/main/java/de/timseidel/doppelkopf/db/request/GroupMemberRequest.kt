@@ -16,17 +16,21 @@ class GroupMemberRequest(private val groupId: String) : BaseReadRequest<List<Mem
             .collection(FirebaseStrings.COLLECTION_MEMBERS)
             .get()
             .addOnSuccessListener { snapshot ->
-                val members = snapshot.documents.asSequence().mapNotNull { doc ->
-                    runCatching {
-                        val dto = doc.toObject(MemberDto::class.java) ?: return@runCatching null
-                        FirebaseDTO.fromMemberDTOtoMember(dto)
-                    }.getOrElse { e ->
-                        Logging.e("Member parse failed for groupId=$groupId, docId=${doc.id}", e)
-                        null
-                    }
-                }.toList()
+                try {
+                    val members = snapshot.documents.asSequence().mapNotNull { doc ->
+                        runCatching {
+                            val dto = doc.toObject(MemberDto::class.java) ?: return@runCatching null
+                            FirebaseDTO.fromMemberDTOtoMember(dto)
+                        }.getOrElse { e ->
+                            Logging.e("Member parse failed for groupId=$groupId, docId=${doc.id}", e)
+                            null
+                        }
+                    }.toList()
 
-                onReadResult(members)
+                    onReadResult(members)
+                } catch (e: Exception) {
+                    failWithLog("GroupMemberRequest handling failed for groupId=$groupId", e)
+                }
             }
             .addOnFailureListener { e ->
                 failWithLog("GroupMemberRequest failed for groupId=$groupId", e)

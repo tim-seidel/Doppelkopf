@@ -20,17 +20,24 @@ class SessionInfoRequest(private val groupId: String, private val sessionId: Str
             .document(sessionId)
             .get()
             .addOnSuccessListener { doc ->
-                if (!doc.exists()) {
-                    failWithLog("No session with id [$sessionId] found for groupId=$groupId.")
-                    return@addOnSuccessListener
-                }
+                try {
+                    if (!doc.exists()) {
+                        failWithLog("No session with id [$sessionId] found for groupId=$groupId.")
+                        return@addOnSuccessListener
+                    }
 
-                val sessionDto = doc.toObject(SessionDto::class.java)
-                val session = sessionDto?.toSession()
-                if (session != null) {
-                    onReadResult(session)
-                } else {
-                    failWithLog("Unable to convert session data for groupId=$groupId, sessionId=$sessionId.")
+                    val sessionDto = doc.toObject(SessionDto::class.java)
+                    val session = sessionDto?.toSession()
+                    if (session != null) {
+                        onReadResult(session)
+                    } else {
+                        failWithLog("Unable to convert session data for groupId=$groupId, sessionId=$sessionId.")
+                    }
+                } catch (e: Exception) {
+                    failWithLog(
+                        "SessionInfoRequest conversion failed for groupId=$groupId, sessionId=$sessionId",
+                        e
+                    )
                 }
             }
             .addOnFailureListener { e ->
@@ -49,20 +56,24 @@ class SessionInfoListRequest(private val groupId: String) : BaseReadRequest<List
             .collection(FirebaseStrings.COLLECTION_SESSIONS)
             .get()
             .addOnSuccessListener { snapshot ->
-                val sessions = snapshot.documents.asSequence().mapNotNull { doc ->
-                    runCatching {
-                        val sessionDto = doc.toObject(SessionDto::class.java) ?: return@runCatching null
-                        FirebaseDTO.fromSessionDTOtoSession(sessionDto, DokoShortAccess.getMemberCtrl())
-                    }.getOrElse { e ->
-                        Logging.e(
-                            "SessionInfoListRequest: Session parse failed for groupId=$groupId, docId=${doc.id}",
-                            e
-                        )
-                        null
-                    }
-                }.sortedBy { it.date.toInstant(ZoneOffset.UTC).toEpochMilli() }.toList()
+                try {
+                    val sessions = snapshot.documents.asSequence().mapNotNull { doc ->
+                        runCatching {
+                            val sessionDto = doc.toObject(SessionDto::class.java) ?: return@runCatching null
+                            FirebaseDTO.fromSessionDTOtoSession(sessionDto, DokoShortAccess.getMemberCtrl())
+                        }.getOrElse { e ->
+                            Logging.e(
+                                "SessionInfoListRequest: Session parse failed for groupId=$groupId, docId=${doc?.id}",
+                                e
+                            )
+                            null
+                        }
+                    }.sortedBy { it.date.toInstant(ZoneOffset.UTC).toEpochMilli() }.toList()
 
-                onReadResult(sessions)
+                    onReadResult(sessions)
+                } catch (e: Exception) {
+                    failWithLog("SessionInfoListRequest handling failed for groupId=$groupId", e)
+                }
             }
             .addOnFailureListener { e ->
                 failWithLog("SessionInfoListRequest failed for groupId=$groupId", e)
@@ -78,7 +89,11 @@ class SessionCountRequest(private val groupId: String) : BaseReadRequest<Int>() 
             .count()
             .get(AggregateSource.SERVER)
             .addOnSuccessListener { response ->
-                onReadResult(response.count.toInt())
+                try {
+                    onReadResult(response.count.toInt())
+                } catch (e: Exception) {
+                    failWithLog("SessionCountRequest handling failed for groupId=$groupId", e)
+                }
             }.addOnFailureListener { e ->
                 failWithLog("SessionCountRequest failed for groupId=$groupId", e)
             }

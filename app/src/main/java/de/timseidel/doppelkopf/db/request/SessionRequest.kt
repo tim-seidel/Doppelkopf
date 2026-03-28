@@ -7,6 +7,7 @@ import de.timseidel.doppelkopf.db.request.base.ReadRequestListener
 import de.timseidel.doppelkopf.model.Game
 import de.timseidel.doppelkopf.model.Session
 import de.timseidel.doppelkopf.util.DokoShortAccess
+import de.timseidel.doppelkopf.util.Logging
 import java.time.ZoneOffset
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
@@ -35,24 +36,34 @@ class SessionListRequest(private val sessionInfos: List<Session>) :
             ).execute(
                 object : ReadRequestListener<List<Game>> {
                     override fun onReadComplete(result: List<Game>) {
-                        if (isCompleted.get()) {
-                            return
-                        }
+                        try {
+                            if (isCompleted.get()) {
+                                return
+                            }
 
-                        result.forEach { game ->
-                            sessionController.getGameController().addGame(game)
-                        }
-                        sessions.add(sessionController)
+                            result.forEach { game ->
+                                sessionController.getGameController().addGame(game)
+                            }
+                            sessions.add(sessionController)
 
-                        if (remainingLoadCounter.decrementAndGet() == 0 && isCompleted.compareAndSet(
-                                false,
-                                true
+                            if (remainingLoadCounter.decrementAndGet() == 0 && isCompleted.compareAndSet(
+                                    false,
+                                    true
+                                )
+                            ) {
+                                sessions.sortWith(compareBy { s ->
+                                    s.getSession().date.toInstant(ZoneOffset.UTC).toEpochMilli()
+                                })
+                                onReadResult(sessions)
+                            }
+                        } catch (e: Exception) {
+                            Logging.e(
+                                "SessionListRequest handling failed for sessionId=${sessionInfo.id}",
+                                e
                             )
-                        ) {
-                            sessions.sortWith(compareBy { s ->
-                                s.getSession().date.toInstant(ZoneOffset.UTC).toEpochMilli()
-                            })
-                            onReadResult(sessions)
+                            if (isCompleted.compareAndSet(false, true)) {
+                                this@SessionListRequest.onReadFailed()
+                            }
                         }
                     }
 

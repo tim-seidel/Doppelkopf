@@ -15,17 +15,21 @@ class GroupInfoRequestById(private val groupId: String) :
             .document(groupId)
             .get()
             .addOnSuccessListener { doc ->
-                if (!doc.exists()) {
-                    failWithLog("No group with id [$groupId] found.")
-                    return@addOnSuccessListener
-                }
+                try {
+                    if (!doc.exists()) {
+                        failWithLog("No group with id [$groupId] found.")
+                        return@addOnSuccessListener
+                    }
 
-                val groupDto = doc.toObject(GroupDto::class.java)
-                val groupAndSettings = groupDto?.toGroupAndSettings()
-                if (groupAndSettings != null) {
-                    onReadResult(groupAndSettings)
-                } else {
-                    failWithLog("Unable to convert group data for id [$groupId].")
+                    val groupDto = doc.toObject(GroupDto::class.java)
+                    val groupAndSettings = groupDto?.toGroupAndSettings()
+                    if (groupAndSettings != null) {
+                        onReadResult(groupAndSettings)
+                    } else {
+                        failWithLog("Unable to convert group data for id [$groupId].")
+                    }
+                } catch (e: Exception) {
+                    failWithLog("GroupInfoRequestById conversion failed for groupId=$groupId", e)
                 }
             }
             .addOnFailureListener { e ->
@@ -43,12 +47,16 @@ class GroupInfoRequestByCode(private val groupCode: String) :
             .limit(1)
             .get()
             .addOnSuccessListener { snapshot ->
-                val groupDto = snapshot.documents.firstOrNull()?.toObject(GroupDto::class.java)
-                val groupAndSettings = groupDto?.toGroupAndSettings()
-                if (groupAndSettings != null) {
-                    onReadResult(groupAndSettings)
-                } else {
-                    failWithLog("No group with code [$groupCode] found or conversion failed.")
+                try {
+                    val groupDto = snapshot.documents.firstOrNull()?.toObject(GroupDto::class.java)
+                    val groupAndSettings = groupDto?.toGroupAndSettings()
+                    if (groupAndSettings != null) {
+                        onReadResult(groupAndSettings)
+                    } else {
+                        failWithLog("No group with code [$groupCode] found or conversion failed.")
+                    }
+                } catch (e: Exception) {
+                    failWithLog("GroupInfoRequestByCode conversion failed for groupCode=$groupCode", e)
                 }
             }
             .addOnFailureListener { e ->
@@ -64,7 +72,11 @@ class GroupCodeExistsRequest(private val groupCode: String) : BaseReadRequest<Bo
             .limit(1)
             .get()
             .addOnSuccessListener { snapshot ->
-                onReadResult(!snapshot.isEmpty)
+                try {
+                    onReadResult(!snapshot.isEmpty)
+                } catch (e: Exception) {
+                    failWithLog("GroupCodeExistsRequest handling failed for groupCode=$groupCode", e)
+                }
             }
             .addOnFailureListener { e ->
                 failWithLog("GroupCodeExistsRequest failed for groupCode=$groupCode", e)

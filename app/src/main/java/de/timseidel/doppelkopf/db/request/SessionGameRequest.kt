@@ -23,20 +23,27 @@ class SessionGameRequest(
             .collection(FirebaseStrings.COLLECTION_GAMES)
             .get()
             .addOnSuccessListener { snapshot ->
-                val games = snapshot.documents.asSequence().mapNotNull { doc ->
-                    runCatching {
-                        val gameDto = doc.toObject(GameDto::class.java) ?: return@runCatching null
-                        FirebaseDTO.fromGameDTOtoGame(gameDto, memberController)
-                    }.getOrElse { e ->
-                        Logging.e(
-                            "SessionGameRequest: Game parse failed for groupId=$groupId, sessionId=$sessionId, docId=${doc.id}",
-                            e
-                        )
-                        null
-                    }
-                }.sortedBy { it.timestamp }.toList()
+                try {
+                    val games = snapshot.documents.asSequence().mapNotNull { doc ->
+                        runCatching {
+                            val gameDto = doc.toObject(GameDto::class.java) ?: return@runCatching null
+                            FirebaseDTO.fromGameDTOtoGame(gameDto, memberController)
+                        }.getOrElse { e ->
+                            Logging.e(
+                                "SessionGameRequest: Game parse failed for groupId=$groupId, sessionId=$sessionId, docId=${doc.id}",
+                                e
+                            )
+                            null
+                        }
+                    }.sortedBy { it.timestamp }.toList()
 
-                onReadResult(games)
+                    onReadResult(games)
+                } catch (e: Exception) {
+                    failWithLog(
+                        "SessionGameRequest handling failed for groupId=$groupId, sessionId=$sessionId",
+                        e
+                    )
+                }
             }
             .addOnFailureListener { e ->
                 failWithLog("SessionGameRequest failed for groupId=$groupId, sessionId=$sessionId", e)
@@ -58,7 +65,14 @@ class SessionGameCountRequest(
             .count()
             .get(AggregateSource.SERVER)
             .addOnSuccessListener { response ->
-                onReadResult(response.count.toInt())
+                try {
+                    onReadResult(response.count.toInt())
+                } catch (e: Exception) {
+                    failWithLog(
+                        "SessionGameCountRequest success handling failed for groupId=$groupId, sessionId=$sessionId",
+                        e
+                    )
+                }
             }.addOnFailureListener { e ->
                 failWithLog(
                     "SessionGameCountRequest failed for groupId=$groupId, sessionId=$sessionId",
